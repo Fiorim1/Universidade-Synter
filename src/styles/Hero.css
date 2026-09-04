@@ -1,0 +1,18 @@
+.hero-all {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 30px;
+    color: #ffffff;
+}
+
+.hero-all h4,
+.hero-all h2,
+.hero-all p {
+    margin: 10px;
+}
+
+.hero-all h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+}
