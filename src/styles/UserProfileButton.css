@@ -1,0 +1,36 @@
+.user-profile-button {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    background: transparent;
+
+    color: #ffffff;
+
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+
+    padding: 12px 20px;
+
+    min-width: 180px;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.user-profile-icon {
+
+    font-size: 18px;
+
+}
+
+.button-user-container {
+    display: flex;
+    align-items: center;
+}

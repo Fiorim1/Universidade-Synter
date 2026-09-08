@@ -1,0 +1,22 @@
+.dashboard-profile {
+    display: flex;
+    justify-content: flex-end;
+    margin: 30px;
+}
+
+.cards-parts-1, 
+.cards-parts-2,
+.cards-parts-3 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 10px;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 30px;
+}

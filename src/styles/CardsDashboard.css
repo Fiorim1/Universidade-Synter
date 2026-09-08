@@ -1,0 +1,99 @@
+.cads-container {
+    display: flex;
+    align-items: center;
+
+    width: 340px;
+    height: 95px;
+
+    padding: 10px 20px;
+    gap: 14px;
+
+    border: 1px solid #ffffff;
+    border-radius: 14px;
+
+    background: transparent;
+
+    box-sizing: border-box;
+}
+
+
+/* Quadrado onde fica o ícone */
+.card-image {
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 1px solid #ffffff;
+    border-radius: 10px;
+
+    flex-shrink: 0;
+}
+
+
+/* Tamanho da imagem */
+.card-image img {
+    width: 58px;
+    height: 58px;
+
+    object-fit: contain;
+}
+
+
+/* Área do texto */
+.content-text-cards {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    color: #ffffff;
+}
+
+
+/* Título */
+.content-text-cards h3 {
+    margin: 0;
+
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+/* Descrição, caso você utilize */
+.content-text-cards p {
+    margin: 5px 0 0 0;
+
+    font-size: 12px;
+    color: #ffffff;
+}
+
+.cads-container {
+    display: flex;
+    align-items: center;
+
+    width: 340px;
+    height: 95px;
+
+    padding: 10px 20px;
+    gap: 14px;
+
+    border: 1px solid #ffffff;
+    border-radius: 14px;
+
+    background: transparent;
+    color: #ffffff;
+
+    box-sizing: border-box;
+
+    cursor: pointer;
+    text-align: left;
+
+    transition: 0.3s;
+}
+
+.cads-container:hover {
+    background-color: #242424;
+    transform: translateY(-2px);
+}
