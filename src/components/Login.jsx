@@ -3,18 +3,26 @@ import { useState, useRef } from 'react'
 import { useNavigate } from "react-router-dom"
 
 // Componente do Cloudflare Turnstile
-// Responsável pelo CAPTCHA
 import { Turnstile } from '@marsidev/react-turnstile'
 
 // Cliente do Supabase
 import { supabase } from '../services/supabaseClient'
 
+// Funções de validação
+import {
+    validateEmail,
+    sanitizeEmail
+} from '../utils/validators'
+
 // CSS da tela de login
 import "../styles/Login.css"
 
+
 function Login() {
 
+    // Permite navegar entre as rotas do projeto
     const navigate = useNavigate()
+
 
     // Armazena o e-mail digitado pelo usuário
     const [email, setEmail] = useState("")
@@ -28,11 +36,12 @@ function Login() {
     // Armazena mensagens de erro
     const [errorMsg, setErrorMsg] = useState("")
 
-    // Controla o estado do botão enquanto o login está sendo realizado
+    // Controla o botão enquanto o login está sendo realizado
     const [loading, setLoading] = useState(false)
 
-    // Referência utilizada para controlar e resetar o Turnstile
+    // Permite controlar e resetar o Turnstile
     const turnstileRef = useRef(null)
+
 
 
     // Função executada quando o formulário é enviado
@@ -41,141 +50,193 @@ function Login() {
         // Impede a página de recarregar
         e.preventDefault()
 
-        // Limpa erros anteriores
+        // Limpa mensagens de erro anteriores
         setErrorMsg("")
 
-        // Verifica se o usuário realizou o CAPTCHA
-        if (!captchaToken) {
-            setErrorMsg("Confirme que você não é um robô.")
+
+        // Remove espaços e deixa o e-mail em letras minúsculas
+        const cleanEmail = sanitizeEmail(email)
+
+
+        // Verifica se o formato do e-mail é válido
+        if (!validateEmail(cleanEmail)) {
+
+            setErrorMsg("Digite um e-mail válido.")
+
             return
         }
+
+
+        // Verifica se o CAPTCHA foi concluído
+        if (!captchaToken) {
+
+            setErrorMsg("Confirme que você não é um robô.")
+
+            return
+        }
+
 
         // Ativa o estado de carregamento
         setLoading(true)
 
-        // Realiza o login no Supabase
+
+        // Envia e-mail, senha e CAPTCHA para o Supabase
         const { data, error } = await supabase.auth.signInWithPassword({
 
-            // Envia o e-mail informado
-            email: email,
+            email: cleanEmail,
 
-            // Envia a senha informada
             password: password,
 
             options: {
 
-                // Envia o token do Cloudflare Turnstile para o Supabase
+                // Token fornecido pelo Cloudflare Turnstile
                 captchaToken: captchaToken
+
             }
 
         })
 
+
         // Finaliza o carregamento
         setLoading(false)
+
 
         // Reseta o CAPTCHA depois da tentativa de login
         turnstileRef.current?.reset()
 
-        // Limpa o token antigo
+        // Remove o token antigo
         setCaptchaToken("")
 
-        // Caso o Supabase retorne algum erro
+
+        // Se o Supabase retornar erro
         if (error) {
 
-            // Mostra o erro real no console
-            console.error(error.message)
+            // Erro técnico fica somente no console
+            console.error("Erro no login:", error.message)
 
-            // Mostra uma mensagem para o usuário
+            // Mensagem exibida para o usuário
             setErrorMsg("E-mail ou senha inválidos.")
 
             return
         }
 
-        // Caso o login seja realizado com sucesso
+
+        // Login realizado com sucesso
         console.log("Usuário logado:", data.user)
+
+
+        // Redireciona o usuário para o Dashboard
+        navigate("/dashboard")
 
     }
 
 
+
     return (
 
-        // Ao enviar o formulário executa handleSubmit
         <form onSubmit={handleSubmit}>
 
             <div className="input-container">
 
-                {/* Título da área de login */}
+
+                {/* Título da tela */}
+
                 <div className="text-login">
 
                     <h1>Login</h1>
 
-                    <p>Acesse sua conta, para entrar no sistema.</p>
+                    <p>
+                        Acesse sua conta, para entrar no sistema.
+                    </p>
 
                 </div>
 
 
-                {/* Exibe a mensagem de erro somente se existir erroMsg */}
+
+                {/* Mensagem de erro */}
+
                 {errorMsg && (
+
                     <p className="auth-error">
+
                         {errorMsg}
+
                     </p>
+
                 )}
+
 
 
                 <div className="input-container">
 
+
                     {/* Campo de e-mail */}
+
                     <div className="input-email">
 
                         <label htmlFor="email">
+
                             E-mail:
+
                         </label>
 
                         <input
                             id="email"
                             type="email"
 
-                            // Valor vem do estado email
+                            // Valor armazenado no estado
                             value={email}
 
-                            // Atualiza o estado quando o usuário digita
+                            // Atualiza o estado conforme o usuário digita
                             onChange={(e) => setEmail(e.target.value)}
 
-                            // Torna o campo obrigatório
                             required
                         />
 
                     </div>
 
 
+
                     {/* Campo de senha */}
+
                     <div className="input-password">
 
                         <label htmlFor="password">
+
                             Senha:
+
                         </label>
 
                         <input
                             id="password"
                             type="password"
 
-                            // Valor vem do estado password
+                            // Valor armazenado no estado
                             value={password}
 
-                            // Atualiza a senha quando o usuário digita
+                            // Atualiza a senha conforme o usuário digita
                             onChange={(e) => setPassword(e.target.value)}
 
                             required
                         />
 
 
-                        {/* Botão para recuperação de senha */}
+
+                        {/* Recuperação de senha */}
+
                         <div className="forgot-password">
 
-                            <button type="button"
-                                onClick={() => navigate("/forgot-password")}
+                            <button
+                                type="button"
+
+                                // Vai para a página de recuperação
+                                onClick={() =>
+                                    navigate("/forgot-password")
+                                }
                             >
+
                                 Esqueci minha Senha
+
                             </button>
 
                         </div>
@@ -185,36 +246,54 @@ function Login() {
                 </div>
 
 
+
                 {/* CAPTCHA Cloudflare Turnstile */}
+
                 <div className="captcha-container">
+
                     <Turnstile
 
-                        // Permite controlar o componente através do useRef
+                        // Referência utilizada para resetar o CAPTCHA
                         ref={turnstileRef}
 
-                        // Site Key armazenada no arquivo .env
-                        siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+                        // Site Key armazenada no .env
+                        siteKey={
+                            import.meta.env.VITE_TURNSTILE_SITE_KEY
+                        }
 
-                        // Quando o CAPTCHA é validado,
-                        // o token é armazenado no estado
+                        // Salva o token quando o CAPTCHA é validado
                         onSuccess={setCaptchaToken}
 
-                        // Se o token expirar, ele é removido
-                        onExpire={() => setCaptchaToken("")}
+                        // Remove o token quando ele expira
+                        onExpire={() =>
+                            setCaptchaToken("")
+                        }
+
                     />
+
                 </div>
 
 
-                {/* Área para criação de conta */}
+
+                {/* Criação de conta */}
+
                 <div className="create-account">
 
                     <p>
+
                         Caso não possua conta:
 
-                        <button type="button"
-                            onClick={() => navigate("/register")}
+                        <button
+                            type="button"
+
+                            // Vai para a página de cadastro
+                            onClick={() =>
+                                navigate("/register")
+                            }
                         >
+
                             Crie uma conta
+
                         </button>
 
                     </p>
@@ -222,18 +301,23 @@ function Login() {
                 </div>
 
 
-                {/* Botão principal de login */}
+
+                {/* Botão principal */}
+
                 <button
                     type="submit"
 
-                    // Impede vários cliques enquanto estiver carregando
+                    // Impede vários cliques enquanto o Supabase responde
                     disabled={loading}
                 >
 
-                    {/* Altera o texto enquanto o login está acontecendo */}
-                    {loading ? "Entrando..." : "Entrar"}
+                    {loading
+                        ? "Entrando..."
+                        : "Entrar"
+                    }
 
                 </button>
+
 
             </div>
 

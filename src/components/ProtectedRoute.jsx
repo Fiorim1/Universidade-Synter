@@ -5,14 +5,14 @@ import { useAuth } from "../context/AuthContext"
 
 function ProtectedRoute({ children }) {
 
-    // Pega do AuthContext:
-    // user = usuário autenticado
+    // Pega informações do AuthContext:
+    // user = usuário atualmente autenticado
     // loading = informa se o Supabase ainda está verificando a sessão
     const { user, loading } = useAuth()
 
 
-    // Enquanto o Supabase verifica se existe
-    // uma sessão ativa, não libera a página ainda
+    // Enquanto o Supabase verifica a sessão,
+    // não libera nem redireciona a página
     if (loading) {
 
         return (
@@ -24,8 +24,8 @@ function ProtectedRoute({ children }) {
     }
 
 
-    // Caso não exista usuário autenticado,
-    // redireciona automaticamente para o Login
+    // Se não existir usuário autenticado,
+    // envia automaticamente para a tela de Login
     if (!user) {
 
         return (
@@ -39,7 +39,7 @@ function ProtectedRoute({ children }) {
 
 
     // Se existe usuário autenticado,
-    // libera o acesso à página protegida
+    // libera o acesso ao componente protegido
     return children
 
 }

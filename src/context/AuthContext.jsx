@@ -3,8 +3,9 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { supabase } from "../services/supabaseClient"
 
 
-// Cria o contexto de autenticação.
-// Ele permitirá compartilhar os dados do usuário entre várias páginas.
+// Cria o contexto responsável pela autenticação.
+// Ele permite compartilhar usuário, sessão e logout
+// entre diferentes componentes do projeto.
 const AuthContext = createContext(null)
 
 
@@ -16,19 +17,22 @@ function AuthProvider({ children }) {
     // Guarda a sessão atual do Supabase.
     const [session, setSession] = useState(null)
 
-    // Controla o carregamento inicial da autenticação.
+    // Informa se o Supabase ainda está verificando
+    // se existe uma sessão salva.
     const [loading, setLoading] = useState(true)
 
 
     useEffect(() => {
 
-        // Função responsável por verificar
-        // se já existe uma sessão salva no navegador.
+        // Verifica se o usuário já possui uma
+        // sessão salva no navegador.
         async function loadSession() {
 
-            const { data, error } = await supabase.auth.getSession()
+            const { data, error } =
+                await supabase.auth.getSession()
 
-            // Caso ocorra algum erro ao buscar a sessão.
+
+            // Caso aconteça algum erro ao verificar a sessão.
             if (error) {
 
                 console.error(
@@ -45,27 +49,28 @@ function AuthProvider({ children }) {
             // Salva a sessão encontrada.
             setSession(data.session)
 
-            // Salva o usuário da sessão.
-            // Caso não exista sessão, ficará null.
-            setUser(data.session?.user ?? null)
+            // Se existir sessão, salva o usuário.
+            // Caso contrário, mantém null.
+            setUser(
+                data.session?.user ?? null
+            )
 
-            // Finaliza o carregamento.
+            // Finaliza a verificação inicial.
             setLoading(false)
+
         }
 
 
-        // Executa a verificação da sessão
-        // quando o AuthProvider é iniciado.
+        // Executa assim que o sistema inicia.
         loadSession()
 
 
-        // Escuta mudanças na autenticação.
+        // Fica observando alterações na autenticação:
         //
-        // Por exemplo:
-        // login
-        // logout
-        // recuperação de senha
-        // atualização da sessão
+        // Login
+        // Logout
+        // Atualização da sessão
+        // Recuperação de senha
         const {
             data: { subscription }
         } = supabase.auth.onAuthStateChange(
@@ -75,16 +80,18 @@ function AuthProvider({ children }) {
                 setSession(newSession)
 
                 // Atualiza o usuário.
-                setUser(newSession?.user ?? null)
+                setUser(
+                    newSession?.user ?? null
+                )
 
-                // Garante que o carregamento terminou.
                 setLoading(false)
+
             }
         )
 
 
-        // Remove o listener quando o componente
-        // não estiver mais sendo utilizado.
+        // Remove o observador quando o AuthProvider
+        // deixar de existir.
         return () => {
 
             subscription.unsubscribe()
@@ -94,10 +101,13 @@ function AuthProvider({ children }) {
     }, [])
 
 
-    // Função para sair da conta.
+
+    // Função utilizada para sair da conta.
     async function logout() {
 
-        const { error } = await supabase.auth.signOut()
+        const { error } =
+            await supabase.auth.signOut()
+
 
         if (error) {
 
@@ -109,10 +119,14 @@ function AuthProvider({ children }) {
             return
         }
 
-        // Limpa os dados locais.
-        setUser(null)
-        setSession(null)
+        // Não precisamos limpar user e session
+        // manualmente aqui.
+        //
+        // O onAuthStateChange detectará o logout
+        // e atualizará automaticamente os estados.
+
     }
+
 
 
     return (
@@ -135,14 +149,15 @@ function AuthProvider({ children }) {
 }
 
 
+
+// Hook personalizado para acessar
+// facilmente o AuthContext.
 function useAuth() {
 
-    // Permite acessar facilmente os dados
-    // do AuthContext em qualquer componente.
     const context = useContext(AuthContext)
 
 
-    // Impede o uso do useAuth fora do AuthProvider.
+    // Evita utilizar useAuth fora do AuthProvider.
     if (!context) {
 
         throw new Error(
@@ -153,6 +168,7 @@ function useAuth() {
 
 
     return context
+
 }
 
 

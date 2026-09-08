@@ -4,7 +4,6 @@ export function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
     return emailRegex.test(email)
-
 }
 
 
@@ -24,7 +23,6 @@ export function validatePassword(password) {
     }
 
     return errors
-
 }
 
 
@@ -33,5 +31,4 @@ export function validatePassword(password) {
 export function sanitizeEmail(email) {
 
     return email.trim().toLowerCase()
-
 }
