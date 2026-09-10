@@ -1,45 +1,56 @@
-import { Navigate } from "react-router-dom"
+import {
+    Navigate,
+    useLocation
+} from "react-router-dom"
 
 import { useAuth } from "../context/AuthContext"
 
 
 function ProtectedRoute({ children }) {
 
-    // Pega informações do AuthContext:
-    // user = usuário atualmente autenticado
-    // loading = informa se o Supabase ainda está verificando a sessão
-    const { user, loading } = useAuth()
+    const { user, loading } =
+        useAuth()
+
+    const location =
+        useLocation()
 
 
     // Enquanto o Supabase verifica a sessão,
-    // não libera nem redireciona a página
+    // não mostramos a página protegida.
     if (loading) {
 
         return (
-            <p>
-                Carregando...
-            </p>
+            <p>Carregando...</p>
         )
 
     }
 
 
-    // Se não existir usuário autenticado,
-    // envia automaticamente para a tela de Login
+    // Sem usuário autenticado:
+    //
+    // bloqueia o acesso e manda para login.
     if (!user) {
 
         return (
+
             <Navigate
                 to="/login"
                 replace
+
+                // Guarda qual página o usuário
+                // estava tentando acessar.
+                state={{
+                    from: location.pathname
+                }}
             />
+
         )
 
     }
 
 
-    // Se existe usuário autenticado,
-    // libera o acesso ao componente protegido
+    // Usuário autenticado:
+    // libera o componente.
     return children
 
 }

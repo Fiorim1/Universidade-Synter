@@ -1,86 +1,88 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
+
 import { useNavigate } from "react-router-dom"
 
-import Header from "./Header"
-import Hero from "./Hero"
-import Footer from "./Footer"
+import Header from "../components/Header"
+import Hero from "../components/Hero"
+import Footer from "../components/Footer"
 
 import { supabase } from "../services/supabaseClient"
+
+import { useAuth } from "../context/AuthContext"
 
 import { validatePassword } from "../utils/validators"
 
 import "../styles/UpdatePassword.css"
 
+
 function UpdatePassword() {
 
-    // Permite navegar para outra rota
-    const navigate = useNavigate()
-
-    // Guarda a nova senha
-    const [password, setPassword] = useState("")
-
-    // Guarda a confirmação da nova senha
-    const [confirmPassword, setConfirmPassword] = useState("")
-
-    // Guarda mensagens de erro
-    const [errorMsg, setErrorMsg] = useState("")
-
-    // Guarda mensagem de sucesso
-    const [successMsg, setSuccessMsg] = useState("")
-
-    // Controla o botão enquanto a senha é atualizada
-    const [loading, setLoading] = useState(false)
-
-    // Controla se o usuário realmente chegou
-    // através de um link válido de recuperação
-    const [recoveryReady, setRecoveryReady] = useState(false)
+    const navigate =
+        useNavigate()
 
 
+    const {
+        session,
+        loading: authLoading,
+        isPasswordRecovery,
+        clearPasswordRecovery
+    } = useAuth()
 
-    useEffect(() => {
 
-        // Escuta mudanças na autenticação do Supabase
-        const {
-            data: { subscription }
-        } = supabase.auth.onAuthStateChange(
-            (event) => {
+    const [
+        password,
+        setPassword
+    ] = useState("")
 
-                // Esse evento acontece quando o usuário
-                // entra através do link de recuperação de senha
-                if (event === "PASSWORD_RECOVERY") {
+    const [
+        confirmPassword,
+        setConfirmPassword
+    ] = useState("")
 
-                    setRecoveryReady(true)
+    const [
+        errorMsg,
+        setErrorMsg
+    ] = useState("")
 
-                }
+    const [
+        successMsg,
+        setSuccessMsg
+    ] = useState("")
 
-            }
+    const [
+        loading,
+        setLoading
+    ] = useState(false)
+
+
+
+    // Só permitimos alteração se:
+    //
+    // 1. existe sessão válida
+    // 2. ela veio de PASSWORD_RECOVERY
+    const recoveryReady =
+        Boolean(
+            session &&
+            isPasswordRecovery
         )
-
-
-        // Remove o listener quando sair da página
-        return () => {
-
-            subscription.unsubscribe()
-
-        }
-
-    }, [])
 
 
 
     async function handleSubmit(e) {
 
-        // Impede o recarregamento da página
         e.preventDefault()
 
-        // Limpa mensagens anteriores
         setErrorMsg("")
         setSuccessMsg("")
 
 
-        // Impede a troca caso o usuário
-        // não tenha vindo do fluxo de recuperação
-        if (!recoveryReady) {
+        // Impede que alguém simplesmente digite
+        // /update-password no navegador
+        // e tente usar uma sessão normal.
+        if (
+            authLoading ||
+            !recoveryReady
+        ) {
 
             setErrorMsg(
                 "O link de recuperação é inválido ou expirou."
@@ -90,11 +92,13 @@ function UpdatePassword() {
         }
 
 
-        // Valida a senha utilizando validators.js
         const passwordErrors =
             validatePassword(password)
 
-        if (passwordErrors.length > 0) {
+
+        if (
+            passwordErrors.length > 0
+        ) {
 
             setErrorMsg(
                 passwordErrors.join(" • ")
@@ -104,8 +108,10 @@ function UpdatePassword() {
         }
 
 
-        // Confirma se as duas senhas são iguais
-        if (password !== confirmPassword) {
+        if (
+            password !==
+            confirmPassword
+        ) {
 
             setErrorMsg(
                 "As senhas não coincidem."
@@ -115,59 +121,117 @@ function UpdatePassword() {
         }
 
 
-        // Ativa o carregamento
         setLoading(true)
 
 
-        // Atualiza a senha do usuário autenticado
-        const { error } =
-            await supabase.auth.updateUser({
+        try {
 
-                password: password
+            // O Supabase recebe a nova senha
+            // e faz o armazenamento seguro dela.
+            //
+            // Nós nunca armazenamos a senha.
+            const { error } =
+                await supabase.auth.updateUser({
 
-            })
+                    password
+
+                })
 
 
-        // Caso ocorra algum erro
-        if (error) {
+            if (error) {
 
-            setLoading(false)
+                if (import.meta.env.DEV) {
 
-            console.error(
-                "Erro ao atualizar senha:",
-                error.message
+                    console.error(
+                        "Erro ao alterar senha:",
+                        error.message
+                    )
+
+                }
+
+
+                setErrorMsg(
+                    "Não foi possível atualizar a senha."
+                )
+
+                return
+            }
+
+
+            // Limpa a flag de recuperação.
+            clearPasswordRecovery()
+
+
+            // Encerra a sessão temporária
+            // utilizada para redefinir a senha.
+            const {
+                error: signOutError
+            } =
+                await supabase.auth.signOut({
+                    scope: "local"
+                })
+
+
+            if (signOutError) {
+
+                if (import.meta.env.DEV) {
+
+                    console.error(
+                        signOutError.message
+                    )
+
+                }
+
+
+                setErrorMsg(
+                    "A senha foi alterada, mas não foi possível encerrar a sessão atual."
+                )
+
+                return
+            }
+
+
+            // Limpa as senhas da memória
+            // do componente.
+            setPassword("")
+            setConfirmPassword("")
+
+
+            setSuccessMsg(
+                "Senha atualizada com sucesso!"
             )
+
+
+            // Redireciona para Login
+            // sem deixar update-password
+            // no histórico.
+            setTimeout(() => {
+
+                navigate(
+                    "/login",
+                    { replace: true }
+                )
+
+            }, 1500)
+
+        } catch (error) {
+
+            if (import.meta.env.DEV) {
+
+                console.error(error)
+
+            }
+
 
             setErrorMsg(
                 "Não foi possível atualizar a senha."
             )
 
-            return
+        } finally {
+
+            setLoading(false)
+
         }
-
-
-        // Encerra apenas a sessão atual
-        // criada pelo link de recuperação
-        await supabase.auth.signOut({
-            scope: "local"
-        })
-
-
-        setLoading(false)
-
-
-        // Informa que deu certo
-        setSuccessMsg(
-            "Senha atualizada com sucesso!"
-        )
-
-
-        // Aguarda 2 segundos e envia para o Login
-        setTimeout(() => {
-
-            navigate("/login")
-
-        }, 2000)
 
     }
 
@@ -188,6 +252,7 @@ function UpdatePassword() {
 
 
             <div className="update-container">
+
                 <form onSubmit={handleSubmit}>
 
                     <div className="update-password-container">
@@ -197,40 +262,41 @@ function UpdatePassword() {
                         </h2>
 
 
-                        {/* Mensagem de erro */}
+                        {!authLoading &&
+                         !recoveryReady && (
+
+                            <p className="auth-error">
+
+                                O link de recuperação é inválido ou expirou.
+
+                            </p>
+
+                        )}
+
 
                         {errorMsg && (
 
                             <p className="auth-error">
-
                                 {errorMsg}
-
                             </p>
 
                         )}
 
-
-                        {/* Mensagem de sucesso */}
 
                         {successMsg && (
 
                             <p className="auth-success">
-
                                 {successMsg}
-
                             </p>
 
                         )}
 
 
-                        {/* Nova senha */}
 
                         <div className="update-password-input">
 
                             <label htmlFor="password">
-
                                 Nova senha:
-
                             </label>
 
                             <input
@@ -239,7 +305,18 @@ function UpdatePassword() {
                                 value={password}
 
                                 onChange={(e) =>
-                                    setPassword(e.target.value)
+                                    setPassword(
+                                        e.target.value
+                                    )
+                                }
+
+                                autoComplete="new-password"
+
+                                minLength={8}
+
+                                disabled={
+                                    !recoveryReady ||
+                                    loading
                                 }
 
                                 required
@@ -248,14 +325,11 @@ function UpdatePassword() {
                         </div>
 
 
-                        {/* Confirmação da nova senha */}
 
                         <div className="update-password-input">
 
                             <label htmlFor="confirmPassword">
-
                                 Confirme sua nova senha:
-
                             </label>
 
                             <input
@@ -269,23 +343,35 @@ function UpdatePassword() {
                                     )
                                 }
 
+                                autoComplete="new-password"
+
+                                minLength={8}
+
+                                disabled={
+                                    !recoveryReady ||
+                                    loading
+                                }
+
                                 required
                             />
 
                         </div>
 
 
+
                         <button
                             type="submit"
 
-                            // O botão fica bloqueado enquanto
-                            // o Supabase processa a alteração
-                            disabled={loading}
+                            disabled={
+                                loading ||
+                                !recoveryReady
+                            }
                         >
 
-                            {loading
-                                ? "Atualizando..."
-                                : "Atualizar Senha"
+                            {
+                                loading
+                                    ? "Atualizando..."
+                                    : "Atualizar Senha"
                             }
 
                         </button>
@@ -296,6 +382,7 @@ function UpdatePassword() {
 
             </div>
 
+
             <Footer />
 
         </div>
@@ -303,5 +390,6 @@ function UpdatePassword() {
     )
 
 }
+
 
 export default UpdatePassword

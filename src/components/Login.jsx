@@ -17,6 +17,10 @@ import {
 // CSS da tela de login
 import "../styles/Login.css"
 
+import Header from '../components/Header'
+import Hero from "../components/Hero"
+import Footer from '../components/Footer'
+
 
 function Login() {
 
@@ -134,194 +138,205 @@ function Login() {
 
     return (
 
-        <form onSubmit={handleSubmit}>
-
-            <div className="input-container">
 
 
-                {/* Título da tela */}
+        <>
 
-                <div className="text-login">
-
-                    <h1>Login</h1>
-
-                    <p>
-                        Acesse sua conta, para entrar no sistema.
-                    </p>
-
-                </div>
-
-
-
-                {/* Mensagem de erro */}
-
-                {errorMsg && (
-
-                    <p className="auth-error">
-
-                        {errorMsg}
-
-                    </p>
-
-                )}
+        <Header />
+        <Hero />
+            <form onSubmit={handleSubmit}>
 
 
 
                 <div className="input-container">
 
 
-                    {/* Campo de e-mail */}
+                    {/* Título da tela */}
 
-                    <div className="input-email">
+                    <div className="text-login">
 
-                        <label htmlFor="email">
+                        <h1>Login</h1>
 
-                            E-mail:
-
-                        </label>
-
-                        <input
-                            id="email"
-                            type="email"
-
-                            // Valor armazenado no estado
-                            value={email}
-
-                            // Atualiza o estado conforme o usuário digita
-                            onChange={(e) => setEmail(e.target.value)}
-
-                            required
-                        />
+                        <p>
+                            Acesse sua conta, para entrar no sistema.
+                        </p>
 
                     </div>
 
 
 
-                    {/* Campo de senha */}
+                    {/* Mensagem de erro */}
 
-                    <div className="input-password">
+                    {errorMsg && (
 
-                        <label htmlFor="password">
+                        <p className="auth-error">
 
-                            Senha:
+                            {errorMsg}
 
-                        </label>
+                        </p>
 
-                        <input
-                            id="password"
-                            type="password"
-
-                            // Valor armazenado no estado
-                            value={password}
-
-                            // Atualiza a senha conforme o usuário digita
-                            onChange={(e) => setPassword(e.target.value)}
-
-                            required
-                        />
+                    )}
 
 
 
-                        {/* Recuperação de senha */}
+                    <div className="input-container">
 
-                        <div className="forgot-password">
 
-                            <button
-                                type="button"
+                        {/* Campo de e-mail */}
 
-                                // Vai para a página de recuperação
-                                onClick={() =>
-                                    navigate("/forgot-password")
-                                }
-                            >
+                        <div className="input-email">
 
-                                Esqueci minha Senha
+                            <label htmlFor="email">
 
-                            </button>
+                                E-mail:
+
+                            </label>
+
+                            <input
+                                id="email"
+                                type="email"
+
+                                // Valor armazenado no estado
+                                value={email}
+
+                                // Atualiza o estado conforme o usuário digita
+                                onChange={(e) => setEmail(e.target.value)}
+
+                                required
+                            />
+
+                        </div>
+
+
+
+                        {/* Campo de senha */}
+
+                        <div className="input-password">
+
+                            <label htmlFor="password">
+
+                                Senha:
+
+                            </label>
+
+                            <input
+                                id="password"
+                                type="password"
+
+                                // Valor armazenado no estado
+                                value={password}
+
+                                // Atualiza a senha conforme o usuário digita
+                                onChange={(e) => setPassword(e.target.value)}
+
+                                required
+                            />
+
+
+
+                            {/* Recuperação de senha */}
+
+                            <div className="forgot-password">
+
+                                <button
+                                    type="button"
+
+                                    // Vai para a página de recuperação
+                                    onClick={() =>
+                                        navigate("/forgot-password")
+                                    }
+                                >
+
+                                    Esqueci minha Senha
+
+                                </button>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                </div>
 
 
+                    {/* CAPTCHA Cloudflare Turnstile */}
 
-                {/* CAPTCHA Cloudflare Turnstile */}
+                    <div className="captcha-container">
 
-                <div className="captcha-container">
+                        <Turnstile
 
-                    <Turnstile
+                            // Referência utilizada para resetar o CAPTCHA
+                            ref={turnstileRef}
 
-                        // Referência utilizada para resetar o CAPTCHA
-                        ref={turnstileRef}
-
-                        // Site Key armazenada no .env
-                        siteKey={
-                            import.meta.env.VITE_TURNSTILE_SITE_KEY
-                        }
-
-                        // Salva o token quando o CAPTCHA é validado
-                        onSuccess={setCaptchaToken}
-
-                        // Remove o token quando ele expira
-                        onExpire={() =>
-                            setCaptchaToken("")
-                        }
-
-                    />
-
-                </div>
-
-
-
-                {/* Criação de conta */}
-
-                <div className="create-account">
-
-                    <p>
-
-                        Caso não possua conta:
-
-                        <button
-                            type="button"
-
-                            // Vai para a página de cadastro
-                            onClick={() =>
-                                navigate("/register")
+                            // Site Key armazenada no .env
+                            siteKey={
+                                import.meta.env.VITE_TURNSTILE_SITE_KEY
                             }
-                        >
 
-                            Crie uma conta
+                            // Salva o token quando o CAPTCHA é validado
+                            onSuccess={setCaptchaToken}
 
-                        </button>
+                            // Remove o token quando ele expira
+                            onExpire={() =>
+                                setCaptchaToken("")
+                            }
 
-                    </p>
+                        />
+
+                    </div>
+
+
+
+                    {/* Criação de conta */}
+
+                    <div className="create-account">
+
+                        <p>
+
+                            Caso não possua conta:
+
+                            <button
+                                type="button"
+
+                                // Vai para a página de cadastro
+                                onClick={() =>
+                                    navigate("/register")
+                                }
+                            >
+
+                                Crie uma conta
+
+                            </button>
+
+                        </p>
+
+                    </div>
+
+
+
+                    {/* Botão principal */}
+
+                    <button
+                        type="submit"
+
+                        // Impede vários cliques enquanto o Supabase responde
+                        disabled={loading}
+                    >
+
+                        {loading
+                            ? "Entrando..."
+                            : "Entrar"
+                        }
+
+                    </button>
+
 
                 </div>
 
+            </form>
 
-
-                {/* Botão principal */}
-
-                <button
-                    type="submit"
-
-                    // Impede vários cliques enquanto o Supabase responde
-                    disabled={loading}
-                >
-
-                    {loading
-                        ? "Entrando..."
-                        : "Entrar"
-                    }
-
-                </button>
-
-
-            </div>
-
-        </form>
+            <Footer />
+        </>
 
     )
 

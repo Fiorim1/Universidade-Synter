@@ -21,6 +21,8 @@ import QuestionIcon from "../assets/perguntas-icon.png"
 import AstIcon from "../assets/ast-icon.png"
 import NvdIcon from "../assets/nvd-icon.png"
 
+import "../styles/Dashboard.css"
+
 function Dashboard() {
 
     // Controla se o modal está aberto

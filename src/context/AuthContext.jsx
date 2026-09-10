@@ -1,88 +1,166 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import {
+    createContext,
+    useContext,
+    useEffect,
+    useState
+} from "react"
 
 import { supabase } from "../services/supabaseClient"
 
 
-// Cria o contexto responsável pela autenticação.
-// Ele permite compartilhar usuário, sessão e logout
-// entre diferentes componentes do projeto.
 const AuthContext = createContext(null)
 
 
 function AuthProvider({ children }) {
 
-    // Guarda o usuário atualmente autenticado.
+    // Usuário atualmente autenticado.
     const [user, setUser] = useState(null)
 
-    // Guarda a sessão atual do Supabase.
+    // Sessão atual do Supabase.
     const [session, setSession] = useState(null)
 
-    // Informa se o Supabase ainda está verificando
-    // se existe uma sessão salva.
+    // Enquanto true, ainda estamos verificando
+    // se existe uma sessão válida.
     const [loading, setLoading] = useState(true)
+
+    // Informa se a sessão atual foi criada
+    // através de um link de recuperação de senha.
+    //
+    // Isso impede que uma sessão comum seja usada
+    // diretamente na tela /update-password.
+    const [
+        isPasswordRecovery,
+        setIsPasswordRecovery
+    ] = useState(false)
+
 
 
     useEffect(() => {
 
-        // Verifica se o usuário já possui uma
-        // sessão salva no navegador.
+        let mounted = true
+
+
         async function loadSession() {
 
-            const { data, error } =
-                await supabase.auth.getSession()
+            // Primeiro verifica se existe alguma
+            // sessão armazenada no navegador.
+            const {
+                data: { session: currentSession },
+                error: sessionError
+            } = await supabase.auth.getSession()
 
 
-            // Caso aconteça algum erro ao verificar a sessão.
-            if (error) {
+            if (!mounted) {
+                return
+            }
 
-                console.error(
-                    "Erro ao verificar sessão:",
-                    error.message
-                )
 
+            // Se ocorrer erro ao carregar a sessão,
+            // não liberamos usuário nenhum.
+            if (sessionError) {
+
+                setUser(null)
+                setSession(null)
                 setLoading(false)
 
                 return
             }
 
 
-            // Salva a sessão encontrada.
-            setSession(data.session)
+            // Não existe sessão.
+            if (!currentSession) {
 
-            // Se existir sessão, salva o usuário.
-            // Caso contrário, mantém null.
-            setUser(
-                data.session?.user ?? null
-            )
+                setUser(null)
+                setSession(null)
+                setLoading(false)
 
-            // Finaliza a verificação inicial.
+                return
+            }
+
+
+            // getUser consulta o Auth server e obtém
+            // os dados confiáveis do usuário.
+            //
+            // Isso é mais adequado do que confiar
+            // somente nos dados presentes no storage.
+            const {
+                data: { user: verifiedUser },
+                error: userError
+            } = await supabase.auth.getUser()
+
+
+            if (!mounted) {
+                return
+            }
+
+
+            if (userError) {
+
+                setUser(null)
+                setSession(null)
+
+            } else {
+
+                setSession(currentSession)
+                setUser(verifiedUser)
+
+            }
+
+
             setLoading(false)
 
         }
 
 
-        // Executa assim que o sistema inicia.
         loadSession()
 
 
-        // Fica observando alterações na autenticação:
+
+        // Escuta alterações da autenticação:
         //
-        // Login
-        // Logout
-        // Atualização da sessão
-        // Recuperação de senha
+        // SIGNED_IN
+        // SIGNED_OUT
+        // PASSWORD_RECOVERY
+        // TOKEN_REFRESHED
+        // USER_UPDATED
         const {
             data: { subscription }
         } = supabase.auth.onAuthStateChange(
-            (_event, newSession) => {
+            (event, newSession) => {
 
-                // Atualiza a sessão.
+                if (!mounted) {
+                    return
+                }
+
+
                 setSession(newSession)
 
-                // Atualiza o usuário.
                 setUser(
                     newSession?.user ?? null
                 )
+
+
+                // Marca que a sessão veio de um
+                // link válido de recuperação.
+                if (
+                    event === "PASSWORD_RECOVERY"
+                ) {
+
+                    setIsPasswordRecovery(true)
+
+                }
+
+
+                // Ao sair da conta, também limpamos
+                // qualquer fluxo de recuperação.
+                if (
+                    event === "SIGNED_OUT"
+                ) {
+
+                    setIsPasswordRecovery(false)
+
+                }
+
 
                 setLoading(false)
 
@@ -90,9 +168,11 @@ function AuthProvider({ children }) {
         )
 
 
-        // Remove o observador quando o AuthProvider
-        // deixar de existir.
+        // Remove o listener quando o Provider
+        // não estiver mais sendo utilizado.
         return () => {
+
+            mounted = false
 
             subscription.unsubscribe()
 
@@ -102,28 +182,39 @@ function AuthProvider({ children }) {
 
 
 
-    // Função utilizada para sair da conta.
+    // Encerra somente a sessão deste navegador.
     async function logout() {
 
         const { error } =
-            await supabase.auth.signOut()
+            await supabase.auth.signOut({
+                scope: "local"
+            })
 
 
-        if (error) {
+        if (
+            error &&
+            import.meta.env.DEV
+        ) {
 
             console.error(
-                "Erro ao sair da conta:",
+                "Erro ao sair:",
                 error.message
             )
 
-            return
         }
 
-        // Não precisamos limpar user e session
-        // manualmente aqui.
-        //
-        // O onAuthStateChange detectará o logout
-        // e atualizará automaticamente os estados.
+
+        return { error }
+
+    }
+
+
+
+    // Usada depois que a redefinição de senha
+    // for concluída.
+    function clearPasswordRecovery() {
+
+        setIsPasswordRecovery(false)
 
     }
 
@@ -136,7 +227,9 @@ function AuthProvider({ children }) {
                 user,
                 session,
                 loading,
-                logout
+                logout,
+                isPasswordRecovery,
+                clearPasswordRecovery
             }}
         >
 
@@ -150,14 +243,12 @@ function AuthProvider({ children }) {
 
 
 
-// Hook personalizado para acessar
-// facilmente o AuthContext.
 function useAuth() {
 
-    const context = useContext(AuthContext)
+    const context =
+        useContext(AuthContext)
 
 
-    // Evita utilizar useAuth fora do AuthProvider.
     if (!context) {
 
         throw new Error(
@@ -168,7 +259,6 @@ function useAuth() {
 
 
     return context
-
 }
 
 
