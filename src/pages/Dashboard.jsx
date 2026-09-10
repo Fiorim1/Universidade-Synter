@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 import Header from "../components/Header"
 import Hero from "../components/Hero"
@@ -24,6 +25,8 @@ import NvdIcon from "../assets/nvd-icon.png"
 import "../styles/Dashboard.css"
 
 function Dashboard() {
+
+        const navigate = useNavigate()
 
     // Controla se o modal está aberto
     const [profileOpen, setProfileOpen] = useState(false)
@@ -52,7 +55,8 @@ function Dashboard() {
                     <CardsDashboard
                         image={ManualIcon}
                         title="Manual de Produtos"
-                        desc="Acesse os manuais dos nossos produtos" />
+                        desc="Acesse os manuais dos nossos produtos"
+                        onClick={() => navigate("/manuals")} />
                     <CardsDashboard
                         image={YtIcon}
                         title="Vídeos de Instalação"

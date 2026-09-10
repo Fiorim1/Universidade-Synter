@@ -4,6 +4,7 @@ import Login from "./components/Login.jsx"
 import Register from "./components/Register.jsx"
 import ForgotPassword from "./components/ForgotPassword.jsx"
 import UpdatePassword from "./components/UpdatePassword.jsx"
+import Manuals from "./routes/Manuals.jsx"
 
 import Dashboard from "./pages/Dashboard.jsx"
 
@@ -13,11 +14,11 @@ import PublicRoute from "./components/PublicRoute.jsx"
 
 function App() {
 
-    return (
+  return (
 
-        <Routes>
+    <Routes>
 
-            {/* 
+      {/* 
                 PÁGINA INICIAL DO SISTEMA
 
                 Ao acessar:
@@ -28,92 +29,101 @@ function App() {
                 Se já estiver autenticado,
                 PublicRoute envia para /dashboard.
             */}
-            <Route
-                path="/"
-                element={
-                    <PublicRoute>
-                        <Login />
-                    </PublicRoute>
-                }
-            />
+      <Route
+        path="/"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
 
 
-            {/* 
+      {/* 
                 Também permite acessar o login
                 através de /login.
             */}
-            <Route
-                path="/login"
-                element={
-                    <PublicRoute>
-                        <Login />
-                    </PublicRoute>
-                }
-            />
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
 
 
-            {/* Cadastro de usuário */}
-            <Route
-                path="/register"
-                element={
-                    <PublicRoute>
-                        <Register />
-                    </PublicRoute>
-                }
-            />
+      {/* Cadastro de usuário */}
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
 
 
-            {/* Recuperação de senha */}
-            <Route
-                path="/forgot-password"
-                element={
-                    <PublicRoute>
-                        <ForgotPassword />
-                    </PublicRoute>
-                }
-            />
+      {/* Recuperação de senha */}
+      <Route
+        path="/forgot-password"
+        element={
+          <PublicRoute>
+            <ForgotPassword />
+          </PublicRoute>
+        }
+      />
 
 
-            {/* 
+      {/* 
                 Nova senha.
 
                 NÃO usamos PublicRoute aqui porque
                 o link de recuperação do Supabase
                 cria uma sessão temporária.
             */}
-            <Route
-                path="/update-password"
-                element={<UpdatePassword />}
-            />
+      <Route
+        path="/update-password"
+        element={<UpdatePassword />}
+      />
 
 
-            {/* 
+      {/* 
                 DASHBOARD PROTEGIDO
 
                 Só entra se existir uma
                 sessão válida no Supabase.
             */}
-            <Route
-                path="/dashboard"
-                element={
-                    <ProtectedRoute>
-                        <Dashboard />
-                    </ProtectedRoute>
-                }
-            />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/manuals"
+        element={
+          <ProtectedRoute>
+            <Manuals />
+          </ProtectedRoute>
+        }
+      />
 
 
-            {/* Página inexistente */}
-            <Route
-                path="*"
-                element={
-                    <h1>Página não encontrada</h1>
-                }
-            />
+      {/* Página inexistente */}
+      <Route
+        path="*"
+        element={
+          <h1>Página não encontrada</h1>
+        }
+      />
 
-        </Routes>
+    </Routes>
 
-    )
+  )
 
 }
 

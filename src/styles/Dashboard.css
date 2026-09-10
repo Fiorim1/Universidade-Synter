@@ -20,3 +20,49 @@
     flex-direction: column;
     margin: 30px;
 }
+
+/* Manuals */
+
+.manuals-container {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    padding: 0 45px 40px 45px;
+    color: #ffffff;
+    box-sizing: border-box;
+    gap: 30px;
+}
+
+.title h4 {
+    margin: 0;
+}
+
+.line {
+    width: 15%;
+    height: 1.5px;
+    background-color: #717171;
+}
+
+.cards-manuals {
+    display: flex;
+    gap: 15px;
+    margin: 10px;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.cards-manuals-1,
+.cards-manuals-2,
+.cards-manuals-3,
+.cards-manuals-4, 
+.cards-manuals-5,
+.cards-manuals-6,
+.cards-manuals-7 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 10px;
+}
+
