@@ -1,27 +1,269 @@
-.dashboard-profile {
-    display: flex;
-    justify-content: flex-end;
-    margin: 30px;
+/* ======================================== */
+/* DASHBOARD                                */
+/* ======================================== */
+
+.dashboard-page {
+    width: 100%;
+    min-height: 100vh;
+
+    background: #080808;
+
+    color: #ffffff;
+
+    overflow-x: hidden;
 }
 
-.cards-parts-1, 
-.cards-parts-2,
-.cards-parts-3 {
+
+/* ======================================== */
+/* HERO                                     */
+/* ======================================== */
+
+.dashboard-hero-area {
+    position: relative;
+
+    min-height: 430px;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(5, 5, 5, 0.98) 0%,
+            rgba(7, 7, 7, 0.95) 42%,
+            rgba(9, 9, 9, 0.72) 68%,
+            rgba(0, 0, 0, 0.38) 100%
+        ),
+        url("../assets/dashboard-bg.png");
+
+    background-size: cover;
+
+    background-position: center right;
+
+    background-repeat: no-repeat;
+
+    background-blend-mode: multiply;
+}
+
+
+/* Deixa o fundo com tom mais neutro */
+
+.dashboard-hero-area::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.05),
+            rgba(0, 0, 0, 0.22)
+        );
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* ======================================== */
+/* PERFIL                                   */
+/* ======================================== */
+
+.dashboard-profile {
+    position: absolute;
+
+    top: 28px;
+    right: 60px;
+
+    z-index: 5;
+}
+
+
+/* ======================================== */
+/* CONTEÚDO HERO                            */
+/* ======================================== */
+
+.dashboard-hero-content {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding: 75px 60px 70px;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* ÁREA PRINCIPAL                           */
+/* ======================================== */
+
+.dashboard-content {
+    position: relative;
+
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding: 38px 60px 70px;
+
+    box-sizing: border-box;
+
+    background: transparent;
+}
+
+
+/* ======================================== */
+/* ACESSO RÁPIDO                            */
+/* ======================================== */
+
+.dashboard-section-title {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin: 10px;
+
+    gap: 12px;
+
+    margin-bottom: 26px;
 }
+
+
+.dashboard-section-title h4 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 3px;
+}
+
+
+/* Antes era azul */
+
+.dashboard-section-bar {
+    width: 3px;
+    height: 20px;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 8px rgba(255, 255, 255, 0.18);
+}
+
+
+/* ======================================== */
+/* GRID DOS CARDS                           */
+/* ======================================== */
 
 .cards {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin: 30px;
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 16px;
+
+    width: 100%;
 }
 
-/* Manuals */
+
+/* ======================================== */
+/* FUNDO DA ÁREA DOS CARDS                  */
+/* ======================================== */
+
+.dashboard-page::before {
+    content: "";
+
+    position: fixed;
+
+    width: 650px;
+    height: 650px;
+
+    right: -320px;
+    bottom: -320px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    filter: blur(140px);
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* ======================================== */
+/* RESPONSIVO                               */
+/* ======================================== */
+
+@media (max-width: 1150px) {
+
+    .cards {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 750px) {
+
+    .dashboard-hero-area {
+        min-height: auto;
+
+        background-position: 70% center;
+    }
+
+
+    .dashboard-profile {
+        position: relative;
+
+        top: auto;
+        right: auto;
+
+        display: flex;
+        justify-content: flex-end;
+
+        padding: 20px;
+
+        z-index: 5;
+    }
+
+
+    .dashboard-hero-content {
+        padding:
+            40px 25px
+            55px;
+    }
+
+
+    .dashboard-content {
+        padding:
+            30px 25px
+            50px;
+    }
+
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+}
 
 .manuals-container {
     display: flex;
@@ -36,7 +278,7 @@
 }
 
 .title h4 {
-    margin: 0;
+    margin: 10px;
 }
 
 .line {
@@ -65,4 +307,3 @@
     gap: 15px;
     margin: 10px;
 }
-

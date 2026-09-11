@@ -1,86 +1,594 @@
+/* ======================================== */
+/* REGISTER                                 */
+/* ======================================== */
+
+.register-page {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #050505;
+
+    color: #ffffff;
+}
+
+
+/* ======================================== */
+/* ÁREA PRINCIPAL                           */
+/* ======================================== */
+
+.register-main {
+    width: 100%;
+
+    flex: 1;
+
+    display: flex;
+}
+
+
+.register-layout {
+    width: 100%;
+    min-height: 780px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(580px, 0.95fr)
+        minmax(580px, 1.05fr);
+
+    background: #050505;
+}
+
+
+/* ======================================== */
+/* LADO ESQUERDO                            */
+/* ======================================== */
+
+.register-left {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 60px 70px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #080808 0%,
+            #050505 100%
+        );
+
+    z-index: 2;
+}
+
+
+.register-content {
+    width: 100%;
+    max-width: 520px;
+}
+
+
+/* ======================================== */
+/* HERO SOMENTE NESTA PÁGINA                */
+/* Não altera Hero.css                      */
+/* ======================================== */
+
+.register-content .hero-default {
+    width: 100%;
+
+    margin: 0 0 32px;
+}
+
+
+.register-content .hero-default h4,
+.register-content .hero-default h2,
+.register-content .hero-default p {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+
+.register-content .hero-default h4 {
+    margin-top: 0;
+
+    color: #888888;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+
+.register-content .hero-default h2 {
+    margin-top: 14px;
+    margin-bottom: 14px;
+
+    color: #ffffff;
+
+    font-size: 42px;
+    font-weight: 600;
+
+    line-height: 1.1;
+
+    letter-spacing: -1.5px;
+}
+
+
+.register-content .hero-default p {
+    max-width: 470px;
+
+    margin-top: 0;
+    margin-bottom: 0;
+
+    color: #8f8f8f;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* ======================================== */
+/* FORM                                     */
+/* ======================================== */
+
 .register-form {
+    width: 100%;
+
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+
+    gap: 17px;
+
+    margin: 0;
+
+    color: #ffffff;
+}
+
+
+/* ======================================== */
+/* CAMPOS                                   */
+/* ======================================== */
+
+.register-field {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+.register-field label {
+    color: #d2d2d2;
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+.register-field input {
+    width: 100%;
+    height: 52px;
+
+    padding: 0 16px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.14);
+
+    border-radius: 9px;
+
+    outline: none;
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    transition:
+        border-color 0.25s ease,
+        background-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.register-field input::placeholder {
+    color: #555555;
+}
+
+
+.register-field input:hover {
+    border-color:
+        rgba(255, 255, 255, 0.25);
+}
+
+
+.register-field input:focus {
+    border-color:
+        rgba(255, 255, 255, 0.55);
+
+    background:
+        rgba(255, 255, 255, 0.04);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255, 255, 255, 0.035);
+}
+
+
+/* ======================================== */
+/* DUAS SENHAS NA MESMA LINHA               */
+/* ======================================== */
+
+.register-password-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+
+/* ======================================== */
+/* CAPTCHA                                  */
+/* ======================================== */
+
+.register-captcha {
+    width: 100%;
+
+    display: flex;
+    justify-content: flex-start;
+
+    margin-top: 2px;
+}
+
+
+/* ======================================== */
+/* ERRO                                     */
+/* ======================================== */
+
+.register-error {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    background:
+        rgba(190, 50, 50, 0.08);
+
+    border:
+        1px solid rgba(255, 90, 90, 0.22);
+
+    border-radius: 8px;
+
+    color: #d8a1a1;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* ======================================== */
+/* SUCESSO                                  */
+/* ======================================== */
+
+.register-success {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.12);
+
+    border-radius: 8px;
+
+    color: #c3c3c3;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* ======================================== */
+/* BOTÃO                                    */
+/* ======================================== */
+
+.register-submit {
+    width: 100%;
+    height: 52px;
+
+    display: flex;
     align-items: center;
-    flex-direction: column;
-    margin: 30px;
-    color: #ffffff;
-}
+    justify-content: space-between;
 
+    padding: 0 18px;
 
-.register-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 500px;
-    padding: 30px;
+    background: #ffffff;
+
     border: 1px solid #ffffff;
-    border-radius: 5px;
-}
 
+    border-radius: 9px;
 
-.text-register {
-    text-align: center;
-    color: #ffffff;
-}
+    color: #111111;
 
-
-.text-register h1 {
-    margin-bottom: 10px;
-}
-
-
-.text-register p {
-    margin-bottom: 25px;
-}
-
-
-.inputs {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    gap: 20px;
-}
-
-
-.input-register-email,
-.input-register-password {
-    display: flex;
-    flex-direction: column;
-
-    gap: 5px;
-    color: #ffffff;
-}
-
-
-.input-register-email > input,
-.input-register-password > input {
-    width: 300px;
-    padding: 10px;
-    background: none;
-    border: 1px solid #ffffff;
-    border-radius: 5px;
-    color: #ffffff;
-}
-
-
-.register-container > button {
-    width: 200px;
-    margin-top: 30px;
-    padding: 12px 28px;
-    background: transparent;
-    border: 2px solid #ffffff;
-    border-radius: 5px;
-    color: #ffffff;
     font-size: 12px;
     font-weight: 600;
+
     cursor: pointer;
+
+    transition:
+        background-color 0.25s ease,
+        transform 0.25s ease;
 }
 
 
-.register-container > button:hover {
-    background-color: #ffffff;
-    color: #111111;
-    transition: 0.5s;
+.register-submit:hover:not(:disabled) {
+    background: #e8e8e8;
+
+    transform: translateY(-1px);
+}
+
+
+.register-submit:disabled {
+    opacity: 0.55;
+
+    cursor: not-allowed;
+}
+
+
+.register-submit-arrow {
+    font-size: 18px;
+
+    transition: transform 0.25s ease;
+}
+
+
+.register-submit:hover
+.register-submit-arrow {
+    transform: translateX(4px);
+}
+
+
+/* ======================================== */
+/* LADO DIREITO                             */
+/* ======================================== */
+
+.register-visual {
+    position: relative;
+
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+
+    background:
+        radial-gradient(
+            circle at 65% 45%,
+            #242424 0%,
+            #111111 38%,
+            #050505 75%
+        );
+
+    border-left:
+        1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.register-visual::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #050505 0%,
+            rgba(5, 5, 5, 0.65) 14%,
+            rgba(5, 5, 5, 0.05) 55%
+        );
+
+    pointer-events: none;
+
+    z-index: 1;
+}
+
+
+/* ======================================== */
+/* CONTEÚDO DIREITO                         */
+/* ======================================== */
+
+.register-visual-content {
+    position: relative;
+
+    width: 100%;
+    min-height: 780px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 75px 50px 0;
+
+    box-sizing: border-box;
+
+    z-index: 2;
+}
+
+
+/* ======================================== */
+/* TEXTO DIREITO                            */
+/* ======================================== */
+
+.register-visual-text {
+    width: 100%;
+    max-width: 430px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    z-index: 3;
+}
+
+
+.register-visual-text > span {
+    color: #777777;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    letter-spacing: 3px;
+}
+
+
+.register-visual-text h2 {
+    margin: 14px 0 12px;
+
+    color: #ffffff;
+
+    font-size: 32px;
+    font-weight: 600;
+
+    line-height: 1.15;
+
+    letter-spacing: -1px;
+}
+
+
+.register-visual-text p {
+    max-width: 380px;
+
+    margin: 0;
+
+    color: #818181;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* ======================================== */
+/* FECHADURA                                */
+/* ======================================== */
+
+.register-lock-image {
+    position: relative;
+
+    display: block;
+
+    width: auto;
+    max-width: 420px;
+
+    height: 475px;
+
+    margin-top: 20px;
+
+    object-fit: contain;
+    object-position: center;
+
+    z-index: 2;
+
+    filter:
+        drop-shadow(
+            0 35px 45px
+            rgba(0, 0, 0, 0.60)
+        );
+}
+
+
+/* ======================================== */
+/* RESPONSIVO                               */
+/* ======================================== */
+
+@media (max-width: 1100px) {
+
+    .register-layout {
+        grid-template-columns:
+            minmax(480px, 1fr)
+            minmax(450px, 1fr);
+    }
+
+
+    .register-left {
+        padding: 55px 45px;
+    }
+
+
+    .register-visual-content {
+        padding:
+            60px 35px 0;
+    }
+
+
+    .register-lock-image {
+        max-width: 350px;
+
+        height: 420px;
+    }
+
+}
+
+
+@media (max-width: 900px) {
+
+    .register-layout {
+        display: block;
+
+        min-height: auto;
+    }
+
+
+    .register-left {
+        padding: 55px 25px;
+    }
+
+
+    .register-visual {
+        display: none;
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .register-content {
+        max-width: 100%;
+    }
+
+
+    .register-password-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .register-captcha {
+        overflow: hidden;
+    }
+
+
+    .register-content .hero-default h2 {
+        font-size: 34px;
+    }
+
 }

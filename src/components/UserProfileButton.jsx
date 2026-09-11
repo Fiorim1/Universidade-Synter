@@ -2,8 +2,6 @@ import { useAuth } from "../context/AuthContext"
 
 import "../styles/UserProfileButton.css"
 
-import UserIcon from "../assets/user-icon.png"
-
 
 function UserProfileButton({ onClick }) {
 
@@ -15,6 +13,15 @@ function UserProfileButton({ onClick }) {
         "Usuário"
 
 
+    // Pega as iniciais do nome
+    const initials = userName
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((name) => name[0]?.toUpperCase())
+        .join("")
+
+
     return (
 
         <button
@@ -23,12 +30,21 @@ function UserProfileButton({ onClick }) {
             onClick={onClick}
         >
 
-            <span className="user-profile-icon">
-                <img src={UserIcon} alt="Ícone de Perfil" />
+            {/* Avatar */}
+            <span className="user-profile-avatar">
+                {initials}
             </span>
 
-            <span>
+
+            {/* Nome */}
+            <span className="user-profile-name">
                 {userName}
+            </span>
+
+
+            {/* Seta */}
+            <span className="user-profile-arrow">
+               ⌄
             </span>
 
         </button>
@@ -36,5 +52,6 @@ function UserProfileButton({ onClick }) {
     )
 
 }
+
 
 export default UserProfileButton

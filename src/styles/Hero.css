@@ -1,18 +1,297 @@
+/* ======================================== */
+/* HERO BASE                                */
+/* ======================================== */
+
 .hero-all {
+    color: #ffffff;
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* HERO PADRÃO                              */
+/* ======================================== */
+
+.hero-default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+
     margin: 30px;
-    color: #ffffff;
 }
 
-.hero-all h4,
-.hero-all h2,
-.hero-all p {
+
+.hero-default h4,
+.hero-default h2,
+.hero-default p {
     margin: 10px;
 }
 
-.hero-all h2 {
+
+.hero-default h4 {
+    color: #a0a0a0;
+
+    font-size: 15px;
+    font-weight: 500;
+}
+
+
+.hero-default h2 {
+    color: #ffffff;
+
     font-size: 2.5rem;
     font-weight: 600;
+}
+
+
+.hero-default p {
+    color: #a6a6a6;
+}
+
+
+/* ======================================== */
+/* HERO DO DASHBOARD                        */
+/* ======================================== */
+
+.hero-dashboard {
+    width: 100%;
+    max-width: 720px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    margin: 0;
+}
+
+
+/* ======================================== */
+/* TEXTO PEQUENO SUPERIOR                   */
+/* ======================================== */
+
+.hero-eyebrow {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 18px;
+
+    color: #b5b5b5;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+    gap: 20px;
+}
+
+
+
+
+/* ======================================== */
+/* TÍTULO                                   */
+/* ======================================== */
+
+.hero-dashboard h1 {
+    margin: 0;
+
+    max-width: 700px;
+
+    color: #ffffff;
+
+    font-size: clamp(3rem, 5vw, 4.5rem);
+
+    font-weight: 650;
+
+    line-height: 1.05;
+
+    letter-spacing: -2px;
+}
+
+
+/* ======================================== */
+/* DESCRIÇÃO                                */
+/* ======================================== */
+
+.hero-description {
+    max-width: 640px;
+
+    margin: 24px 0 34px 0;
+
+    color: #a8a8a8;
+
+    font-size: 16px;
+
+    line-height: 1.7;
+}
+
+
+/* ======================================== */
+/* ÁREA DE BENEFÍCIOS                       */
+/* ======================================== */
+
+.hero-features {
+    display: flex;
+    align-items: center;
+
+    gap: 35px;
+
+    width: 100%;
+
+    padding-top: 25px;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.10);
+}
+
+
+/* ======================================== */
+/* BENEFÍCIO                                */
+/* ======================================== */
+
+.hero-feature {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+/* ======================================== */
+/* ÍCONE                                    */
+/* ======================================== */
+
+.hero-feature-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.24);
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color: #ffffff;
+
+    font-size: 14px;
+}
+
+
+/* ======================================== */
+/* TEXTO PRINCIPAL                          */
+/* ======================================== */
+
+.hero-feature strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* ======================================== */
+/* TEXTO SECUNDÁRIO                         */
+/* ======================================== */
+
+.hero-feature span {
+    display: block;
+
+    color: #858585;
+
+    font-size: 10px;
+
+    white-space: nowrap;
+}
+
+
+/* ======================================== */
+/* RESPONSIVO                               */
+/* ======================================== */
+
+@media (max-width: 850px) {
+
+    .hero-dashboard {
+        max-width: 100%;
+    }
+
+
+    .hero-dashboard h1 {
+        font-size: 3.4rem;
+
+        letter-spacing: -1.5px;
+    }
+
+
+    .hero-features {
+        flex-wrap: wrap;
+
+        gap: 22px;
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .hero-dashboard h1 {
+        font-size: 2.7rem;
+    }
+
+
+    .hero-description {
+        font-size: 14px;
+    }
+
+
+    .hero-features {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+}
+
+/* ======================================== */
+/* ALINHAMENTO DO HERO NO FORGOT PASSWORD   */
+/* ======================================== */
+
+.forgot-content .hero-default {
+    width: 100%;
+    margin: 0 0 38px 0;
+}
+
+.forgot-content .hero-default h4,
+.forgot-content .hero-default h2,
+.forgot-content .hero-default p {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.forgot-content .hero-default h4 {
+    margin-top: 0;
+}
+
+.forgot-content .hero-default h2 {
+    margin-top: 14px;
+    margin-bottom: 16px;
+}
+
+.forgot-content .hero-default p {
+    margin-top: 0;
+    margin-bottom: 0;
 }

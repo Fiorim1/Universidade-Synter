@@ -1,68 +1,44 @@
-import { useState, useRef } from 'react'
-
+import { useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
+import { Turnstile } from "@marsidev/react-turnstile"
 
-// Componente do Cloudflare Turnstile
-import { Turnstile } from '@marsidev/react-turnstile'
+import { supabase } from "../services/supabaseClient"
 
-// Cliente do Supabase
-import { supabase } from '../services/supabaseClient'
-
-// Funções de validação
 import {
     validateEmail,
     sanitizeEmail
-} from '../utils/validators'
+} from "../utils/validators"
 
-// CSS da tela de login
+import Header from "../components/Header"
+import Footer from "../components/Footer"
+
+import LockImage from "../assets/login-back.png"
+
 import "../styles/Login.css"
-
-import Header from '../components/Header'
-import Hero from "../components/Hero"
-import Footer from '../components/Footer'
 
 
 function Login() {
 
-    // Permite navegar entre as rotas do projeto
     const navigate = useNavigate()
 
-
-    // Armazena o e-mail digitado pelo usuário
     const [email, setEmail] = useState("")
-
-    // Armazena a senha digitada pelo usuário
     const [password, setPassword] = useState("")
-
-    // Armazena o token gerado pelo CAPTCHA
     const [captchaToken, setCaptchaToken] = useState("")
-
-    // Armazena mensagens de erro
     const [errorMsg, setErrorMsg] = useState("")
-
-    // Controla o botão enquanto o login está sendo realizado
     const [loading, setLoading] = useState(false)
 
-    // Permite controlar e resetar o Turnstile
     const turnstileRef = useRef(null)
 
 
-
-    // Função executada quando o formulário é enviado
     async function handleSubmit(e) {
 
-        // Impede a página de recarregar
         e.preventDefault()
 
-        // Limpa mensagens de erro anteriores
         setErrorMsg("")
 
-
-        // Remove espaços e deixa o e-mail em letras minúsculas
         const cleanEmail = sanitizeEmail(email)
 
 
-        // Verifica se o formato do e-mail é válido
         if (!validateEmail(cleanEmail)) {
 
             setErrorMsg("Digite um e-mail válido.")
@@ -71,7 +47,6 @@ function Login() {
         }
 
 
-        // Verifica se o CAPTCHA foi concluído
         if (!captchaToken) {
 
             setErrorMsg("Confirme que você não é um robô.")
@@ -80,266 +55,300 @@ function Login() {
         }
 
 
-        // Ativa o estado de carregamento
         setLoading(true)
 
 
-        // Envia e-mail, senha e CAPTCHA para o Supabase
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { data, error } =
+            await supabase.auth.signInWithPassword({
 
-            email: cleanEmail,
+                email: cleanEmail,
 
-            password: password,
+                password: password,
 
-            options: {
+                options: {
+                    captchaToken: captchaToken
+                }
 
-                // Token fornecido pelo Cloudflare Turnstile
-                captchaToken: captchaToken
-
-            }
-
-        })
+            })
 
 
-        // Finaliza o carregamento
         setLoading(false)
 
-
-        // Reseta o CAPTCHA depois da tentativa de login
         turnstileRef.current?.reset()
 
-        // Remove o token antigo
         setCaptchaToken("")
 
 
-        // Se o Supabase retornar erro
         if (error) {
 
-            // Erro técnico fica somente no console
-            console.error("Erro no login:", error.message)
+            console.error(
+                "Erro no login:",
+                error.message
+            )
 
-            // Mensagem exibida para o usuário
-            setErrorMsg("E-mail ou senha inválidos.")
+            setErrorMsg(
+                "E-mail ou senha inválidos."
+            )
 
             return
         }
 
 
-        // Login realizado com sucesso
-        console.log("Usuário logado:", data.user)
+        console.log(
+            "Usuário logado:",
+            data.user
+        )
 
 
-        // Redireciona o usuário para o Dashboard
-        navigate("/dashboard")
-
+        navigate(
+            "/dashboard",
+            { replace: true }
+        )
     }
-
 
 
     return (
 
+        <div className="login-page">
+
+            <Header />
 
 
-        <>
+            <main className="login-main">
 
-        <Header />
-        <Hero />
-            <form onSubmit={handleSubmit}>
+                <div className="login-container">
 
 
+                    {/* ========================= */}
+                    {/* LADO ESQUERDO             */}
+                    {/* ========================= */}
 
-                <div className="input-container">
+                    <section className="login-left">
 
-
-                    {/* Título da tela */}
-
-                    <div className="text-login">
-
-                        <h1>Login</h1>
-
-                        <p>
-                            Acesse sua conta, para entrar no sistema.
-                        </p>
-
-                    </div>
+                        <div className="login-content">
 
 
+                            <div className="login-heading">
 
-                    {/* Mensagem de erro */}
+                                <span className="login-small-title">
+                                    UNIVERSIDADE SYNTER
+                                </span>
 
-                    {errorMsg && (
+                                <h1>
+                                    Bem-vindo de volta.
+                                </h1>
 
-                        <p className="auth-error">
-
-                            {errorMsg}
-
-                        </p>
-
-                    )}
-
-
-
-                    <div className="input-container">
-
-
-                        {/* Campo de e-mail */}
-
-                        <div className="input-email">
-
-                            <label htmlFor="email">
-
-                                E-mail:
-
-                            </label>
-
-                            <input
-                                id="email"
-                                type="email"
-
-                                // Valor armazenado no estado
-                                value={email}
-
-                                // Atualiza o estado conforme o usuário digita
-                                onChange={(e) => setEmail(e.target.value)}
-
-                                required
-                            />
-
-                        </div>
-
-
-
-                        {/* Campo de senha */}
-
-                        <div className="input-password">
-
-                            <label htmlFor="password">
-
-                                Senha:
-
-                            </label>
-
-                            <input
-                                id="password"
-                                type="password"
-
-                                // Valor armazenado no estado
-                                value={password}
-
-                                // Atualiza a senha conforme o usuário digita
-                                onChange={(e) => setPassword(e.target.value)}
-
-                                required
-                            />
-
-
-
-                            {/* Recuperação de senha */}
-
-                            <div className="forgot-password">
-
-                                <button
-                                    type="button"
-
-                                    // Vai para a página de recuperação
-                                    onClick={() =>
-                                        navigate("/forgot-password")
-                                    }
-                                >
-
-                                    Esqueci minha Senha
-
-                                </button>
+                                <p>
+                                    Acesse sua conta para continuar
+                                    explorando conteúdos, treinamentos
+                                    e materiais Synter.
+                                </p>
 
                             </div>
 
-                        </div>
 
-                    </div>
-
-
-
-                    {/* CAPTCHA Cloudflare Turnstile */}
-
-                    <div className="captcha-container">
-
-                        <Turnstile
-
-                            // Referência utilizada para resetar o CAPTCHA
-                            ref={turnstileRef}
-
-                            // Site Key armazenada no .env
-                            siteKey={
-                                import.meta.env.VITE_TURNSTILE_SITE_KEY
-                            }
-
-                            // Salva o token quando o CAPTCHA é validado
-                            onSuccess={setCaptchaToken}
-
-                            // Remove o token quando ele expira
-                            onExpire={() =>
-                                setCaptchaToken("")
-                            }
-
-                        />
-
-                    </div>
-
-
-
-                    {/* Criação de conta */}
-
-                    <div className="create-account">
-
-                        <p>
-
-                            Caso não possua conta:
-
-                            <button
-                                type="button"
-
-                                // Vai para a página de cadastro
-                                onClick={() =>
-                                    navigate("/register")
-                                }
+                            <form
+                                className="login-form"
+                                onSubmit={handleSubmit}
                             >
 
-                                Crie uma conta
 
-                            </button>
+                                {errorMsg && (
 
-                        </p>
+                                    <div className="auth-error">
+                                        {errorMsg}
+                                    </div>
 
-                    </div>
+                                )}
+
+
+                                {/* E-mail */}
+
+                                <div className="login-field">
+
+                                    <label htmlFor="email">
+                                        E-mail
+                                    </label>
+
+                                    <input
+                                        id="email"
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) =>
+                                            setEmail(
+                                                e.target.value
+                                            )
+                                        }
+                                        placeholder="seuemail@empresa.com"
+                                        autoComplete="email"
+                                        required
+                                    />
+
+                                </div>
+
+
+                                {/* Senha */}
+
+                                <div className="login-field">
+
+                                    <div className="login-password-header">
+
+                                        <label htmlFor="password">
+                                            Senha
+                                        </label>
+
+
+                                        <button
+                                            className="forgot-password"
+                                            type="button"
+                                            onClick={() =>
+                                                navigate(
+                                                    "/forgot-password"
+                                                )
+                                            }
+                                        >
+                                            Esqueci minha senha
+                                        </button>
+
+                                    </div>
+
+
+                                    <input
+                                        id="password"
+                                        type="password"
+                                        value={password}
+                                        onChange={(e) =>
+                                            setPassword(
+                                                e.target.value
+                                            )
+                                        }
+                                        placeholder="Digite sua senha"
+                                        autoComplete="current-password"
+                                        required
+                                    />
+
+                                </div>
+
+
+                                {/* CAPTCHA */}
+
+                                <div className="captcha-container">
+
+                                    <Turnstile
+                                        ref={turnstileRef}
+                                        siteKey={
+                                            import.meta.env
+                                                .VITE_TURNSTILE_SITE_KEY
+                                        }
+                                        onSuccess={setCaptchaToken}
+                                        onExpire={() =>
+                                            setCaptchaToken("")
+                                        }
+                                    />
+
+                                </div>
+
+
+                                {/* Entrar */}
+
+                                <button
+                                    className="login-submit"
+                                    type="submit"
+                                    disabled={loading}
+                                >
+
+                                    <span>
+                                        {loading
+                                            ? "Entrando..."
+                                            : "Entrar"
+                                        }
+                                    </span>
+
+                                    {!loading && (
+                                        <span className="login-submit-arrow">
+                                            →
+                                        </span>
+                                    )}
+
+                                </button>
+
+
+                                {/* Criar conta */}
+
+                                <div className="create-account">
+
+                                    <span>
+                                        Ainda não possui uma conta?
+                                    </span>
+
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            navigate("/register")
+                                        }
+                                    >
+                                        Criar conta
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </section>
 
 
 
-                    {/* Botão principal */}
+                    {/* ========================= */}
+                    {/* LADO DIREITO              */}
+                    {/* ========================= */}
 
-                    <button
-                        type="submit"
+                    <section className="login-visual">
 
-                        // Impede vários cliques enquanto o Supabase responde
-                        disabled={loading}
-                    >
+                        <div className="login-visual-content">
 
-                        {loading
-                            ? "Entrando..."
-                            : "Entrar"
-                        }
+                            <div className="login-visual-text">
 
-                    </button>
+                                <span>
+                                    TECNOLOGIA • CONHECIMENTO
+                                </span>
 
+                                <h2>
+                                    Tudo sobre a Synter
+                                    em um só lugar.
+                                </h2>
+
+                                <p>
+                                    Uma plataforma criada para
+                                    conectar pessoas, produtos e
+                                    conhecimento.
+                                </p>
+
+                            </div>
+
+                              <img
+                                src={LockImage}
+                                alt="Fechadura digital Synter"
+                                className="login-lock-image"
+                            />
+
+                        </div>
+
+                    </section>
 
                 </div>
 
-            </form>
+            </main>
+
 
             <Footer />
-        </>
+
+        </div>
 
     )
 
 }
+
 
 export default Login

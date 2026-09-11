@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom"
 import Header from "../components/Header"
 import Hero from "../components/Hero"
 import Footer from "../components/Footer"
-
 import UserProfileButton from "../components/UserProfileButton"
 import Profile from "../components/Profile"
 import CardsDashboard from "../components/CardsDashboard"
@@ -24,95 +23,144 @@ import NvdIcon from "../assets/nvd-icon.png"
 
 import "../styles/Dashboard.css"
 
+
 function Dashboard() {
 
-        const navigate = useNavigate()
+    const navigate = useNavigate()
 
-    // Controla se o modal está aberto
     const [profileOpen, setProfileOpen] = useState(false)
 
 
     return (
 
-        <div>
+        <div className="dashboard-page">
 
             <Header />
 
 
-            <div className="dashboard-profile">
+            {/* HERO */}
+            <section className="dashboard-hero-area">
 
-                <UserProfileButton
-                    onClick={() => setProfileOpen(true)}
-                />
+                <div className="dashboard-profile">
 
-            </div>
+                    <UserProfileButton
+                        onClick={() => setProfileOpen(true)}
+                    />
+
+                </div>
 
 
-            <Hero />
+                <div className="dashboard-hero-content">
 
-            <div className="cards">
-                <div className="cards-parts-1">
+                    <Hero
+                        variant="dashboard"
+                        one="Plataforma de Conhecimento"
+                        two="Universidade Synter"
+                        three="Aqui você encontra tudo sobre nossos produtos, treinamentos e materiais de apoio para o seu dia a dia."
+                    />
+
+                </div>
+
+            </section>
+
+
+            {/* ACESSO RÁPIDO */}
+            <main className="dashboard-content">
+
+                <div className="dashboard-section-title">
+
+                    <div className="dashboard-section-bar"></div>
+
+                    <h4>
+                        ACESSO RÁPIDO
+                    </h4>
+
+                </div>
+
+
+                <div className="cards">
+
                     <CardsDashboard
                         image={ManualIcon}
                         title="Manual de Produtos"
                         desc="Acesse os manuais dos nossos produtos"
-                        onClick={() => navigate("/manuals")} />
+                        onClick={() => navigate("/manuals")}
+                    />
+
                     <CardsDashboard
                         image={YtIcon}
                         title="Vídeos de Instalação"
-                        desc="Acesse nossos vídeos de instalação" />
-                        <CardsDashboard
+                        desc="Acesse nossos vídeos de instalação"
+                    />
+
+                    <CardsDashboard
                         image={TreinamentoIcon}
                         title="Treinamentos Técnicos"
-                        desc="Acesse nossos treinamentos técnicos" />
-                        <CardsDashboard
+                        desc="Acesse nossos treinamentos técnicos"
+                    />
+
+                    <CardsDashboard
                         image={TabelaIcon}
                         title="Tabela de Preços"
-                        desc="Acesse nossa tabela de preços" />
-                </div>
-                <div className="cards-parts-2">
+                        desc="Acesse nossa tabela de preços"
+                    />
+
                     <CardsDashboard
                         image={FtIcon}
                         title="Fichas Técnicas"
-                        desc="Acesse as fichas técnicas dos nossos produtos" />
+                        desc="Acesse as fichas técnicas dos nossos produtos"
+                    />
+
                     <CardsDashboard
                         image={ImgIcon}
                         title="Imagens de Produtos"
-                        desc="Acesse as imagens dos nossos produtos" />
-                        <CardsDashboard
+                        desc="Acesse as imagens dos nossos produtos"
+                    />
+
+                    <CardsDashboard
                         image={TcIcon}
                         title="Treinamento Comercial"
-                        desc="Acesse nosso treinamento comercial" />
-                        <CardsDashboard
+                        desc="Acesse nosso treinamento comercial"
+                    />
+
+                    <CardsDashboard
                         image={MktIcon}
                         title="Materiais de Marketing"
-                        desc="Acesse nossos materias de marketing" />
-                </div>
-                <div className="cards-parts-3">
+                        desc="Acesse nossos materiais de marketing"
+                    />
+
                     <CardsDashboard
                         image={AppIcon}
                         title="Aplicativo Synter"
-                        desc="Desbrave mais sobre o aplicativo Synter" />
+                        desc="Desbrave mais sobre o aplicativo Synter"
+                    />
+
                     <CardsDashboard
                         image={QuestionIcon}
                         title="Perguntas Frequentes"
-                        desc="Caso tenha uma pergunta acesse aqui" />
-                        <CardsDashboard
+                        desc="Caso tenha uma pergunta, acesse aqui"
+                    />
+
+                    <CardsDashboard
                         image={AstIcon}
                         title="Assistência Técnica"
-                        desc="Caso você realizou uma assistência técnica, pegue seu documento aqui" />
-                        <CardsDashboard
+                        desc="Acesse documentos relacionados à assistência técnica"
+                    />
+
+                    <CardsDashboard
                         image={NvdIcon}
                         title="Novidades Synter"
-                        desc="Quer receber as novidades dos nossos produtos e empresas? Clique aqui" />
+                        desc="Acompanhe as novidades da Synter"
+                    />
+
                 </div>
-            </div>
+
+            </main>
 
 
             <Footer />
 
 
-            {/* Só mostra o perfil quando profileOpen for true */}
             {profileOpen && (
 
                 <Profile
@@ -120,8 +168,6 @@ function Dashboard() {
                 />
 
             )}
-
-
 
         </div>
 

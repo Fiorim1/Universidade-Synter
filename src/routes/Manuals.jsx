@@ -46,7 +46,6 @@ import CHAVED from "../assets/chaved.png"
 import FECROLETE from "../assets/fecrolete.png"
 
 // Importando imagens de ferragens
-// Importando imagens de ferragens
 import F1 from "../assets/f1.png"
 import F2 from "../assets/f2.png"
 import F3 from "../assets/f3.png"
@@ -255,25 +254,25 @@ function Manuals() {
                                     desc="Clique aqui para baixar o manual!" />
                                 <CardsDashboard
                                     image={FECPCORRER}
-                                    title="Fec. de Banheiro para Porta de Correr "
+                                    title="Fechadura de Banheiro para Porta de Correr "
                                     desc="Clique aqui para baixar o manual!" />
                                 <CardsDashboard
                                     image={FECPCORRER}
-                                    title="Fec. de Banheiro para Porta de Correr "
+                                    title="Fechadura de Banheiro para Porta de Correr "
                                     desc="Clique aqui para baixar o manual!" />
                                 <CardsDashboard
                                     image={FECIPCORRER}
-                                    title="Fec. Interna para Porta de Correr "
+                                    title="Fechadura Interna para Porta de Correr "
                                     desc="Clique aqui para baixar o manual!" />
                             </div>
                             <div className="cards-manuals-6">
                                 <CardsDashboard
                                     image={FECPC}
-                                    title="Fec. para Porta de Correr"
+                                    title="Fechadura para Porta de Correr"
                                     desc="Clique aqui para baixar o manual!" />
                                 <CardsDashboard
                                     image={CHAVED}
-                                    title="Fec. Porta de Correr c/ Chave Dobrável e Concha"
+                                    title="Fechadura Porta de Correr c/ Chave Dobrável e Concha"
                                     desc="Clique aqui para baixar o manual!" />
                                 <CardsDashboard
                                     image={FECROLETE}

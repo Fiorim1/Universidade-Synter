@@ -1,66 +1,139 @@
 import { useAuth } from "../context/AuthContext"
+import { CloseCircle,  ArrowRight4} from 'reicon-react';
 
 import "../styles/Profile.css"
 
 
 function Profile({ onClose }) {
 
-    // Recupera o usuário autenticado
     const { user, logout } = useAuth()
+
+
+    const userName =
+        user?.user_metadata?.full_name ||
+        user?.email ||
+        "Usuário"
+
+
+    // Cria as iniciais do usuário
+    const initials = userName
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((name) => name[0]?.toUpperCase())
+        .join("")
 
 
     return (
 
-        // Fundo que cobre toda a tela
-        // Ao clicar fora do card, fecha o perfil
         <div
             className="profile-overlay"
             onClick={onClose}
         >
 
-            {/* Card do perfil */}
             <div
                 className="profile-modal"
-
-                // Impede que o clique dentro do card
-                // feche o modal
                 onClick={(e) => e.stopPropagation()}
             >
 
-                {/* Botão para fechar */}
+
+                {/* Botão fechar */}
+
                 <button
                     className="profile-close"
                     type="button"
                     onClick={onClose}
+                    aria-label="Fechar perfil"
                 >
-                    ×
+                    <CloseCircle />
                 </button>
 
 
-                <h1>Meu Perfil</h1>
+
+                {/* Cabeçalho */}
+
+                <div className="profile-header">
+
+                    <div className="profile-avatar">
+                        {initials}
+                    </div>
 
 
-                <div className="profile-info">
+                    <div className="profile-header-text">
 
-                    <p>
-                        <strong>Nome:</strong>{" "}
-                        {user?.user_metadata?.full_name}
-                    </p>
+                        <span>
+                            CONTA
+                        </span>
 
-                    <p>
-                        <strong>E-mail:</strong>{" "}
-                        {user?.email}
-                    </p>
+                        <h1>
+                            Meu Perfil
+                        </h1>
+
+                        <p>
+                            Informações da sua conta Synter
+                        </p>
+
+                    </div>
 
                 </div>
 
+
+
+                {/* Divisor */}
+
+                <div className="profile-line"></div>
+
+
+
+                {/* Informações */}
+
+                <div className="profile-info">
+
+                    <div className="profile-info-item">
+
+                        <span className="profile-info-label">
+                            Nome
+                        </span>
+
+                        <span className="profile-info-value">
+                            {userName}
+                        </span>
+
+                    </div>
+
+
+                    <div className="profile-info-item">
+
+                        <span className="profile-info-label">
+                            E-mail
+                        </span>
+
+                        <span className="profile-info-value">
+                            {user?.email}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                {/* Logout */}
 
                 <button
                     className="profile-logout"
                     type="button"
                     onClick={logout}
                 >
-                    Sair da Conta
+
+                    <span>
+                        Sair da Conta
+                    </span>
+
+                    <span className="profile-logout-arrow">
+                        <ArrowRight4 />
+                    </span>
+
                 </button>
 
             </div>
@@ -70,5 +143,6 @@ function Profile({ onClose }) {
     )
 
 }
+
 
 export default Profile

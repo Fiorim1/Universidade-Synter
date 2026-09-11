@@ -14,44 +14,44 @@ import Header from "./Header"
 import Hero from "./Hero"
 import Footer from "./Footer"
 
+import LockImage from "../assets/login-back.png"
+
 import "../styles/Register.css"
 
 
 function Register() {
 
-    // Armazena o nome completo do usuário
+    // Nome completo
     const [fullName, setFullName] = useState("")
 
-    // Armazena o e-mail digitado
+    // E-mail
     const [email, setEmail] = useState("")
 
-    // Armazena a senha
+    // Senha
     const [password, setPassword] = useState("")
 
-    // Armazena a confirmação da senha
+    // Confirmação da senha
     const [confirmPassword, setConfirmPassword] = useState("")
 
-    // Armazena o token gerado pelo Cloudflare Turnstile
+    // Token do Cloudflare Turnstile
     const [captchaToken, setCaptchaToken] = useState("")
 
-    // Armazena mensagens de erro
+    // Mensagem de erro
     const [errorMsg, setErrorMsg] = useState("")
 
-    // Armazena mensagens de sucesso
+    // Mensagem de sucesso
     const [successMsg, setSuccessMsg] = useState("")
 
-    // Controla o botão durante o cadastro
+    // Estado de carregamento
     const [loading, setLoading] = useState(false)
 
-    // Permite resetar o CAPTCHA
+    // Referência do CAPTCHA
     const turnstileRef = useRef(null)
 
 
 
-    // Função executada quando o formulário é enviado
     async function handleSubmit(e) {
 
-        // Impede a página de recarregar
         e.preventDefault()
 
         // Limpa mensagens anteriores
@@ -59,132 +59,227 @@ function Register() {
         setSuccessMsg("")
 
 
-        // Remove espaços extras do nome
+        // ================================
+        // NOME
+        // ================================
+
         const cleanName = fullName.trim()
 
 
-        // Verifica se o nome foi preenchido
         if (cleanName.length < 3) {
 
-            setErrorMsg("Digite seu nome completo.")
+            setErrorMsg(
+                "Digite seu nome completo."
+            )
 
             return
         }
 
 
-        // Remove espaços do e-mail e converte para minúsculo
-        const cleanEmail = sanitizeEmail(email)
+
+        // ================================
+        // E-MAIL
+        // ================================
+
+        const cleanEmail =
+            sanitizeEmail(email)
 
 
-        // Valida o formato do e-mail
         if (!validateEmail(cleanEmail)) {
 
-            setErrorMsg("Digite um e-mail válido.")
+            setErrorMsg(
+                "Digite um e-mail válido."
+            )
 
             return
         }
 
 
-        // Valida a senha
-        const passwordErrors = validatePassword(password)
+
+        // ================================
+        // SENHA
+        // ================================
+
+        const passwordErrors =
+            validatePassword(password)
+
 
         if (passwordErrors.length > 0) {
 
-            setErrorMsg(passwordErrors.join(" • "))
+            setErrorMsg(
+                passwordErrors.join(" • ")
+            )
 
             return
         }
 
 
-        // Verifica se as duas senhas são iguais
+
+        // Confirma se as senhas são iguais
         if (password !== confirmPassword) {
 
-            setErrorMsg("As senhas não coincidem.")
+            setErrorMsg(
+                "As senhas não coincidem."
+            )
 
             return
         }
 
 
-        // Verifica se o CAPTCHA foi concluído
+
+        // ================================
+        // CAPTCHA
+        // ================================
+
         if (!captchaToken) {
 
-            setErrorMsg("Confirme que você não é um robô.")
+            setErrorMsg(
+                "Confirme que você não é um robô."
+            )
 
             return
         }
 
 
-        // Ativa o carregamento
+
+        // ================================
+        // CADASTRO
+        // ================================
+
         setLoading(true)
 
 
-        // Cria o usuário no Supabase
-        const { error } = await supabase.auth.signUp({
+        try {
 
-            // E-mail utilizado na conta
-            email: cleanEmail,
+            const { error } =
+                await supabase.auth.signUp({
 
-            // Senha utilizada na conta
-            password: password,
+                    email: cleanEmail,
 
-            options: {
+                    password: password,
 
-                // Informações extras do usuário
-                // O full_name também será utilizado pelo seu perfil
-                data: {
-                    full_name: cleanName
-                },
+                    options: {
 
-                // Depois da confirmação do e-mail,
-                // o usuário será enviado para o Login
-                emailRedirectTo: `${window.location.origin}/login`,
+                        // Dados públicos permitidos
+                        // para o perfil do usuário
+                        data: {
+                            full_name: cleanName
+                        },
 
-                // Token do Cloudflare Turnstile
-                captchaToken: captchaToken
+
+                        // Após confirmar o e-mail,
+                        // retorna para o Login
+                        emailRedirectTo:
+                            `${window.location.origin}/login`,
+
+
+                        // CAPTCHA validado pelo Supabase
+                        captchaToken: captchaToken
+                    }
+
+                })
+
+
+
+            // ================================
+            // ERRO
+            // ================================
+
+            if (error) {
+
+                // Detalhes técnicos somente
+                // durante desenvolvimento
+                if (import.meta.env.DEV) {
+
+                    console.error(
+                        "Erro ao criar conta:",
+                        error.message
+                    )
+
+                }
+
+
+                /*
+                    Mensagem genérica.
+
+                    Não informamos se determinado
+                    e-mail já está cadastrado.
+                */
+                setErrorMsg(
+                    "Não foi possível concluir o cadastro. Verifique os dados e tente novamente."
+                )
+
+                return
+            }
+
+
+
+            // ================================
+            // RESPOSTA SEGURA
+            // ================================
+
+            /*
+                IMPORTANTE:
+
+                O Supabase pode não informar
+                diretamente que determinado
+                e-mail já existe.
+
+                Isso protege o sistema contra
+                enumeração de usuários.
+
+                Portanto não mostramos:
+
+                "Conta criada!"
+
+                porque não podemos afirmar isso
+                com segurança apenas pela resposta
+                do frontend.
+            */
+
+            setSuccessMsg(
+                "Se este e-mail estiver disponível para cadastro, enviaremos uma mensagem de confirmação. Caso você já possua uma conta, utilize o login ou a recuperação de senha."
+            )
+
+
+
+            // Limpa os campos
+            setFullName("")
+            setEmail("")
+            setPassword("")
+            setConfirmPassword("")
+
+        } catch (error) {
+
+            // Erro técnico somente no desenvolvimento
+            if (import.meta.env.DEV) {
+
+                console.error(
+                    "Erro inesperado no cadastro:",
+                    error
+                )
 
             }
 
-        })
-
-
-        // Finaliza o carregamento
-        setLoading(false)
-
-
-        // Reseta o CAPTCHA
-        turnstileRef.current?.reset()
-
-        // Remove o token utilizado
-        setCaptchaToken("")
-
-
-        // Caso ocorra algum erro durante o cadastro
-        if (error) {
-
-            console.error(
-                "Erro ao criar conta:",
-                error.message
-            )
 
             setErrorMsg(
-                "Não foi possível criar a conta. Verifique os dados e tente novamente."
+                "Não foi possível concluir o cadastro. Tente novamente."
             )
 
-            return
+        } finally {
+
+            // Finaliza carregamento
+            setLoading(false)
+
+
+            // Reseta CAPTCHA
+            turnstileRef.current?.reset()
+
+
+            // Remove token antigo
+            setCaptchaToken("")
+
         }
-
-
-        // Cadastro realizado com sucesso
-        setSuccessMsg(
-            "Conta criada! Verifique seu e-mail para confirmar o cadastro."
-        )
-
-
-        // Limpa os campos depois do cadastro
-        setFullName("")
-        setEmail("")
-        setPassword("")
-        setConfirmPassword("")
 
     }
 
@@ -192,215 +287,342 @@ function Register() {
 
     return (
 
-        <div>
+        <div className="register-page">
 
             <Header />
 
-            <Hero />
+
+            <main className="register-main">
+
+                <div className="register-layout">
 
 
-            <form
-                onSubmit={handleSubmit}
-                className="register-form"
-            >
+                    {/* ================================ */}
+                    {/* LADO ESQUERDO                    */}
+                    {/* ================================ */}
 
-                <div className="register-container">
+                    <section className="register-left">
 
-
-                    {/* Título */}
-
-                    <div className="text-register">
-
-                        <h1>Registre-se</h1>
-
-                        <p>
-                            Crie a sua conta, preenchendo as informações abaixo.
-                        </p>
-
-                    </div>
+                        <div className="register-content">
 
 
-
-                    {/* Mensagem de erro */}
-
-                    {errorMsg && (
-
-                        <p className="auth-error">
-                            {errorMsg}
-                        </p>
-
-                    )}
+                            <Hero
+                                one="Universidade Synter"
+                                two="Crie sua conta"
+                                three="Preencha seus dados abaixo para acessar conteúdos, treinamentos e materiais exclusivos."
+                            />
 
 
+                            <form
+                                className="register-form"
+                                onSubmit={handleSubmit}
+                            >
 
-                    {/* Mensagem de sucesso */}
 
-                    {successMsg && (
+                                {/* ERRO */}
 
-                        <p className="auth-success">
-                            {successMsg}
-                        </p>
+                                {errorMsg && (
 
-                    )}
+                                    <div className="register-error">
+
+                                        {errorMsg}
+
+                                    </div>
+
+                                )}
 
 
 
-                    <div className="inputs">
+                                {/* SUCESSO */}
+
+                                {successMsg && (
+
+                                    <div className="register-success">
+
+                                        {successMsg}
+
+                                    </div>
+
+                                )}
 
 
-                        {/* Nome completo */}
 
-                        <div className="input-register-email">
+                                {/* ================================ */}
+                                {/* NOME                             */}
+                                {/* ================================ */}
 
-                            <label htmlFor="fullName">
-                                Nome completo:
-                            </label>
+                                <div className="register-field">
 
-                            <input
-                                type="text"
-                                id="fullName"
-                                name="fullName"
+                                    <label htmlFor="fullName">
 
-                                value={fullName}
+                                        Nome completo
 
-                                onChange={(e) =>
-                                    setFullName(e.target.value)
-                                }
+                                    </label>
 
-                                required
+
+                                    <input
+                                        type="text"
+                                        id="fullName"
+                                        name="fullName"
+
+                                        value={fullName}
+
+                                        onChange={(e) =>
+                                            setFullName(
+                                                e.target.value
+                                            )
+                                        }
+
+                                        placeholder="Digite seu nome completo"
+
+                                        autoComplete="name"
+
+                                        required
+                                    />
+
+                                </div>
+
+
+
+                                {/* ================================ */}
+                                {/* E-MAIL                           */}
+                                {/* ================================ */}
+
+                                <div className="register-field">
+
+                                    <label htmlFor="email">
+
+                                        E-mail
+
+                                    </label>
+
+
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+
+                                        value={email}
+
+                                        onChange={(e) =>
+                                            setEmail(
+                                                e.target.value
+                                            )
+                                        }
+
+                                        placeholder="seuemail@empresa.com"
+
+                                        autoComplete="email"
+
+                                        required
+                                    />
+
+                                </div>
+
+
+
+                                {/* ================================ */}
+                                {/* SENHAS                           */}
+                                {/* ================================ */}
+
+                                <div className="register-password-grid">
+
+
+                                    <div className="register-field">
+
+                                        <label htmlFor="password">
+
+                                            Senha
+
+                                        </label>
+
+
+                                        <input
+                                            type="password"
+                                            id="password"
+                                            name="password"
+
+                                            value={password}
+
+                                            onChange={(e) =>
+                                                setPassword(
+                                                    e.target.value
+                                                )
+                                            }
+
+                                            placeholder="Digite sua senha"
+
+                                            autoComplete="new-password"
+
+                                            required
+                                        />
+
+                                    </div>
+
+
+
+                                    <div className="register-field">
+
+                                        <label htmlFor="confirmPassword">
+
+                                            Confirmar senha
+
+                                        </label>
+
+
+                                        <input
+                                            type="password"
+                                            id="confirmPassword"
+                                            name="confirmPassword"
+
+                                            value={confirmPassword}
+
+                                            onChange={(e) =>
+                                                setConfirmPassword(
+                                                    e.target.value
+                                                )
+                                            }
+
+                                            placeholder="Repita sua senha"
+
+                                            autoComplete="new-password"
+
+                                            required
+                                        />
+
+                                    </div>
+
+                                </div>
+
+
+
+                                {/* ================================ */}
+                                {/* CAPTCHA                          */}
+                                {/* ================================ */}
+
+                                <div className="register-captcha">
+
+                                    <Turnstile
+
+                                        ref={turnstileRef}
+
+                                        siteKey={
+                                            import.meta.env
+                                                .VITE_TURNSTILE_SITE_KEY
+                                        }
+
+                                        onSuccess={
+                                            setCaptchaToken
+                                        }
+
+                                        onExpire={() =>
+                                            setCaptchaToken("")
+                                        }
+
+                                        onError={() =>
+                                            setCaptchaToken("")
+                                        }
+
+                                    />
+
+                                </div>
+
+
+
+                                {/* ================================ */}
+                                {/* CRIAR CONTA                      */}
+                                {/* ================================ */}
+
+                                <button
+                                    className="register-submit"
+                                    type="submit"
+                                    disabled={loading}
+                                >
+
+                                    <span>
+
+                                        {
+                                            loading
+                                                ? "Processando..."
+                                                : "Criar conta"
+                                        }
+
+                                    </span>
+
+
+                                    {!loading && (
+
+                                        <span className="register-submit-arrow">
+
+                                            →
+
+                                        </span>
+
+                                    )}
+
+                                </button>
+
+
+                            </form>
+
+                        </div>
+
+                    </section>
+
+
+
+                    {/* ================================ */}
+                    {/* LADO DIREITO                     */}
+                    {/* ================================ */}
+
+                    <section className="register-visual">
+
+                        <div className="register-visual-content">
+
+
+                            <div className="register-visual-text">
+
+                                <span>
+
+                                    CONHECIMENTO • TECNOLOGIA
+
+                                </span>
+
+
+                                <h2>
+
+                                    Faça parte da
+                                    Universidade Synter.
+
+                                </h2>
+
+
+                                <p>
+
+                                    Uma plataforma criada para
+                                    conectar pessoas, produtos,
+                                    treinamentos e conhecimento.
+
+                                </p>
+
+                            </div>
+
+
+
+                            <img
+                                src={LockImage}
+                                alt="Fechadura digital Synter"
+                                className="register-lock-image"
                             />
 
                         </div>
 
+                    </section>
 
-
-                        {/* E-mail */}
-
-                        <div className="input-register-email">
-
-                            <label htmlFor="email">
-                                E-mail:
-                            </label>
-
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-
-                                value={email}
-
-                                onChange={(e) =>
-                                    setEmail(e.target.value)
-                                }
-
-                                required
-                            />
-
-                        </div>
-
-
-
-                        {/* Senha */}
-
-                        <div className="input-register-password">
-
-                            <label htmlFor="password">
-                                Senha:
-                            </label>
-
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-
-                                value={password}
-
-                                onChange={(e) =>
-                                    setPassword(e.target.value)
-                                }
-
-                                required
-                            />
-
-                        </div>
-
-
-
-                        {/* Confirmação da senha */}
-
-                        <div className="input-register-password">
-
-                            <label htmlFor="confirmPassword">
-                                Confirme sua senha:
-                            </label>
-
-                            <input
-                                type="password"
-                                id="confirmPassword"
-                                name="confirmPassword"
-
-                                value={confirmPassword}
-
-                                onChange={(e) =>
-                                    setConfirmPassword(e.target.value)
-                                }
-
-                                required
-                            />
-
-                        </div>
-
-                    </div>
-
-
-
-                    {/* CAPTCHA */}
-
-                    <div className="captcha-container">
-
-                        <Turnstile
-
-                            // Permite resetar o CAPTCHA
-                            ref={turnstileRef}
-
-                            // Site Key armazenada no .env
-                            siteKey={
-                                import.meta.env.VITE_TURNSTILE_SITE_KEY
-                            }
-
-                            // Guarda o token quando o CAPTCHA é validado
-                            onSuccess={setCaptchaToken}
-
-                            // Remove o token quando ele expira
-                            onExpire={() =>
-                                setCaptchaToken("")
-                            }
-
-                        />
-
-                    </div>
-
-
-
-                    {/* Botão para criar a conta */}
-
-                    <button
-                        type="submit"
-
-                        // Bloqueia novos cliques durante o cadastro
-                        disabled={loading}
-                    >
-
-                        {loading
-                            ? "Criando..."
-                            : "Criar Conta"
-                        }
-
-                    </button>
 
                 </div>
 
-            </form>
+            </main>
 
 
             <Footer />
@@ -410,5 +632,6 @@ function Register() {
     )
 
 }
+
 
 export default Register

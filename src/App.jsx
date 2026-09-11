@@ -121,6 +121,15 @@ function App() {
         }
       />
 
+      {/* <Route
+        path="/visita-tecnica"
+        element={
+          <ProtectedRoute>
+            <TechnicalVisit />
+          </ProtectedRoute>
+        }
+      /> */}
+
     </Routes>
 
   )

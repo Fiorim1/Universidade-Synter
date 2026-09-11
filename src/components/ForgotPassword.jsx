@@ -3,6 +3,8 @@ import {
     useState
 } from "react"
 
+import { useNavigate } from "react-router-dom"
+
 import { Turnstile } from "@marsidev/react-turnstile"
 
 import Header from "../components/Header"
@@ -16,39 +18,22 @@ import {
     validateEmail
 } from "../utils/validators"
 
+import LockImage from "../assets/login-back.png"
+
 import "../styles/ForgotPassword.css"
 
 
 function ForgotPassword() {
 
-    const [
-        email,
-        setEmail
-    ] = useState("")
+    const navigate = useNavigate()
 
-    const [
-        captchaToken,
-        setCaptchaToken
-    ] = useState("")
+    const [email, setEmail] = useState("")
+    const [captchaToken, setCaptchaToken] = useState("")
+    const [message, setMessage] = useState("")
+    const [errorMsg, setErrorMsg] = useState("")
+    const [loading, setLoading] = useState(false)
 
-    const [
-        message,
-        setMessage
-    ] = useState("")
-
-    const [
-        errorMsg,
-        setErrorMsg
-    ] = useState("")
-
-    const [
-        loading,
-        setLoading
-    ] = useState(false)
-
-    const turnstileRef =
-        useRef(null)
-
+    const turnstileRef = useRef(null)
 
 
     async function handleSubmit(e) {
@@ -57,7 +42,6 @@ function ForgotPassword() {
 
         setMessage("")
         setErrorMsg("")
-
 
         const cleanEmail =
             sanitizeEmail(email)
@@ -93,16 +77,10 @@ function ForgotPassword() {
                     .resetPasswordForEmail(
                         cleanEmail,
                         {
-
-                            // O endereço precisa estar
-                            // autorizado nas Redirect URLs
-                            // do Supabase.
                             redirectTo:
                                 `${window.location.origin}/update-password`,
 
-                            // CAPTCHA enviado ao backend.
                             captchaToken
-
                         }
                     )
 
@@ -115,7 +93,6 @@ function ForgotPassword() {
                         "Erro na recuperação:",
                         error.message
                     )
-
                 }
 
 
@@ -127,12 +104,13 @@ function ForgotPassword() {
             }
 
 
-            // Nunca dizemos:
-            //
-            // "e-mail não encontrado"
-            //
-            // pois isso permitiria enumeração
-            // de usuários cadastrados.
+            /*
+                Mensagem genérica por segurança.
+
+                Não informa se o e-mail existe
+                ou não na base de usuários.
+            */
+
             setMessage(
                 "Se existir uma conta vinculada a este e-mail, enviaremos um link para redefinir sua senha."
             )
@@ -140,9 +118,7 @@ function ForgotPassword() {
         } catch (error) {
 
             if (import.meta.env.DEV) {
-
                 console.error(error)
-
             }
 
 
@@ -157,121 +133,216 @@ function ForgotPassword() {
             setCaptchaToken("")
 
             setLoading(false)
-
         }
-
     }
-
 
 
     return (
 
-        <div>
+        <div className="forgot-page">
 
             <Header />
 
 
-            <Hero
-                one="Esqueceu sua senha?"
-                two="Não se preocupe!"
-                three="Digite seu e-mail abaixo e enviaremos um link para redefinir sua senha."
-            />
+            <main className="forgot-main">
+
+                <div className="forgot-layout">
 
 
-            <form onSubmit={handleSubmit}>
+                    {/* ========================= */}
+                    {/* LADO ESQUERDO             */}
+                    {/* ========================= */}
 
-                <div className="forgot-password-container">
+                    <section className="forgot-left">
 
-                    <h4>
-                        Digite seu E-mail
-                    </h4>
-
-
-                    {errorMsg && (
-
-                        <p className="auth-error">
-                            {errorMsg}
-                        </p>
-
-                    )}
+                        <div className="forgot-content">
 
 
+                            <Hero
+    one="Esqueceu sua senha?"
+    two="Não se preocupe!"
+    three="Digite seu e-mail abaixo e enviaremos um link para redefinir sua senha."
+/>
 
-                    <div className="forgot-password">
 
-                        <label htmlFor="email">
-                            E-mail:
-                        </label>
+                            <form
+                                className="forgot-form"
+                                onSubmit={handleSubmit}
+                            >
 
-                        <input
-                            id="email"
-                            type="email"
-                            value={email}
 
-                            onChange={(e) =>
-                                setEmail(
-                                    e.target.value
-                                )
-                            }
+                                {/* ERRO */}
 
-                            autoComplete="email"
+                                {errorMsg && (
 
-                            required
-                        />
+                                    <div className="forgot-error">
+                                        {errorMsg}
+                                    </div>
 
-                    </div>
+                                )}
 
 
 
-                    <div className="captcha-container">
+                                {/* E-MAIL */}
 
-                        <Turnstile
-                            ref={turnstileRef}
+                                <div className="forgot-field">
 
-                            siteKey={
-                                import.meta.env
-                                    .VITE_TURNSTILE_SITE_KEY
-                            }
-
-                            onSuccess={
-                                setCaptchaToken
-                            }
-
-                            onExpire={() =>
-                                setCaptchaToken("")
-                            }
-                        />
-
-                    </div>
+                                    <label htmlFor="email">
+                                        E-mail
+                                    </label>
 
 
+                                    <input
+                                        id="email"
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) =>
+                                            setEmail(
+                                                e.target.value
+                                            )
+                                        }
+                                        placeholder="seuemail@empresa.com"
+                                        autoComplete="email"
+                                        required
+                                    />
 
-                    <button
-                        type="submit"
-                        disabled={loading}
-                    >
-
-                        {
-                            loading
-                                ? "Enviando..."
-                                : "Enviar Link"
-                        }
-
-                    </button>
+                                </div>
 
 
 
-                    {message && (
+                                {/* CAPTCHA */}
 
-                        <p className="forgot-message">
-                            {message}
-                        </p>
+                                <div className="forgot-captcha">
 
-                    )}
+                                    <Turnstile
+                                        ref={turnstileRef}
+                                        siteKey={
+                                            import.meta.env
+                                                .VITE_TURNSTILE_SITE_KEY
+                                        }
+                                        onSuccess={
+                                            setCaptchaToken
+                                        }
+                                        onExpire={() =>
+                                            setCaptchaToken("")
+                                        }
+                                    />
+
+                                </div>
+
+
+
+                                {/* ENVIAR */}
+
+                                <button
+                                    className="forgot-submit"
+                                    type="submit"
+                                    disabled={loading}
+                                >
+
+                                    <span>
+                                        {
+                                            loading
+                                                ? "Enviando..."
+                                                : "Enviar link"
+                                        }
+                                    </span>
+
+
+                                    {!loading && (
+
+                                        <span className="forgot-submit-arrow">
+                                            →
+                                        </span>
+
+                                    )}
+
+                                </button>
+
+
+
+                                {/* SUCESSO */}
+
+                                {message && (
+
+                                    <div className="forgot-success">
+
+                                        <span className="forgot-success-icon">
+                                            ✓
+                                        </span>
+
+                                        <p>
+                                            {message}
+                                        </p>
+
+                                    </div>
+
+                                )}
+
+
+
+                                {/* VOLTAR */}
+
+                                <button
+                                    className="forgot-back"
+                                    type="button"
+                                    onClick={() =>
+                                        navigate("/login")
+                                    }
+                                >
+                                    ← Voltar para o login
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </section>
+
+
+
+                    {/* ========================= */}
+                    {/* LADO DIREITO              */}
+                    {/* ========================= */}
+
+                    <section className="forgot-visual">
+
+                        <div className="forgot-visual-content">
+
+
+                            <div className="forgot-visual-text">
+
+                                <span>
+                                    SEGURANÇA • ACESSO
+                                </span>
+
+                                <h2>
+                                    Recupere seu acesso
+                                    com segurança.
+                                </h2>
+
+                                <p>
+                                    Utilize o e-mail associado à sua
+                                    conta para receber as instruções
+                                    de redefinição de senha.
+                                </p>
+
+                            </div>
+
+
+                            <img
+                                src={LockImage}
+                                alt="Fechadura digital Synter"
+                                className="forgot-lock-image"
+                            />
+
+                        </div>
+
+                    </section>
 
                 </div>
 
-            </form>
+            </main>
 
 
             <Footer />

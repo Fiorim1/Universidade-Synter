@@ -1,98 +1,370 @@
+/* ======================================== */
+/* HEADER                                   */
+/* ======================================== */
+
 .header-all {
-  background-color: #111111;
-  width: 100%;
+    width: 100%;
+
+    position: relative;
+    z-index: 100;
+
+    background: rgba(5, 5, 5, 0.96);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
-/* PARTE DE CIMA */
 
-.header-primary-part {
-  width: 100%;
+/* ======================================== */
+/* CONTAINER                                */
+/* ======================================== */
+
+.header-container {
+    width: 100%;
+    max-width: 1400px;
+
+    min-height: 88px;
+
+    margin: 0 auto;
+    padding: 0 40px;
+
+    display: flex;
+    align-items: center;
+
+    box-sizing: border-box;
 }
 
-.synter-links {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
 
-  padding: 6px 45px;
+/* ======================================== */
+/* LOGO                                     */
+/* ======================================== */
+
+.header-logo-link {
+    display: flex;
+    align-items: center;
+
+    flex-shrink: 0;
 }
 
-.synter-links a {
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 14px;
-  margin-right: 8px;
-  font-weight: 600;
+
+.header-logo {
+    width: 135px;
+    height: auto;
+
+    display: block;
+
+    object-fit: contain;
 }
 
-.bar {
-  color: #777777;
-  margin-right: 8px;
+
+/* ======================================== */
+/* MENU                                     */
+/* ======================================== */
+
+.header-nav {
+    display: flex;
+    align-items: center;
+
+    gap: 26px;
+
+    margin-left: 45px;
 }
 
-.top-buttons {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+
+.header-nav-link {
+    position: relative;
+
+    padding: 34px 0 30px;
+
+    color: #969696;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition: color 0.25s ease;
 }
 
-.top-buttons button {
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-  display: flex;
-  align-items: center;
+
+.header-nav-link:hover {
+    color: #ffffff;
 }
 
-.top-buttons > button > img {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
+
+/* Página ativa */
+
+.header-nav-active {
+    color: #ffffff;
 }
 
-.long-bar-header {
-  width: 100%;
-  height: 1px;
-  background-color: #292929;
+
+/* Linha inferior da página ativa */
+
+.header-nav-active::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 20px;
+
+    height: 1px;
+
+    background: #ffffff;
 }
 
-/* PARTE DE BAIXO */
 
-.header-second-part {
-  width: 100%;
+/* ======================================== */
+/* ÁREA DIREITA                             */
+/* ======================================== */
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.header-actions {
+    display: flex;
+    align-items: center;
 
-  padding: 22px 45px;
+    gap: 16px;
+
+    margin-left: auto;
 }
 
-#logo {
-  width: 145px;
-  height: auto;
-  object-fit: contain;
+
+/* ======================================== */
+/* TELEFONE                                 */
+/* ======================================== */
+
+.header-phone {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+
+    transition: opacity 0.25s ease;
 }
 
-.header-second-part > button {
-  background: transparent;
 
-  border: 2px solid #ffffff;
-  color: #ffffff;
-
-  padding: 12px 28px;
-
-  border-radius: 5px;
-
-  font-size: 12px;
-  font-weight: 600;
-
-  cursor: pointer;
+.header-phone:hover {
+    opacity: 0.65;
 }
 
-.header-second-part > button:hover {
-  background-color: #ffffff;
-  color: #111111;
-  transition: 0.5s;
+
+.header-phone-icon {
+    font-size: 15px;
+
+    color: #ffffff;
+}
+
+
+/* ======================================== */
+/* REDES SOCIAIS                            */
+/* ======================================== */
+
+.header-social {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+}
+
+
+.header-social button {
+    width: 29px;
+    height: 29px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    background: transparent;
+
+    border: none;
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.header-social button:hover {
+    background: rgba(255, 255, 255, 0.08);
+
+    transform: translateY(-1px);
+}
+
+
+.header-social img {
+    width: 17px;
+    height: 17px;
+
+    object-fit: contain;
+}
+
+
+/* ======================================== */
+/* BOTÃO FALE CONOSCO                       */
+/* ======================================== */
+
+.header-contact-button {
+    min-height: 48px;
+
+    padding: 0 18px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    background: transparent;
+
+    border: 1px solid rgba(255, 255, 255, 0.55);
+
+    border-radius: 9px;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease;
+}
+
+
+.header-contact-button:hover {
+    background: #ffffff;
+
+    border-color: #ffffff;
+
+    color: #111111;
+}
+
+
+.header-contact-arrow {
+    font-size: 18px;
+
+    transition: transform 0.25s ease;
+}
+
+
+.header-contact-button:hover
+.header-contact-arrow {
+    transform: translateX(3px);
+}
+
+
+/* ======================================== */
+/* DIVISOR DO PERFIL                        */
+/* ======================================== */
+
+.header-divider {
+    width: 1px;
+    height: 42px;
+
+    margin: 0 3px;
+
+    background: rgba(255, 255, 255, 0.16);
+}
+
+
+/* ======================================== */
+/* PERFIL                                   */
+/* ======================================== */
+
+.header-profile {
+    display: flex;
+    align-items: center;
+
+    flex-shrink: 0;
+}
+
+
+/* ======================================== */
+/* RESPONSIVIDADE                           */
+/* ======================================== */
+
+@media (max-width: 1250px) {
+
+    .header-nav {
+        gap: 18px;
+
+        margin-left: 30px;
+    }
+
+
+    .header-phone {
+        display: none;
+    }
+
+}
+
+
+@media (max-width: 1050px) {
+
+    .header-nav {
+        display: none;
+    }
+
+
+    .header-actions {
+        margin-left: auto;
+    }
+
+}
+
+
+@media (max-width: 750px) {
+
+    .header-container {
+        min-height: 74px;
+
+        padding: 0 20px;
+    }
+
+
+    .header-logo {
+        width: 115px;
+    }
+
+
+    .header-social {
+        display: none;
+    }
+
+
+    .header-divider {
+        display: none;
+    }
+
+
+    .header-contact-button {
+        display: none;
+    }
+
 }
