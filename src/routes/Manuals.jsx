@@ -104,6 +104,7 @@ import LYRAPDF from "../assets/MANUAL_LYRA_PRO.pdf"
 import QRPDF from "../assets/MANUAL_CONTROLADORA_DE_ACESSO_S2_PRO_QR.pdf"
 import FACEIDPDF from "../assets/MANUAL_DE_INSTALAÇÃO_CONTROLADORA_DE_ACESSO_FACE_ID.pdf"
 import PROS2PDF from "../assets/PROS2.pdf"
+import MECPDF from "../assets/MANUAL_FECHADURAS_MECÂNICAS_2026.png"
 
 function Manuals() {
 
@@ -293,75 +294,91 @@ function Manuals() {
                                 <CardsDashboard
                                     image={STILLUS}
                                     title="Stillus"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={MECPDF}/>
                                 <CardsDashboard
                                     image={STARMAX}
                                     title="Star Max"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={MECPDF}/>
                                 <CardsDashboard
                                     image={STAR}
                                     title="Star"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={MECPDF}/>
                                 <CardsDashboard
                                     image={POLOMAX}
                                     title="Polo Max"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={MECPDF}/>
                             </div>
                             <div className="cards-manuals-2">
                                 <CardsDashboard
                                     image={OLYMPIA}
                                     title="Olympia"
                                     desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF}
                                 />
                                 <CardsDashboard
                                     image={NAVISII}
                                     title="Navis II"
                                     desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF}
                                 />
                                 <CardsDashboard
                                     image={NAVIS}
                                     title="Navis"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={MECPDF}/>
                                 <CardsDashboard
                                     image={MARINEII}
                                     title="Marine II"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={MECPDF}/>
                             </div>
                             <div className="cards-manuals-3">
                                 <CardsDashboard
                                     image={MARINE}
                                     title="Marine"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={MECPDF}/>
                                 <CardsDashboard
                                     image={LUCK}
                                     title="Luck"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={MECPDF}/>
                                 <CardsDashboard
                                     image={GOL}
                                     title="Gol"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={MECPDF}/>
                                 <CardsDashboard
                                     image={GLORIAN}
                                     title="Glorian"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={MECPDF}/>
                             </div>
                             <div className="cards-manuals-4">
                                 <CardsDashboard
                                     image={CRISPUSMAX}
                                     title="Crispus Max"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={MECPDF}/>
                                 <CardsDashboard
                                     image={CHAMPION}
                                     title="Champion"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={MECPDF}/>
                                 <CardsDashboard
                                     image={CECI}
                                     title="Ceci"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={MECPDF}/>
                                 <CardsDashboard
                                     image={ACQUAMAX}
                                     title="Acqua Max"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={MECPDF}/>
                             </div>
                             <div className="cards-manuals-5">
                                 <CardsDashboard
