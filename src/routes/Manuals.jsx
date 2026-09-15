@@ -10,6 +10,7 @@ import Footer from "../components/Footer"
 import "../styles/Dashboard.css"
 
 // Importando imagens de produtos digitais
+import VENUSS2 from "../assets/venuss2pro.png"
 import VENUS3 from "../assets/venuss3.png"
 import VEGAFACEID from "../assets/vegafaceid.png"
 import SYRIUSS3PRO from "../assets/syriuss3pro.png"
@@ -20,6 +21,14 @@ import ERISS2FACEID from "../assets/eriss2faceid.png"
 import S2QR from "../assets/s2qr.png"
 import S2PRO from "../assets/s2pro.png"
 import S2FACEID from "../assets/s2faceid.png"
+import MARSIMG from "../assets/mars.png"
+import NEXUSIMG from "../assets/nexuss1.png"
+import SYRIUSS2PRO from "../assets/SYRIUSS2PRO.png"
+import SYRIUSS1 from "../assets/syriuss1.png"
+import SYRIUSS2MAX from "../assets/syriuss2max.png"
+import DALASS2PRO from "../assets/dallas2pro.png"
+import DALASS3PRO from "../assets/dallass3pro.png"
+import DOMOUSS1 from "../assets/domuss1.png"
 
 // Importando imagens de produtos mecânicos
 import STILLUS from "../assets/stillus.png"
@@ -75,6 +84,27 @@ import F26 from "../assets/f26.png"
 import F27 from "../assets/f27.png"
 import F28 from "../assets/f28.png"
 
+// Importando os PDFs
+import VENUSS3PRO from "../assets/MANUAL_VENUS_S3_PRO.pdf"
+import VENUSS2PRO from "../assets/MANUAL_VENUS_S2_PRO.pdf"
+import MARS from "../assets/MANUAL_MARS.PDF"
+import NEXUS from "../assets/MANUAL_NEXUS.pdf"
+import VEGA from "../assets/MANUAL_VEGA.pdf"
+import SYRIUSS2PROPDF from "../assets/MANUAL_SYRIUS_S2_PRO.pdf"
+import SYRIUSS3MAXPDF from "../assets/MANUAL_SYRIUS_S3_MAX.pdf"
+import SYRIUSS3PROPDF from "../assets/MANUAL_SYRIUS_S3_PRO.pdf"
+import SYRIUSS1PRO from "../assets/MANUAL_SYRIUS_S1.pdf"
+import SYRIUSS2MAXPDF from "../assets/MANUAL_SYRIUS_S2_MAX.pdf"
+import SYRIUSS2PRONEOPDF from "../assets/MANUAL_SYRIUS_S2_PRO_NEO.pdf"
+import DALLASS2PROPDF from "../assets/MANUAL_DALLAS_S2_PRO.pdf"
+import DALLASS3PROPDF from "../assets/MANUAL_DALLAS_S3_PRO.pdf"
+import DOMUSS1PDF from "../assets/MANUAL_DOMUS_S1_E_DOMUS_S1_PRO.pdf"
+import ERISPDF from "../assets/MANUAL_ERIS_S2_FACE_ID.pdf"
+import LYRAPDF from "../assets/MANUAL_LYRA_PRO.pdf"
+import QRPDF from "../assets/MANUAL_CONTROLADORA_DE_ACESSO_S2_PRO_QR.pdf"
+import FACEIDPDF from "../assets/MANUAL_DE_INSTALAÇÃO_CONTROLADORA_DE_ACESSO_FACE_ID.pdf"
+import PROS2PDF from "../assets/PROS2.pdf"
+
 function Manuals() {
 
     // Controla a abertura do modal de perfil
@@ -120,48 +150,134 @@ function Manuals() {
                                 <CardsDashboard
                                     image={VENUS3}
                                     title="Venus S3 PRO"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={VENUSS3PRO} />
                                 <CardsDashboard
-                                    image={VEGAFACEID}
-                                    title="Vega Face Id"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    image={VENUSS2}
+                                    title="Venus S2 PRO"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={VENUSS2PRO} />
                                 <CardsDashboard
-                                    image={SYRIUSS3PRO}
-                                    title="Syrius S3 Pro"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    image={SYRIUSS1}
+                                    title="Syrius S1"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={SYRIUSS1PRO} />
                                 <CardsDashboard
-                                    image={SYRIUSS3MAX}
-                                    title="Syrius S3 Max"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    image={SYRIUSS1}
+                                    title="Syrius S1 Pro"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={SYRIUSS1PRO} />
+
+
                             </div>
                             <div className="cards-manuals-2">
                                 <CardsDashboard
+                                    image={SYRIUSS2PRO}
+                                    title="Syrius S2 Pro"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={SYRIUSS2PROPDF} />
+                                <CardsDashboard
                                     image={SYRIUSS2PRONEO}
                                     title="Syrius S2 Pro Neo"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={SYRIUSS2PRONEOPDF} />
                                 <CardsDashboard
-                                    image={LYRAPRO}
-                                    title="Lyra Pro"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    image={SYRIUSS2MAX}
+                                    title="Syrius S2 Max"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={SYRIUSS2MAXPDF} />
+                                <CardsDashboard
+                                    image={SYRIUSS3PRO}
+                                    title="Syrius S3 Pro"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={SYRIUSS3PROPDF} />
+
+                            </div>
+                            <div className="cards-manuals-3">
+                                <CardsDashboard
+                                    image={SYRIUSS3MAX}
+                                    title="Syrius S3 Max"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={SYRIUSS3MAXPDF} />
                                 <CardsDashboard
                                     image={ERISS2FACEID}
                                     title="Eris S2 Face Id"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={ERISPDF} />
                                 <CardsDashboard
-                                    image={S2QR}
-                                    title="Controladora de Acesso S2 QR"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    image={VEGAFACEID}
+                                    title="Vega Face Id"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={VEGA} />
+                                <CardsDashboard
+                                    image={MARSIMG}
+                                    title="Mars S2 Pro"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MARS} />
+
+
+
                             </div>
-                            <div className="cards-manuals-3">
+                            <div className="cards-manuals-4">
+                                <CardsDashboard
+                                    image={NEXUSIMG}
+                                    title="Nexus S1"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={NEXUS} />
+                                <CardsDashboard
+                                    image={NEXUSIMG}
+                                    title="Nexus S1 Pro"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={NEXUS} />
+                                <CardsDashboard
+                                    image={DALASS2PRO}
+                                    title="Dallas S2 Pro"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={DALLASS2PROPDF} />
+                                <CardsDashboard
+                                    image={DALASS3PRO}
+                                    title="Dallas S3 Pro"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={DALLASS3PROPDF} />
+
+                            </div>
+
+                            <div className="cards-manuals-5">
+                                <CardsDashboard
+                                    image={DOMOUSS1}
+                                    title="Domus S1"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={DOMUSS1PDF} />
+                                <CardsDashboard
+                                    image={DOMOUSS1}
+                                    title="Domus S1 Pro"
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={DOMUSS1PDF} />
+                                <CardsDashboard
+                                    image={LYRAPRO}
+                                    title="Lyra Pro"
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={LYRAPDF}/>
+            
                                 <CardsDashboard
                                     image={S2PRO}
                                     title="Controladora de Acesso S2 Pro"
                                     desc="Clique aqui para baixar o manual!"
+                                    pdf={PROS2PDF}
                                 />
+                            </div>
+                            <div className="cards-manuals-6">
+
+                                <CardsDashboard
+                                    image={S2QR}
+                                    title="Controladora de Acesso S2 QR"
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={QRPDF}/>
                                 <CardsDashboard
                                     image={S2FACEID}
                                     title="Controladora de Acesso S2 Face Id"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!" 
+                                    pdf={FACEIDPDF}/>
                             </div>
                         </div>
                     </div>
@@ -394,7 +510,7 @@ function Manuals() {
                                     image={F23}
                                     title="Jaspe"
                                     desc="Clique aqui para baixar o manual!" />
-                                    <CardsDashboard
+                                <CardsDashboard
                                     image={F24}
                                     title="Jade Max"
                                     desc="Clique aqui para baixar o manual!" />
@@ -412,7 +528,7 @@ function Manuals() {
                                     image={F27}
                                     title="Tarjeta"
                                     desc="Clique aqui para baixar o manual!" />
-                                    <CardsDashboard
+                                <CardsDashboard
                                     image={F28}
                                     title="Prendedor para Veneziana"
                                     desc="Clique aqui para baixar o manual!" />

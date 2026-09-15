@@ -1,35 +1,78 @@
-import "../styles/CardsDashboard.css";
+import "../styles/CardsDashboard.css"
 
-import { CircleArrowRight } from "reicon-react";
-import { useNavigate } from "react-router-dom";
+import { CircleArrowRight } from "reicon-react"
 
-function CardsDashboard({ image, title, desc, route, pdf }) {
+import { useNavigate } from "react-router-dom"
 
-    const navigate = useNavigate();
+
+function CardsDashboard({
+    image,
+    title,
+    desc,
+    route,
+    pdf,
+    onClick
+}) {
+
+    const navigate = useNavigate()
+
 
     function handleClick() {
 
-        // Se tiver PDF, baixa o arquivo
-        if (pdf) {
+        // ================================
+        // FUNÇÃO PERSONALIZADA
+        // ================================
 
-            const link = document.createElement("a");
+        // Mantém compatibilidade com os cards
+        // antigos que utilizam onClick.
+        if (onClick) {
 
-            link.href = pdf;
-            link.download = `${title}.pdf`;
+            onClick()
 
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            return;
+            return
         }
 
-        // Se tiver rota, navega para a página
+
+        // ================================
+        // PDF
+        // ================================
+
+        if (pdf) {
+
+            const link =
+                document.createElement("a")
+
+            link.href = pdf
+
+            link.download =
+                `${title}.pdf`
+
+            document.body.appendChild(
+                link
+            )
+
+            link.click()
+
+            document.body.removeChild(
+                link
+            )
+
+            return
+        }
+
+
+        // ================================
+        // ROTA
+        // ================================
+
         if (route) {
-            navigate(route);
+
+            navigate(route)
+
         }
 
     }
+
 
     return (
 
@@ -39,7 +82,8 @@ function CardsDashboard({ image, title, desc, route, pdf }) {
             onClick={handleClick}
         >
 
-            {/* Ícone do card */}
+            {/* Ícone */}
+
             <div className="card-image">
 
                 <img
@@ -51,6 +95,7 @@ function CardsDashboard({ image, title, desc, route, pdf }) {
 
 
             {/* Textos */}
+
             <div className="content-text-cards">
 
                 <h3>
@@ -64,7 +109,8 @@ function CardsDashboard({ image, title, desc, route, pdf }) {
             </div>
 
 
-            {/* Seta lateral */}
+            {/* Seta */}
+
             <div className="card-arrow">
 
                 <CircleArrowRight />
@@ -74,6 +120,8 @@ function CardsDashboard({ image, title, desc, route, pdf }) {
         </button>
 
     )
+
 }
 
-export default CardsDashboard;
+
+export default CardsDashboard
