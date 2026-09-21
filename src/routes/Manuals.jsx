@@ -8,6 +8,7 @@ import CardsDashboard from "../components/CardsDashboard"
 import Footer from "../components/Footer"
 
 import "../styles/Dashboard.css"
+import "../styles/Videos.css"
 
 // Importando imagens de produtos digitais
 import VENUSS2 from "../assets/venuss2pro.png"
@@ -118,21 +119,31 @@ function Manuals() {
             <Header />
 
 
-            {/* Mesmo posicionamento usado no Dashboard */}
-            <div className="dashboard-profile">
+            {/* HERO */}
 
-                <UserProfileButton
-                    onClick={() => setProfileOpen(true)}
-                />
+            <section className="videos-hero-area">
 
-            </div>
+                <div className="videos-profile">
+
+                    <UserProfileButton
+                        onClick={() => setProfileOpen(true)}
+                    />
+
+                </div>
 
 
-            <Hero
-                one=""
-                two="Manuais de Produtos"
-                three=""
-            />
+                <div className="videos-hero-content">
+
+                    <Hero
+                        variant="dashboard"
+                        one="Conteúdo em Vídeo"
+                        two="Vídeos Educativos"
+                        three="Aprenda através de vídeos práticos sobre instalação, configuração e utilização dos produtos Synter."
+                    />
+
+                </div>
+
+            </section>
 
 
             <div>
@@ -257,9 +268,9 @@ function Manuals() {
                                 <CardsDashboard
                                     image={LYRAPRO}
                                     title="Lyra Pro"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={LYRAPDF}/>
-            
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={LYRAPDF} />
+
                                 <CardsDashboard
                                     image={S2PRO}
                                     title="Controladora de Acesso S2 Pro"
@@ -272,13 +283,13 @@ function Manuals() {
                                 <CardsDashboard
                                     image={S2QR}
                                     title="Controladora de Acesso S2 QR"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={QRPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={QRPDF} />
                                 <CardsDashboard
                                     image={S2FACEID}
                                     title="Controladora de Acesso S2 Face Id"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={FACEIDPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={FACEIDPDF} />
                             </div>
                         </div>
                     </div>
@@ -294,23 +305,23 @@ function Manuals() {
                                 <CardsDashboard
                                     image={STILLUS}
                                     title="Stillus"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={MECPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF} />
                                 <CardsDashboard
                                     image={STARMAX}
                                     title="Star Max"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={MECPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF} />
                                 <CardsDashboard
                                     image={STAR}
                                     title="Star"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={MECPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF} />
                                 <CardsDashboard
                                     image={POLOMAX}
                                     title="Polo Max"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={MECPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF} />
                             </div>
                             <div className="cards-manuals-2">
                                 <CardsDashboard
@@ -328,57 +339,57 @@ function Manuals() {
                                 <CardsDashboard
                                     image={NAVIS}
                                     title="Navis"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={MECPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF} />
                                 <CardsDashboard
                                     image={MARINEII}
                                     title="Marine II"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={MECPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF} />
                             </div>
                             <div className="cards-manuals-3">
                                 <CardsDashboard
                                     image={MARINE}
                                     title="Marine"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={MECPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF} />
                                 <CardsDashboard
                                     image={LUCK}
                                     title="Luck"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={MECPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF} />
                                 <CardsDashboard
                                     image={GOL}
                                     title="Gol"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={MECPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF} />
                                 <CardsDashboard
                                     image={GLORIAN}
                                     title="Glorian"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={MECPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF} />
                             </div>
                             <div className="cards-manuals-4">
                                 <CardsDashboard
                                     image={CRISPUSMAX}
                                     title="Crispus Max"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={MECPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF} />
                                 <CardsDashboard
                                     image={CHAMPION}
                                     title="Champion"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={MECPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF} />
                                 <CardsDashboard
                                     image={CECI}
                                     title="Ceci"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={MECPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF} />
                                 <CardsDashboard
                                     image={ACQUAMAX}
                                     title="Acqua Max"
-                                    desc="Clique aqui para baixar o manual!" 
-                                    pdf={MECPDF}/>
+                                    desc="Clique aqui para baixar o manual!"
+                                    pdf={MECPDF} />
                             </div>
                             <div className="cards-manuals-5">
                                 <CardsDashboard

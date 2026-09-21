@@ -11,6 +11,8 @@ import Dashboard from "./pages/Dashboard.jsx"
 import ProtectedRoute from "./components/ProtectedRoute.jsx"
 import PublicRoute from "./components/PublicRoute.jsx"
 
+import Videos from "./pages/Videos.jsx"
+
 
 function App() {
 
@@ -121,14 +123,14 @@ function App() {
         }
       />
 
-      {/* <Route
-        path="/visita-tecnica"
+      { <Route
+        path="/videos"
         element={
           <ProtectedRoute>
-            <TechnicalVisit />
+            <Videos />
           </ProtectedRoute>
         }
-      /> */}
+      /> }
 
     </Routes>
 
