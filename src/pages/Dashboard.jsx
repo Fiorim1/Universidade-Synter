@@ -110,6 +110,7 @@ function Dashboard() {
             image={TabelaIcon}
             title="Tabela de Preços"
             desc="Acesse nossa tabela de preços"
+            onClick={() => navigate("/tabela-precos")}
           />
 
 

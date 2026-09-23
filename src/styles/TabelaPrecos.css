@@ -1,0 +1,1175 @@
+/* ======================================== */
+/* PÁGINA TABELA DE PREÇOS                  */
+/* ======================================== */
+
+.tabela-precos-page {
+    width: 100%;
+    min-height: 100vh;
+
+    background: #080808;
+    color: #ffffff;
+
+    overflow-x: hidden;
+}
+
+
+/* ======================================== */
+/* HERO                                     */
+/* ======================================== */
+
+.tabela-precos-hero-area {
+    position: relative;
+
+    min-height: 360px;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(5, 5, 5, 0.98) 0%,
+            rgba(7, 7, 7, 0.95) 42%,
+            rgba(9, 9, 9, 0.72) 68%,
+            rgba(0, 0, 0, 0.38) 100%
+        ),
+        url("../assets/dashboard-bg.png");
+
+    background-size: cover;
+    background-position: center right;
+    background-repeat: no-repeat;
+
+    background-blend-mode: multiply;
+}
+
+
+/* ======================================== */
+/* CAMADA DO HERO                           */
+/* ======================================== */
+
+.tabela-precos-hero-area::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.05),
+            rgba(0, 0, 0, 0.28)
+        );
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* ======================================== */
+/* PERFIL                                   */
+/* ======================================== */
+
+.tabela-precos-profile {
+    position: absolute;
+
+    top: 28px;
+    right: 60px;
+
+    z-index: 5;
+}
+
+
+/* ======================================== */
+/* CONTEÚDO DO HERO                         */
+/* ======================================== */
+
+.tabela-precos-hero-content {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding: 75px 60px 65px;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* ÁREA PRINCIPAL                           */
+/* ======================================== */
+
+.tabela-precos-content {
+    position: relative;
+
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding: 45px 60px 90px;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* TOPO DA PÁGINA                           */
+/* ======================================== */
+
+.tabela-precos-topo {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 30px;
+}
+
+
+.tabela-precos-titulo-area {
+    display: flex;
+    flex-direction: column;
+
+    gap: 13px;
+}
+
+
+/* ======================================== */
+/* TÍTULO DE SEÇÃO                          */
+/* ======================================== */
+
+.tabela-precos-section-title {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.tabela-precos-section-title h4 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 3px;
+}
+
+
+.tabela-precos-section-bar {
+    width: 3px;
+    height: 20px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 8px
+        rgba(255, 255, 255, 0.18);
+}
+
+
+/* ======================================== */
+/* INFORMAÇÕES DA TABELA                    */
+/* ======================================== */
+
+.tabela-precos-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+
+.tabela-precos-info span {
+    color: #ffffff;
+
+    font-size: 23px;
+    font-weight: 600;
+
+    letter-spacing: -0.5px;
+}
+
+
+.tabela-precos-info small {
+    color: #777777;
+
+    font-size: 12px;
+}
+
+
+/* ======================================== */
+/* CONTADOR                                 */
+/* ======================================== */
+
+.tabela-precos-total {
+    min-width: 105px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    padding: 15px 18px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.10);
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #111111,
+            #0a0a0a
+        );
+}
+
+
+.tabela-precos-total span {
+    color: #ffffff;
+
+    font-size: 28px;
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+
+.tabela-precos-total small {
+    margin-top: 5px;
+
+    color: #777777;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+
+/* ======================================== */
+/* FILTROS                                  */
+/* ======================================== */
+
+.tabela-precos-filtros {
+    width: 100%;
+
+    margin-bottom: 18px;
+}
+
+
+/* ======================================== */
+/* CAMPO DE PESQUISA                        */
+/* ======================================== */
+
+.tabela-precos-pesquisa {
+    position: relative;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.11);
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #111111,
+            #0b0b0b
+        );
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.tabela-precos-pesquisa:focus-within {
+    border-color:
+        rgba(255, 255, 255, 0.35);
+
+    background: #101010;
+}
+
+
+.tabela-precos-search-icon {
+    width: 55px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #777777;
+
+    font-size: 24px;
+}
+
+
+.tabela-precos-pesquisa input {
+    width: 100%;
+    height: 58px;
+
+    padding: 0 15px 0 0;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+}
+
+
+.tabela-precos-pesquisa input::placeholder {
+    color: #606060;
+}
+
+
+/* ======================================== */
+/* LIMPAR PESQUISA                          */
+/* ======================================== */
+
+.tabela-precos-limpar-pesquisa {
+    width: 45px;
+    height: 45px;
+
+    margin-right: 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: #777777;
+
+    font-size: 25px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.tabela-precos-limpar-pesquisa:hover {
+    color: #ffffff;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+}
+
+
+/* ======================================== */
+/* CATEGORIAS                               */
+/* ======================================== */
+
+.tabela-precos-categorias {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 45px;
+
+    padding-bottom: 5px;
+
+    overflow-x: auto;
+
+    scrollbar-width: thin;
+    scrollbar-color: #333333 transparent;
+}
+
+
+.tabela-precos-categorias::-webkit-scrollbar {
+    height: 5px;
+}
+
+
+.tabela-precos-categorias::-webkit-scrollbar-thumb {
+    background: #333333;
+
+    border-radius: 10px;
+}
+
+
+/* ======================================== */
+/* BOTÕES DAS CATEGORIAS                    */
+/* ======================================== */
+
+.categoria-button {
+    min-height: 39px;
+
+    padding: 0 17px;
+
+    flex-shrink: 0;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.10);
+
+    border-radius: 9px;
+
+    background: #0d0d0d;
+
+    color: #777777;
+
+    font-family: inherit;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    letter-spacing: 0.4px;
+
+    cursor: pointer;
+
+    transition:
+        0.2s ease;
+}
+
+
+.categoria-button:hover {
+    color: #ffffff;
+
+    border-color:
+        rgba(255, 255, 255, 0.22);
+
+    background: #131313;
+}
+
+
+.categoria-button-active {
+    background: #ffffff;
+
+    border-color: #ffffff;
+
+    color: #080808;
+}
+
+
+.categoria-button-active:hover {
+    background: #e9e9e9;
+
+    color: #080808;
+}
+
+
+/* ======================================== */
+/* RESULTADOS                               */
+/* ======================================== */
+
+.tabela-precos-resultados {
+    display: flex;
+    flex-direction: column;
+
+    gap: 55px;
+}
+
+
+/* ======================================== */
+/* CATEGORIA                                */
+/* ======================================== */
+
+.tabela-precos-categoria {
+    width: 100%;
+}
+
+
+/* ======================================== */
+/* CABEÇALHO DA CATEGORIA                   */
+/* ======================================== */
+
+.tabela-precos-categoria-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 18px;
+}
+
+
+.tabela-precos-categoria-titulo {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.tabela-precos-categoria-titulo h2 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 20px;
+    font-weight: 600;
+
+    letter-spacing: -0.4px;
+}
+
+
+.tabela-precos-categoria-header p {
+    margin:
+        8px 0 0
+        15px;
+
+    color: #686868;
+
+    font-size: 11px;
+}
+
+
+/* ======================================== */
+/* CONTAINER DA TABELA                      */
+/* ======================================== */
+
+.tabela-precos-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.10);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0d0d0d,
+            #090909
+        );
+
+    scrollbar-width: thin;
+    scrollbar-color: #3a3a3a #111111;
+}
+
+
+.tabela-precos-table-wrapper::-webkit-scrollbar {
+    height: 7px;
+}
+
+
+.tabela-precos-table-wrapper::-webkit-scrollbar-track {
+    background: #111111;
+}
+
+
+.tabela-precos-table-wrapper::-webkit-scrollbar-thumb {
+    background: #383838;
+
+    border-radius: 20px;
+}
+
+
+/* ======================================== */
+/* TABELA                                   */
+/* ======================================== */
+
+.tabela-precos-table {
+    width: 100%;
+
+    min-width: 1050px;
+
+    border-collapse: collapse;
+
+    color: #ffffff;
+}
+
+
+/* ======================================== */
+/* CABEÇALHO DA TABELA                      */
+/* ======================================== */
+
+.tabela-precos-table thead {
+    background: #121212;
+}
+
+
+.tabela-precos-table th {
+    padding:
+        17px 16px;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.10);
+
+    color: #969696;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    line-height: 1.4;
+
+    letter-spacing: 0.8px;
+
+    text-align: left;
+    text-transform: uppercase;
+
+    white-space: nowrap;
+}
+
+
+/* ======================================== */
+/* CÉLULAS                                  */
+/* ======================================== */
+
+.tabela-precos-table td {
+    padding:
+        17px 16px;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.055);
+
+    color: #b9b9b9;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+    vertical-align: middle;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+/* ======================================== */
+/* LINHA DA TABELA                          */
+/* ======================================== */
+
+.tabela-precos-table tbody tr {
+    transition:
+        background 0.2s ease;
+}
+
+
+.tabela-precos-table tbody tr:hover {
+    background:
+        rgba(255, 255, 255, 0.035);
+}
+
+
+.tabela-precos-table tbody tr:hover td {
+    color: #ffffff;
+}
+
+
+.tabela-precos-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ======================================== */
+/* PRIMEIRA COLUNA                          */
+/* ======================================== */
+
+.tabela-precos-table td:first-child {
+    color: #ffffff;
+
+    font-weight: 600;
+}
+
+
+/* ======================================== */
+/* PREÇOS                                   */
+/* ======================================== */
+
+.tabela-precos-valor {
+    color: #ffffff !important;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+    text-align: center;
+}
+
+
+/* ======================================== */
+/* OBSERVAÇÕES                              */
+/* ======================================== */
+
+.tabela-precos-observacoes {
+    margin-top: 15px;
+
+    padding: 22px 24px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 12px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+
+/* ======================================== */
+/* TÍTULO DAS OBSERVAÇÕES                   */
+/* ======================================== */
+
+.tabela-precos-observacoes-title {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    margin-bottom: 14px;
+}
+
+
+.tabela-precos-observacoes-title span {
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.20);
+
+    border-radius: 50%;
+
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+.tabela-precos-observacoes-title h4 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    letter-spacing: 1.2px;
+
+    text-transform: uppercase;
+}
+
+
+/* ======================================== */
+/* LISTA DAS OBSERVAÇÕES                    */
+/* ======================================== */
+
+.tabela-precos-observacoes ul {
+    margin: 0;
+
+    padding-left: 38px;
+}
+
+
+.tabela-precos-observacoes li {
+    margin:
+        6px 0;
+
+    color: #777777;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+
+/* ======================================== */
+/* NENHUM RESULTADO                         */
+/* ======================================== */
+
+.tabela-precos-vazio {
+    width: 100%;
+
+    min-height: 330px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 50px 25px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0e0e0e,
+            #090909
+        );
+
+    text-align: center;
+}
+
+
+/* ======================================== */
+/* ÍCONE VAZIO                              */
+/* ======================================== */
+
+.tabela-precos-vazio-icon {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.16);
+
+    border-radius: 50%;
+
+    color: #7d7d7d;
+
+    font-size: 29px;
+}
+
+
+.tabela-precos-vazio h3 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 19px;
+    font-weight: 600;
+}
+
+
+.tabela-precos-vazio p {
+    max-width: 400px;
+
+    margin:
+        10px 0 20px;
+
+    color: #737373;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* ======================================== */
+/* BOTÃO LIMPAR FILTROS                     */
+/* ======================================== */
+
+.tabela-precos-vazio button {
+    min-height: 41px;
+
+    padding:
+        0 20px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #080808;
+
+    font-family: inherit;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.tabela-precos-vazio button:hover {
+    background: #dddddd;
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* ======================================== */
+/* EFEITO DE FUNDO                          */
+/* ======================================== */
+
+.tabela-precos-page::before {
+    content: "";
+
+    position: fixed;
+
+    width: 700px;
+    height: 700px;
+
+    right: -350px;
+    bottom: -350px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    filter: blur(150px);
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* ======================================== */
+/* RESPONSIVO - TABLET                      */
+/* ======================================== */
+
+@media (max-width: 1050px) {
+
+    .tabela-precos-hero-content {
+        padding:
+            70px 35px
+            60px;
+    }
+
+
+    .tabela-precos-content {
+        padding:
+            40px 35px
+            70px;
+    }
+
+
+    .tabela-precos-profile {
+        right: 35px;
+    }
+
+
+    .tabela-precos-topo {
+        align-items: flex-start;
+    }
+
+
+    .tabela-precos-table {
+        min-width: 950px;
+    }
+
+}
+
+
+/* ======================================== */
+/* RESPONSIVO - MOBILE                      */
+/* ======================================== */
+
+@media (max-width: 750px) {
+
+    .tabela-precos-hero-area {
+        min-height: auto;
+
+        background-position:
+            70% center;
+    }
+
+
+    .tabela-precos-profile {
+        position: relative;
+
+        top: auto;
+        right: auto;
+
+        display: flex;
+        justify-content: flex-end;
+
+        padding:
+            20px 20px 0;
+
+        z-index: 5;
+    }
+
+
+    .tabela-precos-hero-content {
+        padding:
+            35px 25px
+            55px;
+    }
+
+
+    .tabela-precos-content {
+        padding:
+            32px 25px
+            60px;
+    }
+
+
+    /* TOPO */
+
+    .tabela-precos-topo {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 20px;
+    }
+
+
+    .tabela-precos-total {
+        width: fit-content;
+
+        align-items: flex-start;
+    }
+
+
+    /* PESQUISA */
+
+    .tabela-precos-pesquisa input {
+        height: 54px;
+
+        font-size: 13px;
+    }
+
+
+    /* CATEGORIAS */
+
+    .tabela-precos-categorias {
+        margin-bottom: 38px;
+    }
+
+
+    /* TABELA */
+
+    .tabela-precos-table {
+        min-width: 900px;
+    }
+
+
+    .tabela-precos-table th {
+        padding:
+            15px 14px;
+
+        font-size: 9px;
+    }
+
+
+    .tabela-precos-table td {
+        padding:
+            15px 14px;
+
+        font-size: 10px;
+    }
+
+
+    /* OBSERVAÇÕES */
+
+    .tabela-precos-observacoes {
+        padding:
+            20px;
+    }
+
+}
+
+
+/* ======================================== */
+/* RESPONSIVO - CELULAR PEQUENO             */
+/* ======================================== */
+
+@media (max-width: 500px) {
+
+    .tabela-precos-hero-content {
+        padding:
+            30px 20px
+            45px;
+    }
+
+
+    .tabela-precos-content {
+        padding:
+            28px 18px
+            50px;
+    }
+
+
+    .tabela-precos-profile {
+        padding:
+            18px 18px 0;
+    }
+
+
+    .tabela-precos-info span {
+        font-size: 19px;
+    }
+
+
+    .tabela-precos-section-title h4 {
+        font-size: 11px;
+
+        letter-spacing: 2px;
+    }
+
+
+    .tabela-precos-categoria-titulo h2 {
+        font-size: 18px;
+    }
+
+
+    .categoria-button {
+        min-height: 37px;
+
+        padding:
+            0 14px;
+
+        font-size: 10px;
+    }
+
+
+    .tabela-precos-search-icon {
+        width: 48px;
+    }
+
+
+    .tabela-precos-pesquisa input {
+        font-size: 12px;
+    }
+
+
+    .tabela-precos-vazio {
+        min-height: 280px;
+    }
+
+}

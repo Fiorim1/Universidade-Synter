@@ -1,17 +1,18 @@
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route } from "react-router-dom";
 
-import Login from "./components/Login.jsx"
-import Register from "./components/Register.jsx"
-import ForgotPassword from "./components/ForgotPassword.jsx"
-import UpdatePassword from "./components/UpdatePassword.jsx"
-import Manuals from "./routes/Manuals.jsx"
+import Login from "./components/Login.jsx";
+import Register from "./components/Register.jsx";
+import ForgotPassword from "./components/ForgotPassword.jsx";
+import UpdatePassword from "./components/UpdatePassword.jsx";
 
-import Dashboard from "./pages/Dashboard.jsx"
+import Manuals from "./routes/Manuals.jsx";
 
-import ProtectedRoute from "./components/ProtectedRoute.jsx"
-import PublicRoute from "./components/PublicRoute.jsx"
+import Dashboard from "./pages/Dashboard.jsx";
+import Videos from "./pages/Videos.jsx";
+import TabelaPrecos from "./pages/TabelaPrecos.jsx";
 
-import Videos from "./pages/Videos.jsx"
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import PublicRoute from "./components/PublicRoute.jsx";
 
 
 function App() {
@@ -20,17 +21,11 @@ function App() {
 
     <Routes>
 
-      {/* 
-                PÁGINA INICIAL DO SISTEMA
 
-                Ao acessar:
-                localhost:5173/
+      {/* ======================================== */}
+      {/* LOGIN                                    */}
+      {/* ======================================== */}
 
-                o usuário verá o Login.
-
-                Se já estiver autenticado,
-                PublicRoute envia para /dashboard.
-            */}
       <Route
         path="/"
         element={
@@ -41,10 +36,6 @@ function App() {
       />
 
 
-      {/* 
-                Também permite acessar o login
-                através de /login.
-            */}
       <Route
         path="/login"
         element={
@@ -55,7 +46,10 @@ function App() {
       />
 
 
-      {/* Cadastro de usuário */}
+      {/* ======================================== */}
+      {/* CADASTRO                                 */}
+      {/* ======================================== */}
+
       <Route
         path="/register"
         element={
@@ -66,7 +60,10 @@ function App() {
       />
 
 
-      {/* Recuperação de senha */}
+      {/* ======================================== */}
+      {/* RECUPERAÇÃO DE SENHA                     */}
+      {/* ======================================== */}
+
       <Route
         path="/forgot-password"
         element={
@@ -77,25 +74,22 @@ function App() {
       />
 
 
-      {/* 
-                Nova senha.
+      {/* ======================================== */}
+      {/* NOVA SENHA                               */}
+      {/* ======================================== */}
 
-                NÃO usamos PublicRoute aqui porque
-                o link de recuperação do Supabase
-                cria uma sessão temporária.
-            */}
       <Route
         path="/update-password"
-        element={<UpdatePassword />}
+        element={
+          <UpdatePassword />
+        }
       />
 
 
-      {/* 
-                DASHBOARD PROTEGIDO
+      {/* ======================================== */}
+      {/* DASHBOARD                                */}
+      {/* ======================================== */}
 
-                Só entra se existir uma
-                sessão válida no Supabase.
-            */}
       <Route
         path="/dashboard"
         element={
@@ -104,6 +98,11 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+
+      {/* ======================================== */}
+      {/* MANUAIS                                  */}
+      {/* ======================================== */}
 
       <Route
         path="/manuals"
@@ -115,27 +114,53 @@ function App() {
       />
 
 
-      {/* Página inexistente */}
-      <Route
-        path="*"
-        element={
-          <h1>Página não encontrada</h1>
-        }
-      />
+      {/* ======================================== */}
+      {/* VÍDEOS                                   */}
+      {/* ======================================== */}
 
-      { <Route
+      <Route
         path="/videos"
         element={
           <ProtectedRoute>
             <Videos />
           </ProtectedRoute>
         }
-      /> }
+      />
+
+
+      {/* ======================================== */}
+      {/* TABELA DE PREÇOS                         */}
+      {/* ======================================== */}
+
+      <Route
+        path="/tabela-precos"
+        element={
+          <ProtectedRoute>
+            <TabelaPrecos />
+          </ProtectedRoute>
+        }
+      />
+
+
+      {/* ======================================== */}
+      {/* PÁGINA NÃO ENCONTRADA                    */}
+      {/* ======================================== */}
+
+      <Route
+        path="*"
+        element={
+          <h1>
+            Página não encontrada
+          </h1>
+        }
+      />
+
 
     </Routes>
 
-  )
+  );
 
 }
 
-export default App
+
+export default App;
