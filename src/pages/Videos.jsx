@@ -7,25 +7,42 @@ import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 import VideoCard from "../components/VideoCard";
 
+
+// ===============================
+// VÍDEOS
+// ===============================
+
 import videoReversao from "../videos/Syrius_S2 _Reversão_do_lado_de_abertura.MOV";
 import videoResetS1 from "../videos/Reset_Syrius_S1_Pro.mp4";
 import videoResetS2 from "../videos/Linha_Syrius_s2_Reset.mp4";
 import videoRetiradaPortaS2 from "../videos/Linha_Syrius_s2_Retirada_da_Porta.mp4";
 import s2cadastroApp from "../videos/Linha-Syrius-s2-Cadastro-no-app.mp4";
 import trocaPlacaBateriaS1 from "../videos/Linha-S1-Troca-de-placa-da- bateria.mp4";
+
 import erroPortaAbertaS1 from "../videos/Linha-S1-Erro-porta-sempre-aberta.MP4";
+
 import cadastroVenusS3 from "../videos/Venus-S3-Cadastro.mp4";
+
 import cadastroMarsS2 from "../videos/Linha-Mars-S2-Cadastro.mp4";
 import resetMarsS2 from "../videos/Linha-Mars-S2-Reset.mp4";
+
 import trocaIdiomaS3 from "../videos/Venus-S3-Troca-De-Idioma.MP4";
 import trocaIdiomaS2 from "../videos/Venus-S2-Troca-De-Idioma.MP4";
+
 import marsTraseira from "../videos/Linha-Mars s2-retirada-da-porta-parte-traseira.mp4";
 import marsFrontal from "../videos/mars-s2-parte-frontal.mp4";
+
 import x1Reset from "../videos/Linha-X1-Reset.MP4";
 import x1ExcluirSenhaUser from "../videos/x1-excluir-usuario.MP4";
 import x1ConfigSom from "../videos/x1-config-som.MP4";
+
 import x1CadastroUser from "../videos/x1-cad-user.mp4";
 import x1CadastroAdm from "../videos/x1-cad-adm.mp4";
+
+
+// ===============================
+// CAPAS
+// ===============================
 
 import capaSyriusReversao from "../assets/SyriusS2-Reversao.png";
 import capaResetS1 from "../assets/caparesets1.png";
