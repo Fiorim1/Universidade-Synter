@@ -401,19 +401,15 @@ function Manuals() {
                                     title="Fechadura de Banheiro para Porta de Correr "
                                     desc="Clique aqui para baixar o manual!" />
                                 <CardsDashboard
-                                    image={FECPCORRER}
-                                    title="Fechadura de Banheiro para Porta de Correr "
-                                    desc="Clique aqui para baixar o manual!" />
-                                <CardsDashboard
                                     image={FECIPCORRER}
                                     title="Fechadura Interna para Porta de Correr "
                                     desc="Clique aqui para baixar o manual!" />
-                            </div>
-                            <div className="cards-manuals-6">
                                 <CardsDashboard
                                     image={FECPC}
                                     title="Fechadura para Porta de Correr"
                                     desc="Clique aqui para baixar o manual!" />
+                            </div>
+                            <div className="cards-manuals-6">
                                 <CardsDashboard
                                     image={CHAVED}
                                     title="Fechadura Porta de Correr c/ Chave Dobrável e Concha"

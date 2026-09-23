@@ -51,13 +51,13 @@ function Header({ profileContent }) {
                         className="header-phone"
                     >
 
-                        <span className="header-phone-icon">
+                        {/* <span className="header-phone-icon">
                             <Call />
                         </span>
 
                         <span>
                             (48) 3941-1192
-                        </span>
+                        </span> */}
 
                     </a>
 
