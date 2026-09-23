@@ -88,7 +88,7 @@ import F28 from "../assets/f28.png"
 // Importando os PDFs
 import VENUSS3PRO from "../assets/MANUAL_VENUS_S3_PRO.pdf"
 import VENUSS2PRO from "../assets/MANUAL_VENUS_S2_PRO.pdf"
-import MARS from "../assets/MANUAL_MARS.PDF"
+import MARS from "../assets/MANUAL_MARS.pdf"
 import NEXUS from "../assets/MANUAL_NEXUS.pdf"
 import VEGA from "../assets/MANUAL_VEGA.pdf"
 import SYRIUSS2PROPDF from "../assets/MANUAL_SYRIUS_S2_PRO.pdf"
