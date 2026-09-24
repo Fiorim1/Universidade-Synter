@@ -136,9 +136,9 @@ function Manuals() {
 
                     <Hero
                         variant="dashboard"
-                        one="Conteúdo em Vídeo"
-                        two="Vídeos Educativos"
-                        three="Aprenda através de vídeos práticos sobre instalação, configuração e utilização dos produtos Synter."
+                        one="Central de Documentação"
+                        two="Manuais Técnicos"
+                        three="Consulte e baixe manuais de instalação, configuração e utilização dos produtos Synter."
                     />
 
                 </div>
@@ -159,117 +159,155 @@ function Manuals() {
 
                         <div className="cards-manuals">
                             <div className="cards-manuals-1">
+
                                 <CardsDashboard
                                     image={VENUS3}
                                     title="Venus S3 PRO"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={VENUSS3PRO} />
+                                    pdf={VENUSS3PRO}
+                                />
+
                                 <CardsDashboard
                                     image={VENUSS2}
                                     title="Venus S2 PRO"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={VENUSS2PRO} />
+                                    pdf={VENUSS2PRO}
+                                />
+
                                 <CardsDashboard
                                     image={SYRIUSS1}
                                     title="Syrius S1"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={SYRIUSS1PRO} />
+                                    pdf={SYRIUSS1PRO}
+                                />
+
                                 <CardsDashboard
                                     image={SYRIUSS1}
                                     title="Syrius S1 Pro"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={SYRIUSS1PRO} />
-
+                                    pdf={SYRIUSS1PRO}
+                                />
 
                             </div>
+
                             <div className="cards-manuals-2">
+
                                 <CardsDashboard
                                     image={SYRIUSS2PRO}
                                     title="Syrius S2 Pro"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={SYRIUSS2PROPDF} />
+                                    pdf={SYRIUSS2PROPDF}
+                                />
+
                                 <CardsDashboard
                                     image={SYRIUSS2PRONEO}
                                     title="Syrius S2 Pro Neo"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={SYRIUSS2PRONEOPDF} />
+                                    pdf={SYRIUSS2PRONEOPDF}
+                                />
+
                                 <CardsDashboard
                                     image={SYRIUSS2MAX}
                                     title="Syrius S2 Max"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={SYRIUSS2MAXPDF} />
+                                    pdf={SYRIUSS2MAXPDF}
+                                />
+
                                 <CardsDashboard
                                     image={SYRIUSS3PRO}
                                     title="Syrius S3 Pro"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={SYRIUSS3PROPDF} />
+                                    pdf={SYRIUSS3PROPDF}
+                                />
 
                             </div>
+
                             <div className="cards-manuals-3">
+
                                 <CardsDashboard
                                     image={SYRIUSS3MAX}
                                     title="Syrius S3 Max"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={SYRIUSS3MAXPDF} />
+                                    pdf={SYRIUSS3MAXPDF}
+                                />
+
                                 <CardsDashboard
                                     image={ERISS2FACEID}
                                     title="Eris S2 Face Id"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={ERISPDF} />
+                                    pdf={ERISPDF}
+                                />
+
                                 <CardsDashboard
                                     image={VEGAFACEID}
                                     title="Vega Face Id"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={VEGA} />
+                                    pdf={VEGA}
+                                />
+
                                 <CardsDashboard
                                     image={MARSIMG}
                                     title="Mars S2 Pro"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MARS} />
-
-
+                                    pdf={MARS}
+                                />
 
                             </div>
+
                             <div className="cards-manuals-4">
+
                                 <CardsDashboard
                                     image={NEXUSIMG}
                                     title="Nexus S1"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={NEXUS} />
+                                    pdf={NEXUS}
+                                />
+
                                 <CardsDashboard
                                     image={NEXUSIMG}
                                     title="Nexus S1 Pro"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={NEXUS} />
+                                    pdf={NEXUS}
+                                />
+
                                 <CardsDashboard
                                     image={DALASS2PRO}
                                     title="Dallas S2 Pro"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={DALLASS2PROPDF} />
+                                    pdf={DALLASS2PROPDF}
+                                />
+
                                 <CardsDashboard
                                     image={DALASS3PRO}
                                     title="Dallas S3 Pro"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={DALLASS3PROPDF} />
+                                    pdf={DALLASS3PROPDF}
+                                />
 
                             </div>
 
                             <div className="cards-manuals-5">
+
                                 <CardsDashboard
                                     image={DOMOUSS1}
                                     title="Domus S1"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={DOMUSS1PDF} />
+                                    pdf={DOMUSS1PDF}
+                                />
+
                                 <CardsDashboard
                                     image={DOMOUSS1}
                                     title="Domus S1 Pro"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={DOMUSS1PDF} />
+                                    pdf={DOMUSS1PDF}
+                                />
+
                                 <CardsDashboard
                                     image={LYRAPRO}
                                     title="Lyra Pro"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={LYRAPDF} />
+                                    pdf={LYRAPDF}
+                                />
 
                                 <CardsDashboard
                                     image={S2PRO}
@@ -277,287 +315,440 @@ function Manuals() {
                                     desc="Clique aqui para baixar o manual!"
                                     pdf={PROS2PDF}
                                 />
+
                             </div>
+
                             <div className="cards-manuals-6">
 
                                 <CardsDashboard
                                     image={S2QR}
                                     title="Controladora de Acesso S2 QR"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={QRPDF} />
+                                    pdf={QRPDF}
+                                />
+
                                 <CardsDashboard
                                     image={S2FACEID}
                                     title="Controladora de Acesso S2 Face Id"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={FACEIDPDF} />
+                                    pdf={FACEIDPDF}
+                                />
+
                             </div>
+
                         </div>
+
                     </div>
 
+
                     <div className="mechanical-products">
+
                         <div className="title">
                             <h4>Produtos Mecânicos</h4>
                         </div>
+
                         <div className="line"></div>
 
+
                         <div className="cards-manuals">
+
                             <div className="cards-manuals-1">
+
                                 <CardsDashboard
                                     image={STILLUS}
                                     title="Stillus"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF} />
+                                    pdf={MECPDF}
+                                />
+
                                 <CardsDashboard
                                     image={STARMAX}
                                     title="Star Max"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF} />
+                                    pdf={MECPDF}
+                                />
+
                                 <CardsDashboard
                                     image={STAR}
                                     title="Star"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF} />
+                                    pdf={MECPDF}
+                                />
+
                                 <CardsDashboard
                                     image={POLOMAX}
                                     title="Polo Max"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF} />
+                                    pdf={MECPDF}
+                                />
+
                             </div>
+
+
                             <div className="cards-manuals-2">
+
                                 <CardsDashboard
                                     image={OLYMPIA}
                                     title="Olympia"
                                     desc="Clique aqui para baixar o manual!"
                                     pdf={MECPDF}
                                 />
+
                                 <CardsDashboard
                                     image={NAVISII}
                                     title="Navis II"
                                     desc="Clique aqui para baixar o manual!"
                                     pdf={MECPDF}
                                 />
+
                                 <CardsDashboard
                                     image={NAVIS}
                                     title="Navis"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF} />
+                                    pdf={MECPDF}
+                                />
+
                                 <CardsDashboard
                                     image={MARINEII}
                                     title="Marine II"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF} />
+                                    pdf={MECPDF}
+                                />
+
                             </div>
+
+
                             <div className="cards-manuals-3">
+
                                 <CardsDashboard
                                     image={MARINE}
                                     title="Marine"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF} />
+                                    pdf={MECPDF}
+                                />
+
                                 <CardsDashboard
                                     image={LUCK}
                                     title="Luck"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF} />
+                                    pdf={MECPDF}
+                                />
+
                                 <CardsDashboard
                                     image={GOL}
                                     title="Gol"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF} />
+                                    pdf={MECPDF}
+                                />
+
                                 <CardsDashboard
                                     image={GLORIAN}
                                     title="Glorian"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF} />
+                                    pdf={MECPDF}
+                                />
+
                             </div>
+
+
                             <div className="cards-manuals-4">
+
                                 <CardsDashboard
                                     image={CRISPUSMAX}
                                     title="Crispus Max"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF} />
+                                    pdf={MECPDF}
+                                />
+
                                 <CardsDashboard
                                     image={CHAMPION}
                                     title="Champion"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF} />
+                                    pdf={MECPDF}
+                                />
+
                                 <CardsDashboard
                                     image={CECI}
                                     title="Ceci"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF} />
+                                    pdf={MECPDF}
+                                />
+
                                 <CardsDashboard
                                     image={ACQUAMAX}
                                     title="Acqua Max"
                                     desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF} />
+                                    pdf={MECPDF}
+                                />
+
                             </div>
+
+
                             <div className="cards-manuals-5">
+
                                 <CardsDashboard
                                     image={BARRAAPOIO}
                                     title="Barra de Apoio"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={FECPCORRER}
                                     title="Fechadura de Banheiro para Porta de Correr "
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={FECIPCORRER}
                                     title="Fechadura Interna para Porta de Correr "
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={FECPC}
                                     title="Fechadura para Porta de Correr"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                             </div>
+
+
                             <div className="cards-manuals-6">
+
                                 <CardsDashboard
                                     image={CHAVED}
                                     title="Fechadura Porta de Correr c/ Chave Dobrável e Concha"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={FECROLETE}
                                     title="Fechadura Rolete "
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                             </div>
+
                         </div>
+
                     </div>
 
+
                     <div className="ironwork">
+
                         <div className="title">
                             <h4>Ferragens</h4>
                         </div>
+
                         <div className="line"></div>
 
+
                         <div className="cards-manuals">
+
                             <div className="cards-manuals-1">
+
                                 <CardsDashboard
                                     image={F1}
                                     title="Prendedor para Porta Magnético (fixação no piso)"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F2}
                                     title="Prendedor para Porta Magnético (fixação no piso ou parede)"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F3}
                                     title="Porta Cadeado"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F4}
                                     title="Números (fixação com parafuso)"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                             </div>
+
+
                             <div className="cards-manuals-2">
+
                                 <CardsDashboard
                                     image={F5}
                                     title="Números (fixação com dupla face)"
                                     desc="Clique aqui para baixar o manual!"
                                 />
+
                                 <CardsDashboard
                                     image={F6}
                                     title="Levantador de Guilhotina"
                                     desc="Clique aqui para baixar o manual!"
                                 />
+
                                 <CardsDashboard
                                     image={F7}
                                     title="Gancho de Rede"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F8}
                                     title="Fecho Porta Cadeado"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                             </div>
+
+
                             <div className="cards-manuals-3">
+
                                 <CardsDashboard
                                     image={F9}
                                     title="Fecho Pino Bola"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F10}
                                     title="Fecho para Janela de Correr"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F11}
                                     title="Fecho Fio Redondo"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F12}
                                     title="Fecho Fio Chato"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                             </div>
+
+
                             <div className="cards-manuals-4">
+
                                 <CardsDashboard
                                     image={F13}
                                     title="Fecho Concha Trava"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F14}
                                     title="Cremona"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F15}
                                     title="Concha Stand com Furo"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F16}
                                     title="Concha Stand"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                             </div>
+
+
                             <div className="cards-manuals-5">
+
                                 <CardsDashboard
                                     image={F17}
                                     title="Borboleta para Guilhotina"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F18}
                                     title="Amortecedor de Porta (fixação no piso)"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F19}
                                     title="Alça"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F20}
                                     title="Quartzo"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                             </div>
+
+
                             <div className="cards-manuals-6">
+
                                 <CardsDashboard
                                     image={F21}
                                     title="Opala"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F22}
                                     title="Jaspe (com furo)"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F23}
                                     title="Jaspe"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F24}
                                     title="Jade Max"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                             </div>
+
+
                             <div className="cards-manuals-7">
+
                                 <CardsDashboard
                                     image={F25}
                                     title="Jade"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F26}
                                     title="Vara de Cremona"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F27}
                                     title="Tarjeta"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                                 <CardsDashboard
                                     image={F28}
                                     title="Prendedor para Veneziana"
-                                    desc="Clique aqui para baixar o manual!" />
+                                    desc="Clique aqui para baixar o manual!"
+                                />
+
                             </div>
+
                         </div>
+
                     </div>
 
                 </div>
@@ -569,6 +760,7 @@ function Manuals() {
 
 
             {/* Modal do perfil */}
+
             {profileOpen && (
 
                 <Profile
