@@ -159,7 +159,8 @@ function Dashboard() {
           <CardsDashboard
             image={AstIcon}
             title="Assistência Técnica"
-            desc="Acesse documentos relacionados à assistência técnica"
+            desc="Consulte e baixe seus chamados de assistência técnica"
+            onClick={() => navigate("/assistencia-tecnica")}
           />
 
 
@@ -192,5 +193,6 @@ function Dashboard() {
   );
 
 }
+
 
 export default Dashboard;

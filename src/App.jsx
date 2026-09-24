@@ -10,6 +10,8 @@ import Manuals from "./routes/Manuals.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Videos from "./pages/Videos.jsx";
 import TabelaPrecos from "./pages/TabelaPrecos.jsx";
+import AssistenciaTecnica from "./pages/AssistenciaTecnica.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PublicRoute from "./components/PublicRoute.jsx";
@@ -143,15 +145,27 @@ function App() {
 
 
       {/* ======================================== */}
+      {/* ASSISTÊNCIA TÉCNICA                      */}
+      {/* ======================================== */}
+
+      <Route
+        path="/assistencia-tecnica"
+        element={
+          <ProtectedRoute>
+            <AssistenciaTecnica />
+          </ProtectedRoute>
+        }
+      />
+
+
+      {/* ======================================== */}
       {/* PÁGINA NÃO ENCONTRADA                    */}
       {/* ======================================== */}
 
       <Route
         path="*"
         element={
-          <h1>
-            Página não encontrada
-          </h1>
+          <NotFound />
         }
       />
 

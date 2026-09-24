@@ -12,32 +12,31 @@ import VideoCard from "../components/VideoCard";
 // VÍDEOS
 // ===============================
 
-import videoReversao from "../videos/Syrius_S2 _Reversão_do_lado_de_abertura.MOV";
-import videoResetS1 from "../videos/Reset_Syrius_S1_Pro.mp4";
-import videoResetS2 from "../videos/Linha_Syrius_s2_Reset.mp4";
-import videoRetiradaPortaS2 from "../videos/Linha_Syrius_s2_Retirada_da_Porta.mp4";
-import s2cadastroApp from "../videos/Linha-Syrius-s2-Cadastro-no-app.mp4";
-import trocaPlacaBateriaS1 from "../videos/Linha-S1-Troca-de-placa-da- bateria.mp4";
+const videoReversao = "https://www.youtube.com/embed/4Q1IiKGvS6M"
+const videoResetS1 = "https://youtube.com/shorts/TJSIOX6BK5I?feature=share"
+const videoResetS2 = "https://youtube.com/shorts/YtlF1Tv08sk"
+const videoRetiradaPortaS2 = "https://youtube.com/shorts/Dt3rD-t5v8g?feature=share"
+const s2cadastroApp = "https://youtube.com/shorts/C7pg0rwKtBA"
+const trocaPlacaBateriaS1 = "https://youtube.com/shorts/cCacriajKGg"
 
-import erroPortaAbertaS1 from "../videos/Linha-S1-Erro-porta-sempre-aberta.MP4";
+const erroPortaAbertaS1 = "https://youtube.com/shorts/EJBrtiv1ccI"
 
-import cadastroVenusS3 from "../videos/Venus-S3-Cadastro.mp4";
+const cadastroVenusS3 = "https://youtu.be/G-0pJ70Wupg"
 
-import cadastroMarsS2 from "../videos/Linha-Mars-S2-Cadastro.mp4";
-import resetMarsS2 from "../videos/Linha-Mars-S2-Reset.mp4";
+const cadastroMarsS2 = "https://youtube.com/shorts/_xmbUmvTooo"
+const resetMarsS2 = "https://youtube.com/shorts/zjBiI0PYUSg?feature=share"
 
-import trocaIdiomaS3 from "../videos/Venus-S3-Troca-De-Idioma.MP4";
-import trocaIdiomaS2 from "../videos/Venus-S2-Troca-De-Idioma.MP4";
+const trocaIdiomaS2 = "https://youtube.com/shorts/GO9NWpYvjBk"
 
-import marsTraseira from "../videos/Linha-Mars s2-retirada-da-porta-parte-traseira.mp4";
-import marsFrontal from "../videos/mars-s2-parte-frontal.mp4";
+const  marsTraseira = "https://youtube.com/shorts/BXjROLwm2-M"
+const marsFrontal = "https://youtube.com/shorts/aYo6oJCV63c"
 
-import x1Reset from "../videos/Linha-X1-Reset.MP4";
-import x1ExcluirSenhaUser from "../videos/x1-excluir-usuario.MP4";
-import x1ConfigSom from "../videos/x1-config-som.MP4";
+const x1Reset = "https://youtube.com/shorts/ON1WW4jUGn4"
+const x1ExcluirSenhaUser = "https://youtube.com/shorts/zL1le3iMcvg"
+const x1ConfigSom = "https://youtube.com/shorts/kFpSE6XCBgo"
 
-import x1CadastroUser from "../videos/x1-cad-user.mp4";
-import x1CadastroAdm from "../videos/x1-cad-adm.mp4";
+const x1CadastroUser = "https://youtube.com/shorts/-mPrd8eMDWg"
+const x1CadastroAdm = "https://youtube.com/shorts/s67_jfqKYHs"
 
 
 // ===============================
@@ -219,7 +218,7 @@ function Videos() {
               titulo="Syrius S2 - Retirada da Porta"
               descricao="Aprenda o passo a passo para realizar corretamente a retirada da fechadura da porta."
               video={videoRetiradaPortaS2}
-              capa={cadastroAppS2}
+              capa={capaRetiradaPortaS2}
             />
 
           )}
@@ -231,7 +230,7 @@ function Videos() {
               titulo="Syrius S2 - Cadastro no App"
               descricao="Aprenda como realizar corretamente o cadastro da fechadura da linha Syrius S2 no aplicativo Synter."
               video={s2cadastroApp}
-              capa={capaRetiradaPortaS2}
+              capa={cadastroAppS2}
             />
 
           )}
@@ -297,11 +296,11 @@ function Videos() {
           )}
 
 
-          {mostrarCard("Mars S2 - Troca de Idioma") && (
+          {mostrarCard("Mars S2 - Retirada da Porta Parte Traseira") && (
 
             <VideoCard
-              titulo="Mars S2 - Troca de Idioma"
-              descricao="Aprenda como realizar corretamente a troca de idioma na fechadura Venus S3."
+              titulo="Mars S2 - Retirada da Porta Parte Traseira"
+              descricao="Aprenda como realizar corretamente a retirada da parte traseira da fechadura Mars S2."
               video={marsTraseira}
               capa={marsS2Traseira}
             />
@@ -319,19 +318,6 @@ function Videos() {
             />
 
           )}
-
-
-          {mostrarCard("Venus S2 - Retirada da Porta Parte Traseira") && (
-
-            <VideoCard
-              titulo="Venus S2 - Retirada da Porta Parte Traseira"
-              descricao="Aprenda como realizar corretamente a retirada da parte traseira da porta na Venus S2."
-              video={trocaIdiomaS2}
-              capa={venuss2TrocaIdioma}
-            />
-
-          )}
-
 
           {mostrarCard("Venus S2 - Retirada da Porta Parte Frontal") && (
 

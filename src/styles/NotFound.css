@@ -1,0 +1,371 @@
+/* ==========================================
+   PÁGINA 404
+========================================== */
+
+.notfound-page {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #080808;
+
+  color: #ffffff;
+
+  overflow: hidden;
+}
+
+
+/* ==========================================
+   ÁREA PRINCIPAL
+========================================== */
+
+.notfound-main {
+  position: relative;
+
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 680px;
+
+  padding: 80px 30px;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #111111 0%,
+      #080808 45%,
+      #050505 100%
+    );
+}
+
+
+/* ==========================================
+   GRID DE FUNDO
+========================================== */
+
+.notfound-main::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  opacity: 0.25;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    45px 45px;
+
+  pointer-events: none;
+}
+
+
+/* ==========================================
+   GLOW
+========================================== */
+
+.notfound-glow {
+  position: absolute;
+
+  border-radius: 50%;
+
+  filter: blur(120px);
+
+  pointer-events: none;
+}
+
+
+.notfound-glow-one {
+  width: 420px;
+  height: 420px;
+
+  top: -180px;
+  left: -150px;
+
+  background:
+    rgba(255, 255, 255, 0.05);
+}
+
+
+.notfound-glow-two {
+  width: 500px;
+  height: 500px;
+
+  right: -220px;
+  bottom: -240px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+}
+
+
+/* ==========================================
+   CONTEÚDO
+========================================== */
+
+.notfound-content {
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+  max-width: 900px;
+
+  text-align: center;
+}
+
+
+/* ==========================================
+   404
+========================================== */
+
+.notfound-code-wrapper {
+  position: relative;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 28px;
+}
+
+
+.notfound-code {
+  position: relative;
+
+  z-index: 2;
+
+  font-size: clamp(
+    130px,
+    20vw,
+    260px
+  );
+
+  font-weight: 800;
+
+  line-height: 0.85;
+
+  letter-spacing: -12px;
+
+  color: transparent;
+
+  -webkit-text-stroke:
+    2px #ffffff;
+
+  text-shadow:
+    0 0 40px
+    rgba(255, 255, 255, 0.08);
+}
+
+
+.notfound-code-shadow {
+  position: absolute;
+
+  top: 12px;
+  left: 12px;
+
+  z-index: 1;
+
+  font-size: clamp(
+    130px,
+    20vw,
+    260px
+  );
+
+  font-weight: 800;
+
+  line-height: 0.85;
+
+  letter-spacing: -12px;
+
+  color: #101010;
+
+  user-select: none;
+}
+
+
+/* ==========================================
+   TEXTO
+========================================== */
+
+.notfound-content h1 {
+  margin: 0;
+
+  font-size: clamp(
+    30px,
+    5vw,
+    56px
+  );
+
+  font-weight: 700;
+
+  line-height: 1.1;
+
+  letter-spacing: -1.5px;
+}
+
+
+.notfound-content > p {
+  max-width: 620px;
+
+  margin:
+    22px auto
+    0;
+
+  color: #898989;
+
+  font-size: 14px;
+
+  line-height: 1.8;
+}
+
+
+/* ==========================================
+   STATUS
+========================================== */
+
+.notfound-system {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 15px;
+
+  max-width: 500px;
+
+  margin:
+    60px auto
+    0;
+}
+
+
+.notfound-system span {
+  width: 55px;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #3b3b3b
+    );
+}
+
+
+.notfound-system span:last-child {
+  background:
+    linear-gradient(
+      90deg,
+      #3b3b3b,
+      transparent
+    );
+}
+
+
+.notfound-system p {
+  margin: 0;
+
+  color: #555555;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 1.7px;
+
+  white-space: nowrap;
+}
+
+
+/* ==========================================
+   RESPONSIVO
+========================================== */
+
+@media (max-width: 900px) {
+
+  .notfound-main {
+    min-height: 620px;
+
+    padding:
+      70px 24px;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .notfound-main {
+    min-height: 560px;
+
+    padding:
+      55px 18px;
+  }
+
+
+  .notfound-code-wrapper {
+    margin-bottom: 24px;
+  }
+
+
+  .notfound-code {
+    letter-spacing: -7px;
+
+    -webkit-text-stroke:
+      1px #ffffff;
+  }
+
+
+  .notfound-code-shadow {
+    letter-spacing: -7px;
+  }
+
+
+  .notfound-content h1 {
+    font-size: 34px;
+  }
+
+
+  .notfound-content > p {
+    font-size: 13px;
+
+    line-height: 1.7;
+  }
+
+
+  .notfound-system {
+    gap: 10px;
+
+    margin-top: 45px;
+  }
+
+
+  .notfound-system span {
+    width: 25px;
+  }
+
+
+  .notfound-system p {
+    font-size: 8px;
+
+    letter-spacing: 1px;
+  }
+
+}

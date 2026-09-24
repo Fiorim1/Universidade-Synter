@@ -105,7 +105,7 @@ import LYRAPDF from "../assets/MANUAL_LYRA_PRO.pdf"
 import QRPDF from "../assets/MANUAL_CONTROLADORA_DE_ACESSO_S2_PRO_QR.pdf"
 import FACEIDPDF from "../assets/MANUAL_DE_INSTALAÇÃO_CONTROLADORA_DE_ACESSO_FACE_ID.pdf"
 import PROS2PDF from "../assets/PROS2.pdf"
-import MECPDF from "../assets/MANUAL_FECHADURAS_MECÂNICAS_2026.png"
+import MECPDF from "../assets/MANUAL_FECHADURAS_MECÂNICAS_2026.pdf"
 
 function Manuals() {
 
