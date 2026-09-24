@@ -12,7 +12,6 @@ import "../styles/TabelaPrecos.css";
 
 
 function TabelaPrecos() {
-
   const [profileOpen, setProfileOpen] = useState(false);
 
   const [pesquisa, setPesquisa] = useState("");
@@ -26,13 +25,11 @@ function TabelaPrecos() {
   // =====================================================
 
   function normalizarTexto(texto = "") {
-
     return String(texto)
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase()
       .trim();
-
   }
 
 
@@ -41,91 +38,52 @@ function TabelaPrecos() {
   // =====================================================
 
   const categoriasFiltradas = useMemo(() => {
-
-    const textoPesquisa =
-      normalizarTexto(pesquisa);
-
+    const textoPesquisa = normalizarTexto(pesquisa);
 
     return tabelaPrecosData.categorias
 
       .filter((categoria) => {
-
-        // Se uma categoria específica estiver selecionada,
-        // mostra somente ela.
         if (
           categoriaSelecionada !== "todos" &&
           categoria.id !== categoriaSelecionada
         ) {
-
           return false;
-
         }
 
-        // Se estiver em "Todos",
-        // mantém todas as categorias.
         return true;
-
       })
 
       .map((categoria) => {
+        const linhasFiltradas = categoria.linhas.filter((linha) => {
+          if (!textoPesquisa) {
+            return true;
+          }
 
-        const linhasFiltradas =
-          categoria.linhas.filter((linha) => {
+          const conteudoLinha = normalizarTexto(
+            linha.join(" ")
+          );
 
-            if (!textoPesquisa) {
+          const tituloCategoria = normalizarTexto(
+            categoria.titulo
+          );
 
-              return true;
-
-            }
-
-
-            const conteudoLinha =
-              normalizarTexto(
-                linha.join(" ")
-              );
-
-
-            const tituloCategoria =
-              normalizarTexto(
-                categoria.titulo
-              );
-
-
-            return (
-              conteudoLinha.includes(
-                textoPesquisa
-              ) ||
-              tituloCategoria.includes(
-                textoPesquisa
-              )
-            );
-
-          });
-
+          return (
+            conteudoLinha.includes(textoPesquisa) ||
+            tituloCategoria.includes(textoPesquisa)
+          );
+        });
 
         return {
-
           ...categoria,
-
-          linhas:
-            linhasFiltradas
-
+          linhas: linhasFiltradas,
         };
-
       })
 
       .filter((categoria) => {
-
-        return (
-          categoria.linhas.length > 0
-        );
-
+        return categoria.linhas.length > 0;
       });
 
-  }, [
-    pesquisa,
-    categoriaSelecionada
-  ]);
+  }, [pesquisa, categoriaSelecionada]);
 
 
   // =====================================================
@@ -133,23 +91,30 @@ function TabelaPrecos() {
   // =====================================================
 
   const totalResultados = useMemo(() => {
-
     return categoriasFiltradas.reduce(
-
       (total, categoria) => {
-
-        return (
-          total +
-          categoria.linhas.length
-        );
-
+        return total + categoria.linhas.length;
       },
-
       0
+    );
+  }, [categoriasFiltradas]);
 
+
+  // =====================================================
+  // NOME DA CATEGORIA SELECIONADA
+  // =====================================================
+
+  const nomeCategoriaSelecionada = useMemo(() => {
+    if (categoriaSelecionada === "todos") {
+      return "Todos";
+    }
+
+    const categoria = tabelaPrecosData.categorias.find(
+      (item) => item.id === categoriaSelecionada
     );
 
-  }, [categoriasFiltradas]);
+    return categoria?.titulo || "";
+  }, [categoriaSelecionada]);
 
 
   // =====================================================
@@ -157,20 +122,14 @@ function TabelaPrecos() {
   // =====================================================
 
   function limparFiltros() {
-
     setPesquisa("");
 
-    setCategoriaSelecionada(
-      "todos"
-    );
-
+    setCategoriaSelecionada("todos");
   }
 
 
   return (
-
     <div className="tabela-precos-page">
-
 
       {/* ===================================== */}
       {/* HEADER                                */}
@@ -185,40 +144,21 @@ function TabelaPrecos() {
 
       <section className="tabela-precos-hero-area">
 
-
-        {/* PERFIL */}
-
         <div className="tabela-precos-profile">
-
           <UserProfileButton
-
-            onClick={() =>
-              setProfileOpen(true)
-            }
-
+            onClick={() => setProfileOpen(true)}
           />
-
         </div>
 
-
-        {/* CONTEÚDO DO HERO */}
 
         <div className="tabela-precos-hero-content">
-
           <Hero
-
             variant="dashboard"
-
             one="Consulta Comercial"
-
             two="Tabela de Preços"
-
             three="Consulte produtos, referências, acabamentos e valores da linha Synter de forma rápida e organizada."
-
           />
-
         </div>
-
 
       </section>
 
@@ -229,13 +169,11 @@ function TabelaPrecos() {
 
       <main className="tabela-precos-content">
 
-
         {/* =================================== */}
         {/* CABEÇALHO                           */}
         {/* =================================== */}
 
         <section className="tabela-precos-topo">
-
 
           <div className="tabela-precos-titulo-area">
 
@@ -280,7 +218,6 @@ function TabelaPrecos() {
 
           </div>
 
-
         </section>
 
 
@@ -290,7 +227,6 @@ function TabelaPrecos() {
 
         <section className="tabela-precos-filtros">
 
-
           <div className="tabela-precos-pesquisa">
 
             <span className="tabela-precos-search-icon">
@@ -299,47 +235,27 @@ function TabelaPrecos() {
 
 
             <input
-
               type="text"
-
               placeholder="Pesquisar produto, modelo ou referência..."
-
               value={pesquisa}
-
               onChange={(evento) =>
-                setPesquisa(
-                  evento.target.value
-                )
+                setPesquisa(evento.target.value)
               }
-
             />
 
 
             {pesquisa && (
-
               <button
-
                 type="button"
-
                 className="tabela-precos-limpar-pesquisa"
-
-                onClick={() =>
-                  setPesquisa("")
-                }
-
+                onClick={() => setPesquisa("")}
                 aria-label="Limpar pesquisa"
-
               >
-
                 ×
-
               </button>
-
             )}
 
-
           </div>
-
 
         </section>
 
@@ -350,73 +266,88 @@ function TabelaPrecos() {
 
         <section className="tabela-precos-categorias">
 
-
           {/* TODOS */}
 
           <button
-
             type="button"
-
             className={
               categoriaSelecionada === "todos"
-
                 ? "categoria-button categoria-button-active"
-
                 : "categoria-button"
             }
-
             onClick={() =>
-              setCategoriaSelecionada(
-                "todos"
-              )
+              setCategoriaSelecionada("todos")
             }
-
           >
-
             Todos
-
           </button>
 
 
-          {/* CATEGORIAS */}
+          {/* OUTRAS CATEGORIAS */}
 
           {tabelaPrecosData.categorias.map(
-
             (categoria) => (
 
               <button
-
                 key={categoria.id}
-
                 type="button"
-
                 className={
-                  categoriaSelecionada ===
-                  categoria.id
-
+                  categoriaSelecionada === categoria.id
                     ? "categoria-button categoria-button-active"
-
                     : "categoria-button"
                 }
-
                 onClick={() =>
                   setCategoriaSelecionada(
                     categoria.id
                   )
                 }
-
               >
-
                 {categoria.titulo}
-
               </button>
 
             )
-
           )}
 
-
         </section>
+
+
+        {/* =================================== */}
+        {/* IDENTIFICAÇÃO DA CATEGORIA          */}
+        {/* =================================== */}
+
+        {categoriasFiltradas.length > 0 && (
+
+          <section className="tabela-precos-categoria">
+
+            <div className="tabela-precos-categoria-header">
+
+              <div>
+
+                <div className="tabela-precos-categoria-titulo">
+
+                  <div className="tabela-precos-section-bar"></div>
+
+                  <h2>
+                    {nomeCategoriaSelecionada}
+                  </h2>
+
+                </div>
+
+
+                <p>
+                  {totalResultados}{" "}
+                  {totalResultados === 1
+                    ? "item encontrado"
+                    : "itens encontrados"}
+                </p>
+
+              </div>
+
+            </div>
+
+          </section>
+
+        )}
 
 
         {/* =================================== */}
@@ -425,75 +356,15 @@ function TabelaPrecos() {
 
         <section className="tabela-precos-resultados">
 
-
           {categoriasFiltradas.length > 0 ? (
 
-
             categoriasFiltradas.map(
-
               (categoria) => (
 
                 <section
-
                   key={categoria.id}
-
                   className="tabela-precos-categoria"
-
                 >
-
-
-                  {/* ================================= */}
-                  {/* TÍTULO DA CATEGORIA               */}
-                  {/* ================================= */}
-                  {/* SOMENTE QUANDO NÃO ESTIVER EM     */}
-                  {/* "TODOS"                            */}
-                  {/* ================================= */}
-
-                  {categoriaSelecionada !== "todos" && (
-
-                    <div className="tabela-precos-categoria-header">
-
-
-                      <div>
-
-
-                        <div className="tabela-precos-categoria-titulo">
-
-                          <div className="tabela-precos-section-bar"></div>
-
-                          <h2>
-
-                            {categoria.titulo}
-
-                          </h2>
-
-                        </div>
-
-
-                        <p>
-
-                          {categoria.linhas.length}
-
-                          {" "}
-
-                          {
-                            categoria.linhas.length === 1
-
-                              ? "item encontrado"
-
-                              : "itens encontrados"
-                          }
-
-                        </p>
-
-
-                      </div>
-
-
-                    </div>
-
-                  )}
-
 
                   {/* ================================= */}
                   {/* TABELA                            */}
@@ -501,118 +372,66 @@ function TabelaPrecos() {
 
                   <div className="tabela-precos-table-wrapper">
 
-
                     <table className="tabela-precos-table">
-
-
-                      {/* CABEÇALHO */}
 
                       <thead>
 
                         <tr>
 
-
                           {categoria.colunas.map(
-
-                            (
-                              coluna,
-                              index
-                            ) => (
+                            (coluna, index) => (
 
                               <th
-
-                                key={
-                                  `${categoria.id}-coluna-${index}`
-                                }
-
+                                key={`${categoria.id}-coluna-${index}`}
                               >
-
                                 {coluna}
-
                               </th>
 
                             )
-
                           )}
-
 
                         </tr>
 
                       </thead>
 
 
-                      {/* CORPO */}
-
                       <tbody>
 
-
                         {categoria.linhas.map(
-
-                          (
-                            linha,
-                            linhaIndex
-                          ) => (
+                          (linha, linhaIndex) => (
 
                             <tr
-
-                              key={
-                                `${categoria.id}-linha-${linhaIndex}`
-                              }
-
+                              key={`${categoria.id}-linha-${linhaIndex}`}
                             >
 
-
                               {linha.map(
-
-                                (
-                                  valor,
-                                  colunaIndex
-                                ) => (
+                                (valor, colunaIndex) => (
 
                                   <td
-
-                                    key={
-                                      `${categoria.id}-${linhaIndex}-${colunaIndex}`
-                                    }
-
+                                    key={`${categoria.id}-${linhaIndex}-${colunaIndex}`}
                                     className={
-
                                       valor
                                         .toString()
                                         .trim()
-                                        .startsWith(
-                                          "R$"
-                                        )
-
+                                        .startsWith("R$")
                                         ? "tabela-precos-valor"
-
                                         : ""
-
                                     }
-
                                   >
-
                                     {valor}
-
                                   </td>
 
                                 )
-
                               )}
-
 
                             </tr>
 
                           )
-
                         )}
-
 
                       </tbody>
 
-
                     </table>
-
 
                   </div>
 
@@ -625,7 +444,6 @@ function TabelaPrecos() {
                     categoria.observacoes.length > 0 && (
 
                       <div className="tabela-precos-observacoes">
-
 
                         <div className="tabela-precos-observacoes-title">
 
@@ -642,48 +460,30 @@ function TabelaPrecos() {
 
                         <ul>
 
-
                           {categoria.observacoes.map(
-
-                            (
-                              observacao,
-                              index
-                            ) => (
+                            (observacao, index) => (
 
                               <li
-
-                                key={
-                                  `${categoria.id}-obs-${index}`
-                                }
-
+                                key={`${categoria.id}-obs-${index}`}
                               >
-
                                 {observacao}
-
                               </li>
 
                             )
-
                           )}
 
-
                         </ul>
-
 
                       </div>
 
                     )}
 
-
                 </section>
 
               )
-
             )
 
-
           ) : (
-
 
             /* ================================= */
             /* NENHUM RESULTADO                  */
@@ -691,51 +491,33 @@ function TabelaPrecos() {
 
             <div className="tabela-precos-vazio">
 
-
               <div className="tabela-precos-vazio-icon">
-
                 ⌕
-
               </div>
 
 
               <h3>
-
                 Nenhum produto encontrado
-
               </h3>
 
 
               <p>
-
                 Não encontramos produtos correspondentes à sua pesquisa.
-
               </p>
 
 
               <button
-
                 type="button"
-
-                onClick={
-                  limparFiltros
-                }
-
+                onClick={limparFiltros}
               >
-
                 Limpar filtros
-
               </button>
-
 
             </div>
 
-
           )}
 
-
         </section>
-
 
       </main>
 
@@ -754,20 +536,15 @@ function TabelaPrecos() {
       {profileOpen && (
 
         <Profile
-
           onClose={() =>
             setProfileOpen(false)
           }
-
         />
 
       )}
 
-
     </div>
-
   );
-
 }
 
 
