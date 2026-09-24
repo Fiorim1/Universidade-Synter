@@ -9,7 +9,7 @@ import Profile from "../components/Profile";
 import CardsDashboard from "../components/CardsDashboard";
 
 import ManualIcon from "../assets/manual-icon.png";
-import YtIcon from "../assets/yt-icon.png";
+import YtIcon from "../assets/Yt-Icon.png"
 import TreinamentoIcon from "../assets/treinamento-icon.png";
 import TabelaIcon from "../assets/tabela-icon.png";
 import FtIcon from "../assets/Ft-icon.png";
