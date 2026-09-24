@@ -25,18 +25,13 @@
   border-bottom:
     1px solid rgba(255, 255, 255, 0.08);
 
-  background-image:
-    linear-gradient(90deg,
-      rgba(5, 5, 5, 0.98) 0%,
-      rgba(7, 7, 7, 0.95) 42%,
-      rgba(9, 9, 9, 0.72) 68%,
-      rgba(0, 0, 0, 0.38) 100%),
-    url("../assets/dashboard-bg.png");
-
-  background-size: cover;
-  background-position: center right;
-  background-repeat: no-repeat;
-  background-blend-mode: multiply;
+  background:
+    linear-gradient(
+      90deg,
+      #050505 0%,
+      #080808 45%,
+      #0b0b0b 100%
+    );
 }
 
 
@@ -47,9 +42,11 @@
   inset: 0;
 
   background:
-    linear-gradient(180deg,
+    linear-gradient(
+      180deg,
       rgba(0, 0, 0, 0.05),
-      rgba(0, 0, 0, 0.22));
+      rgba(0, 0, 0, 0.22)
+    );
 
   pointer-events: none;
 
@@ -145,7 +142,8 @@
   background: #ffffff;
 
   box-shadow:
-    0 0 8px rgba(255, 255, 255, 0.18);
+    0 0 8px
+    rgba(255, 255, 255, 0.18);
 }
 
 
@@ -157,7 +155,10 @@
   display: grid;
 
   grid-template-columns:
-    repeat(3, minmax(0, 1fr));
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
 
   gap: 22px;
 
@@ -167,9 +168,9 @@
 }
 
 
-/* ======================================== */
-/* BARRA DE PESQUISA                        */
-/* ======================================== */
+/* ========================================
+   BARRA DE PESQUISA
+======================================== */
 
 .pesquisa-videos {
   width: 100%;
@@ -186,7 +187,9 @@
 
   padding: 0 18px;
 
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.15);
 
   border-radius: 8px;
 
@@ -196,11 +199,15 @@
 
   font-size: 14px;
 
+  font-family: inherit;
+
   outline: none;
 
   box-sizing: border-box;
 
-  transition: 0.2s;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 
@@ -210,20 +217,22 @@
 
 
 .pesquisa-videos input:hover {
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color:
+    rgba(255, 255, 255, 0.3);
 }
 
 
 .pesquisa-videos input:focus {
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color:
+    rgba(255, 255, 255, 0.5);
 
   background: #111111;
 }
 
 
-/* ======================================== */
-/* NENHUM RESULTADO                         */
-/* ======================================== */
+/* ========================================
+   NENHUM RESULTADO
+======================================== */
 
 .nenhum-video {
   grid-column: 1 / -1;
@@ -235,6 +244,7 @@
   padding: 30px 0;
 }
 
+
 /* ========================================
    RESPONSIVO
 ======================================== */
@@ -243,7 +253,10 @@
 
   .videos-grid {
     grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
   }
 
 }
@@ -253,8 +266,6 @@
 
   .videos-hero-area {
     min-height: auto;
-
-    background-position: 70% center;
   }
 
 
