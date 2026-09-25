@@ -238,6 +238,266 @@
     color: #111111;
 }
 
+/* ==========================================
+   CARD DESABILITADO
+========================================== */
+
+.card-disabled {
+    cursor: pointer;
+}
+
+
+/* ==========================================
+   OVERLAY
+========================================== */
+
+.card-production-overlay {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100vh;
+
+    background: rgba(0, 0, 0, 0.78);
+
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    z-index: 99999;
+}
+
+
+/* ==========================================
+   MODAL
+========================================== */
+
+.card-production-modal {
+    position: relative;
+
+    width: 100%;
+    max-width: 460px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #111111 0%,
+            #090909 100%
+        );
+
+    border: 1px solid #292929;
+
+    border-radius: 18px;
+
+    padding: 38px 34px 32px;
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.6);
+
+    animation:
+        productionModalOpen 0.25s ease;
+}
+
+
+/* ==========================================
+   BOTÃO X
+========================================== */
+
+.card-production-close {
+    position: absolute;
+
+    top: 16px;
+    right: 16px;
+
+    width: 36px;
+    height: 36px;
+
+    border: 1px solid #303030;
+    border-radius: 10px;
+
+    background: #141414;
+
+    color: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.card-production-close:hover {
+    background: #1e1e1e;
+    border-color: #444444;
+}
+
+
+.card-production-close svg {
+    width: 18px;
+    height: 18px;
+}
+
+
+/* ==========================================
+   ÍCONE
+========================================== */
+
+.card-production-icon {
+    width: 52px;
+    height: 52px;
+
+    border: 1px solid #333333;
+    border-radius: 14px;
+
+    background: #151515;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 24px;
+}
+
+
+.card-production-icon span {
+    color: #ffffff;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+
+/* ==========================================
+   CONTEÚDO
+========================================== */
+
+.card-production-content {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.card-production-label {
+    margin-bottom: 10px;
+
+    color: #818181;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+.card-production-content h2 {
+    margin: 0 0 12px;
+
+    color: #ffffff;
+
+    font-size: 25px;
+    font-weight: 700;
+}
+
+
+.card-production-content p {
+    margin: 0;
+
+    max-width: 360px;
+
+    color: #999999;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* ==========================================
+   BOTÃO ENTENDI
+========================================== */
+
+.card-production-button {
+    width: 100%;
+
+    margin-top: 28px;
+
+    padding: 13px 18px;
+
+    border: 1px solid #303030;
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #090909;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.card-production-button:hover {
+    background: #e7e7e7;
+}
+
+
+/* ==========================================
+   ANIMAÇÃO
+========================================== */
+
+@keyframes productionModalOpen {
+
+    from {
+        opacity: 0;
+        transform:
+            translateY(10px)
+            scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .card-production-modal {
+        max-width: 100%;
+
+        padding:
+            34px 24px 26px;
+
+        border-radius: 16px;
+    }
+
+
+    .card-production-content h2 {
+        font-size: 22px;
+    }
+
+}
+
 
 /* ======================================== */
 /* RESPONSIVO                               */

@@ -1,8 +1,9 @@
-import "../styles/CardsDashboard.css"
-
-import { CircleArrowRight } from "reicon-react"
-
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+
+import { CircleArrowRight, X } from "reicon-react"
+
+import "../styles/CardsDashboard.css"
 
 
 function CardsDashboard({
@@ -11,20 +12,40 @@ function CardsDashboard({
     desc,
     route,
     pdf,
-    onClick
+    onClick,
+
+    // Por padrão o card fica habilitado
+    enabled = true
 }) {
 
     const navigate = useNavigate()
 
+    const [modalOpen, setModalOpen] =
+        useState(false)
+
+
+    // ==========================================
+    // CLIQUE NO CARD
+    // ==========================================
 
     function handleClick() {
 
-        // ================================
-        // FUNÇÃO PERSONALIZADA
-        // ================================
+        // ======================================
+        // CARD DESABILITADO
+        // ======================================
 
-        // Mantém compatibilidade com os cards
-        // antigos que utilizam onClick.
+        if (!enabled) {
+
+            setModalOpen(true)
+
+            return
+        }
+
+
+        // ======================================
+        // FUNÇÃO PERSONALIZADA
+        // ======================================
+
         if (onClick) {
 
             onClick()
@@ -33,9 +54,9 @@ function CardsDashboard({
         }
 
 
-        // ================================
+        // ======================================
         // PDF
-        // ================================
+        // ======================================
 
         if (pdf) {
 
@@ -61,9 +82,9 @@ function CardsDashboard({
         }
 
 
-        // ================================
+        // ======================================
         // ROTA
-        // ================================
+        // ======================================
 
         if (route) {
 
@@ -74,50 +95,156 @@ function CardsDashboard({
     }
 
 
+    // ==========================================
+    // FECHAR MODAL
+    // ==========================================
+
+    function fecharModal() {
+
+        setModalOpen(false)
+
+    }
+
+
     return (
 
-        <button
-            className="cads-container"
-            type="button"
-            onClick={handleClick}
-        >
+        <>
 
-            {/* Ícone */}
+            {/* ================================= */}
+            {/* CARD                              */}
+            {/* ================================= */}
 
-            <div className="card-image">
+            <button
+                className={`cads-container ${
+                    !enabled
+                        ? "card-disabled"
+                        : ""
+                }`}
+                type="button"
+                onClick={handleClick}
+            >
 
-                <img
-                    src={image}
-                    alt={title}
-                />
+                {/* ÍCONE */}
 
-            </div>
+                <div className="card-image">
 
+                    <img
+                        src={image}
+                        alt={title}
+                    />
 
-            {/* Textos */}
-
-            <div className="content-text-cards">
-
-                <h3>
-                    {title}
-                </h3>
-
-                <p>
-                    {desc}
-                </p>
-
-            </div>
+                </div>
 
 
-            {/* Seta */}
+                {/* TEXTOS */}
 
-            <div className="card-arrow">
+                <div className="content-text-cards">
 
-                <CircleArrowRight />
+                    <h3>
+                        {title}
+                    </h3>
 
-            </div>
+                    <p>
+                        {desc}
+                    </p>
 
-        </button>
+                </div>
+
+
+                {/* SETA */}
+
+                <div className="card-arrow">
+
+                    <CircleArrowRight />
+
+                </div>
+
+            </button>
+
+
+            {/* ================================= */}
+            {/* MODAL - PROJETO EM PRODUÇÃO       */}
+            {/* ================================= */}
+
+            {modalOpen && (
+
+                <div
+                    className="card-production-overlay"
+                    onClick={fecharModal}
+                >
+
+                    <div
+                        className="card-production-modal"
+                        onClick={(evento) =>
+                            evento.stopPropagation()
+                        }
+                    >
+
+                        {/* BOTÃO FECHAR */}
+
+                        <button
+                            type="button"
+                            className="card-production-close"
+                            onClick={fecharModal}
+                            aria-label="Fechar aviso"
+                        >
+
+                            <X />
+
+                        </button>
+
+
+                        {/* ÍCONE */}
+
+                        <div className="card-production-icon">
+
+                            <span>
+                                !
+                            </span>
+
+                        </div>
+
+
+                        {/* TEXTO */}
+
+                        <div className="card-production-content">
+
+                            <span className="card-production-label">
+                                UNIVERSIDADE SYNTER
+                            </span>
+
+                            <h2>
+                                Projeto em produção
+                            </h2>
+
+                            <p>
+                                Este conteúdo ainda está sendo
+                                preparado e estará disponível
+                                em breve.
+                            </p>
+
+                        </div>
+
+
+                        {/* BOTÃO */}
+
+                        <button
+                            type="button"
+                            className="card-production-button"
+                            onClick={fecharModal}
+                        >
+
+                            Entendi
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            )}
+
+        </>
 
     )
 

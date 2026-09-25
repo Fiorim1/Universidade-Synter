@@ -90,6 +90,7 @@ function Dashboard() {
             image={AppIcon}
             title="Aplicativo Synter"
             desc="Desbrave mais sobre o aplicativo Synter"
+            enabled={false}
           />
 
 
@@ -109,6 +110,7 @@ function Dashboard() {
             image={FtIcon}
             title="Fichas Técnicas"
             desc="Acesse as fichas técnicas dos nossos produtos"
+            enabled={false}
           />
 
 
@@ -118,6 +120,7 @@ function Dashboard() {
             image={ImgIcon}
             title="Imagens de Produtos"
             desc="Acesse as imagens dos nossos produtos"
+            enabled={false}
           />
 
 
@@ -137,6 +140,7 @@ function Dashboard() {
             image={MktIcon}
             title="Materiais de Marketing"
             desc="Acesse nossos materiais de marketing"
+            enabled={false}
           />
 
 
@@ -146,6 +150,7 @@ function Dashboard() {
             image={NvdIcon}
             title="Novidades Synter"
             desc="Acompanhe as novidades da Synter"
+            enabled={false}
           />
 
 
@@ -155,6 +160,7 @@ function Dashboard() {
             image={QuestionIcon}
             title="Perguntas Frequentes"
             desc="Caso tenha uma pergunta, acesse aqui"
+            enabled={false}
           />
 
 
@@ -174,6 +180,7 @@ function Dashboard() {
             image={TcIcon}
             title="Treinamento Comercial"
             desc="Acesse nosso treinamento comercial"
+            enabled={false}
           />
 
 
@@ -183,6 +190,7 @@ function Dashboard() {
             image={TreinamentoIcon}
             title="Treinamentos Técnicos"
             desc="Acesse nossos treinamentos técnicos"
+            enabled={false}
           />
 
 
