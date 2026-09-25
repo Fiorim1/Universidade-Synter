@@ -22,11 +22,6 @@ function TreinamentoComercial() {
 
         <div className="treinamento-comercial-page">
 
-
-            {/* ================================= */}
-            {/* HEADER                            */}
-            {/* ================================= */}
-
             <Header />
 
 
@@ -35,9 +30,6 @@ function TreinamentoComercial() {
             {/* ================================= */}
 
             <section className="treinamento-comercial-hero">
-
-
-                {/* PERFIL */}
 
                 <div className="treinamento-comercial-profile">
 
@@ -50,8 +42,6 @@ function TreinamentoComercial() {
                 </div>
 
 
-                {/* CONTEÚDO HERO */}
-
                 <div className="treinamento-comercial-hero-content">
 
                     <Hero
@@ -63,7 +53,6 @@ function TreinamentoComercial() {
 
                 </div>
 
-
             </section>
 
 
@@ -74,9 +63,7 @@ function TreinamentoComercial() {
             <main className="treinamento-comercial-content">
 
 
-                {/* ================================= */}
-                {/* TÍTULO                            */}
-                {/* ================================= */}
+                {/* TÍTULO */}
 
                 <div className="treinamento-comercial-title">
 
@@ -89,9 +76,7 @@ function TreinamentoComercial() {
                 </div>
 
 
-                {/* ================================= */}
-                {/* INTRODUÇÃO                        */}
-                {/* ================================= */}
+                {/* INTRODUÇÃO */}
 
                 <div className="treinamento-comercial-intro">
 
@@ -109,7 +94,7 @@ function TreinamentoComercial() {
 
 
                 {/* ================================= */}
-                {/* CARD                              */}
+                {/* CARDS                             */}
                 {/* ================================= */}
 
                 <section className="treinamento-comercial-grid">
@@ -127,10 +112,6 @@ function TreinamentoComercial() {
             </main>
 
 
-            {/* ================================= */}
-            {/* FOOTER                            */}
-            {/* ================================= */}
-
             <Footer />
 
 
@@ -147,7 +128,6 @@ function TreinamentoComercial() {
                 />
 
             )}
-
 
         </div>
 
