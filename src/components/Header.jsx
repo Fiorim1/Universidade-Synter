@@ -1,13 +1,12 @@
-import { NavLink } from "react-router-dom"
-import { Call, SquareArrowRight2 } from 'reicon-react';
+import { NavLink } from "react-router-dom";
+import { SquareArrowRight2 } from "reicon-react";
 
+import "../styles/Header.css";
 
-import "../styles/Header.css"
-
-import instagramIcon from "../assets/icone-instagram.png"
-import linkedinIcon from "../assets/icone-linkedin.png"
-import youtubeIcon from "../assets/icone-youtube.png"
-import logo from "../assets/logo-synter.png"
+import instagramIcon from "../assets/icone-instagram.png";
+import linkedinIcon from "../assets/icone-linkedin.png";
+import youtubeIcon from "../assets/icone-youtube.png";
+import logo from "../assets/logo-synter.png";
 
 
 function Header({ profileContent }) {
@@ -44,66 +43,93 @@ function Header({ profileContent }) {
                 <div className="header-actions">
 
 
-                    {/* Telefone */}
+                    {/* ========================= */}
+                    {/* TELEFONE                  */}
+                    {/* ========================= */}
 
                     <a
                         href="tel:+554839411192"
                         className="header-phone"
                     >
 
-                        {/* <span className="header-phone-icon">
+                        {/*
+                        <span className="header-phone-icon">
                             <Call />
                         </span>
 
                         <span>
                             (48) 3941-1192
-                        </span> */}
+                        </span>
+                        */}
 
                     </a>
 
 
 
-                    {/* Redes sociais */}
+                    {/* ========================= */}
+                    {/* REDES SOCIAIS             */}
+                    {/* ========================= */}
 
                     <div className="header-social">
 
-                        <button
-                            type="button"
-                            aria-label="Instagram"
+
+                        {/* INSTAGRAM */}
+
+                        <a
+                            href="https://www.instagram.com/synter_fechaduras/reels/?hl=fr"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Instagram da Synter"
                         >
+
                             <img
                                 src={instagramIcon}
-                                alt=""
+                                alt="Instagram"
                             />
-                        </button>
+
+                        </a>
 
 
-                        <button
-                            type="button"
-                            aria-label="LinkedIn"
+                        {/* LINKEDIN */}
+
+                        <a
+                            href="https://br.linkedin.com/company/synter-fabrica"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="LinkedIn da Synter"
                         >
+
                             <img
                                 src={linkedinIcon}
-                                alt=""
+                                alt="LinkedIn"
                             />
-                        </button>
+
+                        </a>
 
 
-                        <button
-                            type="button"
-                            aria-label="YouTube"
+                        {/* YOUTUBE */}
+
+                        <a
+                            href="https://www.youtube.com/@synter_fechaduras"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="YouTube da Synter"
                         >
+
                             <img
                                 src={youtubeIcon}
-                                alt=""
+                                alt="YouTube"
                             />
-                        </button>
+
+                        </a>
 
                     </div>
 
 
 
-                    {/* Fale conosco */}
+                    {/* ========================= */}
+                    {/* FALE CONOSCO              */}
+                    {/* ========================= */}
 
                     <button
                         type="button"
@@ -122,7 +148,9 @@ function Header({ profileContent }) {
 
 
 
-                    {/* Divisor */}
+                    {/* ========================= */}
+                    {/* DIVISOR                   */}
+                    {/* ========================= */}
 
                     {profileContent && (
 
@@ -132,7 +160,9 @@ function Header({ profileContent }) {
 
 
 
-                    {/* Perfil */}
+                    {/* ========================= */}
+                    {/* PERFIL                    */}
+                    {/* ========================= */}
 
                     {profileContent && (
 
@@ -150,9 +180,9 @@ function Header({ profileContent }) {
 
         </header>
 
-    )
+    );
 
 }
 
 
-export default Header
+export default Header;

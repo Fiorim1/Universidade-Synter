@@ -1,13 +1,12 @@
-import "../styles/Footer.css"
+import "../styles/Footer.css";
 
-import { Call } from 'reicon-react';
+import { Call } from "reicon-react";
 
+import logo from "../assets/logo-synter.png";
 
-import logo from "../assets/logo-synter.png"
-
-import instagramIcon from "../assets/icone-instagram.png"
-import linkedinIcon from "../assets/icone-linkedin.png"
-import youtubeIcon from "../assets/icone-youtube.png"
+import instagramIcon from "../assets/icone-instagram.png";
+import linkedinIcon from "../assets/icone-linkedin.png";
+import youtubeIcon from "../assets/icone-youtube.png";
 
 
 function Footer() {
@@ -55,35 +54,54 @@ function Footer() {
                     </div>
 
 
+                    {/* ========================= */}
+                    {/* REDES SOCIAIS             */}
+                    {/* ========================= */}
+
                     <div className="footer-social">
 
+
+                        {/* INSTAGRAM */}
+
                         <a
-                            href="#"
-                            aria-label="Instagram"
+                            href="https://www.instagram.com/synter_fechaduras/reels/?hl=fr"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Instagram da Synter"
                         >
                             <img
                                 src={instagramIcon}
-                                alt=""
+                                alt="Instagram"
                             />
                         </a>
 
+
+                        {/* LINKEDIN */}
+
                         <a
-                            href="#"
-                            aria-label="LinkedIn"
+                            href="https://br.linkedin.com/company/synter-fabrica"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="LinkedIn da Synter"
                         >
                             <img
                                 src={linkedinIcon}
-                                alt=""
+                                alt="LinkedIn"
                             />
                         </a>
 
+
+                        {/* YOUTUBE */}
+
                         <a
-                            href="#"
-                            aria-label="YouTube"
+                            href="https://www.youtube.com/@synter_fechaduras"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="YouTube da Synter"
                         >
                             <img
                                 src={youtubeIcon}
-                                alt=""
+                                alt="YouTube"
                             />
                         </a>
 
@@ -96,8 +114,7 @@ function Footer() {
                 <div className="footer-contact">
 
                     <span className="footer-phone-icon">
-                                                    <Call />
-                        
+                        <Call />
                     </span>
 
                     <div>
@@ -141,9 +158,9 @@ function Footer() {
 
         </footer>
 
-    )
+    );
 
 }
 
 
-export default Footer
+export default Footer;
