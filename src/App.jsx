@@ -12,6 +12,7 @@ import Videos from "./pages/Videos.jsx";
 import TabelaPrecos from "./pages/TabelaPrecos.jsx";
 import AssistenciaTecnica from "./pages/AssistenciaTecnica.jsx";
 import ImageToPdf from "./pages/ImageToPdf.jsx";
+import TreinamentoComercial from "./pages/TreinamentoComercial.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -160,15 +161,8 @@ function App() {
 
 
       {/* ======================================== */}
-      {/* PÁGINA NÃO ENCONTRADA                    */}
+      {/* CONVERSOR IMAGEM PARA PDF                */}
       {/* ======================================== */}
-
-      <Route
-        path="*"
-        element={
-          <NotFound />
-        }
-      />
 
       <Route
         path="/imagem-para-pdf"
@@ -176,6 +170,32 @@ function App() {
           <ProtectedRoute>
             <ImageToPdf />
           </ProtectedRoute>
+        }
+      />
+
+
+      {/* ======================================== */}
+      {/* TREINAMENTO COMERCIAL                    */}
+      {/* ======================================== */}
+
+      <Route
+        path="/treinamento-comercial"
+        element={
+          <ProtectedRoute>
+            <TreinamentoComercial />
+          </ProtectedRoute>
+        }
+      />
+
+
+      {/* ======================================== */}
+      {/* PÁGINA NÃO ENCONTRADA                    */}
+      {/* ======================================== */}
+
+      <Route
+        path="*"
+        element={
+          <NotFound />
         }
       />
 

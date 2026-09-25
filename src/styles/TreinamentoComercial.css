@@ -1,0 +1,318 @@
+/* ======================================== */
+/* PÁGINA                                   */
+/* ======================================== */
+
+.treinamento-comercial-page {
+    width: 100%;
+    min-height: 100vh;
+
+    background: #080808;
+    color: #ffffff;
+
+    overflow-x: hidden;
+}
+
+
+/* ======================================== */
+/* HERO                                     */
+/* ======================================== */
+
+.treinamento-comercial-hero {
+    position: relative;
+
+    min-height: 430px;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    background:
+        linear-gradient(
+            90deg,
+            #050505 0%,
+            #080808 45%,
+            #0b0b0b 100%
+        );
+}
+
+
+.treinamento-comercial-hero::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.05),
+            rgba(0, 0, 0, 0.22)
+        );
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* ======================================== */
+/* PERFIL                                   */
+/* ======================================== */
+
+.treinamento-comercial-profile {
+    position: absolute;
+
+    top: 28px;
+    right: 60px;
+
+    z-index: 5;
+}
+
+
+/* ======================================== */
+/* HERO CONTENT                             */
+/* ======================================== */
+
+.treinamento-comercial-hero-content {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding:
+        75px 60px
+        70px;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* CONTEÚDO                                 */
+/* ======================================== */
+
+.treinamento-comercial-content {
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding:
+        45px 60px
+        90px;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* TÍTULO                                   */
+/* ======================================== */
+
+.treinamento-comercial-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 25px;
+}
+
+
+.treinamento-comercial-title h4 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 3px;
+}
+
+
+.treinamento-comercial-bar {
+    width: 3px;
+    height: 20px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 8px
+        rgba(255, 255, 255, 0.18);
+}
+
+
+/* ======================================== */
+/* INTRODUÇÃO                               */
+/* ======================================== */
+
+.treinamento-comercial-intro {
+    margin-bottom: 35px;
+}
+
+
+.treinamento-comercial-intro h2 {
+    margin:
+        0 0 8px;
+
+    color: #ffffff;
+
+    font-size: 24px;
+    font-weight: 600;
+}
+
+
+.treinamento-comercial-intro p {
+    max-width: 650px;
+
+    margin: 0;
+
+    color: #777777;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+
+/* ======================================== */
+/* GRID                                     */
+/* ======================================== */
+
+.treinamento-comercial-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0, 1fr)
+        );
+
+    gap: 22px;
+
+    align-items: stretch;
+}
+
+
+/* ======================================== */
+/* TABLET                                   */
+/* ======================================== */
+
+@media (max-width: 1100px) {
+
+    .treinamento-comercial-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+    }
+
+
+    .treinamento-comercial-content {
+        padding:
+            40px 35px
+            70px;
+    }
+
+
+    .treinamento-comercial-profile {
+        right: 35px;
+    }
+
+}
+
+
+/* ======================================== */
+/* MOBILE                                   */
+/* ======================================== */
+
+@media (max-width: 750px) {
+
+    .treinamento-comercial-hero {
+        min-height: auto;
+    }
+
+
+    .treinamento-comercial-profile {
+        position: relative;
+
+        top: auto;
+        right: auto;
+
+        display: flex;
+
+        justify-content: flex-end;
+
+        padding:
+            20px 20px
+            0;
+    }
+
+
+    .treinamento-comercial-hero-content {
+        padding:
+            40px 25px
+            55px;
+    }
+
+
+    .treinamento-comercial-content {
+        padding:
+            32px 25px
+            60px;
+    }
+
+
+    .treinamento-comercial-grid {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+    }
+
+
+    .treinamento-comercial-intro h2 {
+        font-size: 21px;
+    }
+
+}
+
+
+/* ======================================== */
+/* CELULAR PEQUENO                          */
+/* ======================================== */
+
+@media (max-width: 500px) {
+
+    .treinamento-comercial-content {
+        padding:
+            28px 18px
+            50px;
+    }
+
+
+    .treinamento-comercial-hero-content {
+        padding:
+            35px 20px
+            45px;
+    }
+
+
+    .treinamento-comercial-title h4 {
+        font-size: 11px;
+
+        letter-spacing: 2px;
+    }
+
+}

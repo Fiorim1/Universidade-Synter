@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import Footer from "../components/Footer";
@@ -29,7 +28,8 @@ function Dashboard() {
 
   const navigate = useNavigate();
 
-  const [profileOpen, setProfileOpen] = useState(false);
+  const [profileOpen, setProfileOpen] =
+    useState(false);
 
 
   return (
@@ -39,14 +39,18 @@ function Dashboard() {
       <Header />
 
 
-      {/* HERO */}
+      {/* ================================= */}
+      {/* HERO                              */}
+      {/* ================================= */}
 
       <section className="dashboard-hero-area">
 
         <div className="dashboard-profile">
 
           <UserProfileButton
-            onClick={() => setProfileOpen(true)}
+            onClick={() =>
+              setProfileOpen(true)
+            }
           />
 
         </div>
@@ -67,7 +71,9 @@ function Dashboard() {
       </section>
 
 
-      {/* ACESSO RÁPIDO */}
+      {/* ================================= */}
+      {/* ACESSO RÁPIDO                     */}
+      {/* ================================= */}
 
       <main className="dashboard-content">
 
@@ -85,7 +91,9 @@ function Dashboard() {
         <div className="cards">
 
 
-          {/* APLICATIVO SYNTER */}
+          {/* ================================= */}
+          {/* APLICATIVO SYNTER                 */}
+          {/* ================================= */}
 
           <CardsDashboard
             image={AppIcon}
@@ -95,17 +103,21 @@ function Dashboard() {
           />
 
 
-          {/* ASSISTÊNCIA TÉCNICA */}
+          {/* ================================= */}
+          {/* ASSISTÊNCIA TÉCNICA               */}
+          {/* ================================= */}
 
           <CardsDashboard
             image={AstIcon}
             title="Assistência Técnica"
             desc="Consulte e baixe seus chamados de assistência técnica"
-            onClick={() => navigate("/assistencia-tecnica")}
+            route="/assistencia-tecnica"
           />
 
 
-          {/* FICHAS TÉCNICAS */}
+          {/* ================================= */}
+          {/* FICHAS TÉCNICAS                   */}
+          {/* ================================= */}
 
           <CardsDashboard
             image={FtIcon}
@@ -115,7 +127,9 @@ function Dashboard() {
           />
 
 
-          {/* IMAGENS DE PRODUTOS */}
+          {/* ================================= */}
+          {/* IMAGENS DE PRODUTOS               */}
+          {/* ================================= */}
 
           <CardsDashboard
             image={ImgIcon}
@@ -125,17 +139,21 @@ function Dashboard() {
           />
 
 
-          {/* MANUAL DE PRODUTOS */}
+          {/* ================================= */}
+          {/* MANUAL DE PRODUTOS                */}
+          {/* ================================= */}
 
           <CardsDashboard
             image={ManualIcon}
             title="Manual de Produtos"
             desc="Acesse os manuais dos nossos produtos"
-            onClick={() => navigate("/manuals")}
+            route="/manuals"
           />
 
 
-          {/* MATERIAIS DE MARKETING */}
+          {/* ================================= */}
+          {/* MATERIAIS DE MARKETING            */}
+          {/* ================================= */}
 
           <CardsDashboard
             image={MktIcon}
@@ -145,7 +163,9 @@ function Dashboard() {
           />
 
 
-          {/* NOVIDADES SYNTER */}
+          {/* ================================= */}
+          {/* NOVIDADES SYNTER                  */}
+          {/* ================================= */}
 
           <CardsDashboard
             image={NvdIcon}
@@ -155,7 +175,9 @@ function Dashboard() {
           />
 
 
-          {/* PERGUNTAS FREQUENTES */}
+          {/* ================================= */}
+          {/* PERGUNTAS FREQUENTES              */}
+          {/* ================================= */}
 
           <CardsDashboard
             image={QuestionIcon}
@@ -165,27 +187,33 @@ function Dashboard() {
           />
 
 
-          {/* TABELA DE PREÇOS */}
+          {/* ================================= */}
+          {/* TABELA DE PREÇOS                  */}
+          {/* ================================= */}
 
           <CardsDashboard
             image={TabelaIcon}
             title="Tabela de Preços"
             desc="Acesse nossa tabela de preços"
-            onClick={() => navigate("/tabela-precos")}
+            route="/tabela-precos"
           />
 
 
-          {/* TREINAMENTO COMERCIAL */}
+          {/* ================================= */}
+          {/* TREINAMENTO COMERCIAL             */}
+          {/* ================================= */}
 
           <CardsDashboard
             image={TcIcon}
             title="Treinamento Comercial"
-            desc="Acesse nosso treinamento comercial"
-            enabled={false}
+            desc="Acesse nossos treinamentos comerciais"
+            route="/treinamento-comercial"
           />
 
 
-          {/* TREINAMENTOS TÉCNICOS */}
+          {/* ================================= */}
+          {/* TREINAMENTOS TÉCNICOS             */}
+          {/* ================================= */}
 
           <CardsDashboard
             image={TreinamentoIcon}
@@ -195,13 +223,15 @@ function Dashboard() {
           />
 
 
-          {/* VÍDEOS DE INSTALAÇÃO */}
+          {/* ================================= */}
+          {/* VÍDEOS DE INSTALAÇÃO              */}
+          {/* ================================= */}
 
           <CardsDashboard
             image={YtIcon}
             title="Vídeos de Instalação"
             desc="Acesse nossos vídeos de instalação"
-            onClick={() => navigate("/videos")}
+            route="/videos"
           />
 
 
@@ -210,15 +240,23 @@ function Dashboard() {
       </main>
 
 
+      {/* ================================= */}
+      {/* FOOTER                            */}
+      {/* ================================= */}
+
       <Footer />
 
 
-      {/* PERFIL */}
+      {/* ================================= */}
+      {/* PERFIL                            */}
+      {/* ================================= */}
 
       {profileOpen && (
 
         <Profile
-          onClose={() => setProfileOpen(false)}
+          onClose={() =>
+            setProfileOpen(false)
+          }
         />
 
       )}
