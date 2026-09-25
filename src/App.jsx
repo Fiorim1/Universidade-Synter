@@ -1,4 +1,8 @@
-import { Routes, Route } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useLocation
+} from "react-router-dom";
 
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
@@ -18,189 +22,232 @@ import NotFound from "./pages/NotFound.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PublicRoute from "./components/PublicRoute.jsx";
 
+import SynterAssistant from "./components/SynterAssistant.jsx";
+
 
 function App() {
 
+  const location = useLocation();
+
+
+  // ========================================
+  // PÁGINAS ONDE O ASSISTENTE NÃO APARECE
+  // ========================================
+
+  const paginasPublicas = [
+    "/",
+    "/login",
+    "/register",
+    "/forgot-password",
+    "/update-password"
+  ];
+
+
+  const mostrarAssistente =
+    !paginasPublicas.includes(
+      location.pathname
+    );
+
+
   return (
 
-    <Routes>
+    <>
 
 
       {/* ======================================== */}
-      {/* LOGIN                                    */}
+      {/* ROTAS                                    */}
       {/* ======================================== */}
 
-      <Route
-        path="/"
-        element={
-          <PublicRoute>
-            <Login />
-          </PublicRoute>
-        }
-      />
+      <Routes>
 
 
-      <Route
-        path="/login"
-        element={
-          <PublicRoute>
-            <Login />
-          </PublicRoute>
-        }
-      />
+        {/* ======================================== */}
+        {/* LOGIN                                    */}
+        {/* ======================================== */}
+
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+
+
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+
+
+        {/* ======================================== */}
+        {/* CADASTRO                                 */}
+        {/* ======================================== */}
+
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
+        />
+
+
+        {/* ======================================== */}
+        {/* RECUPERAÇÃO DE SENHA                     */}
+        {/* ======================================== */}
+
+        <Route
+          path="/forgot-password"
+          element={
+            <PublicRoute>
+              <ForgotPassword />
+            </PublicRoute>
+          }
+        />
+
+
+        {/* ======================================== */}
+        {/* NOVA SENHA                               */}
+        {/* ======================================== */}
+
+        <Route
+          path="/update-password"
+          element={
+            <UpdatePassword />
+          }
+        />
+
+
+        {/* ======================================== */}
+        {/* DASHBOARD                                */}
+        {/* ======================================== */}
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* ======================================== */}
+        {/* MANUAIS                                  */}
+        {/* ======================================== */}
+
+        <Route
+          path="/manuals"
+          element={
+            <ProtectedRoute>
+              <Manuals />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* ======================================== */}
+        {/* VÍDEOS                                   */}
+        {/* ======================================== */}
+
+        <Route
+          path="/videos"
+          element={
+            <ProtectedRoute>
+              <Videos />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* ======================================== */}
+        {/* TABELA DE PREÇOS                         */}
+        {/* ======================================== */}
+
+        <Route
+          path="/tabela-precos"
+          element={
+            <ProtectedRoute>
+              <TabelaPrecos />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* ======================================== */}
+        {/* ASSISTÊNCIA TÉCNICA                      */}
+        {/* ======================================== */}
+
+        <Route
+          path="/assistencia-tecnica"
+          element={
+            <ProtectedRoute>
+              <AssistenciaTecnica />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* ======================================== */}
+        {/* CONVERSOR IMAGEM PARA PDF                */}
+        {/* ======================================== */}
+
+        <Route
+          path="/imagem-para-pdf"
+          element={
+            <ProtectedRoute>
+              <ImageToPdf />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* ======================================== */}
+        {/* TREINAMENTO COMERCIAL                    */}
+        {/* ======================================== */}
+
+        <Route
+          path="/treinamento-comercial"
+          element={
+            <ProtectedRoute>
+              <TreinamentoComercial />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* ======================================== */}
+        {/* PÁGINA NÃO ENCONTRADA                    */}
+        {/* ======================================== */}
+
+        <Route
+          path="*"
+          element={
+            <NotFound />
+          }
+        />
+
+
+      </Routes>
 
 
       {/* ======================================== */}
-      {/* CADASTRO                                 */}
+      {/* ASSISTENTE SYNTER                        */}
       {/* ======================================== */}
 
-      <Route
-        path="/register"
-        element={
-          <PublicRoute>
-            <Register />
-          </PublicRoute>
-        }
-      />
+      {mostrarAssistente && (
+        <SynterAssistant />
+      )}
 
 
-      {/* ======================================== */}
-      {/* RECUPERAÇÃO DE SENHA                     */}
-      {/* ======================================== */}
-
-      <Route
-        path="/forgot-password"
-        element={
-          <PublicRoute>
-            <ForgotPassword />
-          </PublicRoute>
-        }
-      />
-
-
-      {/* ======================================== */}
-      {/* NOVA SENHA                               */}
-      {/* ======================================== */}
-
-      <Route
-        path="/update-password"
-        element={
-          <UpdatePassword />
-        }
-      />
-
-
-      {/* ======================================== */}
-      {/* DASHBOARD                                */}
-      {/* ======================================== */}
-
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-
-
-      {/* ======================================== */}
-      {/* MANUAIS                                  */}
-      {/* ======================================== */}
-
-      <Route
-        path="/manuals"
-        element={
-          <ProtectedRoute>
-            <Manuals />
-          </ProtectedRoute>
-        }
-      />
-
-
-      {/* ======================================== */}
-      {/* VÍDEOS                                   */}
-      {/* ======================================== */}
-
-      <Route
-        path="/videos"
-        element={
-          <ProtectedRoute>
-            <Videos />
-          </ProtectedRoute>
-        }
-      />
-
-
-      {/* ======================================== */}
-      {/* TABELA DE PREÇOS                         */}
-      {/* ======================================== */}
-
-      <Route
-        path="/tabela-precos"
-        element={
-          <ProtectedRoute>
-            <TabelaPrecos />
-          </ProtectedRoute>
-        }
-      />
-
-
-      {/* ======================================== */}
-      {/* ASSISTÊNCIA TÉCNICA                      */}
-      {/* ======================================== */}
-
-      <Route
-        path="/assistencia-tecnica"
-        element={
-          <ProtectedRoute>
-            <AssistenciaTecnica />
-          </ProtectedRoute>
-        }
-      />
-
-
-      {/* ======================================== */}
-      {/* CONVERSOR IMAGEM PARA PDF                */}
-      {/* ======================================== */}
-
-      <Route
-        path="/imagem-para-pdf"
-        element={
-          <ProtectedRoute>
-            <ImageToPdf />
-          </ProtectedRoute>
-        }
-      />
-
-
-      {/* ======================================== */}
-      {/* TREINAMENTO COMERCIAL                    */}
-      {/* ======================================== */}
-
-      <Route
-        path="/treinamento-comercial"
-        element={
-          <ProtectedRoute>
-            <TreinamentoComercial />
-          </ProtectedRoute>
-        }
-      />
-
-
-      {/* ======================================== */}
-      {/* PÁGINA NÃO ENCONTRADA                    */}
-      {/* ======================================== */}
-
-      <Route
-        path="*"
-        element={
-          <NotFound />
-        }
-      />
-
-
-    </Routes>
+    </>
 
   );
 
