@@ -1,0 +1,507 @@
+/* ======================================== */
+/* PÁGINA DE MANUAIS                        */
+/* ======================================== */
+
+.manuals-page {
+    width: 100%;
+    min-height: 100vh;
+
+    background: #080808;
+    color: #ffffff;
+
+    overflow-x: hidden;
+}
+
+
+/* ======================================== */
+/* HERO                                     */
+/* ======================================== */
+
+.videos-hero-area {
+    position: relative;
+
+    width: 100%;
+    min-height: 430px;
+
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    background:
+        linear-gradient(
+            90deg,
+            #050505 0%,
+            #080808 45%,
+            #0b0b0b 100%
+        );
+
+    overflow: hidden;
+}
+
+
+.videos-hero-area::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.05),
+            rgba(0, 0, 0, 0.22)
+        );
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* ======================================== */
+/* PERFIL                                   */
+/* ======================================== */
+
+.videos-profile {
+    position: absolute;
+
+    top: 28px;
+    right: 60px;
+
+    z-index: 5;
+}
+
+
+/* ======================================== */
+/* CONTEÚDO DO HERO                         */
+/* ======================================== */
+
+.videos-hero-content {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding:
+        75px 60px
+        70px;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* CONTAINER DOS MANUAIS                    */
+/* ======================================== */
+
+.manuals-container {
+    position: relative;
+
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding:
+        50px 60px
+        90px;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* SEÇÕES                                   */
+/* ======================================== */
+
+.digials-products,
+.mechanical-products,
+.ironwork {
+    width: 100%;
+
+    margin-bottom: 75px;
+}
+
+
+.ironwork {
+    margin-bottom: 20px;
+}
+
+
+/* ======================================== */
+/* TÍTULO DAS SEÇÕES                        */
+/* ======================================== */
+
+.manuals-container .title {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    min-height: 28px;
+
+    padding-left: 15px;
+
+    margin-bottom: 12px;
+}
+
+
+.manuals-container .title::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 3px;
+    height: 20px;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 8px
+        rgba(255, 255, 255, 0.18);
+
+    transform: translateY(-50%);
+}
+
+
+.manuals-container .title h4 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+
+/* ======================================== */
+/* LINHA ABAIXO DO TÍTULO                   */
+/* ======================================== */
+
+.manuals-container .line {
+    width: 100%;
+    height: 1px;
+
+    margin-bottom: 28px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.14),
+            rgba(255, 255, 255, 0.04),
+            transparent
+        );
+}
+
+
+/* ======================================== */
+/* GRID DOS MANUAIS                         */
+/* ======================================== */
+
+.cards-manuals {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0, 1fr)
+        );
+
+    gap: 22px;
+
+    align-items: stretch;
+}
+
+
+/* ======================================== */
+/* REMOVE AS "LINHAS" ANTIGAS               */
+/* E TRANSFORMA TUDO EM UM ÚNICO GRID       */
+/* ======================================== */
+
+.cards-manuals-1,
+.cards-manuals-2,
+.cards-manuals-3,
+.cards-manuals-4,
+.cards-manuals-5,
+.cards-manuals-6,
+.cards-manuals-7 {
+    display: contents;
+}
+
+
+/* ======================================== */
+/* GARANTE TAMANHO CORRETO DOS CARDS        */
+/* ======================================== */
+
+.cards-manuals
+> div[class^="cards-manuals-"]
+> * {
+    width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* PADRONIZA FILHOS DO GRID                 */
+/* ======================================== */
+
+.cards-manuals > * {
+    min-width: 0;
+}
+
+
+/* ======================================== */
+/* AJUSTE DOS CARDS DO DASHBOARD            */
+/* ======================================== */
+
+.cards-manuals a {
+    width: 100%;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* EFEITO SUAVE NOS CARDS                   */
+/* ======================================== */
+
+.cards-manuals
+> div[class^="cards-manuals-"]
+> * {
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* ======================================== */
+/* FUNDO DECORATIVO                         */
+/* ======================================== */
+
+.manuals-page::before {
+    content: "";
+
+    position: fixed;
+
+    width: 700px;
+    height: 700px;
+
+    right: -350px;
+    bottom: -350px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.02);
+
+    filter: blur(150px);
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* ======================================== */
+/* GARANTE CONTEÚDO SOBRE O FUNDO           */
+/* ======================================== */
+
+.manuals-container,
+.videos-hero-area {
+    position: relative;
+
+    z-index: 1;
+}
+
+
+/* ======================================== */
+/* RESPONSIVO - NOTEBOOK                    */
+/* ======================================== */
+
+@media (max-width: 1250px) {
+
+    .cards-manuals {
+        gap: 18px;
+    }
+
+}
+
+
+/* ======================================== */
+/* RESPONSIVO - TABLET                      */
+/* ======================================== */
+
+@media (max-width: 1050px) {
+
+    .videos-hero-content {
+        padding:
+            70px 35px
+            60px;
+    }
+
+
+    .videos-profile {
+        right: 35px;
+    }
+
+
+    .manuals-container {
+        padding:
+            45px 35px
+            75px;
+    }
+
+
+    .cards-manuals {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+
+        gap: 20px;
+    }
+
+
+    .digials-products,
+    .mechanical-products,
+    .ironwork {
+        margin-bottom: 60px;
+    }
+
+}
+
+
+/* ======================================== */
+/* RESPONSIVO - MOBILE                      */
+/* ======================================== */
+
+@media (max-width: 750px) {
+
+    .videos-hero-area {
+        min-height: auto;
+    }
+
+
+    .videos-profile {
+        position: relative;
+
+        top: auto;
+        right: auto;
+
+        display: flex;
+        justify-content: flex-end;
+
+        padding:
+            20px 20px
+            0;
+
+        z-index: 5;
+    }
+
+
+    .videos-hero-content {
+        padding:
+            40px 25px
+            55px;
+    }
+
+
+    .manuals-container {
+        padding:
+            35px 25px
+            60px;
+    }
+
+
+    .manuals-container .title {
+        padding-left: 14px;
+
+        margin-bottom: 10px;
+    }
+
+
+    .manuals-container .title h4 {
+        font-size: 12px;
+
+        letter-spacing: 2.2px;
+    }
+
+
+    .manuals-container .line {
+        margin-bottom: 22px;
+    }
+
+
+    .cards-manuals {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+    }
+
+
+    .digials-products,
+    .mechanical-products,
+    .ironwork {
+        margin-bottom: 52px;
+    }
+
+}
+
+
+/* ======================================== */
+/* RESPONSIVO - CELULAR PEQUENO             */
+/* ======================================== */
+
+@media (max-width: 500px) {
+
+    .videos-profile {
+        padding:
+            18px 18px
+            0;
+    }
+
+
+    .videos-hero-content {
+        padding:
+            35px 20px
+            45px;
+    }
+
+
+    .manuals-container {
+        padding:
+            30px 18px
+            50px;
+    }
+
+
+    .manuals-container .title h4 {
+        font-size: 11px;
+
+        letter-spacing: 2px;
+    }
+
+
+    .cards-manuals {
+        gap: 16px;
+    }
+
+}

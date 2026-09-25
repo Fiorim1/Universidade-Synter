@@ -7,8 +7,7 @@ import Hero from "../components/Hero"
 import CardsDashboard from "../components/CardsDashboard"
 import Footer from "../components/Footer"
 
-import "../styles/Dashboard.css"
-import "../styles/Videos.css"
+import "../styles/Manuals.css"
 
 // Importando imagens de produtos digitais
 import VENUSS2 from "../assets/venuss2pro.png"
