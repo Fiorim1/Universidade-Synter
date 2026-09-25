@@ -317,7 +317,6 @@
     width: 36px;
     height: 36px;
 
-    border: 1px solid #303030;
     border-radius: 10px;
 
     background: #ff0000;
@@ -331,12 +330,6 @@
     cursor: pointer;
 
     transition: 0.2s ease;
-}
-
-
-.card-production-close:hover {
-    background: #1e1e1e;
-    border-color: #444444;
 }
 
 
