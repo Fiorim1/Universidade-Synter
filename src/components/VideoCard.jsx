@@ -3,7 +3,6 @@ import { Play3 } from "reicon-react";
 
 import "../styles/VideoCard.css";
 
-
 function VideoCard({
   titulo,
   descricao,
@@ -13,12 +12,8 @@ function VideoCard({
 
   const videoRef = useRef(null);
 
-  const [aberto, setAberto] =
-    useState(false);
-
-  const [tocando, setTocando] =
-    useState(false);
-
+  const [aberto, setAberto] = useState(false);
+  const [tocando, setTocando] = useState(false);
 
   // ==========================================
   // VERIFICA SE É YOUTUBE
@@ -27,7 +22,6 @@ function VideoCard({
   const ehYoutube =
     video.includes("youtube.com") ||
     video.includes("youtu.be");
-
 
   // ==========================================
   // CONVERTE LINK DO YOUTUBE PARA EMBED
@@ -39,51 +33,28 @@ function VideoCard({
       return "";
     }
 
-
     // JÁ É EMBED
 
-    if (
-      url.includes(
-        "youtube.com/embed/"
-      )
-    ) {
-
+    if (url.includes("youtube.com/embed/")) {
       return url.split("?")[0];
-
     }
-
 
     // SHORTS
 
-    if (
-      url.includes(
-        "youtube.com/shorts/"
-      )
-    ) {
+    if (url.includes("youtube.com/shorts/")) {
 
       const id =
         url
-          .split(
-            "youtube.com/shorts/"
-          )[1]
+          .split("youtube.com/shorts/")[1]
           ?.split("?")[0]
           ?.split("&")[0];
 
-
-      return (
-        `https://www.youtube.com/embed/${id}`
-      );
-
+      return `https://www.youtube.com/embed/${id}`;
     }
-
 
     // YOUTU.BE
 
-    if (
-      url.includes(
-        "youtu.be/"
-      )
-    ) {
+    if (url.includes("youtu.be/")) {
 
       const id =
         url
@@ -91,38 +62,24 @@ function VideoCard({
           ?.split("?")[0]
           ?.split("&")[0];
 
-
-      return (
-        `https://www.youtube.com/embed/${id}`
-      );
-
+      return `https://www.youtube.com/embed/${id}`;
     }
-
 
     // YOUTUBE NORMAL
     // youtube.com/watch?v=...
 
-    if (
-      url.includes("v=")
-    ) {
+    if (url.includes("v=")) {
 
       const id =
         url
           .split("v=")[1]
           ?.split("&")[0];
 
-
-      return (
-        `https://www.youtube.com/embed/${id}`
-      );
-
+      return `https://www.youtube.com/embed/${id}`;
     }
 
-
     return url;
-
   }
-
 
   // ==========================================
   // ABRIR MODAL
@@ -131,11 +88,8 @@ function VideoCard({
   function abrirVideo() {
 
     setAberto(true);
-
     setTocando(false);
-
   }
-
 
   // ==========================================
   // FECHAR MODAL
@@ -143,72 +97,41 @@ function VideoCard({
 
   function fecharVideo() {
 
-    if (
-      videoRef.current
-    ) {
-
+    if (videoRef.current) {
       videoRef.current.pause();
-
     }
 
-
     setTocando(false);
-
     setAberto(false);
-
   }
 
-
   // ==========================================
-  // PLAY / PAUSE
+  // REPRODUZIR
   // ==========================================
 
-  function playPause() {
-
+  function reproduzirVideo() {
 
     // ======================================
     // YOUTUBE
     // ======================================
 
     if (ehYoutube) {
-
-      setTocando(
-        (estadoAtual) =>
-          !estadoAtual
-      );
-
+      setTocando(true);
       return;
-
     }
-
 
     // ======================================
     // MP4
     // ======================================
 
-    const player =
-      videoRef.current;
-
+    const player = videoRef.current;
 
     if (!player) {
       return;
     }
 
-
-    if (
-      player.paused
-    ) {
-
-      player.play();
-
-    } else {
-
-      player.pause();
-
-    }
-
+    player.play();
   }
-
 
   // ==========================================
   // LINK EMBED
@@ -219,18 +142,14 @@ function VideoCard({
       ? obterEmbedYoutube(video)
       : "";
 
-
   return (
-
     <>
-
 
       {/* =====================================
           CARD
       ====================================== */}
 
       <div className="video-card">
-
 
         {/* =====================================
             PREVIEW
@@ -239,33 +158,22 @@ function VideoCard({
         {ehYoutube ? (
 
           <img
-
             className="video-preview"
-
             src={capa}
-
             alt={titulo}
-
           />
 
         ) : (
 
           <video
-
             className="video-preview"
-
             src={video}
-
             poster={capa}
-
             muted
-
             preload="metadata"
-
           />
 
         )}
-
 
         {/* =====================================
             INFORMAÇÕES
@@ -281,25 +189,18 @@ function VideoCard({
             {descricao}
           </p>
 
-
           <button
-
             className="botao-assistir"
-
             onClick={abrirVideo}
-
           >
-
             <Play3 />
 
             Assistir
-
           </button>
 
         </div>
 
       </div>
-
 
       {/* =====================================
           MODAL
@@ -308,46 +209,29 @@ function VideoCard({
       {aberto && (
 
         <div
-
           className="modal-video-fundo"
-
           onClick={fecharVideo}
-
         >
 
           <div
-
             className="modal-video"
-
-            onClick={
-              (e) =>
-                e.stopPropagation()
-            }
-
+            onClick={(e) => e.stopPropagation()}
           >
-
 
             {/* FECHAR */}
 
             <button
-
               className="botao-fechar"
-
               onClick={fecharVideo}
-
             >
-
               ×
-
             </button>
-
 
             {/* TÍTULO */}
 
             <h2>
               {titulo}
             </h2>
-
 
             {/* =================================
                 YOUTUBE
@@ -360,23 +244,11 @@ function VideoCard({
                 {tocando ? (
 
                   <iframe
-
                     className="video-principal video-youtube"
-
-                    src={
-                      `${youtubeEmbed}?autoplay=1&rel=0`
-                    }
-
+                    src={`${youtubeEmbed}?autoplay=1&rel=0`}
                     title={titulo}
-
-                    allow="
-                      autoplay;
-                      encrypted-media;
-                      picture-in-picture
-                    "
-
+                    allow="autoplay; encrypted-media; picture-in-picture"
                     allowFullScreen
-
                   />
 
                 ) : (
@@ -384,13 +256,9 @@ function VideoCard({
                   <div className="youtube-capa-container">
 
                     <img
-
                       className="video-principal youtube-capa"
-
                       src={capa}
-
                       alt={titulo}
-
                     />
 
                   </div>
@@ -406,52 +274,31 @@ function VideoCard({
               // =================================
 
               <video
-
                 ref={videoRef}
-
                 className="video-principal"
-
                 src={video}
-
                 poster={capa}
-
-                onPlay={() =>
-                  setTocando(true)
-                }
-
-                onPause={() =>
-                  setTocando(false)
-                }
-
-                onEnded={() =>
-                  setTocando(false)
-                }
-
+                onPlay={() => setTocando(true)}
+                onPause={() => setTocando(false)}
+                onEnded={() => setTocando(false)}
               />
 
             )}
 
-
             {/* =================================
-                PLAY / PAUSE
+                BOTÃO REPRODUZIR
             ================================== */}
 
-            <button
+            {!tocando && (
 
-              className="botao-play"
+              <button
+                className="botao-play"
+                onClick={reproduzirVideo}
+              >
+                ▶ Reproduzir
+              </button>
 
-              onClick={playPause}
-
-            >
-
-              {
-                tocando
-                  ? ""
-                  : "▶ Reproduzir"
-              }
-
-            </button>
-
+            )}
 
           </div>
 
@@ -460,10 +307,7 @@ function VideoCard({
       )}
 
     </>
-
   );
-
 }
-
 
 export default VideoCard;
