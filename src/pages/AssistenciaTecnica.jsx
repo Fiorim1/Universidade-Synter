@@ -75,7 +75,7 @@ function AssistenciaTecnica() {
 
             const resposta =
                 await fetch(
-                    `http://localhost:3001/apiSAT/buscar?q=${encodeURIComponent(
+                    `/api/sat/buscar?q=${encodeURIComponent(
                         valorPesquisa
                     )}`
                 );
