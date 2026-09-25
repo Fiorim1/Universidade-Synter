@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { CloseCircle } from 'reicon-react';
+
 
 import { CircleArrowRight, X } from "reicon-react"
 
@@ -115,11 +117,10 @@ function CardsDashboard({
             {/* ================================= */}
 
             <button
-                className={`cads-container ${
-                    !enabled
+                className={`cads-container ${!enabled
                         ? "card-disabled"
                         : ""
-                }`}
+                    }`}
                 type="button"
                 onClick={handleClick}
             >
@@ -189,7 +190,7 @@ function CardsDashboard({
                             aria-label="Fechar aviso"
                         >
 
-                            <X />
+                            <CloseCircle />
 
                         </button>
 
