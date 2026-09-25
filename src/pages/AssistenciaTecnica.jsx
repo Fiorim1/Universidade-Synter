@@ -180,7 +180,9 @@ function AssistenciaTecnica() {
     ) {
 
         const url =
-            `http://localhost:3001/apiSAT/pdf/${notionPageId}`;
+            `/api/sat/pdf?pageId=${encodeURIComponent(
+                notionPageId
+            )}`;
 
 
         window.open(
