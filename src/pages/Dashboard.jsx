@@ -83,64 +83,8 @@ function Dashboard() {
 
         <div className="cards">
 
-          <CardsDashboard
-            image={ManualIcon}
-            title="Manual de Produtos"
-            desc="Acesse os manuais dos nossos produtos"
-            onClick={() => navigate("/manuals")}
-          />
 
-
-          <CardsDashboard
-            image={YtIcon}
-            title="Vídeos de Instalação"
-            desc="Acesse nossos vídeos de instalação"
-            onClick={() => navigate("/videos")}
-          />
-
-
-          <CardsDashboard
-            image={TreinamentoIcon}
-            title="Treinamentos Técnicos"
-            desc="Acesse nossos treinamentos técnicos"
-          />
-
-
-          <CardsDashboard
-            image={TabelaIcon}
-            title="Tabela de Preços"
-            desc="Acesse nossa tabela de preços"
-            onClick={() => navigate("/tabela-precos")}
-          />
-
-
-          <CardsDashboard
-            image={FtIcon}
-            title="Fichas Técnicas"
-            desc="Acesse as fichas técnicas dos nossos produtos"
-          />
-
-
-          <CardsDashboard
-            image={ImgIcon}
-            title="Imagens de Produtos"
-            desc="Acesse as imagens dos nossos produtos"
-          />
-
-
-          <CardsDashboard
-            image={TcIcon}
-            title="Treinamento Comercial"
-            desc="Acesse nosso treinamento comercial"
-          />
-
-
-          <CardsDashboard
-            image={MktIcon}
-            title="Materiais de Marketing"
-            desc="Acesse nossos materiais de marketing"
-          />
-
+          {/* APLICATIVO SYNTER */}
 
           <CardsDashboard
             image={AppIcon}
@@ -149,12 +93,7 @@ function Dashboard() {
           />
 
 
-          <CardsDashboard
-            image={QuestionIcon}
-            title="Perguntas Frequentes"
-            desc="Caso tenha uma pergunta, acesse aqui"
-          />
-
+          {/* ASSISTÊNCIA TÉCNICA */}
 
           <CardsDashboard
             image={AstIcon}
@@ -164,11 +103,98 @@ function Dashboard() {
           />
 
 
+          {/* FICHAS TÉCNICAS */}
+
+          <CardsDashboard
+            image={FtIcon}
+            title="Fichas Técnicas"
+            desc="Acesse as fichas técnicas dos nossos produtos"
+          />
+
+
+          {/* IMAGENS DE PRODUTOS */}
+
+          <CardsDashboard
+            image={ImgIcon}
+            title="Imagens de Produtos"
+            desc="Acesse as imagens dos nossos produtos"
+          />
+
+
+          {/* MANUAL DE PRODUTOS */}
+
+          <CardsDashboard
+            image={ManualIcon}
+            title="Manual de Produtos"
+            desc="Acesse os manuais dos nossos produtos"
+            onClick={() => navigate("/manuals")}
+          />
+
+
+          {/* MATERIAIS DE MARKETING */}
+
+          <CardsDashboard
+            image={MktIcon}
+            title="Materiais de Marketing"
+            desc="Acesse nossos materiais de marketing"
+          />
+
+
+          {/* NOVIDADES SYNTER */}
+
           <CardsDashboard
             image={NvdIcon}
             title="Novidades Synter"
             desc="Acompanhe as novidades da Synter"
           />
+
+
+          {/* PERGUNTAS FREQUENTES */}
+
+          <CardsDashboard
+            image={QuestionIcon}
+            title="Perguntas Frequentes"
+            desc="Caso tenha uma pergunta, acesse aqui"
+          />
+
+
+          {/* TABELA DE PREÇOS */}
+
+          <CardsDashboard
+            image={TabelaIcon}
+            title="Tabela de Preços"
+            desc="Acesse nossa tabela de preços"
+            onClick={() => navigate("/tabela-precos")}
+          />
+
+
+          {/* TREINAMENTO COMERCIAL */}
+
+          <CardsDashboard
+            image={TcIcon}
+            title="Treinamento Comercial"
+            desc="Acesse nosso treinamento comercial"
+          />
+
+
+          {/* TREINAMENTOS TÉCNICOS */}
+
+          <CardsDashboard
+            image={TreinamentoIcon}
+            title="Treinamentos Técnicos"
+            desc="Acesse nossos treinamentos técnicos"
+          />
+
+
+          {/* VÍDEOS DE INSTALAÇÃO */}
+
+          <CardsDashboard
+            image={YtIcon}
+            title="Vídeos de Instalação"
+            desc="Acesse nossos vídeos de instalação"
+            onClick={() => navigate("/videos")}
+          />
+
 
         </div>
 

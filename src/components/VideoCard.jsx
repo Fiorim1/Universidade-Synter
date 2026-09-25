@@ -446,7 +446,7 @@ function VideoCard({
 
               {
                 tocando
-                  ? "❚❚ Pausar"
+                  ? "❚❚ Parar Vídeos"
                   : "▶ Reproduzir"
               }
 
