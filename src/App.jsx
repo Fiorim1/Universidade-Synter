@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Videos from "./pages/Videos.jsx";
 import TabelaPrecos from "./pages/TabelaPrecos.jsx";
 import AssistenciaTecnica from "./pages/AssistenciaTecnica.jsx";
+import ImageToPdf from "./pages/ImageToPdf.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -166,6 +167,15 @@ function App() {
         path="*"
         element={
           <NotFound />
+        }
+      />
+
+      <Route
+        path="/imagem-para-pdf"
+        element={
+          <ProtectedRoute>
+            <ImageToPdf />
+          </ProtectedRoute>
         }
       />
 
