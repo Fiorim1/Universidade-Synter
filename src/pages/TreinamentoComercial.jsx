@@ -7,13 +7,9 @@ import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 import CardsDashboard from "../components/CardsDashboard";
 
-import "../styles/TreinamentoComercial.css";
+import ImgIcon from "../assets/img-icon.png";
 
-// IMAGENS DOS TREINAMENTOS
-import produtosIcon from "../assets/treinamento-icon.png";
-import vendasIcon from "../assets/treinamento-icon.png";
-import atendimentoIcon from "../assets/treinamento-icon.png";
-import comercialIcon from "../assets/treinamento-icon.png";
+import "../styles/TreinamentoComercial.css";
 
 
 function TreinamentoComercial() {
@@ -54,15 +50,15 @@ function TreinamentoComercial() {
                 </div>
 
 
-                {/* HERO */}
+                {/* CONTEÚDO HERO */}
 
                 <div className="treinamento-comercial-hero-content">
 
                     <Hero
                         variant="dashboard"
                         one="Universidade Synter"
-                        two="Treinamentos Comerciais"
-                        three="Acesse conteúdos de capacitação comercial, produtos, vendas e atendimento ao cliente."
+                        two="Treinamento Comercial"
+                        three="Acesse ferramentas e materiais de apoio para treinamentos e atividades comerciais."
                     />
 
                 </div>
@@ -72,87 +68,58 @@ function TreinamentoComercial() {
 
 
             {/* ================================= */}
-            {/* CONTEÚDO                          */}
+            {/* CONTEÚDO PRINCIPAL                */}
             {/* ================================= */}
 
             <main className="treinamento-comercial-content">
 
 
-                {/* TÍTULO */}
+                {/* ================================= */}
+                {/* TÍTULO                            */}
+                {/* ================================= */}
 
                 <div className="treinamento-comercial-title">
 
                     <div className="treinamento-comercial-bar"></div>
 
                     <h4>
-                        TREINAMENTOS DISPONÍVEIS
+                        FERRAMENTAS COMERCIAIS
                     </h4>
 
                 </div>
 
 
-                {/* DESCRIÇÃO */}
+                {/* ================================= */}
+                {/* INTRODUÇÃO                        */}
+                {/* ================================= */}
 
                 <div className="treinamento-comercial-intro">
 
                     <h2>
-                        Capacitação Comercial
+                        Ferramentas disponíveis
                     </h2>
 
                     <p>
-                        Selecione uma categoria para acessar
-                        os treinamentos e materiais disponíveis.
+                        Utilize as ferramentas disponíveis para
+                        auxiliar na preparação de materiais e
+                        documentos comerciais.
                     </p>
 
                 </div>
 
 
                 {/* ================================= */}
-                {/* CARDS                             */}
+                {/* CARD                              */}
                 {/* ================================= */}
 
                 <section className="treinamento-comercial-grid">
 
-
-                    {/* PRODUTOS */}
-
                     <CardsDashboard
-                        image={produtosIcon}
-                        title="Treinamento de Produtos"
-                        desc="Conheça os produtos, funcionalidades, diferenciais e aplicações das soluções Synter."
-                        route="/treinamento-comercial/produtos"
+                        image={ImgIcon}
+                        title="Converter Imagem em PDF"
+                        desc="Transforme uma ou várias imagens em um arquivo PDF de forma rápida e organizada."
+                        route="/imagem-para-pdf"
                     />
-
-
-                    {/* VENDAS */}
-
-                    <CardsDashboard
-                        image={vendasIcon}
-                        title="Técnicas de Vendas"
-                        desc="Conteúdos para aprimorar abordagem comercial, negociação e fechamento de vendas."
-                        route="/treinamento-comercial/vendas"
-                    />
-
-
-                    {/* ATENDIMENTO */}
-
-                    <CardsDashboard
-                        image={atendimentoIcon}
-                        title="Atendimento ao Cliente"
-                        desc="Boas práticas para proporcionar um atendimento profissional, consultivo e eficiente."
-                        route="/treinamento-comercial/atendimento"
-                    />
-
-
-                    {/* COMERCIAL */}
-
-                    <CardsDashboard
-                        image={comercialIcon}
-                        title="Argumentação Comercial"
-                        desc="Aprenda a apresentar diferenciais, benefícios e soluções de forma estratégica."
-                        route="/treinamento-comercial/argumentacao"
-                    />
-
 
                 </section>
 
@@ -168,7 +135,7 @@ function TreinamentoComercial() {
 
 
             {/* ================================= */}
-            {/* MODAL PERFIL                      */}
+            {/* PERFIL                            */}
             {/* ================================= */}
 
             {profileOpen && (
