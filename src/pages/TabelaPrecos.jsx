@@ -379,15 +379,29 @@ function TabelaPrecos() {
                         <tr>
 
                           {categoria.colunas.map(
-                            (coluna, index) => (
+                            (coluna, index) => {
 
-                              <th
-                                key={`${categoria.id}-coluna-${index}`}
-                              >
-                                {coluna}
-                              </th>
+                              const ehColunaLinha =
+                                String(coluna)
+                                  .trim()
+                                  .toLowerCase() === "linha";
 
-                            )
+                              return (
+
+                                <th
+                                  key={`${categoria.id}-coluna-${index}`}
+                                  className={
+                                    ehColunaLinha
+                                      ? "coluna-linha-mobile"
+                                      : ""
+                                  }
+                                >
+                                  {coluna}
+                                </th>
+
+                              );
+
+                            }
                           )}
 
                         </tr>
@@ -405,23 +419,43 @@ function TabelaPrecos() {
                             >
 
                               {linha.map(
-                                (valor, colunaIndex) => (
+                                (valor, colunaIndex) => {
 
-                                  <td
-                                    key={`${categoria.id}-${linhaIndex}-${colunaIndex}`}
-                                    className={
-                                      valor
-                                        .toString()
-                                        .trim()
-                                        .startsWith("R$")
-                                        ? "tabela-precos-valor"
-                                        : ""
-                                    }
-                                  >
-                                    {valor}
-                                  </td>
+                                  const nomeColuna =
+                                    categoria.colunas[colunaIndex];
 
-                                )
+                                  const ehColunaLinha =
+                                    String(nomeColuna)
+                                      .trim()
+                                      .toLowerCase() === "linha";
+
+                                  const ehValor =
+                                    valor
+                                      .toString()
+                                      .trim()
+                                      .startsWith("R$");
+
+                                  return (
+
+                                    <td
+                                      key={`${categoria.id}-${linhaIndex}-${colunaIndex}`}
+                                      className={[
+                                        ehValor
+                                          ? "tabela-precos-valor"
+                                          : "",
+                                        ehColunaLinha
+                                          ? "coluna-linha-mobile"
+                                          : ""
+                                      ]
+                                        .filter(Boolean)
+                                        .join(" ")}
+                                    >
+                                      {valor}
+                                    </td>
+
+                                  );
+
+                                }
                               )}
 
                             </tr>

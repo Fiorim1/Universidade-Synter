@@ -1061,6 +1061,15 @@
     }
 
 
+    /* ======================================== */
+    /* ESCONDER COLUNA LINHA NO MOBILE          */
+    /* ======================================== */
+
+    .coluna-linha-mobile {
+        display: none;
+    }
+
+
     /* TABELA */
 
     .tabela-precos-table {
