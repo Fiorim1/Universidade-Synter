@@ -16,11 +16,9 @@
     position: relative;
 
     background:
-        linear-gradient(
-            135deg,
+        linear-gradient(135deg,
             rgba(18, 18, 18, 0.98),
-            rgba(10, 10, 10, 0.98)
-        );
+            rgba(10, 10, 10, 0.98));
 
     border:
         1px solid rgba(255, 255, 255, 0.12);
@@ -60,11 +58,9 @@
     inset: 0;
 
     background:
-        linear-gradient(
-            120deg,
+        linear-gradient(120deg,
             rgba(255, 255, 255, 0.035),
-            transparent 42%
-        );
+            transparent 42%);
 
     opacity: 0;
 
@@ -85,11 +81,9 @@
         rgba(255, 255, 255, 0.32);
 
     background:
-        linear-gradient(
-            135deg,
+        linear-gradient(135deg,
             #1a1a1a,
-            #101010
-        );
+            #101010);
 
     box-shadow:
         0 12px 30px rgba(0, 0, 0, 0.32);
@@ -284,11 +278,9 @@
     max-width: 460px;
 
     background:
-        linear-gradient(
-            145deg,
+        linear-gradient(145deg,
             #111111 0%,
-            #090909 100%
-        );
+            #090909 100%);
 
     border: 1px solid #292929;
 
@@ -430,12 +422,11 @@
 
     padding: 13px 18px;
 
-    border: 1px solid #303030;
+    border: 1px solid #ffffff29;
     border-radius: 10px;
 
-    background: #ffffff;
 
-    color: #090909;
+    color: #ffffff;
 
     font-size: 13px;
     font-weight: 700;
@@ -443,11 +434,6 @@
     cursor: pointer;
 
     transition: 0.2s ease;
-}
-
-
-.card-production-button:hover {
-    background: #e7e7e7;
 }
 
 
@@ -460,15 +446,13 @@
     from {
         opacity: 0;
         transform:
-            translateY(10px)
-            scale(0.98);
+            translateY(10px) scale(0.98);
     }
 
     to {
         opacity: 1;
         transform:
-            translateY(0)
-            scale(1);
+            translateY(0) scale(1);
     }
 
 }
