@@ -159,7 +159,7 @@ function Dashboard() {
             image={MktIcon}
             title="Materiais de Marketing"
             desc="Acesse nossos materiais de marketing"
-            enabled={false}
+            route="/marketing"
           />
 
 
