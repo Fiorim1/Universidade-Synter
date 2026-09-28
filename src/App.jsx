@@ -23,6 +23,7 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PublicRoute from "./components/PublicRoute.jsx";
 
 import SynterAssistant from "./components/SynterAssistant.jsx";
+import Marketing from "./pages/Marketing.jsx";
 
 
 function App() {
@@ -218,6 +219,15 @@ function App() {
           element={
             <ProtectedRoute>
               <TreinamentoComercial />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/marketing"
+          element={
+            <ProtectedRoute>
+              <Marketing />
             </ProtectedRoute>
           }
         />

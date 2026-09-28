@@ -1,0 +1,715 @@
+
+
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+  Relatório SAT
+</title>
+
+
+<style>
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+html {
+  background: #050505;
+}
+
+
+body {
+
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      #171717 0%,
+      #090909 32%,
+      #050505 65%,
+      #030303 100%
+    );
+
+  color: #ffffff;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+}
+
+
+/* ==========================================
+   CONTAINER
+========================================== */
+
+.container {
+
+  width: 100%;
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  padding: 50px;
+
+}
+
+
+/* ==========================================
+   HERO
+========================================== */
+
+.hero {
+
+  padding:
+    60px 0;
+
+}
+
+
+.hero-small {
+
+  color: #777777;
+
+  font-size: 12px;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+
+  margin-bottom: 15px;
+
+}
+
+
+.hero h1 {
+
+  font-size: 46px;
+
+  margin-bottom: 15px;
+
+}
+
+
+.hero p {
+
+  max-width: 600px;
+
+  color: #888888;
+
+  line-height: 1.6;
+
+}
+
+
+/* ==========================================
+   CHAMADOS ABERTOS
+========================================== */
+
+.open-card {
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items: center;
+
+  padding: 30px;
+
+  margin-bottom: 60px;
+
+  background:
+    #0d0d0d;
+
+  border:
+    1px solid #222222;
+
+  border-radius: 16px;
+
+}
+
+
+.open-label {
+
+  color: #777777;
+
+  font-size: 12px;
+
+  margin-bottom: 8px;
+
+}
+
+
+.open-title {
+
+  font-size: 22px;
+
+  font-weight: 600;
+
+}
+
+
+.open-number {
+
+  font-size: 60px;
+
+  font-weight: 700;
+
+}
+
+
+/* ==========================================
+   MESES
+========================================== */
+
+.month {
+
+  margin-bottom: 60px;
+
+}
+
+
+.month-header {
+
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items: center;
+
+  margin-bottom: 20px;
+
+}
+
+
+.month-title {
+
+  font-size: 24px;
+
+  font-weight: 700;
+
+}
+
+
+.month-type {
+
+  color: #666666;
+
+  font-size: 12px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+}
+
+
+/* ==========================================
+   CARDS
+========================================== */
+
+.cards {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 15px;
+
+}
+
+
+.card {
+
+  background:
+    #0d0d0d;
+
+  border:
+    1px solid #222222;
+
+  border-radius: 14px;
+
+  padding: 25px;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+
+}
+
+
+.card:hover {
+
+  transform:
+    translateY(-2px);
+
+  border-color:
+    #333333;
+
+}
+
+
+.card-title {
+
+  color: #888888;
+
+  font-size: 13px;
+
+  margin-bottom: 15px;
+
+}
+
+
+.card-value {
+
+  font-size: 36px;
+
+  font-weight: 700;
+
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.footer {
+
+  margin-top: 70px;
+
+  padding-top: 30px;
+
+  border-top:
+    1px solid #202020;
+
+  color: #555555;
+
+  font-size: 11px;
+
+}
+
+
+/* ==========================================
+   RESPONSIVO
+========================================== */
+
+@media(max-width: 700px) {
+
+  .container {
+
+    padding: 25px;
+
+  }
+
+
+  .cards {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .hero h1 {
+
+    font-size: 34px;
+
+  }
+
+
+  .open-number {
+
+    font-size: 45px;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+  <!-- ========================================
+       HERO
+  ========================================= -->
+
+  <section class="hero">
+
+    <div class="hero-small">
+
+      RELATÓRIO AUTOMÁTICO
+
+    </div>
+
+
+    <h1>
+
+      Assistência Técnica
+
+    </h1>
+
+
+    <p>
+
+      Acompanhamento dos chamados,
+      assistências, suportes técnicos
+      e pareceres registrados através
+      do Notion.
+
+    </p>
+
+  </section>
+
+
+  <!-- ========================================
+       CHAMADOS EM ABERTO
+  ========================================= -->
+
+  <section class="open-card">
+
+    <div>
+
+      <div class="open-label">
+
+        STATUS ATUAL
+
+      </div>
+
+
+      <div class="open-title">
+
+        Chamados em aberto
+
+      </div>
+
+    </div>
+
+
+    <div class="open-number">
+
+      2
+
+    </div>
+
+  </section>
+
+
+  <!-- ========================================
+       MÊS ATUAL
+  ========================================= -->
+
+  <section class="month">
+
+    <div class="month-header">
+
+
+      <div class="month-title">
+
+        SETEMBRO
+
+      </div>
+
+
+      <div class="month-type">
+
+        Mês atual
+
+      </div>
+
+
+    </div>
+
+
+    <div class="cards">
+
+
+      
+
+    <div class="card">
+
+      <div class="card-title">
+        Total de chamados
+      </div>
+
+      <div class="card-value">
+        22
+      </div>
+
+    </div>
+
+  
+
+
+      
+
+    <div class="card">
+
+      <div class="card-title">
+        Assistências eletrônicas
+      </div>
+
+      <div class="card-value">
+        0
+      </div>
+
+    </div>
+
+  
+
+
+      
+
+    <div class="card">
+
+      <div class="card-title">
+        Assistências mecânicas
+      </div>
+
+      <div class="card-value">
+        3
+      </div>
+
+    </div>
+
+  
+
+
+      
+
+    <div class="card">
+
+      <div class="card-title">
+        Suportes eletrônicos
+      </div>
+
+      <div class="card-value">
+        12
+      </div>
+
+    </div>
+
+  
+
+
+      
+
+    <div class="card">
+
+      <div class="card-title">
+        Suportes mecânicos
+      </div>
+
+      <div class="card-value">
+        6
+      </div>
+
+    </div>
+
+  
+
+
+      
+
+    <div class="card">
+
+      <div class="card-title">
+        Pareceres procedentes
+      </div>
+
+      <div class="card-value">
+        3
+      </div>
+
+    </div>
+
+  
+
+
+    </div>
+
+  </section>
+
+
+  <!-- ========================================
+       MÊS ANTERIOR
+  ========================================= -->
+
+  <section class="month">
+
+    <div class="month-header">
+
+
+      <div class="month-title">
+
+        AGOSTO
+
+      </div>
+
+
+      <div class="month-type">
+
+        Mês anterior
+
+      </div>
+
+
+    </div>
+
+
+    <div class="cards">
+
+
+      
+
+    <div class="card">
+
+      <div class="card-title">
+        Total de chamados
+      </div>
+
+      <div class="card-value">
+        39
+      </div>
+
+    </div>
+
+  
+
+
+      
+
+    <div class="card">
+
+      <div class="card-title">
+        Assistências eletrônicas
+      </div>
+
+      <div class="card-value">
+        2
+      </div>
+
+    </div>
+
+  
+
+
+      
+
+    <div class="card">
+
+      <div class="card-title">
+        Assistências mecânicas
+      </div>
+
+      <div class="card-value">
+        4
+      </div>
+
+    </div>
+
+  
+
+
+      
+
+    <div class="card">
+
+      <div class="card-title">
+        Suportes eletrônicos
+      </div>
+
+      <div class="card-value">
+        23
+      </div>
+
+    </div>
+
+  
+
+
+      
+
+    <div class="card">
+
+      <div class="card-title">
+        Suportes mecânicos
+      </div>
+
+      <div class="card-value">
+        10
+      </div>
+
+    </div>
+
+  
+
+
+      
+
+    <div class="card">
+
+      <div class="card-title">
+        Pareceres procedentes
+      </div>
+
+      <div class="card-value">
+        5
+      </div>
+
+    </div>
+
+  
+
+
+    </div>
+
+  </section>
+
+
+  <!-- ========================================
+       FOOTER
+  ========================================= -->
+
+  <footer class="footer">
+
+    Universidade Synter —
+    Relatório gerado automaticamente
+    através dos dados registrados no Notion.
+
+  </footer>
+
+
+</div>
+
+
+</body>
+
+</html>
+
