@@ -12,6 +12,8 @@ import AppIcon from "../assets/app-icon.png";
 import AstIcon from "../assets/ast-icon.png";
 import FtIcon from "../assets/Ft-icon.png";
 
+import "../styles/Marketing.css"
+
 function Marketing() {
     const [profileOpen, setProfileOpen] = useState(false);
 

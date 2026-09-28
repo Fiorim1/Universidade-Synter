@@ -1,0 +1,394 @@
+/* ======================================== */
+/* MARKETING                                */
+/* ======================================== */
+
+.marketing-page {
+    position: relative;
+
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #050505;
+    color: #ffffff;
+
+    overflow-x: hidden;
+}
+
+
+/* ======================================== */
+/* HERO                                     */
+/* ======================================== */
+
+.marketing-page .dashboard-hero-area {
+    position: relative;
+
+    width: 100%;
+    min-height: 465px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    background:
+        radial-gradient(
+            circle at 30% 40%,
+            rgba(255, 255, 255, 0.025) 0%,
+            transparent 38%
+        ),
+        linear-gradient(
+            90deg,
+            #050505 0%,
+            #070707 45%,
+            #090909 100%
+        );
+
+    overflow: hidden;
+}
+
+
+/* ======================================== */
+/* SOMBRA / PROFUNDIDADE DO HERO            */
+/* ======================================== */
+
+.marketing-page .dashboard-hero-area::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.01) 0%,
+            rgba(0, 0, 0, 0.08) 60%,
+            rgba(0, 0, 0, 0.22) 100%
+        );
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* ======================================== */
+/* PERFIL                                   */
+/* ======================================== */
+
+.marketing-page .dashboard-profile {
+    position: absolute;
+
+    top: 28px;
+    right: 60px;
+
+    z-index: 10;
+}
+
+
+/* ======================================== */
+/* CONTEÚDO DO HERO                         */
+/* ======================================== */
+
+.marketing-page .dashboard-hero-content {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding:
+        72px
+        60px
+        70px;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* CONTEÚDO PRINCIPAL                       */
+/* ======================================== */
+
+.marketing-page .dashboard-content {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding:
+        38px
+        60px
+        80px;
+
+    box-sizing: border-box;
+
+    flex: 1;
+}
+
+
+/* ======================================== */
+/* TÍTULO DA SEÇÃO                          */
+/* ======================================== */
+
+.marketing-page .dashboard-section-title {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    width: 100%;
+
+    margin-bottom: 26px;
+}
+
+
+/* ======================================== */
+/* BARRA DO TÍTULO                          */
+/* ======================================== */
+
+.marketing-page .dashboard-section-bar {
+    width: 3px;
+    height: 20px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 8px rgba(255, 255, 255, 0.18);
+}
+
+
+/* ======================================== */
+/* TEXTO DO TÍTULO                          */
+/* ======================================== */
+
+.marketing-page .dashboard-section-title h4 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    line-height: 1;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+
+/* ======================================== */
+/* GRID DOS CARDS                           */
+/* ======================================== */
+
+.marketing-page .cards {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    align-items: stretch;
+
+    gap: 16px;
+
+    width: 100%;
+
+    margin: 0;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* GARANTE CARDS DO MESMO TAMANHO           */
+/* ======================================== */
+
+.marketing-page .cards > * {
+    width: 100%;
+    min-width: 0;
+
+    height: 100%;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* EFEITO DE FUNDO DA PÁGINA                */
+/* ======================================== */
+
+.marketing-page::before {
+    content: "";
+
+    position: fixed;
+
+    width: 700px;
+    height: 700px;
+
+    right: -350px;
+    bottom: -350px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.018);
+
+    filter: blur(150px);
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* ======================================== */
+/* RESPONSIVO - NOTEBOOK                    */
+/* ======================================== */
+
+@media (max-width: 1200px) {
+
+    .marketing-page .dashboard-profile {
+        right: 40px;
+    }
+
+
+    .marketing-page .dashboard-hero-content {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+
+    .marketing-page .dashboard-content {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+
+    .marketing-page .cards {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* ======================================== */
+/* RESPONSIVO - TABLET                      */
+/* ======================================== */
+
+@media (max-width: 850px) {
+
+    .marketing-page .dashboard-hero-area {
+        min-height: auto;
+    }
+
+
+    .marketing-page .dashboard-profile {
+        position: relative;
+
+        top: auto;
+        right: auto;
+
+        display: flex;
+        justify-content: flex-end;
+
+        width: 100%;
+
+        padding:
+            22px
+            25px
+            0;
+
+        box-sizing: border-box;
+    }
+
+
+    .marketing-page .dashboard-hero-content {
+        padding:
+            35px
+            25px
+            55px;
+    }
+
+
+    .marketing-page .dashboard-content {
+        padding:
+            32px
+            25px
+            60px;
+    }
+
+
+    .marketing-page .cards {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* ======================================== */
+/* RESPONSIVO - CELULAR                     */
+/* ======================================== */
+
+@media (max-width: 550px) {
+
+    .marketing-page .dashboard-profile {
+        padding:
+            18px
+            20px
+            0;
+    }
+
+
+    .marketing-page .dashboard-hero-content {
+        padding:
+            30px
+            20px
+            45px;
+    }
+
+
+    .marketing-page .dashboard-content {
+        padding:
+            28px
+            20px
+            45px;
+    }
+
+
+    .marketing-page .dashboard-section-title {
+        gap: 10px;
+
+        margin-bottom: 22px;
+    }
+
+
+    .marketing-page .dashboard-section-title h4 {
+        font-size: 11px;
+
+        letter-spacing: 2px;
+    }
+
+
+    .marketing-page .dashboard-section-bar {
+        height: 18px;
+    }
+
+
+    .marketing-page .cards {
+        gap: 14px;
+    }
+
+}
