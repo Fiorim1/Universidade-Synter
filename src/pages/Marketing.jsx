@@ -31,6 +31,7 @@ function Marketing() {
                 <div className="dashboard-hero-content">
 
                     <Hero
+                        variant="dashboard"
                         one="Conteúdos para Divulgação"
                         two="Materiais de Marketing"
                         three="Encontre artes, conteúdos e materiais de apoio para divulgar os produtos Synter e fortalecer suas ações de marketing."
@@ -71,8 +72,8 @@ function Marketing() {
                     <CardsDashboard
                         image={FtIcon}
                         title="Vídeos e Imagens de Fechaduras Ferragens"
-                        desc="Acesse vídeos, imagens e materiais visuais das ferragens Synter para divulgação e apoio comercial."
-                       enabled={false}
+                        desc="Acesse vídeos, imagens e materiais visuais das ferragensgi Synter para divulgação e apoio comercial."
+                        enabled={false}
                     />
 
                 </div>
