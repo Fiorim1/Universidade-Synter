@@ -1,0 +1,311 @@
+/* ======================================== */
+/* DIGITAL MARKETING                        */
+/* ======================================== */
+
+.dig-marketing-page {
+    position: relative;
+
+    width: 100%;
+    min-height: 100vh;
+
+    background: #070707;
+
+    color: #ffffff;
+
+    overflow-x: hidden;
+}
+
+
+/* ======================================== */
+/* PERFIL                                   */
+/* ======================================== */
+
+.dig-marketing-profile {
+    position: absolute;
+
+    top: 105px;
+    right: 60px;
+
+    z-index: 10;
+}
+
+
+/* ======================================== */
+/* CONTAINER PRINCIPAL                      */
+/* ======================================== */
+
+.dig-marketing-container {
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding:
+        70px
+        60px
+        100px;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* TÍTULO                                   */
+/* ======================================== */
+
+.dig-marketing-title {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 28px;
+}
+
+
+.dig-marketing-title-bar {
+    width: 3px;
+    height: 21px;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+
+.dig-marketing-title h4 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+}
+
+
+/* ======================================== */
+/* PESQUISA                                 */
+/* ======================================== */
+
+.dig-marketing-search {
+    width: 100%;
+    max-width: 420px;
+
+    margin-bottom: 28px;
+}
+
+
+.dig-marketing-search input {
+    width: 100%;
+    height: 46px;
+
+    padding: 0 17px;
+
+    box-sizing: border-box;
+
+    border: 1px solid rgba(255, 255, 255, 0.16);
+
+    border-radius: 7px;
+
+    outline: none;
+
+    background: #0b0b0b;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.dig-marketing-search input::placeholder {
+    color: rgba(255, 255, 255, 0.45);
+}
+
+
+.dig-marketing-search input:focus {
+    border-color: rgba(255, 255, 255, 0.4);
+
+    background: #0d0d0d;
+
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.025);
+}
+
+
+/* ======================================== */
+/* GRID DOS VÍDEOS                          */
+/* ======================================== */
+
+.dig-marketing-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 22px;
+
+    width: 100%;
+
+    align-items: stretch;
+}
+
+
+/* ======================================== */
+/* GARANTE MESMO TAMANHO                    */
+/* ======================================== */
+
+.dig-marketing-grid > * {
+    width: 100%;
+    min-width: 0;
+
+    height: 100%;
+}
+
+
+/* ======================================== */
+/* NENHUM RESULTADO                         */
+/* ======================================== */
+
+.dig-marketing-empty {
+    width: 100%;
+
+    padding: 80px 20px;
+
+    text-align: center;
+
+    box-sizing: border-box;
+}
+
+
+.dig-marketing-empty h3 {
+    margin: 0 0 8px;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    color: #ffffff;
+}
+
+
+.dig-marketing-empty p {
+    margin: 0;
+
+    color: #888888;
+
+    font-size: 14px;
+}
+
+
+/* ======================================== */
+/* TABLET / NOTEBOOK                        */
+/* ======================================== */
+
+@media (max-width: 1150px) {
+
+    .dig-marketing-container {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+
+    .dig-marketing-profile {
+        right: 40px;
+    }
+
+
+    .dig-marketing-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* ======================================== */
+/* MOBILE                                   */
+/* ======================================== */
+
+@media (max-width: 750px) {
+
+    .dig-marketing-profile {
+        position: relative;
+
+        top: auto;
+        right: auto;
+
+        display: flex;
+        justify-content: flex-end;
+
+        padding:
+            20px
+            20px
+            0;
+    }
+
+
+    .dig-marketing-container {
+        padding:
+            35px
+            20px
+            60px;
+    }
+
+
+    .dig-marketing-grid {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+    }
+
+
+    .dig-marketing-search {
+        max-width: none;
+    }
+
+}
+
+
+/* ======================================== */
+/* CELULAR PEQUENO                          */
+/* ======================================== */
+
+@media (max-width: 480px) {
+
+    .dig-marketing-title {
+        gap: 10px;
+
+        margin-bottom: 22px;
+    }
+
+
+    .dig-marketing-title-bar {
+        height: 18px;
+    }
+
+
+    .dig-marketing-title h4 {
+        font-size: 11px;
+
+        letter-spacing: 2px;
+    }
+
+
+    .dig-marketing-search input {
+        height: 44px;
+
+        font-size: 13px;
+    }
+
+}

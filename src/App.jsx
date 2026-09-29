@@ -24,6 +24,7 @@ import PublicRoute from "./components/PublicRoute.jsx";
 
 import SynterAssistant from "./components/SynterAssistant.jsx";
 import Marketing from "./pages/Marketing.jsx";
+import DigMarketing from "./pages/Videos.jsx";
 
 
 function App() {
@@ -228,6 +229,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Marketing />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/digmarketing"
+          element={
+            <ProtectedRoute>
+              <DigMarketing />
             </ProtectedRoute>
           }
         />

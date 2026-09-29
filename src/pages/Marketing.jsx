@@ -8,9 +8,9 @@ import Footer from "../components/Footer";
 import CardsDashboard from "../components/CardsDashboard";
 
 // Ícones
-import AppIcon from "../assets/app-icon.png";
-import AstIcon from "../assets/ast-icon.png";
-import FtIcon from "../assets/Ft-icon.png";
+import MKT1 from "../assets/logomkt1.png";
+import MKT2 from "../assets/logomkt2";
+import MKT3 from "../assets/logomkt3.png";
 
 import "../styles/Marketing.css"
 
@@ -58,21 +58,21 @@ function Marketing() {
                 <div className="cards">
 
                     <CardsDashboard
-                        image={AppIcon}
+                        image={MKT1}
                         title="Vídeos e Imagens de Fechaduras Digitais"
                         desc="Acesse vídeos, imagens e materiais visuais das fechaduras digitais Synter para divulgação e apoio comercial."
                         enabled={false}
                     />
 
                     <CardsDashboard
-                        image={AppIcon}
+                        image={MKT2}
                         title="Vídeos e Imagens de Fechaduras Mecânicas"
                         desc="Acesse vídeos, imagens e materiais visuais das fechaduras mecânicas Synter para divulgação e apoio comercial."
                         enabled={false}
                     />
 
                     <CardsDashboard
-                        image={FtIcon}
+                        image={MKT3}
                         title="Vídeos e Imagens de Fechaduras Ferragens"
                         desc="Acesse vídeos, imagens e materiais visuais das ferragensgi Synter para divulgação e apoio comercial."
                         enabled={false}
