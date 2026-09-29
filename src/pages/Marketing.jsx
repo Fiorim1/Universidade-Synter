@@ -61,7 +61,7 @@ function Marketing() {
                         image={MKT1}
                         title="Vídeos e Imagens de Fechaduras Digitais"
                         desc="Acesse vídeos, imagens e materiais visuais das fechaduras digitais Synter para divulgação e apoio comercial."
-                        enabled={false}
+                        route="/digmarketing"
                     />
 
                     <CardsDashboard
