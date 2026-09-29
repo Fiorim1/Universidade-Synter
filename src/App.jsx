@@ -24,7 +24,7 @@ import PublicRoute from "./components/PublicRoute.jsx";
 
 import SynterAssistant from "./components/SynterAssistant.jsx";
 import Marketing from "./pages/Marketing.jsx";
-import DigMarketing from "./pages/Videos.jsx";
+import DigMarketing from "./pages/DigMarketing.jsx";
 
 
 function App() {
