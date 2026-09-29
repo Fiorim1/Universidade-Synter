@@ -9,7 +9,7 @@ import CardsDashboard from "../components/CardsDashboard";
 
 // Ícones
 import MKT1 from "../assets/logomkt1.png";
-import MKT2 from "../assets/logomkt2";
+import MKT2 from "../assets/logomkt2.png";
 import MKT3 from "../assets/logomkt3.png";
 
 import "../styles/Marketing.css"
