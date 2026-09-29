@@ -12,315 +12,429 @@ import VideoCard from "../components/VideoCard";
 // VÍDEOS
 // ===============================
 
-const videoMarketing1 = "https://youtube.com/shorts/i2_8xFaqHgc";
-const videoMarketing2 = "https://youtube.com/shorts/vuzLzcqCT5A";
-const videoMarketing3 = "https://youtube.com/shorts/RMC2hm9reTQ";
-const videoMarketing4 = "https://youtube.com/shorts/3nLdCqSkRuE";
-const videoMarketing5 = "https://youtube.com/shorts/-h3p7BRSvR4";
-const videoMarketing6 = "https://youtube.com/shorts/Wl7mP3oGji0";
-const videoMarketing7 = "https://youtube.com/shorts/nOxgn_bKzNo?feature=share";
-const videoMarketing8 = "https://youtube.com/shorts/GQwlcEne9ks";
-const videoMarketing9 = "https://youtube.com/shorts/2_5_QFtbLIE";
+const videoReversao = "https://www.youtube.com/embed/4Q1IiKGvS6M"
+const videoResetS1 = "https://youtube.com/shorts/TJSIOX6BK5I?feature=share"
+const videoResetS2 = "https://youtube.com/shorts/YtlF1Tv08sk"
+const videoRetiradaPortaS2 = "https://youtube.com/shorts/Dt3rD-t5v8g?feature=share"
+const s2cadastroApp = "https://youtube.com/shorts/C7pg0rwKtBA"
+const trocaPlacaBateriaS1 = "https://youtube.com/shorts/cCacriajKGg"
+
+const erroPortaAbertaS1 = "https://youtube.com/shorts/EJBrtiv1ccI"
+
+const cadastroVenusS3 = "https://youtu.be/G-0pJ70Wupg"
+
+const cadastroMarsS2 = "https://youtube.com/shorts/_xmbUmvTooo"
+const resetMarsS2 = "https://youtube.com/shorts/zjBiI0PYUSg?feature=share"
+
+const trocaIdiomaS2 = "https://youtube.com/shorts/GO9NWpYvjBk"
+
+const  marsTraseira = "https://youtube.com/shorts/BXjROLwm2-M"
+const marsFrontal = "https://youtube.com/shorts/aYo6oJCV63c"
+
+const x1Reset = "https://youtube.com/shorts/ON1WW4jUGn4"
+const x1ExcluirSenhaUser = "https://youtube.com/shorts/zL1le3iMcvg"
+const x1ConfigSom = "https://youtube.com/shorts/kFpSE6XCBgo"
+
+const x1CadastroUser = "https://youtube.com/shorts/-mPrd8eMDWg"
+const x1CadastroAdm = "https://youtube.com/shorts/s67_jfqKYHs"
 
 
 // ===============================
 // CAPAS
 // ===============================
 
-import capaMarketing1 from "../assets/capaMarketing1.png";
-import capaMarketing2 from "../assets/capaMarketing2.png";
-import capaMarketing3 from "../assets/capaMarketing3.png";
-import capaMarketing4 from "../assets/capaMarketing4.png";
-import capaMarketing5 from "../assets/capaMarketing5.png";
-import capaMarketing6 from "../assets/capaMarketing6.png";
-import capaMarketing7 from "../assets/capaMarketing7.png";
-import capaMarketing8 from "../assets/capaMarketing8.png";
-import capaMarketing9 from "../assets/capaMarketing9.png";
-
+import capaSyriusReversao from "../assets/SyriusS2-Reversao.png";
+import capaResetS1 from "../assets/caparesets1.png";
+import capaResetS2 from "../assets/caparesets2.png";
+import capaRetiradaPortaS2 from "../assets/retiradaportas2.png";
+import cadastroAppS2 from "../assets/s2cadastroapp.png";
+import trocaPlacaS1 from "../assets/trocaplacas1.png";
+import erroPortaSempreAbertaS1 from "../assets/erroportaabertas1.png";
+import cadastroVenusS3IMG from "../assets/cadastros3venus.png";
+import cadastroMarsS2IMG from "../assets/marss2cadastro.png";
+import resetMarsS2IMG from "../assets/marss2reset.png";
+import venuss3TrocaIdioma from "../assets/venuss3trocaidioma.png";
+import venuss2TrocaIdioma from "../assets/venuss2trocaidioma.png";
+import marsS2Traseira from "../assets/marsS2traseira.png";
+import marsS2Frontal from "../assets/marss2frontal.png";
+import x1ResetImg from "../assets/x1reset.png";
+import x1ExcluirSenha from "../assets/x1exclusaosenhauser.png";
+import x1ConfigAudio from "../assets/x1configsom.png";
+import x1CadUser from "../assets/x1cadastrouser.png";
+import x1CadAdm from "../assets/x1cadadm.png";
 
 import "../styles/Videos.css";
 
 
-function DigMarketing() {
+function Videos() {
 
-    const [profileOpen, setProfileOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
 
-    const [pesquisa, setPesquisa] = useState("");
+  // Guarda aquilo que o usuário digitar
+  const [pesquisa, setPesquisa] = useState("");
 
 
-    // ===============================
-    // PESQUISA
-    // ===============================
+  // Verifica se o título contém o texto pesquisado
+  function mostrarCard(titulo) {
 
-    function mostrarCard(titulo) {
+    return titulo
+      .toLowerCase()
+      .includes(pesquisa.toLowerCase());
 
-        return titulo
-            .toLowerCase()
-            .includes(pesquisa.toLowerCase());
+  }
 
-    }
 
+  return (
 
-    return (
+    <div className="videos-page">
 
-        <div className="videos-page">
+      <Header />
 
-            <Header />
 
+      {/* ======================================== */}
+      {/* HERO                                     */}
+      {/* ======================================== */}
 
-            {/* ======================================== */}
-            {/* HERO                                     */}
-            {/* ======================================== */}
+      <section className="videos-hero-area">
 
-            <section className="videos-hero-area">
+        <div className="videos-profile">
 
-
-                <div className="videos-profile">
-
-                    <UserProfileButton
-                        onClick={() => setProfileOpen(true)}
-                    />
-
-                </div>
-
-
-                {profileOpen && (
-
-                    <Profile
-                        onClose={() => setProfileOpen(false)}
-                    />
-
-                )}
-
-
-                <div className="videos-hero-content">
-
-                    <Hero
-                        variant="dashboard"
-                        one="Conteúdos para Divulgação"
-                        two="Vídeos de Fechaduras Digitais"
-                        three="Acesse vídeos das fechaduras digitais Synter para divulgação, campanhas e ações de marketing."
-                    />
-
-                </div>
-
-
-            </section>
-
-
-            {/* ======================================== */}
-            {/* CONTEÚDO                                 */}
-            {/* ======================================== */}
-
-            <main className="videos-content">
-
-
-                {/* ======================================== */}
-                {/* TÍTULO                                   */}
-                {/* ======================================== */}
-
-                <div className="videos-section-title">
-
-                    <div className="videos-section-bar"></div>
-
-                    <h4>
-                        VÍDEOS DE FECHADURAS DIGITAIS
-                    </h4>
-
-                </div>
-
-
-                {/* ======================================== */}
-                {/* PESQUISA                                 */}
-                {/* ======================================== */}
-
-                <div className="pesquisa-videos">
-
-                    <input
-                        type="text"
-                        placeholder="Pesquisar vídeo..."
-                        value={pesquisa}
-                        onChange={(evento) =>
-                            setPesquisa(evento.target.value)
-                        }
-                    />
-
-                </div>
-
-
-                {/* ======================================== */}
-                {/* CARDS                                    */}
-                {/* ======================================== */}
-
-                <div className="videos-grid">
-
-
-                    {/* VIDEO 01 */}
-
-                    {mostrarCard("Fechadura Digital - Syrius S2 Pro") && (
-
-                        <VideoCard
-                            titulo="Fechadura Digital - Syrius S2 Pro"
-                            descricao="Conheça os recursos e diferenciais das fechaduras digitais Synter."
-                            video={videoMarketing1}
-                            capa={capaMarketing1}
-                        />
-
-                    )}
-
-
-                    {/* VIDEO 02 */}
-
-                    {mostrarCard("Fechadura Digital - Dallas S3") && (
-
-                        <VideoCard
-                            titulo="Fechadura Digital - Dallas S3"
-                            descricao="Material audiovisual para divulgação das fechaduras digitais Synter."
-                            video={videoMarketing2}
-                            capa={capaMarketing2}
-                        />
-
-                    )}
-
-
-                    {/* VIDEO 03 */}
-
-                    {mostrarCard("Fechadura Digital - Syrius S3 Max") && (
-
-                        <VideoCard
-                            titulo="Fechadura Digital - Syrius S3 Max"
-                            descricao="Apresente os principais benefícios das fechaduras digitais Synter."
-                            video={videoMarketing3}
-                            capa={capaMarketing3}
-                        />
-
-                    )}
-
-
-                    {/* VIDEO 04 */}
-
-                    {mostrarCard("Fechadura Digital - Venus S3 Pro") && (
-
-                        <VideoCard
-                            titulo="Fechadura Digital - Venus S3 Pro"
-                            descricao="Conteúdo desenvolvido para divulgação comercial dos produtos Synter."
-                            video={videoMarketing4}
-                            capa={capaMarketing4}
-                        />
-
-                    )}
-
-
-                    {/* VIDEO 05 */}
-
-                    {mostrarCard("Fechadura Digital - Vega Face Id") && (
-
-                        <VideoCard
-                            titulo="Fechadura Digital - Vega Face Id"
-                            descricao="Vídeo promocional para apresentação das fechaduras digitais Synter."
-                            video={videoMarketing5}
-                            capa={capaMarketing5}
-                        />
-
-                    )}
-
-
-                    {/* VIDEO 06 */}
-
-                    {mostrarCard("Fechadura Digital - Syrius S3 Pro") && (
-
-                        <VideoCard
-                            titulo="Fechadura Digital - Syrius S3 Pro"
-                            descricao="Material visual para campanhas e divulgação das fechaduras Synter."
-                            video={videoMarketing6}
-                            capa={capaMarketing6}
-                        />
-
-                    )}
-
-
-                    {/* VIDEO 07 */}
-
-                    {mostrarCard("Fechadura Digital - Syrius S2 Pro Neo") && (
-
-                        <VideoCard
-                            titulo="Fechadura Digital - Syrius S2 Pro Neo"
-                            descricao="Conheça detalhes e funcionalidades das fechaduras digitais Synter."
-                            video={videoMarketing7}
-                            capa={capaMarketing7}
-                        />
-
-                    )}
-
-
-                    {/* VIDEO 08 */}
-
-                    {mostrarCard("Fechadura Digital - Lyra Pro") && (
-
-                        <VideoCard
-                            titulo="Fechadura Digital - Lyra Pro"
-                            descricao="Conteúdo para apoiar ações comerciais e de marketing."
-                            video={videoMarketing8}
-                            capa={capaMarketing8}
-                        />
-
-                    )}
-
-
-                    {/* VIDEO 09 */}
-
-                    {mostrarCard("Fechadura Digital - Eris Face Id") && (
-
-                        <VideoCard
-                            titulo="Fechadura Digital - Eris Face Id"
-                            descricao="Vídeo desenvolvido para apresentação dos produtos Synter."
-                            video={videoMarketing9}
-                            capa={capaMarketing9}
-                        />
-
-                    )}
-
-
-                    {/* ======================================== */}
-                    {/* NENHUM RESULTADO                         */}
-                    {/* ======================================== */}
-
-                    {pesquisa !== "" &&
-
-                        ![
-                            "Fechadura Digital - Vídeo 01",
-                            "Fechadura Digital - Vídeo 02",
-                            "Fechadura Digital - Vídeo 03",
-                            "Fechadura Digital - Vídeo 04",
-                            "Fechadura Digital - Vídeo 05",
-                            "Fechadura Digital - Vídeo 06",
-                            "Fechadura Digital - Vídeo 07",
-                            "Fechadura Digital - Vídeo 08",
-                            "Fechadura Digital - Vídeo 09",
-                            "Fechadura Digital - Vídeo 10"
-
-                        ].some(mostrarCard) && (
-
-                            <p className="nenhum-video">
-                                Nenhum vídeo encontrado.
-                            </p>
-
-                        )
-
-                    }
-
-
-                </div>
-
-            </main>
-
-
-            <Footer />
+          <UserProfileButton
+            onClick={() => setProfileOpen(true)}
+          />
 
         </div>
 
-    );
+
+        {/* PERFIL */}
+
+        {profileOpen && (
+
+          <Profile
+            onClose={() => setProfileOpen(false)}
+          />
+
+        )}
+
+
+        <div className="videos-hero-content">
+
+          <Hero
+            variant="dashboard"
+            one="Conteúdo em Vídeo"
+            two="Vídeos Educativos"
+            three="Aprenda através de vídeos práticos sobre instalação, configuração e utilização dos produtos Synter."
+          />
+
+        </div>
+
+      </section>
+
+
+      {/* ======================================== */}
+      {/* CONTEÚDO                                 */}
+      {/* ======================================== */}
+
+      <main className="videos-content">
+
+
+        {/* ======================================== */}
+        {/* TÍTULO                                   */}
+        {/* ======================================== */}
+
+        <div className="videos-section-title">
+
+          <div className="videos-section-bar"></div>
+
+          <h4>
+            VÍDEOS DE INSTALAÇÃO
+          </h4>
+
+        </div>
+
+
+        {/* ======================================== */}
+        {/* PESQUISA                                 */}
+        {/* ======================================== */}
+
+        <div className="pesquisa-videos">
+
+          <input
+            type="text"
+            placeholder="Pesquisar vídeo..."
+            value={pesquisa}
+            onChange={(evento) => setPesquisa(evento.target.value)}
+          />
+
+        </div>
+
+
+        {/* ======================================== */}
+        {/* CARDS                                    */}
+        {/* ======================================== */}
+
+        <div className="videos-grid">
+
+
+          {mostrarCard("Syrius S2 - Reversão do lado de abertura") && (
+
+            <VideoCard
+              titulo="Syrius S2 - Reversão do lado de abertura"
+              descricao="Aprenda como realizar corretamente a reversão do lado de abertura."
+              video={videoReversao}
+              capa={capaSyriusReversao}
+            />
+
+          )}
+
+
+          {mostrarCard("Syrius S1 - Como realizar o reset") && (
+
+            <VideoCard
+              titulo="Syrius S1 - Como realizar o reset"
+              descricao="Aprenda como realizar corretamente o processo de reset da fechadura."
+              video={videoResetS1}
+              capa={capaResetS1}
+            />
+
+          )}
+
+
+          {mostrarCard("Syrius S2 - Como realizar o reset") && (
+
+            <VideoCard
+              titulo="Syrius S2 - Como realizar o reset"
+              descricao="Aprenda como realizar corretamente o processo de reset da fechadura."
+              video={videoResetS2}
+              capa={capaResetS2}
+            />
+
+          )}
+
+
+          {mostrarCard("Syrius S2 - Retirada da Porta") && (
+
+            <VideoCard
+              titulo="Syrius S2 - Retirada da Porta"
+              descricao="Aprenda o passo a passo para realizar corretamente a retirada da fechadura da porta."
+              video={videoRetiradaPortaS2}
+              capa={capaRetiradaPortaS2}
+            />
+
+          )}
+
+
+          {mostrarCard("Syrius S2 - Cadastro no App") && (
+
+            <VideoCard
+              titulo="Syrius S2 - Cadastro no App"
+              descricao="Aprenda como realizar corretamente o cadastro da fechadura da linha Syrius S2 no aplicativo Synter."
+              video={s2cadastroApp}
+              capa={cadastroAppS2}
+            />
+
+          )}
+
+
+          {mostrarCard("Syrius S1 - Troca de Placa da Bateria") && (
+
+            <VideoCard
+              titulo="Syrius S1 - Troca de Placa da Bateria"
+              descricao="Aprenda o passo a passo para realizar corretamente a troca da placa da bateria nas fechaduras da linha S1."
+              video={trocaPlacaBateriaS1}
+              capa={trocaPlacaS1}
+            />
+
+          )}
+
+
+          {mostrarCard("Syrius S1 - Erro Porta Sempre Aberta") && (
+
+            <VideoCard
+              titulo="Syrius S1 - Erro Porta Sempre Aberta"
+              descricao="Aprenda como identificar e corrigir o erro de porta sempre aberta nas fechaduras da linha S1."
+              video={erroPortaAbertaS1}
+              capa={erroPortaSempreAbertaS1}
+            />
+
+          )}
+
+
+          {mostrarCard("Venus S3 - Cadastro") && (
+
+            <VideoCard
+              titulo="Venus S3 - Cadastro"
+              descricao="Aprenda como realizar corretamente o cadastro da fechadura Venus S3."
+              video={cadastroVenusS3}
+              capa={cadastroVenusS3IMG}
+            />
+
+          )}
+
+
+          {mostrarCard("Mars S2 - Cadastro") && (
+
+            <VideoCard
+              titulo="Mars S2 - Cadastro"
+              descricao="Aprenda como realizar corretamente o cadastro das fechaduras na fechadura Mars S2."
+              video={cadastroMarsS2}
+              capa={cadastroMarsS2IMG}
+            />
+
+          )}
+
+
+          {mostrarCard("Mars S2 - Reset") && (
+
+            <VideoCard
+              titulo="Mars S2 - Reset"
+              descricao="Aprenda como realizar corretamente o reset das fechaduras na fechadura Mars S2."
+              video={resetMarsS2}
+              capa={resetMarsS2IMG}
+            />
+
+          )}
+
+
+          {mostrarCard("Mars S2 - Retirada da Porta Parte Traseira") && (
+
+            <VideoCard
+              titulo="Mars S2 - Retirada da Porta Parte Traseira"
+              descricao="Aprenda como realizar corretamente a retirada da parte traseira da fechadura Mars S2."
+              video={marsTraseira}
+              capa={marsS2Traseira}
+            />
+
+          )}
+
+
+          {mostrarCard("Venus S2 - Troca de Idioma") && (
+
+            <VideoCard
+              titulo="Venus S2 - Troca de Idioma"
+              descricao="Aprenda como realizar corretamente a troca de idioma na fechadura Venus S2."
+              video={trocaIdiomaS2}
+              capa={venuss2TrocaIdioma}
+            />
+
+          )}
+
+          {mostrarCard("Venus S2 - Retirada da Porta Parte Frontal") && (
+
+            <VideoCard
+              titulo="Venus S2 - Retirada da Porta Parte Frontal"
+              descricao="Aprenda como realizar corretamente a retirada da parte frontal da porta na Venus S2."
+              video={marsFrontal}
+              capa={marsS2Frontal}
+            />
+
+          )}
+
+
+          {mostrarCard("X1 - Reset") && (
+
+            <VideoCard
+              titulo="X1 - Reset"
+              descricao="Aprenda como realizar corretamente o reset das fechaduras na fechadura X1."
+              video={x1Reset}
+              capa={x1ResetImg}
+            />
+
+          )}
+
+
+          {mostrarCard("X1 - Exclusão de Senha de Usuário") && (
+
+            <VideoCard
+              titulo="X1 - Exclusão de Senha de Usuário"
+              descricao="Aprenda como realizar corretamente a exclusão de senha de usuário na fechadura X1."
+              video={x1ExcluirSenhaUser}
+              capa={x1ExcluirSenha}
+            />
+
+          )}
+
+
+          {mostrarCard("X1 - Configuração de Som") && (
+
+            <VideoCard
+              titulo="X1 - Configuração de Som"
+              descricao="Aprenda como realizar corretamente a configuração de som na fechadura X1."
+              video={x1ConfigSom}
+              capa={x1ConfigAudio}
+            />
+
+          )}
+
+
+          {mostrarCard("X1 - Cadastro de Usuário") && (
+
+            <VideoCard
+              titulo="X1 - Cadastro de Usuário"
+              descricao="Aprenda como realizar corretamente o cadastro de usuário na fechadura X1."
+              video={x1CadastroUser}
+              capa={x1CadUser}
+            />
+
+          )}
+
+
+          {mostrarCard("X1 - Cadastro de Administrador") && (
+
+            <VideoCard
+              titulo="X1 - Cadastro de Administrador"
+              descricao="Aprenda como realizar corretamente o cadastro de usuário na fechadura X1."
+              video={x1CadastroAdm}
+              capa={x1CadAdm}
+            />
+
+          )}
+
+
+          {/* ======================================== */}
+          {/* NENHUM RESULTADO                         */}
+          {/* ======================================== */}
+
+          {pesquisa !== "" &&
+            ![
+              "Syrius S2 - Reversão do lado de abertura",
+              "Syrius S1 - Como realizar o reset",
+              "Syrius S2 - Como realizar o reset",
+              "Syrius S2 - Retirada da Porta",
+              "Syrius S2 - Cadastro no App",
+              "Syrius S1 - Troca de Placa da Bateria",
+              "Syrius S1 - Erro Porta Sempre Aberta",
+              "Venus S3 - Cadastro",
+              "Mars S2 - Cadastro",
+              "Mars S2 - Reset",
+              "Mars S2 - Troca de Idioma",
+              "Venus S2 - Troca de Idioma",
+              "Venus S2 - Retirada da Porta Parte Traseira",
+              "Venus S2 - Retirada da Porta Parte Frontal",
+              "X1 - Reset",
+              "X1 - Exclusão de Senha de Usuário",
+              "X1 - Configuração de Som",
+              "X1 - Cadastro de Usuário",
+              "X1 - Cadastro de Administrador"
+            ].some(mostrarCard) && (
+
+              <p className="nenhum-video">
+                Nenhum vídeo encontrado.
+              </p>
+
+            )}
+
+        </div>
+
+      </main>
+
+
+      <Footer />
+
+    </div>
+
+  );
 
 }
 
-export default DigMarketing;
+export default Videos;
