@@ -189,14 +189,27 @@ function VideoCard({
             {descricao}
           </p>
 
-          <button
-            className="botao-assistir"
-            onClick={abrirVideo}
-          >
-            <Play3 />
+          <div className="video-card-botoes">
 
-            Assistir
-          </button>
+            <button
+              className="botao-assistir"
+              onClick={abrirVideo}
+            >
+              <Play3 />
+              Assistir
+            </button>
+
+            {!ehYoutube && (
+              <a
+                className="botao-download"
+                href={video}
+                download
+              >
+                ⬇ Baixar
+              </a>
+            )}
+
+          </div>
 
         </div>
 
@@ -278,6 +291,7 @@ function VideoCard({
                 className="video-principal"
                 src={video}
                 poster={capa}
+                controls={tocando}
                 onPlay={() => setTocando(true)}
                 onPause={() => setTocando(false)}
                 onEnded={() => setTocando(false)}
@@ -286,19 +300,33 @@ function VideoCard({
             )}
 
             {/* =================================
-                BOTÃO REPRODUZIR
+                AÇÕES
             ================================== */}
 
-            {!tocando && (
+            <div className="modal-video-acoes">
 
-              <button
-                className="botao-play"
-                onClick={reproduzirVideo}
-              >
-                ▶ Reproduzir
-              </button>
+              {!tocando && (
 
-            )}
+                <button
+                  className="botao-play"
+                  onClick={reproduzirVideo}
+                >
+                  ▶ Reproduzir
+                </button>
+
+              )}
+
+              {!ehYoutube && (
+                <a
+                  className="botao-download"
+                  href={video}
+                  download
+                >
+                  ⬇ Baixar vídeo
+                </a>
+              )}
+
+            </div>
 
           </div>
 

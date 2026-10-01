@@ -13,14 +13,18 @@
     rgba(10, 10, 10, 0.96) 100%
   );
 
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 18px;
 
   overflow: hidden;
 
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.25);
 
-  transition: 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 
   display: flex;
   flex-direction: column;
@@ -47,6 +51,7 @@
   display: block;
 
   object-fit: cover;
+
   background: #080808;
 }
 
@@ -60,6 +65,7 @@
 
   display: flex;
   flex-direction: column;
+
   flex: 1;
 }
 
@@ -81,17 +87,25 @@
   color: rgba(255, 255, 255, 0.68);
 
   font-size: 14px;
-
-  line-height: 1.6;
-}.video-card-info p {
-  margin: 0 0 20px;
-
-  color: rgba(255, 255, 255, 0.68);
-
-  font-size: 14px;
   line-height: 1.6;
 
   min-height: 70px;
+}
+
+
+/* =========================
+   CONTAINER DOS BOTÕES
+========================= */
+
+.video-card-botoes {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: auto;
 }
 
 
@@ -100,11 +114,13 @@
 ========================= */
 
 .botao-assistir {
-  width: 100%;
+  flex: 1;
 
-  padding: 13px 16px;
+  min-height: 46px;
 
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  padding: 12px 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
 
   background: linear-gradient(
@@ -120,15 +136,23 @@
 
   cursor: pointer;
 
-  transition: 0.2s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  gap: 10px;
+  gap: 9px;
+}
 
-  margin-top: auto;
+.botao-assistir svg {
+  width: 18px;
+  height: 18px;
+
+  flex-shrink: 0;
 }
 
 .botao-assistir:hover {
@@ -139,6 +163,58 @@
     rgba(14, 14, 14, 1) 0%,
     rgba(26, 26, 26, 1) 100%
   );
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================
+   BOTÃO DOWNLOAD
+========================= */
+
+.botao-download {
+  flex: 1;
+
+  min-height: 46px;
+
+  padding: 12px 16px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.07);
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+}
+
+.botao-download:hover {
+  color: #ffffff;
+
+  background: rgba(255, 255, 255, 0.13);
+
+  border-color: rgba(255, 255, 255, 0.25);
+
+  transform: translateY(-1px);
 }
 
 
@@ -184,7 +260,7 @@
     rgba(8, 8, 8, 0.98) 100%
   );
 
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 
   border-radius: 18px;
 
@@ -194,10 +270,34 @@
 
   max-height: 90vh;
 
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   box-shadow:
     0 25px 60px rgba(0, 0, 0, 0.45);
+}
+
+
+/* =========================
+   SCROLL DO MODAL
+========================= */
+
+.modal-video::-webkit-scrollbar {
+  width: 7px;
+}
+
+.modal-video::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-video::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+
+  border-radius: 20px;
+}
+
+.modal-video::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 
@@ -206,12 +306,13 @@
 ========================= */
 
 .modal-video h2 {
-  margin: 0 50px 18px 0;
+  margin: 0 55px 18px 0;
 
   color: #ffffff;
 
   font-size: 24px;
   font-weight: 700;
+  line-height: 1.3;
 }
 
 
@@ -228,6 +329,8 @@
   width: 42px;
   height: 42px;
 
+  padding: 0;
+
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 50%;
 
@@ -236,6 +339,7 @@
   color: #ffffff;
 
   font-size: 24px;
+  line-height: 1;
 
   cursor: pointer;
 
@@ -243,7 +347,10 @@
   align-items: center;
   justify-content: center;
 
-  transition: 0.2s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 
   z-index: 10;
 }
@@ -252,6 +359,8 @@
   background: rgba(255, 255, 255, 0.12);
 
   border-color: rgba(255, 255, 255, 0.18);
+
+  transform: rotate(90deg);
 }
 
 
@@ -265,7 +374,7 @@
   width: 100%;
   height: 450px;
 
-  background: #000;
+  background: #000000;
 
   border-radius: 12px;
 
@@ -274,19 +383,63 @@
 
 
 /* =========================
-   BOTÃO PLAY / PAUSE
+   YOUTUBE
+========================= */
+
+.video-youtube {
+  border: none;
+}
+
+.youtube-capa-container {
+  width: 100%;
+
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 12px;
+
+  background: #000000;
+}
+
+.youtube-capa {
+  width: 100%;
+  height: 450px;
+
+  display: block;
+
+  object-fit: contain;
+}
+
+
+/* =========================
+   ÁREA DOS BOTÕES DO MODAL
+========================= */
+
+.modal-video-acoes {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  margin-top: 20px;
+}
+
+
+/* =========================
+   BOTÃO PLAY
 ========================= */
 
 .botao-play {
-  display: block;
-
-  margin: 20px auto 0;
-
-  padding: 14px 28px;
-
   min-width: 180px;
+  min-height: 48px;
 
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  padding: 13px 24px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 30px;
 
   background: #ffffff;
@@ -298,13 +451,39 @@
 
   cursor: pointer;
 
-  transition: 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .botao-play:hover {
   background: #ececec;
 
-  transform: scale(1.02);
+  transform: translateY(-1px);
+}
+
+
+/* =========================
+   DOWNLOAD DENTRO DO MODAL
+========================= */
+
+.modal-video .botao-download {
+  flex: initial;
+
+  min-width: 180px;
+  min-height: 48px;
+
+  border-radius: 30px;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.modal-video .botao-download:hover {
+  background: rgba(255, 255, 255, 0.15);
 }
 
 
@@ -334,28 +513,40 @@
   }
 
   .modal-video h2 {
+    margin-right: 50px;
+
     font-size: 20px;
   }
 
-  .video-principal {
+  .video-principal,
+  .youtube-capa {
     height: 380px;
   }
 
-  .botao-play {
+  .modal-video-acoes {
+    flex-direction: column;
+  }
+
+  .botao-play,
+  .modal-video .botao-download {
     width: 100%;
   }
 
 }
 
 
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 500px) {
+
+  .video-card {
+    min-height: auto;
+  }
 
   .video-preview {
     height: 190px;
-  }
-
-  .video-principal {
-    height: 320px;
   }
 
   .video-card-info {
@@ -363,11 +554,76 @@
   }
 
   .video-card-info h2 {
+    min-height: auto;
+
     font-size: 18px;
   }
 
   .video-card-info p {
+    min-height: auto;
+
     font-size: 13px;
+  }
+
+  .video-card-botoes {
+    flex-direction: column;
+  }
+
+  .botao-assistir,
+  .botao-download {
+    width: 100%;
+    flex: none;
+  }
+
+  .modal-video-fundo {
+    padding: 10px;
+  }
+
+  .modal-video {
+    padding: 15px;
+
+    border-radius: 15px;
+  }
+
+  .botao-fechar {
+    width: 38px;
+    height: 38px;
+
+    top: 12px;
+    right: 12px;
+  }
+
+  .modal-video h2 {
+    margin-right: 48px;
+
+    font-size: 18px;
+  }
+
+  .video-principal,
+  .youtube-capa {
+    height: 300px;
+  }
+
+}
+
+
+/* =========================
+   TELAS MUITO PEQUENAS
+========================= */
+
+@media (max-width: 380px) {
+
+  .video-preview {
+    height: 175px;
+  }
+
+  .video-principal,
+  .youtube-capa {
+    height: 250px;
+  }
+
+  .video-card-info {
+    padding: 16px;
   }
 
 }
