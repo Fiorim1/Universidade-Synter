@@ -2438,3 +2438,226 @@
   }
 
 }
+
+
+/* =========================================
+   FLUXO DO ORÇAMENTO
+========================================= */
+
+.orcamentos-fluxo {
+  margin-top: 26px;
+
+  padding-top: 24px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.orcamentos-fluxo-info > span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color:
+    rgba(255, 255, 255, 0.46);
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 1.4px;
+}
+
+
+.orcamentos-fluxo-info > p {
+  margin: 0;
+
+  max-width: 670px;
+
+  color:
+    rgba(255, 255, 255, 0.50);
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+
+.orcamentos-fluxo-acoes {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 18px;
+}
+
+
+.orcamentos-fluxo-error {
+  margin-top: 16px;
+}
+
+
+/* =========================================
+   BOTÕES DE PERIGO
+========================================= */
+
+.orcamentos-danger-ghost-button,
+.orcamentos-danger-button {
+  min-height: 44px;
+
+  padding:
+    0 18px;
+
+  border-radius: 9px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    opacity 0.18s ease;
+}
+
+
+.orcamentos-danger-ghost-button {
+  border:
+    1px solid rgba(255, 92, 92, 0.18);
+
+  background:
+    rgba(255, 80, 80, 0.025);
+
+  color:
+    rgba(255, 175, 175, 0.76);
+}
+
+
+.orcamentos-danger-ghost-button:hover {
+  border-color:
+    rgba(255, 92, 92, 0.34);
+
+  background:
+    rgba(255, 80, 80, 0.07);
+
+  color:
+    #ffbaba;
+}
+
+
+.orcamentos-danger-button {
+  border:
+    1px solid rgba(255, 95, 95, 0.30);
+
+  background:
+    rgba(180, 38, 38, 0.88);
+
+  color: #ffffff;
+}
+
+
+.orcamentos-danger-button:hover {
+  background:
+    rgba(205, 45, 45, 0.95);
+}
+
+
+.orcamentos-danger-ghost-button:disabled,
+.orcamentos-danger-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.45;
+}
+
+
+/* =========================================
+   CONFIRMAÇÃO DO FLUXO
+========================================= */
+
+.orcamentos-confirmacao-fluxo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  margin-top: 18px;
+
+  padding: 16px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.10);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+
+.orcamentos-confirmacao-fluxo strong {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 12px;
+}
+
+
+.orcamentos-confirmacao-fluxo p {
+  margin:
+    6px 0 0;
+
+  max-width: 520px;
+
+  color:
+    rgba(255, 255, 255, 0.44);
+
+  font-size: 10px;
+
+  line-height: 1.5;
+}
+
+
+.orcamentos-confirmacao-acoes {
+  display: flex;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  gap: 8px;
+}
+
+
+/* =========================================
+   RESPONSIVO DO FLUXO
+========================================= */
+
+@media (max-width: 700px) {
+
+  .orcamentos-confirmacao-fluxo {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+
+  .orcamentos-confirmacao-acoes,
+  .orcamentos-fluxo-acoes {
+    width: 100%;
+
+    flex-direction: column-reverse;
+  }
+
+
+  .orcamentos-confirmacao-acoes button,
+  .orcamentos-fluxo-acoes button {
+    width: 100%;
+  }
+
+}

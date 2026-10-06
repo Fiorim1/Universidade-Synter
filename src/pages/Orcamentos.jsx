@@ -108,6 +108,20 @@ function Orcamentos() {
 
 
   // ========================================
+  // FLUXO DO ORÇAMENTO
+  // ========================================
+
+  const [processandoOrcamento, setProcessandoOrcamento] =
+    useState(false);
+
+  const [erroFluxoOrcamento, setErroFluxoOrcamento] =
+    useState("");
+
+  const [confirmacaoFluxo, setConfirmacaoFluxo] =
+    useState(null);
+
+
+  // ========================================
   // CARREGAMENTO INICIAL
   // ========================================
 
@@ -510,7 +524,8 @@ function Orcamentos() {
 
     if (
       modalProdutoOpen ||
-      processandoItemId
+      processandoItemId ||
+      processandoOrcamento
     ) {
       return;
     }
@@ -522,6 +537,258 @@ function Orcamentos() {
     setItemEmEdicao(null);
     setQuantidadeEdicao(1);
     setConfirmandoRemocaoId(null);
+    setErroFluxoOrcamento("");
+    setConfirmacaoFluxo(null);
+
+  }
+
+
+  // ========================================
+  // FLUXO DO ORÇAMENTO
+  // ========================================
+
+  function atualizarStatusOrcamentoLocal(
+    orcamentoId,
+    novoStatus
+  ) {
+
+    setOrcamentos(
+      (anteriores) =>
+        anteriores.map(
+          (orcamento) =>
+            orcamento.id === orcamentoId
+              ? {
+                  ...orcamento,
+                  status: novoStatus
+                }
+              : orcamento
+        )
+    );
+
+    setOrcamentoSelecionado(
+      (anterior) => {
+
+        if (
+          !anterior ||
+          anterior.id !== orcamentoId
+        ) {
+          return anterior;
+        }
+
+        return {
+          ...anterior,
+          status: novoStatus
+        };
+
+      }
+    );
+
+  }
+
+
+  function solicitarConfirmacaoFluxo(tipo) {
+
+    if (processandoOrcamento) {
+      return;
+    }
+
+    setErroFluxoOrcamento("");
+    setConfirmacaoFluxo(tipo);
+
+  }
+
+
+  function cancelarConfirmacaoFluxo() {
+
+    if (processandoOrcamento) {
+      return;
+    }
+
+    setConfirmacaoFluxo(null);
+    setErroFluxoOrcamento("");
+
+  }
+
+
+  async function enviarOrcamento() {
+
+    if (
+      role !== "representante" ||
+      !orcamentoSelecionado ||
+      orcamentoSelecionado.status !== "rascunho"
+    ) {
+      return;
+    }
+
+    try {
+
+      setProcessandoOrcamento(true);
+      setErroFluxoOrcamento("");
+
+      const {
+        error
+      } = await supabase.rpc(
+        "enviar_orcamento",
+        {
+          p_orcamento_id:
+            orcamentoSelecionado.id
+        }
+      );
+
+      if (error) {
+        throw error;
+      }
+
+      atualizarStatusOrcamentoLocal(
+        orcamentoSelecionado.id,
+        "enviado"
+      );
+
+      setConfirmacaoFluxo(null);
+
+    }
+    catch (error) {
+
+      console.error(
+        "Erro ao enviar orçamento:",
+        error
+      );
+
+      setErroFluxoOrcamento(
+        error?.message ||
+        "Não foi possível enviar o orçamento."
+      );
+
+    }
+    finally {
+
+      setProcessandoOrcamento(false);
+
+    }
+
+  }
+
+
+  async function cancelarOrcamento() {
+
+    if (
+      role !== "representante" ||
+      !orcamentoSelecionado ||
+      !["rascunho", "enviado"].includes(
+        orcamentoSelecionado.status
+      )
+    ) {
+      return;
+    }
+
+    try {
+
+      setProcessandoOrcamento(true);
+      setErroFluxoOrcamento("");
+
+      const {
+        error
+      } = await supabase.rpc(
+        "cancelar_orcamento",
+        {
+          p_orcamento_id:
+            orcamentoSelecionado.id
+        }
+      );
+
+      if (error) {
+        throw error;
+      }
+
+      atualizarStatusOrcamentoLocal(
+        orcamentoSelecionado.id,
+        "cancelado"
+      );
+
+      setConfirmacaoFluxo(null);
+
+    }
+    catch (error) {
+
+      console.error(
+        "Erro ao cancelar orçamento:",
+        error
+      );
+
+      setErroFluxoOrcamento(
+        error?.message ||
+        "Não foi possível cancelar o orçamento."
+      );
+
+    }
+    finally {
+
+      setProcessandoOrcamento(false);
+
+    }
+
+  }
+
+
+  async function decidirOrcamento(decisao) {
+
+    if (
+      role !== "comercial" ||
+      !orcamentoSelecionado ||
+      orcamentoSelecionado.status !== "enviado" ||
+      !["aprovado", "recusado"].includes(decisao)
+    ) {
+      return;
+    }
+
+    try {
+
+      setProcessandoOrcamento(true);
+      setErroFluxoOrcamento("");
+
+      const {
+        error
+      } = await supabase.rpc(
+        "decidir_orcamento",
+        {
+          p_orcamento_id:
+            orcamentoSelecionado.id,
+
+          p_decisao:
+            decisao
+        }
+      );
+
+      if (error) {
+        throw error;
+      }
+
+      atualizarStatusOrcamentoLocal(
+        orcamentoSelecionado.id,
+        decisao
+      );
+
+      setConfirmacaoFluxo(null);
+
+    }
+    catch (error) {
+
+      console.error(
+        "Erro ao decidir orçamento:",
+        error
+      );
+
+      setErroFluxoOrcamento(
+        error?.message ||
+        "Não foi possível registrar a decisão."
+      );
+
+    }
+    finally {
+
+      setProcessandoOrcamento(false);
+
+    }
 
   }
 
@@ -2210,6 +2477,298 @@ function Orcamentos() {
                   </>
 
                 )}
+
+
+              {/* ================================= */}
+              {/* FLUXO DO ORÇAMENTO                */}
+              {/* ================================= */}
+
+              <div className="orcamentos-fluxo">
+
+                <div className="orcamentos-fluxo-info">
+
+                  <span>
+                    FLUXO DO ORÇAMENTO
+                  </span>
+
+                  <p>
+
+                    {orcamentoSelecionado.status === "rascunho" &&
+                      "O orçamento está em preparação e ainda pode ser alterado."}
+
+                    {orcamentoSelecionado.status === "enviado" &&
+                      role === "representante" &&
+                      "Orçamento enviado para análise do Comercial. Os produtos estão bloqueados para edição."}
+
+                    {orcamentoSelecionado.status === "enviado" &&
+                      role === "comercial" &&
+                      "Este orçamento aguarda sua análise. Confira os produtos e valores antes de decidir."}
+
+                    {orcamentoSelecionado.status === "aprovado" &&
+                      "Este orçamento foi aprovado pelo Comercial."}
+
+                    {orcamentoSelecionado.status === "recusado" &&
+                      "Este orçamento foi recusado pelo Comercial."}
+
+                    {orcamentoSelecionado.status === "cancelado" &&
+                      "Este orçamento foi cancelado e está encerrado."}
+
+                  </p>
+
+                </div>
+
+
+                {erroFluxoOrcamento && (
+
+                  <div className="orcamentos-form-error orcamentos-fluxo-error">
+                    {erroFluxoOrcamento}
+                  </div>
+
+                )}
+
+
+                {confirmacaoFluxo && (
+
+                  <div className="orcamentos-confirmacao-fluxo">
+
+                    <div>
+
+                      <strong>
+
+                        {confirmacaoFluxo === "enviar" &&
+                          "Enviar este orçamento para análise?"}
+
+                        {confirmacaoFluxo === "cancelar" &&
+                          "Cancelar este orçamento?"}
+
+                        {confirmacaoFluxo === "aprovar" &&
+                          "Aprovar este orçamento?"}
+
+                        {confirmacaoFluxo === "recusar" &&
+                          "Recusar este orçamento?"}
+
+                      </strong>
+
+                      <p>
+
+                        {confirmacaoFluxo === "enviar" &&
+                          "Depois do envio, o representante não poderá alterar os produtos ou quantidades."}
+
+                        {confirmacaoFluxo === "cancelar" &&
+                          "O orçamento será encerrado como cancelado."}
+
+                        {confirmacaoFluxo === "aprovar" &&
+                          "A decisão será registrada como aprovada e não poderá ser refeita pelo representante."}
+
+                        {confirmacaoFluxo === "recusar" &&
+                          "A decisão será registrada como recusada."}
+
+                      </p>
+
+                    </div>
+
+
+                    <div className="orcamentos-confirmacao-acoes">
+
+                      <button
+                        type="button"
+                        className="orcamentos-secondary-button"
+                        onClick={cancelarConfirmacaoFluxo}
+                        disabled={processandoOrcamento}
+                      >
+                        Voltar
+                      </button>
+
+
+                      {confirmacaoFluxo === "enviar" && (
+
+                        <button
+                          type="button"
+                          className="orcamentos-primary-button"
+                          onClick={enviarOrcamento}
+                          disabled={processandoOrcamento}
+                        >
+                          {processandoOrcamento
+                            ? "Enviando..."
+                            : "Confirmar envio"}
+                        </button>
+
+                      )}
+
+
+                      {confirmacaoFluxo === "cancelar" && (
+
+                        <button
+                          type="button"
+                          className="orcamentos-danger-button"
+                          onClick={cancelarOrcamento}
+                          disabled={processandoOrcamento}
+                        >
+                          {processandoOrcamento
+                            ? "Cancelando..."
+                            : "Confirmar cancelamento"}
+                        </button>
+
+                      )}
+
+
+                      {confirmacaoFluxo === "aprovar" && (
+
+                        <button
+                          type="button"
+                          className="orcamentos-primary-button"
+                          onClick={() =>
+                            decidirOrcamento("aprovado")
+                          }
+                          disabled={processandoOrcamento}
+                        >
+                          {processandoOrcamento
+                            ? "Aprovando..."
+                            : "Confirmar aprovação"}
+                        </button>
+
+                      )}
+
+
+                      {confirmacaoFluxo === "recusar" && (
+
+                        <button
+                          type="button"
+                          className="orcamentos-danger-button"
+                          onClick={() =>
+                            decidirOrcamento("recusado")
+                          }
+                          disabled={processandoOrcamento}
+                        >
+                          {processandoOrcamento
+                            ? "Recusando..."
+                            : "Confirmar recusa"}
+                        </button>
+
+                      )}
+
+                    </div>
+
+                  </div>
+
+                )}
+
+
+                {!confirmacaoFluxo && (
+
+                  <div className="orcamentos-fluxo-acoes">
+
+
+                    {/* REPRESENTANTE */}
+
+                    {role === "representante" &&
+                      orcamentoSelecionado.status === "rascunho" && (
+
+                        <>
+
+                          <button
+                            type="button"
+                            className="orcamentos-danger-ghost-button"
+                            onClick={() =>
+                              solicitarConfirmacaoFluxo(
+                                "cancelar"
+                              )
+                            }
+                            disabled={processandoOrcamento}
+                          >
+                            Cancelar orçamento
+                          </button>
+
+
+                          <button
+                            type="button"
+                            className="orcamentos-primary-button"
+                            onClick={() =>
+                              solicitarConfirmacaoFluxo(
+                                "enviar"
+                              )
+                            }
+                            disabled={
+                              processandoOrcamento ||
+                              carregandoItens ||
+                              itensOrcamento.length === 0
+                            }
+                            title={
+                              itensOrcamento.length === 0
+                                ? "Adicione pelo menos um produto antes de enviar."
+                                : ""
+                            }
+                          >
+                            Enviar para análise
+                          </button>
+
+                        </>
+
+                      )}
+
+
+                    {role === "representante" &&
+                      orcamentoSelecionado.status === "enviado" && (
+
+                        <button
+                          type="button"
+                          className="orcamentos-danger-ghost-button"
+                          onClick={() =>
+                            solicitarConfirmacaoFluxo(
+                              "cancelar"
+                            )
+                          }
+                          disabled={processandoOrcamento}
+                        >
+                          Cancelar orçamento
+                        </button>
+
+                      )}
+
+
+                    {/* COMERCIAL */}
+
+                    {role === "comercial" &&
+                      orcamentoSelecionado.status === "enviado" && (
+
+                        <>
+
+                          <button
+                            type="button"
+                            className="orcamentos-danger-ghost-button"
+                            onClick={() =>
+                              solicitarConfirmacaoFluxo(
+                                "recusar"
+                              )
+                            }
+                            disabled={processandoOrcamento}
+                          >
+                            Recusar
+                          </button>
+
+
+                          <button
+                            type="button"
+                            className="orcamentos-primary-button"
+                            onClick={() =>
+                              solicitarConfirmacaoFluxo(
+                                "aprovar"
+                              )
+                            }
+                            disabled={processandoOrcamento}
+                          >
+                            Aprovar orçamento
+                          </button>
+
+                        </>
+
+                      )}
+
+                  </div>
+
+                )}
+
+              </div>
 
             </div>
 
