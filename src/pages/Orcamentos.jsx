@@ -1,9 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import UserProfileButton from "../components/UserProfileButton";
+import Profile from "../components/Profile";
+
+import ImgIcon from "../assets/img-icon.png";
 
 import { supabase } from "../services/supabaseClient";
+
+import "../styles/Orcamentos.css";
 
 
 function Orcamentos() {
@@ -12,13 +18,14 @@ function Orcamentos() {
   const [erro, setErro] = useState("");
 
   const [role, setRole] = useState(null);
-  const [usuario, setUsuario] = useState(null);
-
   const [orcamentos, setOrcamentos] = useState([]);
+
+  const [profileOpen, setProfileOpen] =
+    useState(false);
 
 
   // ========================================
-  // CARREGAR USUÁRIO / ROLE / ORÇAMENTOS
+  // CARREGAMENTO INICIAL
   // ========================================
 
   useEffect(() => {
@@ -55,17 +62,16 @@ function Orcamentos() {
 
 
       if (!user) {
+
         throw new Error(
           "Usuário não autenticado."
         );
+
       }
 
 
-      setUsuario(user);
-
-
       // ========================================
-      // BUSCAR ROLE
+      // PERFIL / ROLE
       // ========================================
 
       const {
@@ -73,7 +79,11 @@ function Orcamentos() {
         error: perfilError
       } = await supabase
         .from("profiles")
-        .select("id, full_name, role")
+        .select(`
+          id,
+          full_name,
+          role
+        `)
         .eq("id", user.id)
         .single();
 
@@ -84,9 +94,11 @@ function Orcamentos() {
 
 
       if (!perfil) {
+
         throw new Error(
           "Perfil do usuário não encontrado."
         );
+
       }
 
 
@@ -94,7 +106,7 @@ function Orcamentos() {
 
 
       // ========================================
-      // BLOQUEAR ROLE USER
+      // SEM ACESSO AO SISTEMA DE ORÇAMENTOS
       // ========================================
 
       if (
@@ -103,7 +115,6 @@ function Orcamentos() {
       ) {
 
         setOrcamentos([]);
-
         return;
 
       }
@@ -113,12 +124,9 @@ function Orcamentos() {
       // BUSCAR ORÇAMENTOS
       // ========================================
       //
-      // IMPORTANTE:
+      // NÃO filtramos created_by no React.
       //
-      // Não precisamos filtrar manualmente
-      // por representante aqui.
-      //
-      // A RLS do Supabase já garante:
+      // A RLS já determina:
       //
       // representante -> somente os próprios
       // comercial      -> todos
@@ -126,8 +134,8 @@ function Orcamentos() {
       // ========================================
 
       const {
-        data: dadosOrcamentos,
-        error: orcamentosError
+        data,
+        error
       } = await supabase
         .from("orcamentos")
         .select(`
@@ -150,13 +158,13 @@ function Orcamentos() {
         );
 
 
-      if (orcamentosError) {
-        throw orcamentosError;
+      if (error) {
+        throw error;
       }
 
 
       setOrcamentos(
-        dadosOrcamentos || []
+        data || []
       );
 
     }
@@ -167,6 +175,7 @@ function Orcamentos() {
         "Erro ao carregar orçamentos:",
         error
       );
+
 
       setErro(
         error?.message ||
@@ -182,6 +191,40 @@ function Orcamentos() {
     }
 
   }
+
+
+  // ========================================
+  // RESUMO
+  // ========================================
+
+  const resumo = useMemo(() => {
+
+    return {
+
+      total:
+        orcamentos.length,
+
+      rascunho:
+        orcamentos.filter(
+          (item) =>
+            item.status === "rascunho"
+        ).length,
+
+      enviado:
+        orcamentos.filter(
+          (item) =>
+            item.status === "enviado"
+        ).length,
+
+      aprovado:
+        orcamentos.filter(
+          (item) =>
+            item.status === "aprovado"
+        ).length
+
+    };
+
+  }, [orcamentos]);
 
 
   // ========================================
@@ -217,25 +260,18 @@ function Orcamentos() {
 
   function formatarStatus(status) {
 
-    const statusFormatados = {
+    const nomes = {
 
       rascunho: "Rascunho",
-
       enviado: "Enviado",
-
       aprovado: "Aprovado",
-
       recusado: "Recusado",
-
       cancelado: "Cancelado"
 
     };
 
 
-    return (
-      statusFormatados[status] ||
-      status
-    );
+    return nomes[status] || status;
 
   }
 
@@ -248,21 +284,21 @@ function Orcamentos() {
 
     return (
 
-      <div>
+      <div className="orcamentos-page">
 
         <Header />
 
-        <main
-          style={{
-            minHeight: "70vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
-          }}
-        >
+        <main className="orcamentos-state">
+
+          <div className="orcamentos-loader"></div>
+
+          <h2>
+            Carregando orçamentos
+          </h2>
 
           <p>
-            Carregando orçamentos...
+            Aguarde enquanto buscamos
+            suas informações.
           </p>
 
         </main>
@@ -284,21 +320,15 @@ function Orcamentos() {
 
     return (
 
-      <div>
+      <div className="orcamentos-page">
 
         <Header />
 
-        <main
-          style={{
-            minHeight: "70vh",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "12px",
-            padding: "30px"
-          }}
-        >
+        <main className="orcamentos-state">
+
+          <div className="orcamentos-state-icon">
+            !
+          </div>
 
           <h2>
             Não foi possível carregar
@@ -310,6 +340,7 @@ function Orcamentos() {
           </p>
 
           <button
+            className="orcamentos-button"
             type="button"
             onClick={carregarPagina}
           >
@@ -338,30 +369,23 @@ function Orcamentos() {
 
     return (
 
-      <div>
+      <div className="orcamentos-page">
 
         <Header />
 
-        <main
-          style={{
-            minHeight: "70vh",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-            padding: "30px"
-          }}
-        >
+        <main className="orcamentos-state">
+
+          <div className="orcamentos-state-icon">
+            !
+          </div>
 
           <h1>
             Acesso não autorizado
           </h1>
 
           <p>
-            Seu usuário não possui
-            permissão para acessar
-            o sistema de orçamentos.
+            Seu usuário não possui permissão
+            para acessar o sistema de orçamentos.
           </p>
 
         </main>
@@ -381,28 +405,46 @@ function Orcamentos() {
 
   return (
 
-    <div>
+    <div className="orcamentos-page">
 
       <Header />
 
 
-      <main
-        style={{
-          minHeight: "70vh",
-          padding: "40px 6%"
-        }}
-      >
+      {/* ================================= */}
+      {/* HERO                              */}
+      {/* ================================= */}
+
+      <section className="orcamentos-hero">
+
+        <div className="orcamentos-profile">
+
+          <UserProfileButton
+            onClick={() =>
+              setProfileOpen(true)
+            }
+          />
+
+        </div>
 
 
-        {/* ================================= */}
-        {/* CABEÇALHO                        */}
-        {/* ================================= */}
+        <div className="orcamentos-hero-container">
 
-        <section>
+          <div className="orcamentos-eyebrow">
 
-          <p>
-            Universidade Synter
-          </p>
+            <div className="orcamentos-eyebrow-icon">
+
+              <img
+                src={ImgIcon}
+                alt=""
+              />
+
+            </div>
+
+            <span>
+              GESTÃO COMERCIAL
+            </span>
+
+          </div>
 
 
           <h1>
@@ -410,18 +452,23 @@ function Orcamentos() {
           </h1>
 
 
-          <p>
+          <p className="orcamentos-hero-description">
 
             {role === "representante"
-              ? "Crie e acompanhe seus orçamentos."
-              : "Acompanhe e analise os orçamentos enviados pelos representantes."}
+              ? "Crie, organize e acompanhe seus orçamentos comerciais em um único lugar."
+              : "Acompanhe os orçamentos enviados pelos representantes e gerencie suas aprovações."}
 
           </p>
 
 
-          <p>
+          <div className="orcamentos-hero-divider"></div>
 
-            Perfil atual:{" "}
+
+          <div className="orcamentos-role">
+
+            <span className="orcamentos-role-label">
+              PERFIL DE ACESSO
+            </span>
 
             <strong>
               {role === "representante"
@@ -429,50 +476,180 @@ function Orcamentos() {
                 : "Comercial"}
             </strong>
 
-          </p>
+          </div>
 
-        </section>
+        </div>
+
+      </section>
+
+
+      {/* ================================= */}
+      {/* CONTEÚDO                         */}
+      {/* ================================= */}
+
+      <main className="orcamentos-content">
 
 
         {/* ================================= */}
-        {/* RESUMO                           */}
+        {/* TÍTULO DA SEÇÃO                  */}
         {/* ================================= */}
 
-        <section
-          style={{
-            marginTop: "35px"
-          }}
-        >
+        <div className="orcamentos-section-title">
 
-          <h2>
-            Resumo
-          </h2>
+          <div className="orcamentos-section-bar"></div>
+
+          <h4>
+            VISÃO GERAL
+          </h4>
+
+        </div>
 
 
-          <p>
+        {/* ================================= */}
+        {/* CARDS RESUMO                     */}
+        {/* ================================= */}
 
-            Total de orçamentos:{" "}
+        <section className="orcamentos-summary-grid">
+
+
+          <div className="orcamentos-summary-card">
+
+            <span>
+              Total
+            </span>
 
             <strong>
-              {orcamentos.length}
+              {resumo.total}
             </strong>
 
-          </p>
+            <p>
+              Orçamentos cadastrados
+            </p>
+
+          </div>
+
+
+          <div className="orcamentos-summary-card">
+
+            <span>
+              Rascunhos
+            </span>
+
+            <strong>
+              {resumo.rascunho}
+            </strong>
+
+            <p>
+              Em preparação
+            </p>
+
+          </div>
+
+
+          <div className="orcamentos-summary-card">
+
+            <span>
+              Enviados
+            </span>
+
+            <strong>
+              {resumo.enviado}
+            </strong>
+
+            <p>
+              Aguardando análise
+            </p>
+
+          </div>
+
+
+          <div className="orcamentos-summary-card">
+
+            <span>
+              Aprovados
+            </span>
+
+            <strong>
+              {resumo.aprovado}
+            </strong>
+
+            <p>
+              Orçamentos aprovados
+            </p>
+
+          </div>
+
 
         </section>
 
 
         {/* ================================= */}
-        {/* SEM ORÇAMENTOS                    */}
+        {/* SEÇÃO ORÇAMENTOS                  */}
+        {/* ================================= */}
+
+        <div className="orcamentos-section-header">
+
+          <div>
+
+            <div className="orcamentos-section-title">
+
+              <div className="orcamentos-section-bar"></div>
+
+              <h4>
+                ORÇAMENTOS
+              </h4>
+
+            </div>
+
+
+            <p>
+              {role === "representante"
+                ? "Consulte seus orçamentos e acompanhe cada etapa do processo."
+                : "Consulte os orçamentos enviados pelos representantes."}
+            </p>
+
+          </div>
+
+
+          {role === "representante" && (
+
+            <button
+              type="button"
+              className="orcamentos-primary-button"
+              disabled
+              title="A criação do orçamento será habilitada na próxima etapa."
+            >
+
+              <span>
+                +
+              </span>
+
+              Novo orçamento
+
+            </button>
+
+          )}
+
+        </div>
+
+
+        {/* ================================= */}
+        {/* LISTA VAZIA                      */}
         {/* ================================= */}
 
         {orcamentos.length === 0 && (
 
-          <section
-            style={{
-              marginTop: "35px"
-            }}
-          >
+          <section className="orcamentos-empty">
+
+            <div className="orcamentos-empty-icon">
+
+              <img
+                src={ImgIcon}
+                alt=""
+              />
+
+            </div>
+
 
             <h3>
               Nenhum orçamento encontrado
@@ -482,7 +659,7 @@ function Orcamentos() {
             <p>
 
               {role === "representante"
-                ? "Você ainda não possui orçamentos."
+                ? "Você ainda não possui orçamentos. Em breve você poderá criar seu primeiro orçamento por aqui."
                 : "Ainda não existem orçamentos disponíveis para acompanhamento."}
 
             </p>
@@ -493,137 +670,134 @@ function Orcamentos() {
 
 
         {/* ================================= */}
-        {/* LISTA DE ORÇAMENTOS               */}
+        {/* TABELA                            */}
         {/* ================================= */}
 
         {orcamentos.length > 0 && (
 
-          <section
-            style={{
-              marginTop: "35px",
-              overflowX: "auto"
-            }}
-          >
+          <section className="orcamentos-table-card">
 
-            <table
-              style={{
-                width: "100%",
-                borderCollapse: "collapse"
-              }}
-            >
+            <div className="orcamentos-table-wrapper">
 
-              <thead>
+              <table className="orcamentos-table">
 
-                <tr>
+                <thead>
 
-                  <th
-                    style={{
-                      textAlign: "left",
-                      padding: "12px"
-                    }}
-                  >
-                    Cliente
-                  </th>
+                  <tr>
 
+                    <th>
+                      Cliente
+                    </th>
 
-                  <th
-                    style={{
-                      textAlign: "left",
-                      padding: "12px"
-                    }}
-                  >
-                    Documento
-                  </th>
+                    <th>
+                      Documento
+                    </th>
+
+                    <th>
+                      Contato
+                    </th>
+
+                    <th>
+                      Status
+                    </th>
+
+                    <th>
+                      Criado em
+                    </th>
+
+                  </tr>
+
+                </thead>
 
 
-                  <th
-                    style={{
-                      textAlign: "left",
-                      padding: "12px"
-                    }}
-                  >
-                    Status
-                  </th>
+                <tbody>
 
+                  {orcamentos.map(
+                    (orcamento) => (
 
-                  <th
-                    style={{
-                      textAlign: "left",
-                      padding: "12px"
-                    }}
-                  >
-                    Criado em
-                  </th>
-
-                </tr>
-
-              </thead>
-
-
-              <tbody>
-
-                {orcamentos.map(
-                  (orcamento) => (
-
-                    <tr
-                      key={orcamento.id}
-                    >
-
-                      <td
-                        style={{
-                          padding: "12px"
-                        }}
+                      <tr
+                        key={orcamento.id}
                       >
 
-                        {orcamento.cliente_nome}
+                        <td>
 
-                      </td>
+                          <div className="orcamentos-client">
 
+                            <div className="orcamentos-client-avatar">
 
-                      <td
-                        style={{
-                          padding: "12px"
-                        }}
-                      >
+                              {orcamento.cliente_nome
+                                ?.charAt(0)
+                                ?.toUpperCase() || "C"}
 
-                        {orcamento.cliente_documento || "-"}
-
-                      </td>
+                            </div>
 
 
-                      <td
-                        style={{
-                          padding: "12px"
-                        }}
-                      >
+                            <div>
 
-                        {formatarStatus(
-                          orcamento.status
-                        )}
+                              <strong>
+                                {orcamento.cliente_nome}
+                              </strong>
 
-                      </td>
+                              <span>
+                                {orcamento.cliente_email || "Sem e-mail"}
+                              </span>
+
+                            </div>
+
+                          </div>
+
+                        </td>
 
 
-                      <td
-                        style={{
-                          padding: "12px"
-                        }}
-                      >
+                        <td>
 
-                        {formatarData(
-                          orcamento.created_at
-                        )}
+                          {orcamento.cliente_documento || "-"}
 
-                      </td>
+                        </td>
 
-                    </tr>
 
-                  )
-                )}
+                        <td>
 
-              </tbody>
+                          {orcamento.cliente_telefone || "-"}
 
-            </table>
+                        </td>
+
+
+                        <td>
+
+                          <span
+                            className={
+                              `orcamentos-status status-${orcamento.status}`
+                            }
+                          >
+
+                            {formatarStatus(
+                              orcamento.status
+                            )}
+
+                          </span>
+
+                        </td>
+
+
+                        <td>
+
+                          {formatarData(
+                            orcamento.created_at
+                          )}
+
+                        </td>
+
+                      </tr>
+
+                    )
+                  )}
+
+                </tbody>
+
+              </table>
+
+            </div>
 
           </section>
 
@@ -634,6 +808,21 @@ function Orcamentos() {
 
 
       <Footer />
+
+
+      {/* ================================= */}
+      {/* PERFIL                            */}
+      {/* ================================= */}
+
+      {profileOpen && (
+
+        <Profile
+          onClose={() =>
+            setProfileOpen(false)
+          }
+        />
+
+      )}
 
     </div>
 
