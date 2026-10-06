@@ -188,10 +188,7 @@ function Orcamentos() {
         return;
       }
 
-      const {
-        data,
-        error
-      } = await supabase
+      let consultaOrcamentos = supabase
         .from("orcamentos")
         .select(`
           id,
@@ -209,9 +206,31 @@ function Orcamentos() {
           ascending: false
         });
 
+
+      // Para o representante, orçamentos cancelados
+      // permanecem no banco para histórico/auditoria,
+      // mas não aparecem mais na tela.
+      if (perfil.role === "representante") {
+
+        consultaOrcamentos =
+          consultaOrcamentos.neq(
+            "status",
+            "cancelado"
+          );
+
+      }
+
+
+      const {
+        data,
+        error
+      } = await consultaOrcamentos;
+
+
       if (error) {
         throw error;
       }
+
 
       setOrcamentos(data || []);
 
@@ -741,12 +760,33 @@ function Orcamentos() {
         throw error;
       }
 
-      atualizarStatusOrcamentoLocal(
-        orcamentoSelecionado.id,
-        "cancelado"
+      const orcamentoCanceladoId =
+        orcamentoSelecionado.id;
+
+
+      // Mantém o registro no Supabase como "cancelado",
+      // mas remove imediatamente da lista do representante.
+      setOrcamentos(
+        (anteriores) =>
+          anteriores.filter(
+            (orcamento) =>
+              orcamento.id !== orcamentoCanceladoId
+          )
       );
 
+
       setConfirmacaoFluxo(null);
+
+      setOrcamentoSelecionado(null);
+      setItensOrcamento([]);
+      setErroItens("");
+      setErroAcaoItem("");
+
+
+      mostrarAlertaSistema(
+        "Orçamento cancelado",
+        "O orçamento foi cancelado com sucesso e removido da sua lista."
+      );
 
     }
     catch (error) {
