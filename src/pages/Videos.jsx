@@ -322,7 +322,8 @@ function Videos() {
           {mostrarCard("Mars S2 - Retirada da Porta Parte Frontal") && (
 
             <VideoCard
-              titulo="Mars S2 - Retirada da Porta Parte Frontal"
+              titulo="Mars
+               S2 - Retirada da Porta Parte Frontal"
               descricao="Aprenda como realizar corretamente a retirada da parte frontal da porta na Mars S2."
               video={marsFrontal}
               capa={marsS2Frontal}
