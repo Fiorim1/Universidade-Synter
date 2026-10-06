@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
+import NotificationsButton from "../components/NotificationsButton";
 import Profile from "../components/Profile";
 
 import ImgIcon from "../assets/img-icon.png";
@@ -538,6 +539,111 @@ function Orcamentos() {
     await carregarItensDoOrcamento(
       orcamento.id
     );
+
+  }
+
+
+  async function abrirOrcamentoPorNotificacao(
+    orcamentoId
+  ) {
+
+    if (!orcamentoId) {
+      return;
+    }
+
+    try {
+
+      setErro("");
+
+      const existente =
+        orcamentos.find(
+          (orcamento) =>
+            orcamento.id === orcamentoId
+        );
+
+
+      if (existente) {
+
+        await abrirOrcamento(existente);
+
+        return;
+
+      }
+
+
+      const {
+        data,
+        error
+      } = await supabase
+        .from("orcamentos")
+        .select(`
+          id,
+          created_by,
+          cliente_nome,
+          cliente_documento,
+          cliente_email,
+          cliente_telefone,
+          observacoes,
+          status,
+          created_at,
+          updated_at
+        `)
+        .eq("id", orcamentoId)
+        .single();
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      if (!data) {
+        throw new Error(
+          "Orçamento não encontrado."
+        );
+      }
+
+
+      setOrcamentos(
+        (anteriores) => {
+
+          const jaExiste =
+            anteriores.some(
+              (orcamento) =>
+                orcamento.id === data.id
+            );
+
+          if (jaExiste) {
+            return anteriores;
+          }
+
+          return [
+            data,
+            ...anteriores
+          ];
+
+        }
+      );
+
+
+      await abrirOrcamento(data);
+
+    }
+    catch (error) {
+
+      console.error(
+        "Erro ao abrir orçamento da notificação:",
+        error
+      );
+
+      mostrarAlertaSistema(
+        "Não foi possível abrir o orçamento",
+        error?.message ||
+          "Tente novamente em alguns instantes.",
+        "erro"
+      );
+
+    }
 
   }
 
@@ -1511,6 +1617,12 @@ function Orcamentos() {
       <section className="orcamentos-hero">
 
         <div className="orcamentos-profile">
+
+          <NotificationsButton
+            onOpenOrcamento={
+              abrirOrcamentoPorNotificacao
+            }
+          />
 
           <UserProfileButton
             onClick={() =>
