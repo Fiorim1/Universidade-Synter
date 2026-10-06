@@ -17,14 +17,15 @@ import TabelaPrecos from "./pages/TabelaPrecos.jsx";
 import AssistenciaTecnica from "./pages/AssistenciaTecnica.jsx";
 import ImageToPdf from "./pages/ImageToPdf.jsx";
 import TreinamentoComercial from "./pages/TreinamentoComercial.jsx";
+import Marketing from "./pages/Marketing.jsx";
+import DigMarketing from "./pages/DigMarketing.jsx";
+import Orcamentos from "./pages/Orcamentos.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PublicRoute from "./components/PublicRoute.jsx";
 
 import SynterAssistant from "./components/SynterAssistant.jsx";
-import Marketing from "./pages/Marketing.jsx";
-import DigMarketing from "./pages/DigMarketing.jsx";
 
 
 function App() {
@@ -184,6 +185,20 @@ function App() {
 
 
         {/* ======================================== */}
+        {/* ORÇAMENTOS                               */}
+        {/* ======================================== */}
+
+        <Route
+          path="/orcamentos"
+          element={
+            <ProtectedRoute>
+              <Orcamentos />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* ======================================== */}
         {/* ASSISTÊNCIA TÉCNICA                      */}
         {/* ======================================== */}
 
@@ -224,6 +239,11 @@ function App() {
           }
         />
 
+
+        {/* ======================================== */}
+        {/* MARKETING                                */}
+        {/* ======================================== */}
+
         <Route
           path="/marketing"
           element={
@@ -232,6 +252,11 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+
+        {/* ======================================== */}
+        {/* MARKETING DIGITAL                        */}
+        {/* ======================================== */}
 
         <Route
           path="/digmarketing"

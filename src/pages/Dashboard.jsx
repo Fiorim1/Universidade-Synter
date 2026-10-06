@@ -128,14 +128,14 @@ function Dashboard() {
 
 
           {/* ================================= */}
-          {/* IMAGENS DE PRODUTOS               */}
+          {/* ORÇAMENTOS                        */}
           {/* ================================= */}
 
           <CardsDashboard
             image={ImgIcon}
-            title="Imagens de Produtos"
-            desc="Acesse as imagens dos nossos produtos"
-            enabled={false}
+            title="Orçamentos"
+            desc="Crie e acompanhe seus orçamentos"
+            route="/orcamentos"
           />
 
 
