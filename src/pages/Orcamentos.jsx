@@ -56,6 +56,38 @@ function Orcamentos() {
 
 
   // ========================================
+  // ADICIONAR PRODUTO
+  // ========================================
+
+  const [modalProdutoOpen, setModalProdutoOpen] =
+    useState(false);
+
+  const [produtosCatalogo, setProdutosCatalogo] =
+    useState([]);
+
+  const [carregandoProdutos, setCarregandoProdutos] =
+    useState(false);
+
+  const [erroProdutos, setErroProdutos] =
+    useState("");
+
+  const [buscaProduto, setBuscaProduto] =
+    useState("");
+
+  const [categoriaProduto, setCategoriaProduto] =
+    useState("todas");
+
+  const [produtoSelecionado, setProdutoSelecionado] =
+    useState(null);
+
+  const [quantidadeProduto, setQuantidadeProduto] =
+    useState(1);
+
+  const [adicionandoProduto, setAdicionandoProduto] =
+    useState(false);
+
+
+  // ========================================
   // CARREGAMENTO INICIAL
   // ========================================
 
@@ -370,14 +402,13 @@ function Orcamentos() {
 
 
   // ========================================
-  // ABRIR ORÇAMENTO
+  // ITENS DO ORÇAMENTO
   // ========================================
 
-  async function abrirOrcamento(orcamento) {
+  async function carregarItensDoOrcamento(orcamentoId) {
 
     try {
 
-      setOrcamentoSelecionado(orcamento);
       setItensOrcamento([]);
       setErroItens("");
       setCarregandoItens(true);
@@ -403,7 +434,7 @@ function Orcamentos() {
         `)
         .eq(
           "orcamento_id",
-          orcamento.id
+          orcamentoId
         )
         .order("created_at", {
           ascending: true
@@ -440,11 +471,286 @@ function Orcamentos() {
   }
 
 
+  // ========================================
+  // ABRIR ORÇAMENTO
+  // ========================================
+
+  async function abrirOrcamento(orcamento) {
+
+    setOrcamentoSelecionado(orcamento);
+
+    await carregarItensDoOrcamento(
+      orcamento.id
+    );
+
+  }
+
+
   function fecharOrcamento() {
+
+    if (modalProdutoOpen) {
+      return;
+    }
 
     setOrcamentoSelecionado(null);
     setItensOrcamento([]);
     setErroItens("");
+
+  }
+
+
+  // ========================================
+  // CATÁLOGO DE PRODUTOS
+  // ========================================
+
+  async function abrirAdicionarProduto() {
+
+    if (
+      role !== "representante" ||
+      !orcamentoSelecionado ||
+      orcamentoSelecionado.status !== "rascunho"
+    ) {
+      return;
+    }
+
+    setModalProdutoOpen(true);
+    setBuscaProduto("");
+    setCategoriaProduto("todas");
+    setProdutoSelecionado(null);
+    setQuantidadeProduto(1);
+    setErroProdutos("");
+
+    if (produtosCatalogo.length > 0) {
+      return;
+    }
+
+    try {
+
+      setCarregandoProdutos(true);
+
+      const {
+        data,
+        error
+      } = await supabase
+        .from("produtos_orcamento")
+        .select(`
+          id,
+          codigo,
+          nome,
+          preco,
+          categoria,
+          linha,
+          descricao,
+          variacao,
+          tipo_preco,
+          ativo
+        `)
+        .eq("ativo", true)
+        .order("categoria", {
+          ascending: true
+        })
+        .order("nome", {
+          ascending: true
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      setProdutosCatalogo(
+        data || []
+      );
+
+    }
+    catch (error) {
+
+      console.error(
+        "Erro ao carregar produtos:",
+        error
+      );
+
+      setErroProdutos(
+        error?.message ||
+        "Não foi possível carregar o catálogo de produtos."
+      );
+
+    }
+    finally {
+
+      setCarregandoProdutos(false);
+
+    }
+
+  }
+
+
+  function fecharAdicionarProduto() {
+
+    if (adicionandoProduto) {
+      return;
+    }
+
+    setModalProdutoOpen(false);
+    setProdutoSelecionado(null);
+    setQuantidadeProduto(1);
+    setErroProdutos("");
+
+  }
+
+
+  const categoriasProdutos = useMemo(() => {
+
+    const categorias = produtosCatalogo
+      .map(
+        (produto) =>
+          produto.categoria
+      )
+      .filter(Boolean);
+
+    return [
+      ...new Set(categorias)
+    ].sort(
+      (a, b) =>
+        a.localeCompare(
+          b,
+          "pt-BR"
+        )
+    );
+
+  }, [produtosCatalogo]);
+
+
+  const produtosFiltrados = useMemo(() => {
+
+    const termo =
+      buscaProduto
+        .trim()
+        .toLowerCase();
+
+    return produtosCatalogo.filter(
+      (produto) => {
+
+        const categoriaOk =
+          categoriaProduto === "todas" ||
+          produto.categoria === categoriaProduto;
+
+        if (!categoriaOk) {
+          return false;
+        }
+
+        if (!termo) {
+          return true;
+        }
+
+        const texto = [
+          produto.codigo,
+          produto.nome,
+          produto.categoria,
+          produto.linha,
+          produto.descricao,
+          produto.variacao,
+          produto.tipo_preco
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+        return texto.includes(termo);
+
+      }
+    );
+
+  }, [
+    produtosCatalogo,
+    buscaProduto,
+    categoriaProduto
+  ]);
+
+
+  async function adicionarProdutoAoOrcamento() {
+
+    if (
+      !produtoSelecionado ||
+      !orcamentoSelecionado
+    ) {
+      return;
+    }
+
+    const quantidade =
+      Number(quantidadeProduto);
+
+    if (
+      !Number.isInteger(quantidade) ||
+      quantidade < 1 ||
+      quantidade > 999999
+    ) {
+
+      setErroProdutos(
+        "Informe uma quantidade válida."
+      );
+
+      return;
+
+    }
+
+    try {
+
+      setAdicionandoProduto(true);
+      setErroProdutos("");
+
+      // Segurança:
+      // o frontend NÃO envia preço.
+      // O Supabase busca o valor oficial
+      // dentro da função adicionar_item_orcamento.
+      const {
+        error
+      } = await supabase.rpc(
+        "adicionar_item_orcamento",
+        {
+          p_orcamento_id:
+            orcamentoSelecionado.id,
+
+          p_produto_id:
+            produtoSelecionado.id,
+
+          p_quantidade:
+            quantidade
+        }
+      );
+
+      if (error) {
+        throw error;
+      }
+
+      await carregarItensDoOrcamento(
+        orcamentoSelecionado.id
+      );
+
+      setModalProdutoOpen(false);
+      setProdutoSelecionado(null);
+      setQuantidadeProduto(1);
+      setBuscaProduto("");
+      setCategoriaProduto("todas");
+
+    }
+    catch (error) {
+
+      console.error(
+        "Erro ao adicionar produto:",
+        error
+      );
+
+      setErroProdutos(
+        error?.message ||
+        "Não foi possível adicionar o produto ao orçamento."
+      );
+
+    }
+    finally {
+
+      setAdicionandoProduto(false);
+
+    }
 
   }
 
@@ -1415,8 +1721,7 @@ function Orcamentos() {
                     <button
                       type="button"
                       className="orcamentos-primary-button"
-                      disabled
-                      title="A adição de produtos será conectada na próxima etapa."
+                      onClick={abrirAdicionarProduto}
                     >
                       <span>
                         +
@@ -1577,6 +1882,396 @@ function Orcamentos() {
                   </>
 
                 )}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+
+      {/* ================================= */}
+      {/* MODAL ADICIONAR PRODUTO           */}
+      {/* ================================= */}
+
+      {modalProdutoOpen && (
+
+        <div
+          className="orcamentos-modal-overlay orcamentos-modal-overlay-produto"
+          onMouseDown={fecharAdicionarProduto}
+        >
+
+          <div
+            className="orcamentos-modal orcamentos-modal-produtos"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="titulo-adicionar-produto"
+            onMouseDown={
+              (event) =>
+                event.stopPropagation()
+            }
+          >
+
+            <div className="orcamentos-modal-header">
+
+              <div>
+
+                <span>
+                  CATÁLOGO OFICIAL
+                </span>
+
+                <h2 id="titulo-adicionar-produto">
+                  Adicionar produto
+                </h2>
+
+                <p>
+                  Pesquise um produto e escolha a quantidade.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                className="orcamentos-modal-close"
+                onClick={fecharAdicionarProduto}
+                disabled={adicionandoProduto}
+                aria-label="Fechar"
+              >
+                ×
+              </button>
+
+            </div>
+
+
+            <div className="orcamentos-produtos-body">
+
+              <div className="orcamentos-produtos-filtros">
+
+                <div className="orcamentos-produtos-busca">
+
+                  <label htmlFor="busca_produto">
+                    Buscar
+                  </label>
+
+                  <input
+                    id="busca_produto"
+                    type="search"
+                    value={buscaProduto}
+                    onChange={
+                      (event) =>
+                        setBuscaProduto(
+                          event.target.value
+                        )
+                    }
+                    placeholder="Nome, código, linha ou descrição..."
+                    disabled={
+                      carregandoProdutos ||
+                      adicionandoProduto
+                    }
+                  />
+
+                </div>
+
+
+                <div className="orcamentos-produtos-categoria">
+
+                  <label htmlFor="categoria_produto">
+                    Categoria
+                  </label>
+
+                  <select
+                    id="categoria_produto"
+                    value={categoriaProduto}
+                    onChange={
+                      (event) =>
+                        setCategoriaProduto(
+                          event.target.value
+                        )
+                    }
+                    disabled={
+                      carregandoProdutos ||
+                      adicionandoProduto
+                    }
+                  >
+
+                    <option value="todas">
+                      Todas as categorias
+                    </option>
+
+                    {categoriasProdutos.map(
+                      (categoria) => (
+
+                        <option
+                          key={categoria}
+                          value={categoria}
+                        >
+                          {categoria}
+                        </option>
+
+                      )
+                    )}
+
+                  </select>
+
+                </div>
+
+              </div>
+
+
+              {carregandoProdutos && (
+
+                <div className="orcamentos-produtos-state">
+
+                  <div className="orcamentos-loader"></div>
+
+                  <p>
+                    Carregando catálogo...
+                  </p>
+
+                </div>
+
+              )}
+
+
+              {!carregandoProdutos &&
+                erroProdutos && (
+
+                  <div className="orcamentos-form-error">
+                    {erroProdutos}
+                  </div>
+
+                )}
+
+
+              {!carregandoProdutos &&
+                !erroProdutos && (
+
+                  <>
+
+                    <div className="orcamentos-produtos-contador">
+
+                      <span>
+                        {produtosFiltrados.length}
+                      </span>
+
+                      produto(s) encontrado(s)
+
+                    </div>
+
+
+                    <div className="orcamentos-produtos-lista">
+
+                      {produtosFiltrados.length === 0 && (
+
+                        <div className="orcamentos-produtos-vazio">
+
+                          Nenhum produto encontrado com estes filtros.
+
+                        </div>
+
+                      )}
+
+
+                      {produtosFiltrados.map(
+                        (produto) => {
+
+                          const selecionado =
+                            produtoSelecionado?.id ===
+                            produto.id;
+
+                          return (
+
+                            <button
+                              type="button"
+                              key={produto.id}
+                              className={
+                                `orcamentos-produto-card${
+                                  selecionado
+                                    ? " selecionado"
+                                    : ""
+                                }`
+                              }
+                              onClick={() =>
+                                setProdutoSelecionado(
+                                  produto
+                                )
+                              }
+                              disabled={adicionandoProduto}
+                            >
+
+                              <div className="orcamentos-produto-main">
+
+                                <div className="orcamentos-produto-topo">
+
+                                  <span className="orcamentos-produto-codigo">
+                                    {produto.codigo}
+                                  </span>
+
+                                  {produto.tipo_preco && (
+
+                                    <span className="orcamentos-produto-tipo">
+                                      {produto.tipo_preco}
+                                    </span>
+
+                                  )}
+
+                                </div>
+
+
+                                <strong>
+                                  {produto.nome}
+                                </strong>
+
+
+                                <div className="orcamentos-produto-meta">
+
+                                  {produto.categoria && (
+                                    <span>
+                                      {produto.categoria}
+                                    </span>
+                                  )}
+
+                                  {produto.variacao && (
+                                    <span>
+                                      {produto.variacao}
+                                    </span>
+                                  )}
+
+                                </div>
+
+                              </div>
+
+
+                              <div className="orcamentos-produto-preco">
+
+                                <span>
+                                  VALOR
+                                </span>
+
+                                <strong>
+                                  {formatarMoeda(
+                                    produto.preco
+                                  )}
+                                </strong>
+
+                              </div>
+
+                            </button>
+
+                          );
+
+                        }
+                      )}
+
+                    </div>
+
+                  </>
+
+                )}
+
+
+              {produtoSelecionado && (
+
+                <div className="orcamentos-produto-selecionado">
+
+                  <div>
+
+                    <span>
+                      PRODUTO SELECIONADO
+                    </span>
+
+                    <strong>
+                      {produtoSelecionado.nome}
+                    </strong>
+
+                    <small>
+                      {produtoSelecionado.codigo}
+                    </small>
+
+                  </div>
+
+
+                  <div className="orcamentos-quantidade">
+
+                    <label htmlFor="quantidade_produto">
+                      Quantidade
+                    </label>
+
+                    <input
+                      id="quantidade_produto"
+                      type="number"
+                      min="1"
+                      max="999999"
+                      step="1"
+                      value={quantidadeProduto}
+                      onChange={
+                        (event) =>
+                          setQuantidadeProduto(
+                            event.target.value
+                          )
+                      }
+                      disabled={adicionandoProduto}
+                    />
+
+                  </div>
+
+
+                  <div className="orcamentos-produto-total-previo">
+
+                    <span>
+                      SUBTOTAL
+                    </span>
+
+                    <strong>
+                      {formatarMoeda(
+                        Number(
+                          produtoSelecionado.preco
+                        ) *
+                        Number(
+                          quantidadeProduto || 0
+                        )
+                      )}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+              )}
+
+
+              <div className="orcamentos-modal-actions orcamentos-produtos-actions">
+
+                <button
+                  type="button"
+                  className="orcamentos-secondary-button"
+                  onClick={fecharAdicionarProduto}
+                  disabled={adicionandoProduto}
+                >
+                  Cancelar
+                </button>
+
+
+                <button
+                  type="button"
+                  className="orcamentos-primary-button"
+                  onClick={adicionarProdutoAoOrcamento}
+                  disabled={
+                    !produtoSelecionado ||
+                    adicionandoProduto
+                  }
+                >
+
+                  {adicionandoProduto
+                    ? "Adicionando..."
+                    : "Adicionar ao orçamento"}
+
+                </button>
+
+              </div>
 
             </div>
 

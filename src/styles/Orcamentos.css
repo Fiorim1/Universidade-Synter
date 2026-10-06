@@ -1745,3 +1745,494 @@
   }
 
 }
+
+
+/* =========================================
+   MODAL DE PRODUTOS
+========================================= */
+
+.orcamentos-modal-overlay-produto {
+  z-index: 10020;
+}
+
+
+.orcamentos-modal-produtos {
+  width: min(980px, 100%);
+}
+
+
+.orcamentos-produtos-body {
+  padding:
+    24px 30px 30px;
+}
+
+
+/* =========================================
+   FILTROS DO CATÁLOGO
+========================================= */
+
+.orcamentos-produtos-filtros {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    260px;
+
+  gap: 14px;
+
+  margin-bottom: 18px;
+}
+
+
+.orcamentos-produtos-busca,
+.orcamentos-produtos-categoria {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+.orcamentos-produtos-busca label,
+.orcamentos-produtos-categoria label,
+.orcamentos-quantidade label {
+  color:
+    rgba(255, 255, 255, 0.58);
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.7px;
+}
+
+
+.orcamentos-produtos-busca input,
+.orcamentos-produtos-categoria select,
+.orcamentos-quantidade input {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  height: 44px;
+
+  padding:
+    0 13px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.11);
+
+  border-radius: 9px;
+
+  outline: none;
+
+  background: #0d0d0d;
+
+  color: #ffffff;
+
+  font: inherit;
+}
+
+
+.orcamentos-produtos-busca input:focus,
+.orcamentos-produtos-categoria select:focus,
+.orcamentos-quantidade input:focus {
+  border-color:
+    rgba(255, 255, 255, 0.34);
+}
+
+
+.orcamentos-produtos-busca input::placeholder {
+  color:
+    rgba(255, 255, 255, 0.24);
+}
+
+
+/* =========================================
+   RESULTADOS
+========================================= */
+
+.orcamentos-produtos-contador {
+  margin-bottom: 10px;
+
+  color:
+    rgba(255, 255, 255, 0.40);
+
+  font-size: 10px;
+}
+
+
+.orcamentos-produtos-contador span {
+  color: #ffffff;
+
+  font-weight: 700;
+}
+
+
+.orcamentos-produtos-lista {
+  max-height: 330px;
+
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+
+  padding-right: 4px;
+}
+
+
+.orcamentos-produtos-lista::-webkit-scrollbar {
+  width: 7px;
+}
+
+
+.orcamentos-produtos-lista::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+
+  background:
+    rgba(255, 255, 255, 0.14);
+}
+
+
+.orcamentos-produto-card {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    130px;
+
+  align-items: center;
+
+  gap: 18px;
+
+  padding:
+    14px 15px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 9px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+
+  color: #ffffff;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+.orcamentos-produto-card:hover {
+  border-color:
+    rgba(255, 255, 255, 0.18);
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  transform:
+    translateY(-1px);
+}
+
+
+.orcamentos-produto-card.selecionado {
+  border-color:
+    rgba(255, 255, 255, 0.42);
+
+  background:
+    rgba(255, 255, 255, 0.07);
+}
+
+
+.orcamentos-produto-topo {
+  display: flex;
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-bottom: 6px;
+}
+
+
+.orcamentos-produto-codigo {
+  color:
+    rgba(255, 255, 255, 0.45);
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+}
+
+
+.orcamentos-produto-tipo {
+  padding:
+    4px 7px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.10);
+
+  border-radius: 100px;
+
+  color:
+    rgba(255, 255, 255, 0.55);
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  font-size: 8px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+
+.orcamentos-produto-main > strong {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+}
+
+
+.orcamentos-produto-meta {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 6px 12px;
+
+  margin-top: 6px;
+}
+
+
+.orcamentos-produto-meta span {
+  color:
+    rgba(255, 255, 255, 0.36);
+
+  font-size: 9px;
+}
+
+
+.orcamentos-produto-preco {
+  text-align: right;
+}
+
+
+.orcamentos-produto-preco span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color:
+    rgba(255, 255, 255, 0.34);
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+}
+
+
+.orcamentos-produto-preco strong {
+  color: #ffffff;
+
+  font-size: 14px;
+}
+
+
+.orcamentos-produtos-vazio,
+.orcamentos-produtos-state {
+  min-height: 150px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 9px;
+
+  color:
+    rgba(255, 255, 255, 0.42);
+
+  background:
+    rgba(255, 255, 255, 0.012);
+
+  font-size: 11px;
+}
+
+
+.orcamentos-produtos-state p {
+  margin:
+    10px 0 0;
+}
+
+
+/* =========================================
+   PRODUTO SELECIONADO
+========================================= */
+
+.orcamentos-produto-selecionado {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    130px
+    150px;
+
+  align-items: end;
+
+  gap: 16px;
+
+  margin-top: 18px;
+
+  padding:
+    16px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+}
+
+
+.orcamentos-produto-selecionado > div:first-child > span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color:
+    rgba(255, 255, 255, 0.34);
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+}
+
+
+.orcamentos-produto-selecionado > div:first-child > strong {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 12px;
+}
+
+
+.orcamentos-produto-selecionado > div:first-child > small {
+  display: block;
+
+  margin-top: 5px;
+
+  color:
+    rgba(255, 255, 255, 0.42);
+
+  font-size: 9px;
+}
+
+
+.orcamentos-quantidade {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.orcamentos-produto-total-previo {
+  text-align: right;
+}
+
+
+.orcamentos-produto-total-previo span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color:
+    rgba(255, 255, 255, 0.34);
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+}
+
+
+.orcamentos-produto-total-previo strong {
+  color: #ffffff;
+
+  font-size: 17px;
+}
+
+
+.orcamentos-produtos-actions {
+  margin-top: 18px;
+}
+
+
+/* =========================================
+   RESPONSIVO DO CATÁLOGO
+========================================= */
+
+@media (max-width: 760px) {
+
+  .orcamentos-produtos-filtros {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .orcamentos-produto-selecionado {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .orcamentos-produto-total-previo {
+    text-align: left;
+  }
+
+}
+
+
+@media (max-width: 520px) {
+
+  .orcamentos-produtos-body {
+    padding:
+      20px;
+  }
+
+
+  .orcamentos-produto-card {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .orcamentos-produto-preco {
+    text-align: left;
+  }
+
+}
