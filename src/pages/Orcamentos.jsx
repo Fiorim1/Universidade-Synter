@@ -88,6 +88,26 @@ function Orcamentos() {
 
 
   // ========================================
+  // EDITAR / REMOVER ITEM
+  // ========================================
+
+  const [itemEmEdicao, setItemEmEdicao] =
+    useState(null);
+
+  const [quantidadeEdicao, setQuantidadeEdicao] =
+    useState(1);
+
+  const [processandoItemId, setProcessandoItemId] =
+    useState(null);
+
+  const [confirmandoRemocaoId, setConfirmandoRemocaoId] =
+    useState(null);
+
+  const [erroAcaoItem, setErroAcaoItem] =
+    useState("");
+
+
+  // ========================================
   // CARREGAMENTO INICIAL
   // ========================================
 
@@ -488,13 +508,195 @@ function Orcamentos() {
 
   function fecharOrcamento() {
 
-    if (modalProdutoOpen) {
+    if (
+      modalProdutoOpen ||
+      processandoItemId
+    ) {
       return;
     }
 
     setOrcamentoSelecionado(null);
     setItensOrcamento([]);
     setErroItens("");
+    setErroAcaoItem("");
+    setItemEmEdicao(null);
+    setQuantidadeEdicao(1);
+    setConfirmandoRemocaoId(null);
+
+  }
+
+
+  // ========================================
+  // EDITAR QUANTIDADE / REMOVER ITEM
+  // ========================================
+
+  function iniciarEdicaoQuantidade(item) {
+
+    if (
+      role !== "representante" ||
+      orcamentoSelecionado?.status !== "rascunho"
+    ) {
+      return;
+    }
+
+    setErroAcaoItem("");
+    setConfirmandoRemocaoId(null);
+    setItemEmEdicao(item.id);
+    setQuantidadeEdicao(item.quantidade);
+
+  }
+
+
+  function cancelarEdicaoQuantidade() {
+
+    if (processandoItemId) {
+      return;
+    }
+
+    setItemEmEdicao(null);
+    setQuantidadeEdicao(1);
+    setErroAcaoItem("");
+
+  }
+
+
+  async function salvarQuantidadeItem(item) {
+
+    if (
+      role !== "representante" ||
+      orcamentoSelecionado?.status !== "rascunho"
+    ) {
+      return;
+    }
+
+    const quantidade =
+      Number(quantidadeEdicao);
+
+    if (
+      !Number.isInteger(quantidade) ||
+      quantidade < 1 ||
+      quantidade > 999999
+    ) {
+
+      setErroAcaoItem(
+        "Informe uma quantidade válida."
+      );
+
+      return;
+
+    }
+
+    try {
+
+      setProcessandoItemId(item.id);
+      setErroAcaoItem("");
+
+      const {
+        error
+      } = await supabase.rpc(
+        "atualizar_quantidade_item",
+        {
+          p_item_id: item.id,
+          p_quantidade: quantidade
+        }
+      );
+
+      if (error) {
+        throw error;
+      }
+
+      await carregarItensDoOrcamento(
+        orcamentoSelecionado.id
+      );
+
+      setItemEmEdicao(null);
+      setQuantidadeEdicao(1);
+
+    }
+    catch (error) {
+
+      console.error(
+        "Erro ao atualizar quantidade:",
+        error
+      );
+
+      setErroAcaoItem(
+        error?.message ||
+        "Não foi possível atualizar a quantidade."
+      );
+
+    }
+    finally {
+
+      setProcessandoItemId(null);
+
+    }
+
+  }
+
+
+  async function removerItemDoOrcamento(item) {
+
+    if (
+      role !== "representante" ||
+      orcamentoSelecionado?.status !== "rascunho"
+    ) {
+      return;
+    }
+
+    if (confirmandoRemocaoId !== item.id) {
+
+      setErroAcaoItem("");
+      setItemEmEdicao(null);
+      setConfirmandoRemocaoId(item.id);
+
+      return;
+
+    }
+
+    try {
+
+      setProcessandoItemId(item.id);
+      setErroAcaoItem("");
+
+      const {
+        error
+      } = await supabase.rpc(
+        "remover_item_orcamento",
+        {
+          p_item_id: item.id
+        }
+      );
+
+      if (error) {
+        throw error;
+      }
+
+      await carregarItensDoOrcamento(
+        orcamentoSelecionado.id
+      );
+
+      setConfirmandoRemocaoId(null);
+
+    }
+    catch (error) {
+
+      console.error(
+        "Erro ao remover item:",
+        error
+      );
+
+      setErroAcaoItem(
+        error?.message ||
+        "Não foi possível remover o produto."
+      );
+
+    }
+    finally {
+
+      setProcessandoItemId(null);
+
+    }
 
   }
 
@@ -1785,6 +1987,17 @@ function Orcamentos() {
 
               {!carregandoItens &&
                 !erroItens &&
+                erroAcaoItem && (
+
+                  <div className="orcamentos-form-error orcamentos-itens-error">
+                    {erroAcaoItem}
+                  </div>
+
+                )}
+
+
+              {!carregandoItens &&
+                !erroItens &&
                 itensOrcamento.length > 0 && (
 
                   <>
@@ -1856,6 +2069,121 @@ function Orcamentos() {
                               </strong>
 
                             </div>
+
+
+                            {role === "representante" &&
+                              orcamentoSelecionado.status === "rascunho" && (
+
+                                <div className="orcamentos-item-acoes">
+
+                                  {itemEmEdicao === item.id ? (
+
+                                    <div className="orcamentos-item-edicao">
+
+                                      <label
+                                        htmlFor={`qtd-${item.id}`}
+                                      >
+                                        Quantidade
+                                      </label>
+
+                                      <div className="orcamentos-item-edicao-linha">
+
+                                        <input
+                                          id={`qtd-${item.id}`}
+                                          type="number"
+                                          min="1"
+                                          max="999999"
+                                          step="1"
+                                          value={quantidadeEdicao}
+                                          onChange={
+                                            (event) =>
+                                              setQuantidadeEdicao(
+                                                event.target.value
+                                              )
+                                          }
+                                          disabled={
+                                            processandoItemId === item.id
+                                          }
+                                        />
+
+                                        <button
+                                          type="button"
+                                          className="orcamentos-item-btn salvar"
+                                          onClick={() =>
+                                            salvarQuantidadeItem(item)
+                                          }
+                                          disabled={
+                                            processandoItemId === item.id
+                                          }
+                                        >
+                                          {processandoItemId === item.id
+                                            ? "Salvando..."
+                                            : "Salvar"}
+                                        </button>
+
+                                        <button
+                                          type="button"
+                                          className="orcamentos-item-btn"
+                                          onClick={cancelarEdicaoQuantidade}
+                                          disabled={
+                                            processandoItemId === item.id
+                                          }
+                                        >
+                                          Cancelar
+                                        </button>
+
+                                      </div>
+
+                                    </div>
+
+                                  ) : (
+
+                                    <>
+
+                                      <button
+                                        type="button"
+                                        className="orcamentos-item-btn"
+                                        onClick={() =>
+                                          iniciarEdicaoQuantidade(item)
+                                        }
+                                        disabled={
+                                          Boolean(processandoItemId)
+                                        }
+                                      >
+                                        Alterar quantidade
+                                      </button>
+
+
+                                      <button
+                                        type="button"
+                                        className={
+                                          `orcamentos-item-btn remover${
+                                            confirmandoRemocaoId === item.id
+                                              ? " confirmar"
+                                              : ""
+                                          }`
+                                        }
+                                        onClick={() =>
+                                          removerItemDoOrcamento(item)
+                                        }
+                                        disabled={
+                                          Boolean(processandoItemId)
+                                        }
+                                      >
+                                        {processandoItemId === item.id
+                                          ? "Removendo..."
+                                          : confirmandoRemocaoId === item.id
+                                            ? "Confirmar remoção"
+                                            : "Remover"}
+                                      </button>
+
+                                    </>
+
+                                  )}
+
+                                </div>
+
+                              )}
 
                           </div>
 
