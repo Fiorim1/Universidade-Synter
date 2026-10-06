@@ -120,6 +120,9 @@ function Orcamentos() {
   const [confirmacaoFluxo, setConfirmacaoFluxo] =
     useState(null);
 
+  const [alertaSistema, setAlertaSistema] =
+    useState(null);
+
 
   // ========================================
   // CARREGAMENTO INICIAL
@@ -544,6 +547,32 @@ function Orcamentos() {
 
 
   // ========================================
+  // ALERTA DO SISTEMA
+  // ========================================
+
+  function mostrarAlertaSistema(
+    titulo,
+    mensagem,
+    tipo = "sucesso"
+  ) {
+
+    setAlertaSistema({
+      titulo,
+      mensagem,
+      tipo
+    });
+
+    window.setTimeout(
+      () => {
+        setAlertaSistema(null);
+      },
+      6000
+    );
+
+  }
+
+
+  // ========================================
   // FLUXO DO ORÇAMENTO
   // ========================================
 
@@ -645,6 +674,18 @@ function Orcamentos() {
       );
 
       setConfirmacaoFluxo(null);
+
+      // Fecha os detalhes do orçamento após o envio.
+      setOrcamentoSelecionado(null);
+      setItensOrcamento([]);
+      setErroItens("");
+      setErroAcaoItem("");
+
+      // Exibe confirmação no padrão visual do sistema.
+      mostrarAlertaSistema(
+        "Orçamento enviado para análise",
+        "O orçamento foi enviado com sucesso e agora será verificado pelo setor Comercial."
+      );
 
     }
     catch (error) {
@@ -1817,6 +1858,54 @@ function Orcamentos() {
         )}
 
       </main>
+
+
+      {/* ================================= */}
+      {/* ALERTA DO SISTEMA                 */}
+      {/* ================================= */}
+
+      {alertaSistema && (
+
+        <div
+          className={
+            `orcamentos-alerta-sistema ${alertaSistema.tipo}`
+          }
+          role="status"
+          aria-live="polite"
+        >
+
+          <div className="orcamentos-alerta-icone">
+            ✓
+          </div>
+
+
+          <div className="orcamentos-alerta-conteudo">
+
+            <strong>
+              {alertaSistema.titulo}
+            </strong>
+
+            <p>
+              {alertaSistema.mensagem}
+            </p>
+
+          </div>
+
+
+          <button
+            type="button"
+            className="orcamentos-alerta-fechar"
+            onClick={() =>
+              setAlertaSistema(null)
+            }
+            aria-label="Fechar alerta"
+          >
+            ×
+          </button>
+
+        </div>
+
+      )}
 
 
       <Footer />
