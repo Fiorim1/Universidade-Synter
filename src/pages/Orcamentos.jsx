@@ -25,6 +25,30 @@ function Orcamentos() {
 
 
   // ========================================
+  // NOVO ORÇAMENTO
+  // ========================================
+
+  const [modalNovoOpen, setModalNovoOpen] =
+    useState(false);
+
+  const [salvando, setSalvando] =
+    useState(false);
+
+  const [erroFormulario, setErroFormulario] =
+    useState("");
+
+
+  const [formulario, setFormulario] =
+    useState({
+      cliente_nome: "",
+      cliente_documento: "",
+      cliente_email: "",
+      cliente_telefone: "",
+      observacoes: ""
+    });
+
+
+  // ========================================
   // CARREGAMENTO INICIAL
   // ========================================
 
@@ -106,7 +130,7 @@ function Orcamentos() {
 
 
       // ========================================
-      // SEM ACESSO AO SISTEMA DE ORÇAMENTOS
+      // SEM ACESSO
       // ========================================
 
       if (
@@ -122,15 +146,6 @@ function Orcamentos() {
 
       // ========================================
       // BUSCAR ORÇAMENTOS
-      // ========================================
-      //
-      // NÃO filtramos created_by no React.
-      //
-      // A RLS já determina:
-      //
-      // representante -> somente os próprios
-      // comercial      -> todos
-      //
       // ========================================
 
       const {
@@ -225,6 +240,229 @@ function Orcamentos() {
     };
 
   }, [orcamentos]);
+
+
+  // ========================================
+  // ALTERAR CAMPO
+  // ========================================
+
+  function alterarCampo(event) {
+
+    const {
+      name,
+      value
+    } = event.target;
+
+
+    setFormulario(
+      (anterior) => ({
+        ...anterior,
+        [name]: value
+      })
+    );
+
+  }
+
+
+  // ========================================
+  // ABRIR MODAL
+  // ========================================
+
+  function abrirNovoOrcamento() {
+
+    setErroFormulario("");
+
+
+    setFormulario({
+      cliente_nome: "",
+      cliente_documento: "",
+      cliente_email: "",
+      cliente_telefone: "",
+      observacoes: ""
+    });
+
+
+    setModalNovoOpen(true);
+
+  }
+
+
+  // ========================================
+  // FECHAR MODAL
+  // ========================================
+
+  function fecharNovoOrcamento() {
+
+    if (salvando) {
+      return;
+    }
+
+
+    setModalNovoOpen(false);
+    setErroFormulario("");
+
+  }
+
+
+  // ========================================
+  // CRIAR ORÇAMENTO
+  // ========================================
+
+  async function criarOrcamento(event) {
+
+    event.preventDefault();
+
+
+    if (role !== "representante") {
+
+      setErroFormulario(
+        "Seu perfil não possui permissão para criar orçamentos."
+      );
+
+      return;
+
+    }
+
+
+    const clienteNome =
+      formulario.cliente_nome.trim();
+
+
+    if (clienteNome.length < 2) {
+
+      setErroFormulario(
+        "Informe o nome do cliente."
+      );
+
+      return;
+
+    }
+
+
+    try {
+
+      setSalvando(true);
+      setErroFormulario("");
+
+
+      // ========================================
+      // IMPORTANTE
+      // ========================================
+      //
+      // NÃO enviamos:
+      //
+      // id
+      // created_by
+      // status
+      // created_at
+      // updated_at
+      //
+      // Esses dados são controlados
+      // exclusivamente pelo banco.
+      //
+      // ========================================
+
+      const {
+        data,
+        error
+      } = await supabase
+        .from("orcamentos")
+        .insert({
+          cliente_nome:
+            clienteNome,
+
+          cliente_documento:
+            formulario.cliente_documento.trim() ||
+            null,
+
+          cliente_email:
+            formulario.cliente_email.trim() ||
+            null,
+
+          cliente_telefone:
+            formulario.cliente_telefone.trim() ||
+            null,
+
+          observacoes:
+            formulario.observacoes.trim() ||
+            null
+        })
+        .select(`
+          id,
+          created_by,
+          cliente_nome,
+          cliente_documento,
+          cliente_email,
+          cliente_telefone,
+          observacoes,
+          status,
+          created_at,
+          updated_at
+        `)
+        .single();
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      if (!data) {
+
+        throw new Error(
+          "O orçamento não foi criado."
+        );
+
+      }
+
+
+      // ========================================
+      // ADICIONA NOVO RASCUNHO NA TELA
+      // ========================================
+
+      setOrcamentos(
+        (anteriores) => [
+          data,
+          ...anteriores
+        ]
+      );
+
+
+      setModalNovoOpen(false);
+
+
+      setFormulario({
+        cliente_nome: "",
+        cliente_documento: "",
+        cliente_email: "",
+        cliente_telefone: "",
+        observacoes: ""
+      });
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Erro ao criar orçamento:",
+        error
+      );
+
+
+      setErroFormulario(
+        error?.message ||
+        "Não foi possível criar o orçamento."
+      );
+
+    }
+
+    finally {
+
+      setSalvando(false);
+
+    }
+
+  }
 
 
   // ========================================
@@ -490,10 +728,6 @@ function Orcamentos() {
       <main className="orcamentos-content">
 
 
-        {/* ================================= */}
-        {/* TÍTULO DA SEÇÃO                  */}
-        {/* ================================= */}
-
         <div className="orcamentos-section-title">
 
           <div className="orcamentos-section-bar"></div>
@@ -506,11 +740,10 @@ function Orcamentos() {
 
 
         {/* ================================= */}
-        {/* CARDS RESUMO                     */}
+        {/* CARDS                            */}
         {/* ================================= */}
 
         <section className="orcamentos-summary-grid">
-
 
           <div className="orcamentos-summary-card">
 
@@ -579,12 +812,11 @@ function Orcamentos() {
 
           </div>
 
-
         </section>
 
 
         {/* ================================= */}
-        {/* SEÇÃO ORÇAMENTOS                  */}
+        {/* CABEÇALHO DA LISTA               */}
         {/* ================================= */}
 
         <div className="orcamentos-section-header">
@@ -616,8 +848,7 @@ function Orcamentos() {
             <button
               type="button"
               className="orcamentos-primary-button"
-              disabled
-              title="A criação do orçamento será habilitada na próxima etapa."
+              onClick={abrirNovoOrcamento}
             >
 
               <span>
@@ -634,7 +865,7 @@ function Orcamentos() {
 
 
         {/* ================================= */}
-        {/* LISTA VAZIA                      */}
+        {/* VAZIO                            */}
         {/* ================================= */}
 
         {orcamentos.length === 0 && (
@@ -659,7 +890,7 @@ function Orcamentos() {
             <p>
 
               {role === "representante"
-                ? "Você ainda não possui orçamentos. Em breve você poderá criar seu primeiro orçamento por aqui."
+                ? "Você ainda não possui orçamentos. Clique em Novo orçamento para começar."
                 : "Ainda não existem orçamentos disponíveis para acompanhamento."}
 
             </p>
@@ -715,9 +946,7 @@ function Orcamentos() {
                   {orcamentos.map(
                     (orcamento) => (
 
-                      <tr
-                        key={orcamento.id}
-                      >
+                      <tr key={orcamento.id}>
 
                         <td>
 
@@ -750,16 +979,12 @@ function Orcamentos() {
 
 
                         <td>
-
                           {orcamento.cliente_documento || "-"}
-
                         </td>
 
 
                         <td>
-
                           {orcamento.cliente_telefone || "-"}
-
                         </td>
 
 
@@ -781,11 +1006,9 @@ function Orcamentos() {
 
 
                         <td>
-
                           {formatarData(
                             orcamento.created_at
                           )}
-
                         </td>
 
                       </tr>
@@ -802,7 +1025,6 @@ function Orcamentos() {
           </section>
 
         )}
-
 
       </main>
 
@@ -821,6 +1043,204 @@ function Orcamentos() {
             setProfileOpen(false)
           }
         />
+
+      )}
+
+
+      {/* ================================= */}
+      {/* MODAL NOVO ORÇAMENTO              */}
+      {/* ================================= */}
+
+      {modalNovoOpen && (
+
+        <div
+          className="orcamentos-modal-overlay"
+          onMouseDown={fecharNovoOrcamento}
+        >
+
+          <div
+            className="orcamentos-modal"
+            onMouseDown={
+              (event) =>
+                event.stopPropagation()
+            }
+          >
+
+            <div className="orcamentos-modal-header">
+
+              <div>
+
+                <span>
+                  NOVO ORÇAMENTO
+                </span>
+
+                <h2>
+                  Dados do cliente
+                </h2>
+
+                <p>
+                  Preencha as informações para
+                  criar um novo rascunho.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                className="orcamentos-modal-close"
+                onClick={fecharNovoOrcamento}
+                disabled={salvando}
+                aria-label="Fechar"
+              >
+                ×
+              </button>
+
+            </div>
+
+
+            <form
+              onSubmit={criarOrcamento}
+              className="orcamentos-form"
+            >
+
+              <div className="orcamentos-form-group orcamentos-form-full">
+
+                <label htmlFor="cliente_nome">
+                  Nome do cliente *
+                </label>
+
+                <input
+                  id="cliente_nome"
+                  name="cliente_nome"
+                  type="text"
+                  value={formulario.cliente_nome}
+                  onChange={alterarCampo}
+                  placeholder="Nome ou razão social"
+                  maxLength={200}
+                  required
+                  disabled={salvando}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group">
+
+                <label htmlFor="cliente_documento">
+                  CPF / CNPJ
+                </label>
+
+                <input
+                  id="cliente_documento"
+                  name="cliente_documento"
+                  type="text"
+                  value={formulario.cliente_documento}
+                  onChange={alterarCampo}
+                  placeholder="CPF ou CNPJ"
+                  disabled={salvando}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group">
+
+                <label htmlFor="cliente_telefone">
+                  Telefone
+                </label>
+
+                <input
+                  id="cliente_telefone"
+                  name="cliente_telefone"
+                  type="text"
+                  value={formulario.cliente_telefone}
+                  onChange={alterarCampo}
+                  placeholder="(00) 00000-0000"
+                  disabled={salvando}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group orcamentos-form-full">
+
+                <label htmlFor="cliente_email">
+                  E-mail
+                </label>
+
+                <input
+                  id="cliente_email"
+                  name="cliente_email"
+                  type="email"
+                  value={formulario.cliente_email}
+                  onChange={alterarCampo}
+                  placeholder="cliente@empresa.com.br"
+                  disabled={salvando}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group orcamentos-form-full">
+
+                <label htmlFor="observacoes">
+                  Observações
+                </label>
+
+                <textarea
+                  id="observacoes"
+                  name="observacoes"
+                  value={formulario.observacoes}
+                  onChange={alterarCampo}
+                  placeholder="Informações adicionais..."
+                  rows={4}
+                  disabled={salvando}
+                />
+
+              </div>
+
+
+              {erroFormulario && (
+
+                <div className="orcamentos-form-error">
+                  {erroFormulario}
+                </div>
+
+              )}
+
+
+              <div className="orcamentos-modal-actions">
+
+                <button
+                  type="button"
+                  className="orcamentos-secondary-button"
+                  onClick={fecharNovoOrcamento}
+                  disabled={salvando}
+                >
+                  Cancelar
+                </button>
+
+
+                <button
+                  type="submit"
+                  className="orcamentos-primary-button"
+                  disabled={salvando}
+                >
+
+                  {salvando
+                    ? "Criando..."
+                    : "Criar orçamento"}
+
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+
+        </div>
 
       )}
 
