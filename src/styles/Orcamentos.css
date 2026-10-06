@@ -4,6 +4,7 @@
 
 .orcamentos-page {
   min-height: 100vh;
+
   background:
     radial-gradient(
       circle at 50% 0%,
@@ -23,18 +24,21 @@
 .orcamentos-hero {
   position: relative;
 
-  border-bottom:
-    1px solid rgba(255, 255, 255, 0.08);
-
   min-height: 390px;
 
   display: flex;
   align-items: center;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.08);
 }
 
 
 .orcamentos-hero-container {
-  width: min(1180px, calc(100% - 48px));
+  width: min(
+    1180px,
+    calc(100% - 48px)
+  );
 
   margin: 0 auto;
 
@@ -44,14 +48,11 @@
 }
 
 
-/* =========================================
-   PERFIL
-========================================= */
-
 .orcamentos-profile {
   position: absolute;
 
   top: 34px;
+
   right: max(
     48px,
     calc((100vw - 1180px) / 2)
@@ -349,7 +350,7 @@
 
 
 /* =========================================
-   CABEÇALHO DOS ORÇAMENTOS
+   CABEÇALHO DA LISTA
 ========================================= */
 
 .orcamentos-section-header {
@@ -377,12 +378,12 @@
 
 
 /* =========================================
-   BOTÃO PRINCIPAL
+   BOTÕES
 ========================================= */
 
 .orcamentos-primary-button,
 .orcamentos-button {
-  height: 44px;
+  min-height: 44px;
 
   padding:
     0 18px;
@@ -616,6 +617,20 @@
 }
 
 
+.orcamentos-table-row-clickable {
+  cursor: pointer;
+}
+
+
+.orcamentos-table-row-clickable:hover,
+.orcamentos-table-row-clickable:focus-visible {
+  background:
+    rgba(255, 255, 255, 0.045) !important;
+
+  outline: none;
+}
+
+
 /* =========================================
    CLIENTE
 ========================================= */
@@ -680,7 +695,6 @@
 
 .orcamentos-status {
   display: inline-flex;
-
   align-items: center;
 
   min-height: 27px;
@@ -694,7 +708,6 @@
   border-radius: 100px;
 
   font-size: 10px;
-
   font-weight: 700;
 
   text-transform: uppercase;
@@ -845,112 +858,6 @@
 
 
 /* =========================================
-   RESPONSIVO
-========================================= */
-
-@media (
-  max-width: 1000px
-) {
-
-  .orcamentos-summary-grid {
-    grid-template-columns:
-      repeat(2, 1fr);
-  }
-
-}
-
-
-@media (
-  max-width: 768px
-) {
-
-  .orcamentos-hero {
-    min-height: auto;
-  }
-
-
-  .orcamentos-hero-container {
-    width:
-      calc(100% - 32px);
-
-    padding:
-      110px 0
-      48px;
-  }
-
-
-  .orcamentos-profile {
-    top: 22px;
-    right: 16px;
-  }
-
-
-  .orcamentos-hero h1 {
-    font-size: 44px;
-
-    letter-spacing: -1.5px;
-  }
-
-
-  .orcamentos-hero-description {
-    font-size: 14px;
-  }
-
-
-  .orcamentos-content {
-    width:
-      calc(100% - 32px);
-
-    padding:
-      38px 0
-      70px;
-  }
-
-
-  .orcamentos-section-header {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-
-  .orcamentos-primary-button {
-    width: 100%;
-  }
-
-}
-
-
-@media (
-  max-width: 560px
-) {
-
-  .orcamentos-summary-grid {
-    grid-template-columns:
-      1fr;
-
-    gap: 12px;
-  }
-
-
-  .orcamentos-summary-card {
-    min-height: auto;
-  }
-
-
-  .orcamentos-hero h1 {
-    font-size: 38px;
-  }
-
-
-  .orcamentos-eyebrow {
-    font-size: 10px;
-
-    letter-spacing: 2px;
-  }
-
-}
-
-/* =========================================
    MODAL
 ========================================= */
 
@@ -977,7 +884,8 @@
 .orcamentos-modal {
   width: min(650px, 100%);
 
-  max-height: calc(100vh - 48px);
+  max-height:
+    calc(100vh - 48px);
 
   overflow-y: auto;
 
@@ -996,6 +904,11 @@
   box-shadow:
     0 30px 80px
     rgba(0, 0, 0, 0.60);
+}
+
+
+.orcamentos-modal-detalhes {
+  width: min(900px, 100%);
 }
 
 
@@ -1089,7 +1002,8 @@
 
   gap: 18px;
 
-  padding: 28px 30px 30px;
+  padding:
+    28px 30px 30px;
 }
 
 
@@ -1177,7 +1091,7 @@
 
 
 /* =========================================
-   ERRO
+   ERRO FORMULÁRIO
 ========================================= */
 
 .orcamentos-form-error {
@@ -1203,7 +1117,7 @@
 
 
 /* =========================================
-   AÇÕES
+   AÇÕES DO MODAL
 ========================================= */
 
 .orcamentos-modal-actions {
@@ -1225,7 +1139,7 @@
 
 
 .orcamentos-secondary-button {
-  height: 44px;
+  min-height: 44px;
 
   padding:
     0 18px;
@@ -1263,8 +1177,483 @@
 
 
 /* =========================================
-   MOBILE
+   DETALHES
 ========================================= */
+
+.orcamentos-detalhes-body {
+  padding:
+    28px 30px 32px;
+}
+
+
+.orcamentos-detalhes-info {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin-bottom: 20px;
+}
+
+
+.orcamentos-detalhes-info > div {
+  min-height: 72px;
+
+  padding: 14px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.09);
+
+  border-radius: 9px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+
+.orcamentos-detalhes-info span {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color:
+    rgba(255, 255, 255, 0.38);
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 1.2px;
+}
+
+
+.orcamentos-detalhes-info strong {
+  color:
+    rgba(255, 255, 255, 0.80);
+
+  font-size: 12px;
+
+  word-break: break-word;
+}
+
+
+.orcamentos-observacoes {
+  margin-bottom: 28px;
+
+  padding: 15px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 9px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+}
+
+
+.orcamentos-observacoes span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color:
+    rgba(255, 255, 255, 0.36);
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 1.2px;
+}
+
+
+.orcamentos-observacoes p {
+  margin: 0;
+
+  color:
+    rgba(255, 255, 255, 0.62);
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   CABEÇALHO PRODUTOS
+========================================= */
+
+.orcamentos-detalhes-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding-top: 22px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.orcamentos-detalhes-header > div > span {
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 1.8px;
+}
+
+
+.orcamentos-detalhes-header p {
+  margin:
+    7px 0 0;
+
+  color:
+    rgba(255, 255, 255, 0.40);
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   ESTADOS DOS ITENS
+========================================= */
+
+.orcamentos-itens-state,
+.orcamentos-itens-empty {
+  min-height: 180px;
+
+  margin-top: 20px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.015);
+}
+
+
+.orcamentos-itens-state p,
+.orcamentos-itens-empty p {
+  margin:
+    10px 0 0;
+
+  color:
+    rgba(255, 255, 255, 0.40);
+
+  font-size: 11px;
+}
+
+
+.orcamentos-itens-empty h3 {
+  margin:
+    10px 0 0;
+
+  color: #ffffff;
+
+  font-size: 14px;
+}
+
+
+.orcamentos-empty-mini-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 9px;
+
+  color:
+    rgba(255, 255, 255, 0.55);
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  font-size: 18px;
+}
+
+
+.orcamentos-itens-error {
+  margin-top: 20px;
+}
+
+
+/* =========================================
+   LISTA DE ITENS
+========================================= */
+
+.orcamentos-itens-lista {
+  margin-top: 20px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+
+.orcamentos-item {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    140px
+    120px;
+
+  align-items: center;
+
+  gap: 20px;
+
+  padding: 15px 16px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 9px;
+
+  background:
+    rgba(255, 255, 255, 0.02);
+}
+
+
+.orcamentos-item-produto > span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color:
+    rgba(255, 255, 255, 0.36);
+
+  font-size: 9px;
+
+  letter-spacing: 1px;
+}
+
+
+.orcamentos-item strong {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 12px;
+}
+
+
+.orcamentos-item small {
+  display: block;
+
+  margin-top: 5px;
+
+  color:
+    rgba(255, 255, 255, 0.38);
+
+  font-size: 10px;
+}
+
+
+.orcamentos-item-preco-unitario {
+  text-align: right;
+}
+
+
+.orcamentos-item-preco-unitario span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color:
+    rgba(255, 255, 255, 0.35);
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+}
+
+
+.orcamentos-item-valores {
+  text-align: right;
+
+  flex-shrink: 0;
+}
+
+
+.orcamentos-item-valores span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color:
+    rgba(255, 255, 255, 0.40);
+
+  font-size: 10px;
+}
+
+
+.orcamentos-item-valores strong {
+  font-size: 14px;
+}
+
+
+/* =========================================
+   TOTAL
+========================================= */
+
+.orcamentos-total {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 24px;
+
+  margin-top: 18px;
+
+  padding-top: 18px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.orcamentos-total span {
+  color:
+    rgba(255, 255, 255, 0.38);
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 1.2px;
+}
+
+
+.orcamentos-total strong {
+  color: #ffffff;
+
+  font-size: 20px;
+}
+
+
+/* =========================================
+   RESPONSIVO
+========================================= */
+
+@media (max-width: 1000px) {
+
+  .orcamentos-summary-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+
+  .orcamentos-detalhes-info {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+@media (max-width: 768px) {
+
+  .orcamentos-hero {
+    min-height: auto;
+  }
+
+
+  .orcamentos-hero-container {
+    width:
+      calc(100% - 32px);
+
+    padding:
+      110px 0
+      48px;
+  }
+
+
+  .orcamentos-profile {
+    top: 22px;
+    right: 16px;
+  }
+
+
+  .orcamentos-hero h1 {
+    font-size: 44px;
+
+    letter-spacing: -1.5px;
+  }
+
+
+  .orcamentos-hero-description {
+    font-size: 14px;
+  }
+
+
+  .orcamentos-content {
+    width:
+      calc(100% - 32px);
+
+    padding:
+      38px 0
+      70px;
+  }
+
+
+  .orcamentos-section-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+
+  .orcamentos-primary-button {
+    width: 100%;
+  }
+
+
+  .orcamentos-detalhes-header {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+
+  .orcamentos-item {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .orcamentos-item-preco-unitario,
+  .orcamentos-item-valores {
+    text-align: left;
+  }
+
+
+  .orcamentos-total {
+    justify-content: space-between;
+  }
+
+}
+
 
 @media (max-width: 600px) {
 
@@ -1288,16 +1677,10 @@
   }
 
 
-  .orcamentos-form-full {
-    grid-column:
-      auto;
-  }
-
-
+  .orcamentos-form-full,
   .orcamentos-form-error,
   .orcamentos-modal-actions {
-    grid-column:
-      auto;
+    grid-column: auto;
   }
 
 
@@ -1308,6 +1691,57 @@
 
   .orcamentos-modal-actions button {
     width: 100%;
+  }
+
+
+  .orcamentos-detalhes-body {
+    padding:
+      22px 20px 26px;
+  }
+
+}
+
+
+@media (max-width: 560px) {
+
+  .orcamentos-summary-grid {
+    grid-template-columns:
+      1fr;
+
+    gap: 12px;
+  }
+
+
+  .orcamentos-summary-card {
+    min-height: auto;
+  }
+
+
+  .orcamentos-hero h1 {
+    font-size: 38px;
+  }
+
+
+  .orcamentos-eyebrow {
+    font-size: 10px;
+
+    letter-spacing: 2px;
+  }
+
+}
+
+
+@media (max-width: 450px) {
+
+  .orcamentos-detalhes-info {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .orcamentos-role {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
 }

@@ -20,32 +20,39 @@ function Orcamentos() {
   const [role, setRole] = useState(null);
   const [orcamentos, setOrcamentos] = useState([]);
 
-  const [profileOpen, setProfileOpen] =
-    useState(false);
-
+  const [profileOpen, setProfileOpen] = useState(false);
 
   // ========================================
   // NOVO ORÇAMENTO
   // ========================================
 
-  const [modalNovoOpen, setModalNovoOpen] =
+  const [modalNovoOpen, setModalNovoOpen] = useState(false);
+  const [salvando, setSalvando] = useState(false);
+  const [erroFormulario, setErroFormulario] = useState("");
+
+  const [formulario, setFormulario] = useState({
+    cliente_nome: "",
+    cliente_documento: "",
+    cliente_email: "",
+    cliente_telefone: "",
+    observacoes: ""
+  });
+
+  // ========================================
+  // DETALHES DO ORÇAMENTO
+  // ========================================
+
+  const [orcamentoSelecionado, setOrcamentoSelecionado] =
+    useState(null);
+
+  const [itensOrcamento, setItensOrcamento] =
+    useState([]);
+
+  const [carregandoItens, setCarregandoItens] =
     useState(false);
 
-  const [salvando, setSalvando] =
-    useState(false);
-
-  const [erroFormulario, setErroFormulario] =
+  const [erroItens, setErroItens] =
     useState("");
-
-
-  const [formulario, setFormulario] =
-    useState({
-      cliente_nome: "",
-      cliente_documento: "",
-      cliente_email: "",
-      cliente_telefone: "",
-      observacoes: ""
-    });
 
 
   // ========================================
@@ -66,37 +73,20 @@ function Orcamentos() {
       setLoading(true);
       setErro("");
 
-
-      // ========================================
-      // USUÁRIO AUTENTICADO
-      // ========================================
-
       const {
         data: usuarioData,
         error: usuarioError
       } = await supabase.auth.getUser();
 
-
       if (usuarioError) {
         throw usuarioError;
       }
 
-
       const user = usuarioData?.user;
 
-
       if (!user) {
-
-        throw new Error(
-          "Usuário não autenticado."
-        );
-
+        throw new Error("Usuário não autenticado.");
       }
-
-
-      // ========================================
-      // PERFIL / ROLE
-      // ========================================
 
       const {
         data: perfil,
@@ -111,42 +101,23 @@ function Orcamentos() {
         .eq("id", user.id)
         .single();
 
-
       if (perfilError) {
         throw perfilError;
       }
 
-
       if (!perfil) {
-
-        throw new Error(
-          "Perfil do usuário não encontrado."
-        );
-
+        throw new Error("Perfil do usuário não encontrado.");
       }
 
-
       setRole(perfil.role);
-
-
-      // ========================================
-      // SEM ACESSO
-      // ========================================
 
       if (
         perfil.role !== "representante" &&
         perfil.role !== "comercial"
       ) {
-
         setOrcamentos([]);
         return;
-
       }
-
-
-      // ========================================
-      // BUSCAR ORÇAMENTOS
-      // ========================================
 
       const {
         data,
@@ -165,25 +136,17 @@ function Orcamentos() {
           created_at,
           updated_at
         `)
-        .order(
-          "created_at",
-          {
-            ascending: false
-          }
-        );
-
+        .order("created_at", {
+          ascending: false
+        });
 
       if (error) {
         throw error;
       }
 
-
-      setOrcamentos(
-        data || []
-      );
+      setOrcamentos(data || []);
 
     }
-
     catch (error) {
 
       console.error(
@@ -191,14 +154,12 @@ function Orcamentos() {
         error
       );
 
-
       setErro(
         error?.message ||
         "Não foi possível carregar os orçamentos."
       );
 
     }
-
     finally {
 
       setLoading(false);
@@ -215,28 +176,19 @@ function Orcamentos() {
   const resumo = useMemo(() => {
 
     return {
+      total: orcamentos.length,
 
-      total:
-        orcamentos.length,
+      rascunho: orcamentos.filter(
+        (item) => item.status === "rascunho"
+      ).length,
 
-      rascunho:
-        orcamentos.filter(
-          (item) =>
-            item.status === "rascunho"
-        ).length,
+      enviado: orcamentos.filter(
+        (item) => item.status === "enviado"
+      ).length,
 
-      enviado:
-        orcamentos.filter(
-          (item) =>
-            item.status === "enviado"
-        ).length,
-
-      aprovado:
-        orcamentos.filter(
-          (item) =>
-            item.status === "aprovado"
-        ).length
-
+      aprovado: orcamentos.filter(
+        (item) => item.status === "aprovado"
+      ).length
     };
 
   }, [orcamentos]);
@@ -253,7 +205,6 @@ function Orcamentos() {
       value
     } = event.target;
 
-
     setFormulario(
       (anterior) => ({
         ...anterior,
@@ -265,13 +216,12 @@ function Orcamentos() {
 
 
   // ========================================
-  // ABRIR MODAL
+  // NOVO ORÇAMENTO
   // ========================================
 
   function abrirNovoOrcamento() {
 
     setErroFormulario("");
-
 
     setFormulario({
       cliente_nome: "",
@@ -281,15 +231,10 @@ function Orcamentos() {
       observacoes: ""
     });
 
-
     setModalNovoOpen(true);
 
   }
 
-
-  // ========================================
-  // FECHAR MODAL
-  // ========================================
 
   function fecharNovoOrcamento() {
 
@@ -297,21 +242,15 @@ function Orcamentos() {
       return;
     }
 
-
     setModalNovoOpen(false);
     setErroFormulario("");
 
   }
 
 
-  // ========================================
-  // CRIAR ORÇAMENTO
-  // ========================================
-
   async function criarOrcamento(event) {
 
     event.preventDefault();
-
 
     if (role !== "representante") {
 
@@ -323,10 +262,8 @@ function Orcamentos() {
 
     }
 
-
     const clienteNome =
       formulario.cliente_nome.trim();
-
 
     if (clienteNome.length < 2) {
 
@@ -338,38 +275,21 @@ function Orcamentos() {
 
     }
 
-
     try {
 
       setSalvando(true);
       setErroFormulario("");
 
-
-      // ========================================
-      // IMPORTANTE
-      // ========================================
-      //
-      // NÃO enviamos:
-      //
-      // id
-      // created_by
-      // status
-      // created_at
-      // updated_at
-      //
-      // Esses dados são controlados
-      // exclusivamente pelo banco.
-      //
-      // ========================================
-
+      // O frontend envia apenas os campos comerciais.
+      // id, created_by, status e datas continuam
+      // sendo controlados pelo banco.
       const {
         data,
         error
       } = await supabase
         .from("orcamentos")
         .insert({
-          cliente_nome:
-            clienteNome,
+          cliente_nome: clienteNome,
 
           cliente_documento:
             formulario.cliente_documento.trim() ||
@@ -401,24 +321,13 @@ function Orcamentos() {
         `)
         .single();
 
-
       if (error) {
         throw error;
       }
 
-
       if (!data) {
-
-        throw new Error(
-          "O orçamento não foi criado."
-        );
-
+        throw new Error("O orçamento não foi criado.");
       }
-
-
-      // ========================================
-      // ADICIONA NOVO RASCUNHO NA TELA
-      // ========================================
 
       setOrcamentos(
         (anteriores) => [
@@ -427,9 +336,7 @@ function Orcamentos() {
         ]
       );
 
-
       setModalNovoOpen(false);
-
 
       setFormulario({
         cliente_nome: "",
@@ -440,7 +347,6 @@ function Orcamentos() {
       });
 
     }
-
     catch (error) {
 
       console.error(
@@ -448,14 +354,12 @@ function Orcamentos() {
         error
       );
 
-
       setErroFormulario(
         error?.message ||
         "Não foi possível criar o orçamento."
       );
 
     }
-
     finally {
 
       setSalvando(false);
@@ -466,7 +370,87 @@ function Orcamentos() {
 
 
   // ========================================
-  // FORMATAR DATA
+  // ABRIR ORÇAMENTO
+  // ========================================
+
+  async function abrirOrcamento(orcamento) {
+
+    try {
+
+      setOrcamentoSelecionado(orcamento);
+      setItensOrcamento([]);
+      setErroItens("");
+      setCarregandoItens(true);
+
+      const {
+        data,
+        error
+      } = await supabase
+        .from("orcamento_itens")
+        .select(`
+          id,
+          orcamento_id,
+          produto_id,
+          codigo_produto,
+          nome_produto,
+          variacao_produto,
+          tipo_preco,
+          preco_unitario,
+          quantidade,
+          subtotal,
+          created_at,
+          updated_at
+        `)
+        .eq(
+          "orcamento_id",
+          orcamento.id
+        )
+        .order("created_at", {
+          ascending: true
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      setItensOrcamento(
+        data || []
+      );
+
+    }
+    catch (error) {
+
+      console.error(
+        "Erro ao carregar itens:",
+        error
+      );
+
+      setErroItens(
+        error?.message ||
+        "Não foi possível carregar os produtos deste orçamento."
+      );
+
+    }
+    finally {
+
+      setCarregandoItens(false);
+
+    }
+
+  }
+
+
+  function fecharOrcamento() {
+
+    setOrcamentoSelecionado(null);
+    setItensOrcamento([]);
+    setErroItens("");
+
+  }
+
+
+  // ========================================
+  // FORMATADORES
   // ========================================
 
   function formatarData(data) {
@@ -474,7 +458,6 @@ function Orcamentos() {
     if (!data) {
       return "-";
     }
-
 
     return new Intl.DateTimeFormat(
       "pt-BR",
@@ -492,26 +475,45 @@ function Orcamentos() {
   }
 
 
-  // ========================================
-  // FORMATAR STATUS
-  // ========================================
-
   function formatarStatus(status) {
 
     const nomes = {
-
       rascunho: "Rascunho",
       enviado: "Enviado",
       aprovado: "Aprovado",
       recusado: "Recusado",
       cancelado: "Cancelado"
-
     };
-
 
     return nomes[status] || status;
 
   }
+
+
+  function formatarMoeda(valor) {
+
+    return new Intl.NumberFormat(
+      "pt-BR",
+      {
+        style: "currency",
+        currency: "BRL"
+      }
+    ).format(
+      Number(valor || 0)
+    );
+
+  }
+
+
+  const totalOrcamento = useMemo(() => {
+
+    return itensOrcamento.reduce(
+      (total, item) =>
+        total + Number(item.subtotal || 0),
+      0
+    );
+
+  }, [itensOrcamento]);
 
 
   // ========================================
@@ -535,8 +537,7 @@ function Orcamentos() {
           </h2>
 
           <p>
-            Aguarde enquanto buscamos
-            suas informações.
+            Aguarde enquanto buscamos suas informações.
           </p>
 
         </main>
@@ -569,8 +570,7 @@ function Orcamentos() {
           </div>
 
           <h2>
-            Não foi possível carregar
-            os orçamentos
+            Não foi possível carregar os orçamentos
           </h2>
 
           <p>
@@ -727,7 +727,6 @@ function Orcamentos() {
 
       <main className="orcamentos-content">
 
-
         <div className="orcamentos-section-title">
 
           <div className="orcamentos-section-bar"></div>
@@ -881,11 +880,9 @@ function Orcamentos() {
 
             </div>
 
-
             <h3>
               Nenhum orçamento encontrado
             </h3>
-
 
             <p>
 
@@ -901,7 +898,7 @@ function Orcamentos() {
 
 
         {/* ================================= */}
-        {/* TABELA                            */}
+        {/* TABELA                           */}
         {/* ================================= */}
 
         {orcamentos.length > 0 && (
@@ -946,7 +943,27 @@ function Orcamentos() {
                   {orcamentos.map(
                     (orcamento) => (
 
-                      <tr key={orcamento.id}>
+                      <tr
+                        key={orcamento.id}
+                        className="orcamentos-table-row-clickable"
+                        tabIndex={0}
+                        onClick={() =>
+                          abrirOrcamento(orcamento)
+                        }
+                        onKeyDown={(event) => {
+
+                          if (
+                            event.key === "Enter" ||
+                            event.key === " "
+                          ) {
+
+                            event.preventDefault();
+                            abrirOrcamento(orcamento);
+
+                          }
+
+                        }}
+                      >
 
                         <td>
 
@@ -995,11 +1012,9 @@ function Orcamentos() {
                               `orcamentos-status status-${orcamento.status}`
                             }
                           >
-
                             {formatarStatus(
                               orcamento.status
                             )}
-
                           </span>
 
                         </td>
@@ -1060,6 +1075,9 @@ function Orcamentos() {
 
           <div
             className="orcamentos-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="titulo-novo-orcamento"
             onMouseDown={
               (event) =>
                 event.stopPropagation()
@@ -1074,13 +1092,12 @@ function Orcamentos() {
                   NOVO ORÇAMENTO
                 </span>
 
-                <h2>
+                <h2 id="titulo-novo-orcamento">
                   Dados do cliente
                 </h2>
 
                 <p>
-                  Preencha as informações para
-                  criar um novo rascunho.
+                  Preencha as informações para criar um novo rascunho.
                 </p>
 
               </div>
@@ -1227,16 +1244,341 @@ function Orcamentos() {
                   className="orcamentos-primary-button"
                   disabled={salvando}
                 >
-
                   {salvando
                     ? "Criando..."
                     : "Criar orçamento"}
-
                 </button>
 
               </div>
 
             </form>
+
+          </div>
+
+        </div>
+
+      )}
+
+
+      {/* ================================= */}
+      {/* MODAL DETALHES DO ORÇAMENTO       */}
+      {/* ================================= */}
+
+      {orcamentoSelecionado && (
+
+        <div
+          className="orcamentos-modal-overlay"
+          onMouseDown={fecharOrcamento}
+        >
+
+          <div
+            className="orcamentos-modal orcamentos-modal-detalhes"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="titulo-detalhes-orcamento"
+            onMouseDown={
+              (event) =>
+                event.stopPropagation()
+            }
+          >
+
+            <div className="orcamentos-modal-header">
+
+              <div>
+
+                <span>
+                  ORÇAMENTO
+                </span>
+
+                <h2 id="titulo-detalhes-orcamento">
+                  {orcamentoSelecionado.cliente_nome}
+                </h2>
+
+                <p>
+                  Acompanhe os produtos e valores deste orçamento.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                className="orcamentos-modal-close"
+                onClick={fecharOrcamento}
+                aria-label="Fechar"
+              >
+                ×
+              </button>
+
+            </div>
+
+
+            <div className="orcamentos-detalhes-body">
+
+              <div className="orcamentos-detalhes-info">
+
+                <div>
+
+                  <span>
+                    STATUS
+                  </span>
+
+                  <strong
+                    className={
+                      `orcamentos-status status-${orcamentoSelecionado.status}`
+                    }
+                  >
+                    {formatarStatus(
+                      orcamentoSelecionado.status
+                    )}
+                  </strong>
+
+                </div>
+
+
+                <div>
+
+                  <span>
+                    DOCUMENTO
+                  </span>
+
+                  <strong>
+                    {orcamentoSelecionado.cliente_documento || "-"}
+                  </strong>
+
+                </div>
+
+
+                <div>
+
+                  <span>
+                    TELEFONE
+                  </span>
+
+                  <strong>
+                    {orcamentoSelecionado.cliente_telefone || "-"}
+                  </strong>
+
+                </div>
+
+
+                <div>
+
+                  <span>
+                    E-MAIL
+                  </span>
+
+                  <strong>
+                    {orcamentoSelecionado.cliente_email || "-"}
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              {orcamentoSelecionado.observacoes && (
+
+                <div className="orcamentos-observacoes">
+
+                  <span>
+                    OBSERVAÇÕES
+                  </span>
+
+                  <p>
+                    {orcamentoSelecionado.observacoes}
+                  </p>
+
+                </div>
+
+              )}
+
+
+              <div className="orcamentos-detalhes-header">
+
+                <div>
+
+                  <span>
+                    PRODUTOS
+                  </span>
+
+                  <p>
+                    Produtos adicionados ao orçamento.
+                  </p>
+
+                </div>
+
+
+                {role === "representante" &&
+                  orcamentoSelecionado.status === "rascunho" && (
+
+                    <button
+                      type="button"
+                      className="orcamentos-primary-button"
+                      disabled
+                      title="A adição de produtos será conectada na próxima etapa."
+                    >
+                      <span>
+                        +
+                      </span>
+
+                      Adicionar produto
+                    </button>
+
+                  )}
+
+              </div>
+
+
+              {carregandoItens && (
+
+                <div className="orcamentos-itens-state">
+
+                  <div className="orcamentos-loader"></div>
+
+                  <p>
+                    Carregando produtos...
+                  </p>
+
+                </div>
+
+              )}
+
+
+              {!carregandoItens &&
+                erroItens && (
+
+                  <div className="orcamentos-form-error orcamentos-itens-error">
+                    {erroItens}
+                  </div>
+
+                )}
+
+
+              {!carregandoItens &&
+                !erroItens &&
+                itensOrcamento.length === 0 && (
+
+                  <div className="orcamentos-itens-empty">
+
+                    <div className="orcamentos-empty-mini-icon">
+                      +
+                    </div>
+
+                    <h3>
+                      Nenhum produto adicionado
+                    </h3>
+
+                    <p>
+                      Este orçamento ainda não possui produtos.
+                    </p>
+
+                  </div>
+
+                )}
+
+
+              {!carregandoItens &&
+                !erroItens &&
+                itensOrcamento.length > 0 && (
+
+                  <>
+
+                    <div className="orcamentos-itens-lista">
+
+                      {itensOrcamento.map(
+                        (item) => (
+
+                          <div
+                            className="orcamentos-item"
+                            key={item.id}
+                          >
+
+                            <div className="orcamentos-item-produto">
+
+                              <span>
+                                {item.codigo_produto}
+                              </span>
+
+                              <strong>
+                                {item.nome_produto}
+                              </strong>
+
+                              {item.variacao_produto && (
+
+                                <small>
+                                  {item.variacao_produto}
+                                </small>
+
+                              )}
+
+                              {item.tipo_preco && (
+
+                                <small>
+                                  {item.tipo_preco}
+                                </small>
+
+                              )}
+
+                            </div>
+
+
+                            <div className="orcamentos-item-preco-unitario">
+
+                              <span>
+                                VALOR UNITÁRIO
+                              </span>
+
+                              <strong>
+                                {formatarMoeda(
+                                  item.preco_unitario
+                                )}
+                              </strong>
+
+                            </div>
+
+
+                            <div className="orcamentos-item-valores">
+
+                              <span>
+                                {item.quantidade}x
+                              </span>
+
+                              <strong>
+                                {formatarMoeda(
+                                  item.subtotal
+                                )}
+                              </strong>
+
+                            </div>
+
+                          </div>
+
+                        )
+                      )}
+
+                    </div>
+
+
+                    <div className="orcamentos-total">
+
+                      <span>
+                        TOTAL DO ORÇAMENTO
+                      </span>
+
+                      <strong>
+                        {formatarMoeda(
+                          totalOrcamento
+                        )}
+                      </strong>
+
+                    </div>
+
+                  </>
+
+                )}
+
+            </div>
 
           </div>
 
