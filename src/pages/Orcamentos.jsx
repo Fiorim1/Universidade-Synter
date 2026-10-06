@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
-import NotificationsButton from "../pages/NotificationsButton";
+import NotificationsButton from "../components/NotificationsButton";
 import Profile from "../components/Profile";
 
 import ImgIcon from "../assets/img-icon.png";
@@ -36,7 +36,12 @@ function Orcamentos() {
     cliente_documento: "",
     cliente_email: "",
     cliente_telefone: "",
-    observacoes: ""
+    observacoes: "",
+    frete: "0.00",
+    condicao_pagamento: "",
+    local_entrega: "",
+    data_entrega: "",
+    observacoes_venda: ""
   });
 
   // ========================================
@@ -199,6 +204,11 @@ function Orcamentos() {
           cliente_email,
           cliente_telefone,
           observacoes,
+          frete,
+          condicao_pagamento,
+          local_entrega,
+          data_entrega,
+          observacoes_venda,
           status,
           created_at,
           updated_at
@@ -317,7 +327,12 @@ function Orcamentos() {
       cliente_documento: "",
       cliente_email: "",
       cliente_telefone: "",
-      observacoes: ""
+      observacoes: "",
+      frete: "0.00",
+      condicao_pagamento: "",
+      local_entrega: "",
+      data_entrega: "",
+      observacoes_venda: ""
     });
 
     setModalNovoOpen(true);
@@ -364,6 +379,24 @@ function Orcamentos() {
 
     }
 
+    const frete =
+      Number(formulario.frete || 0);
+
+
+    if (
+      !Number.isFinite(frete) ||
+      frete < 0
+    ) {
+
+      setErroFormulario(
+        "Informe um valor de frete válido."
+      );
+
+      return;
+
+    }
+
+
     try {
 
       setSalvando(true);
@@ -394,6 +427,24 @@ function Orcamentos() {
 
           observacoes:
             formulario.observacoes.trim() ||
+            null,
+
+          frete,
+
+          condicao_pagamento:
+            formulario.condicao_pagamento.trim() ||
+            null,
+
+          local_entrega:
+            formulario.local_entrega.trim() ||
+            null,
+
+          data_entrega:
+            formulario.data_entrega ||
+            null,
+
+          observacoes_venda:
+            formulario.observacoes_venda.trim() ||
             null
         })
         .select(`
@@ -404,6 +455,11 @@ function Orcamentos() {
           cliente_email,
           cliente_telefone,
           observacoes,
+          frete,
+          condicao_pagamento,
+          local_entrega,
+          data_entrega,
+          observacoes_venda,
           status,
           created_at,
           updated_at
@@ -584,6 +640,11 @@ function Orcamentos() {
           cliente_email,
           cliente_telefone,
           observacoes,
+          frete,
+          condicao_pagamento,
+          local_entrega,
+          data_entrega,
+          observacoes_venda,
           status,
           created_at,
           updated_at
@@ -1478,6 +1539,18 @@ function Orcamentos() {
   }, [itensOrcamento]);
 
 
+  const freteOrcamento =
+    Number(
+      orcamentoSelecionado?.frete ||
+      0
+    );
+
+
+  const totalGeralOrcamento =
+    totalOrcamento +
+    freteOrcamento;
+
+
   // ========================================
   // LOADING
   // ========================================
@@ -2218,7 +2291,7 @@ function Orcamentos() {
               <div className="orcamentos-form-group orcamentos-form-full">
 
                 <label htmlFor="observacoes">
-                  Observações
+                  Observações gerais
                 </label>
 
                 <textarea
@@ -2226,8 +2299,122 @@ function Orcamentos() {
                   name="observacoes"
                   value={formulario.observacoes}
                   onChange={alterarCampo}
-                  placeholder="Informações adicionais..."
+                  placeholder="Informações gerais do orçamento..."
+                  rows={3}
+                  maxLength={2000}
+                  disabled={salvando}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-separator orcamentos-form-full">
+
+                <span>
+                  DADOS DA VENDA E ENTREGA
+                </span>
+
+                <p>
+                  Informe as condições comerciais deste orçamento.
+                </p>
+
+              </div>
+
+
+              <div className="orcamentos-form-group">
+
+                <label htmlFor="frete">
+                  Frete (R$)
+                </label>
+
+                <input
+                  id="frete"
+                  name="frete"
+                  type="number"
+                  min="0"
+                  max="9999999999.99"
+                  step="0.01"
+                  value={formulario.frete}
+                  onChange={alterarCampo}
+                  placeholder="0,00"
+                  disabled={salvando}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group">
+
+                <label htmlFor="condicao_pagamento">
+                  Condição de Pagamento
+                </label>
+
+                <input
+                  id="condicao_pagamento"
+                  name="condicao_pagamento"
+                  type="text"
+                  value={formulario.condicao_pagamento}
+                  onChange={alterarCampo}
+                  placeholder="Ex.: 30/60/90 dias"
+                  maxLength={200}
+                  disabled={salvando}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group">
+
+                <label htmlFor="local_entrega">
+                  Local de Entrega
+                </label>
+
+                <input
+                  id="local_entrega"
+                  name="local_entrega"
+                  type="text"
+                  value={formulario.local_entrega}
+                  onChange={alterarCampo}
+                  placeholder="Endereço ou local de entrega"
+                  maxLength={300}
+                  disabled={salvando}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group">
+
+                <label htmlFor="data_entrega">
+                  Data de Entrega
+                </label>
+
+                <input
+                  id="data_entrega"
+                  name="data_entrega"
+                  type="date"
+                  value={formulario.data_entrega}
+                  onChange={alterarCampo}
+                  disabled={salvando}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group orcamentos-form-full">
+
+                <label htmlFor="observacoes_venda">
+                  Observações Adicionais sobre a Venda
+                </label>
+
+                <textarea
+                  id="observacoes_venda"
+                  name="observacoes_venda"
+                  value={formulario.observacoes_venda}
+                  onChange={alterarCampo}
+                  placeholder="Ex.: prazo especial, instruções comerciais, detalhes da negociação..."
                   rows={4}
+                  maxLength={2000}
                   disabled={salvando}
                 />
 
@@ -2398,7 +2585,7 @@ function Orcamentos() {
                 <div className="orcamentos-observacoes">
 
                   <span>
-                    OBSERVAÇÕES
+                    OBSERVAÇÕES GERAIS
                   </span>
 
                   <p>
@@ -2408,6 +2595,109 @@ function Orcamentos() {
                 </div>
 
               )}
+
+
+              <div className="orcamentos-venda-section">
+
+                <div className="orcamentos-venda-title">
+
+                  <span>
+                    DADOS DA VENDA E ENTREGA
+                  </span>
+
+                  <p>
+                    Condições comerciais informadas para este orçamento.
+                  </p>
+
+                </div>
+
+
+                <div className="orcamentos-venda-grid">
+
+                  <div>
+
+                    <span>
+                      FRETE
+                    </span>
+
+                    <strong>
+                      {formatarMoeda(
+                        orcamentoSelecionado.frete
+                      )}
+                    </strong>
+
+                  </div>
+
+
+                  <div>
+
+                    <span>
+                      CONDIÇÃO DE PAGAMENTO
+                    </span>
+
+                    <strong>
+                      {orcamentoSelecionado.condicao_pagamento || "-"}
+                    </strong>
+
+                  </div>
+
+
+                  <div>
+
+                    <span>
+                      LOCAL DE ENTREGA
+                    </span>
+
+                    <strong>
+                      {orcamentoSelecionado.local_entrega || "-"}
+                    </strong>
+
+                  </div>
+
+
+                  <div>
+
+                    <span>
+                      DATA DE ENTREGA
+                    </span>
+
+                    <strong>
+                      {orcamentoSelecionado.data_entrega
+                        ? new Intl.DateTimeFormat(
+                            "pt-BR",
+                            {
+                              timeZone: "UTC"
+                            }
+                          ).format(
+                            new Date(
+                              `${orcamentoSelecionado.data_entrega}T00:00:00Z`
+                            )
+                          )
+                        : "-"}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+
+                {orcamentoSelecionado.observacoes_venda && (
+
+                  <div className="orcamentos-venda-observacoes">
+
+                    <span>
+                      OBSERVAÇÕES ADICIONAIS SOBRE A VENDA
+                    </span>
+
+                    <p>
+                      {orcamentoSelecionado.observacoes_venda}
+                    </p>
+
+                  </div>
+
+                )}
+
+              </div>
 
 
               <div className="orcamentos-detalhes-header">
@@ -2701,17 +2991,51 @@ function Orcamentos() {
                     </div>
 
 
-                    <div className="orcamentos-total">
+                    <div className="orcamentos-resumo-valores">
 
-                      <span>
-                        TOTAL DO ORÇAMENTO
-                      </span>
+                      <div>
 
-                      <strong>
-                        {formatarMoeda(
-                          totalOrcamento
-                        )}
-                      </strong>
+                        <span>
+                          SUBTOTAL DOS PRODUTOS
+                        </span>
+
+                        <strong>
+                          {formatarMoeda(
+                            totalOrcamento
+                          )}
+                        </strong>
+
+                      </div>
+
+
+                      <div>
+
+                        <span>
+                          FRETE
+                        </span>
+
+                        <strong>
+                          {formatarMoeda(
+                            freteOrcamento
+                          )}
+                        </strong>
+
+                      </div>
+
+
+                      <div className="orcamentos-total">
+
+                        <span>
+                          TOTAL DO ORÇAMENTO
+                        </span>
+
+                        <strong>
+                          {formatarMoeda(
+                            totalGeralOrcamento
+                          )}
+                        </strong>
+
+                      </div>
 
                     </div>
 
