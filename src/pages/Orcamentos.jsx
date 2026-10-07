@@ -9,6 +9,7 @@ import Profile from "../components/Profile";
 import ImgIcon from "../assets/img-icon.png";
 
 import { supabase } from "../services/supabaseClient";
+import { gerarOrcamentoPdf } from "../utils/gerarOrcamentoPdf";
 
 import "../styles/Orcamentos.css";
 
@@ -20,6 +21,15 @@ function Orcamentos() {
 
   const [role, setRole] = useState(null);
   const [orcamentos, setOrcamentos] = useState([]);
+
+  const [representantesPorId, setRepresentantesPorId] =
+    useState({});
+
+  const [pesquisaOrcamentos, setPesquisaOrcamentos] =
+    useState("");
+
+  const [filtroStatus, setFiltroStatus] =
+    useState("todos");
 
   const [profileOpen, setProfileOpen] = useState(false);
 
@@ -58,6 +68,20 @@ function Orcamentos() {
     useState(false);
 
   const [erroItens, setErroItens] =
+    useState("");
+
+
+  // ========================================
+  // HISTÓRICO / AUDITORIA
+  // ========================================
+
+  const [historicoOrcamento, setHistoricoOrcamento] =
+    useState([]);
+
+  const [carregandoHistorico, setCarregandoHistorico] =
+    useState(false);
+
+  const [erroHistorico, setErroHistorico] =
     useState("");
 
 
@@ -128,6 +152,34 @@ function Orcamentos() {
 
   const [alertaSistema, setAlertaSistema] =
     useState(null);
+
+
+  // ========================================
+  // EDITAR ORÇAMENTO
+  // ========================================
+
+  const [modalEdicaoOpen, setModalEdicaoOpen] =
+    useState(false);
+
+  const [salvandoEdicao, setSalvandoEdicao] =
+    useState(false);
+
+  const [erroEdicao, setErroEdicao] =
+    useState("");
+
+  const [formularioEdicao, setFormularioEdicao] =
+    useState({
+      cliente_nome: "",
+      cliente_documento: "",
+      cliente_email: "",
+      cliente_telefone: "",
+      observacoes: "",
+      frete: "0.00",
+      condicao_pagamento: "",
+      local_entrega: "",
+      data_entrega: "",
+      observacoes_venda: ""
+    });
 
 
   // ========================================
@@ -245,6 +297,87 @@ function Orcamentos() {
 
       setOrcamentos(data || []);
 
+
+      // ========================================
+      // NOMES DOS REPRESENTANTES
+      // ========================================
+      //
+      // O Comercial possui permissão de leitura
+      // dos perfis para identificar quem criou
+      // cada orçamento.
+      // ========================================
+
+      if (perfil.role === "comercial") {
+
+        const idsRepresentantes = [
+          ...new Set(
+            (data || [])
+              .map(
+                (orcamento) =>
+                  orcamento.created_by
+              )
+              .filter(Boolean)
+          )
+        ];
+
+
+        if (idsRepresentantes.length > 0) {
+
+          const {
+            data: perfisRepresentantes,
+            error: perfisRepresentantesError
+          } = await supabase
+            .from("profiles")
+            .select(`
+              id,
+              full_name
+            `)
+            .in(
+              "id",
+              idsRepresentantes
+            );
+
+
+          if (perfisRepresentantesError) {
+            throw perfisRepresentantesError;
+          }
+
+
+          const mapaRepresentantes =
+            Object.fromEntries(
+              (perfisRepresentantes || [])
+                .map(
+                  (item) => [
+                    item.id,
+                    item.full_name ||
+                      "Representante"
+                  ]
+                )
+            );
+
+
+          setRepresentantesPorId(
+            mapaRepresentantes
+          );
+
+        }
+        else {
+
+          setRepresentantesPorId({});
+
+        }
+
+      }
+      else {
+
+        setRepresentantesPorId({
+          [perfil.id]:
+            perfil.full_name ||
+            "Representante"
+        });
+
+      }
+
     }
     catch (error) {
 
@@ -287,10 +420,88 @@ function Orcamentos() {
 
       aprovado: orcamentos.filter(
         (item) => item.status === "aprovado"
+      ).length,
+
+      recusado: orcamentos.filter(
+        (item) => item.status === "recusado"
+      ).length,
+
+      cancelado: orcamentos.filter(
+        (item) => item.status === "cancelado"
       ).length
     };
 
   }, [orcamentos]);
+
+
+  const orcamentosFiltrados =
+    useMemo(() => {
+
+      const pesquisa =
+        pesquisaOrcamentos
+          .trim()
+          .toLowerCase();
+
+
+      return orcamentos.filter(
+        (orcamento) => {
+
+          const atendeStatus =
+            filtroStatus === "todos" ||
+            orcamento.status === filtroStatus;
+
+
+          if (!atendeStatus) {
+            return false;
+          }
+
+
+          if (!pesquisa) {
+            return true;
+          }
+
+
+          const representante =
+            representantesPorId[
+              orcamento.created_by
+            ] || "";
+
+
+          const textoPesquisa = [
+            orcamento.cliente_nome,
+            orcamento.cliente_documento,
+            orcamento.cliente_email,
+            orcamento.cliente_telefone,
+            orcamento.condicao_pagamento,
+            orcamento.local_entrega,
+            representante
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+
+          return textoPesquisa.includes(
+            pesquisa
+          );
+
+        }
+      );
+
+    }, [
+      orcamentos,
+      pesquisaOrcamentos,
+      filtroStatus,
+      representantesPorId
+    ]);
+
+
+  function limparFiltrosOrcamentos() {
+
+    setPesquisaOrcamentos("");
+    setFiltroStatus("todos");
+
+  }
 
 
   // ========================================
@@ -585,6 +796,421 @@ function Orcamentos() {
 
 
   // ========================================
+  // EDITAR ORÇAMENTO
+  // ========================================
+
+  function abrirEdicaoOrcamento() {
+
+    if (
+      role !== "representante" ||
+      !orcamentoSelecionado ||
+      orcamentoSelecionado.status !== "rascunho"
+    ) {
+      return;
+    }
+
+
+    setErroEdicao("");
+
+
+    setFormularioEdicao({
+      cliente_nome:
+        orcamentoSelecionado.cliente_nome || "",
+
+      cliente_documento:
+        orcamentoSelecionado.cliente_documento || "",
+
+      cliente_email:
+        orcamentoSelecionado.cliente_email || "",
+
+      cliente_telefone:
+        orcamentoSelecionado.cliente_telefone || "",
+
+      observacoes:
+        orcamentoSelecionado.observacoes || "",
+
+      frete:
+        String(
+          Number(
+            orcamentoSelecionado.frete || 0
+          ).toFixed(2)
+        ),
+
+      condicao_pagamento:
+        orcamentoSelecionado.condicao_pagamento || "",
+
+      local_entrega:
+        orcamentoSelecionado.local_entrega || "",
+
+      data_entrega:
+        orcamentoSelecionado.data_entrega || "",
+
+      observacoes_venda:
+        orcamentoSelecionado.observacoes_venda || ""
+    });
+
+
+    setModalEdicaoOpen(true);
+
+  }
+
+
+  function fecharEdicaoOrcamento() {
+
+    if (salvandoEdicao) {
+      return;
+    }
+
+    setModalEdicaoOpen(false);
+    setErroEdicao("");
+
+  }
+
+
+  function alterarCampoEdicao(event) {
+
+    const {
+      name,
+      value
+    } = event.target;
+
+
+    setFormularioEdicao(
+      (anterior) => ({
+        ...anterior,
+        [name]: value
+      })
+    );
+
+  }
+
+
+  async function salvarEdicaoOrcamento(event) {
+
+    event.preventDefault();
+
+
+    if (
+      role !== "representante" ||
+      !orcamentoSelecionado ||
+      orcamentoSelecionado.status !== "rascunho"
+    ) {
+
+      setErroEdicao(
+        "Somente orçamentos em rascunho podem ser editados."
+      );
+
+      return;
+
+    }
+
+
+    const clienteNome =
+      formularioEdicao.cliente_nome.trim();
+
+
+    if (clienteNome.length < 2) {
+
+      setErroEdicao(
+        "Informe o nome do cliente."
+      );
+
+      return;
+
+    }
+
+
+    const frete =
+      Number(
+        formularioEdicao.frete || 0
+      );
+
+
+    if (
+      !Number.isFinite(frete) ||
+      frete < 0
+    ) {
+
+      setErroEdicao(
+        "Informe um valor de frete válido."
+      );
+
+      return;
+
+    }
+
+
+    try {
+
+      setSalvandoEdicao(true);
+      setErroEdicao("");
+
+
+      // Segurança:
+      // atualizamos apenas campos comerciais permitidos.
+      // A RLS do Supabase garante que o representante
+      // somente edite o próprio orçamento em rascunho.
+      const {
+        data,
+        error
+      } = await supabase
+        .from("orcamentos")
+        .update({
+          cliente_nome:
+            clienteNome,
+
+          cliente_documento:
+            formularioEdicao.cliente_documento.trim() ||
+            null,
+
+          cliente_email:
+            formularioEdicao.cliente_email.trim() ||
+            null,
+
+          cliente_telefone:
+            formularioEdicao.cliente_telefone.trim() ||
+            null,
+
+          observacoes:
+            formularioEdicao.observacoes.trim() ||
+            null,
+
+          frete,
+
+          condicao_pagamento:
+            formularioEdicao.condicao_pagamento.trim() ||
+            null,
+
+          local_entrega:
+            formularioEdicao.local_entrega.trim() ||
+            null,
+
+          data_entrega:
+            formularioEdicao.data_entrega ||
+            null,
+
+          observacoes_venda:
+            formularioEdicao.observacoes_venda.trim() ||
+            null
+        })
+        .eq(
+          "id",
+          orcamentoSelecionado.id
+        )
+        .select(`
+          id,
+          created_by,
+          cliente_nome,
+          cliente_documento,
+          cliente_email,
+          cliente_telefone,
+          observacoes,
+          frete,
+          condicao_pagamento,
+          local_entrega,
+          data_entrega,
+          observacoes_venda,
+          status,
+          created_at,
+          updated_at
+        `)
+        .single();
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      if (!data) {
+
+        throw new Error(
+          "O orçamento não foi atualizado."
+        );
+
+      }
+
+
+      setOrcamentos(
+        (anteriores) =>
+          anteriores.map(
+            (orcamento) =>
+              orcamento.id === data.id
+                ? data
+                : orcamento
+          )
+      );
+
+
+      setOrcamentoSelecionado(data);
+
+      setModalEdicaoOpen(false);
+
+
+      mostrarAlertaSistema(
+        "Orçamento atualizado",
+        "As informações do orçamento foram salvas com sucesso."
+      );
+
+    }
+    catch (error) {
+
+      console.error(
+        "Erro ao editar orçamento:",
+        error
+      );
+
+
+      setErroEdicao(
+        error?.message ||
+        "Não foi possível salvar as alterações."
+      );
+
+    }
+    finally {
+
+      setSalvandoEdicao(false);
+
+    }
+
+  }
+
+
+  // ========================================
+  // HISTÓRICO / AUDITORIA
+  // ========================================
+
+  async function carregarHistoricoOrcamento(
+    orcamentoId
+  ) {
+
+    if (!orcamentoId) {
+      return;
+    }
+
+
+    try {
+
+      setCarregandoHistorico(true);
+      setErroHistorico("");
+
+
+      const {
+        data,
+        error
+      } = await supabase
+        .from("orcamento_historico")
+        .select(`
+          id,
+          orcamento_id,
+          ator_id,
+          ator_nome,
+          ator_role,
+          evento,
+          status_anterior,
+          status_novo,
+          created_at
+        `)
+        .eq(
+          "orcamento_id",
+          orcamentoId
+        )
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        );
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      setHistoricoOrcamento(
+        data || []
+      );
+
+    }
+    catch (error) {
+
+      console.error(
+        "Erro ao carregar histórico do orçamento:",
+        error
+      );
+
+
+      setHistoricoOrcamento([]);
+
+      setErroHistorico(
+        error?.message ||
+        "Não foi possível carregar o histórico deste orçamento."
+      );
+
+    }
+    finally {
+
+      setCarregandoHistorico(false);
+
+    }
+
+  }
+
+
+  function dadosEventoHistorico(evento) {
+
+    const eventos = {
+
+      criado: {
+        titulo: "Orçamento criado",
+        descricao:
+          "O orçamento foi criado como rascunho.",
+        simbolo: "+"
+      },
+
+      enviado: {
+        titulo: "Enviado para análise",
+        descricao:
+          "O orçamento foi enviado para análise do Comercial.",
+        simbolo: "→"
+      },
+
+      aprovado: {
+        titulo: "Aprovado pelo Comercial",
+        descricao:
+          "O orçamento foi aprovado pelo setor Comercial.",
+        simbolo: "✓"
+      },
+
+      recusado: {
+        titulo: "Recusado pelo Comercial",
+        descricao:
+          "O orçamento foi recusado pelo setor Comercial.",
+        simbolo: "×"
+      },
+
+      cancelado: {
+        titulo: "Orçamento cancelado",
+        descricao:
+          "O orçamento foi cancelado pelo representante.",
+        simbolo: "!"
+      }
+
+    };
+
+
+    return eventos[evento] || {
+      titulo: "Atualização do orçamento",
+      descricao:
+        "Uma atualização foi registrada neste orçamento.",
+      simbolo: "•"
+    };
+
+  }
+
+
+  // ========================================
   // ABRIR ORÇAMENTO
   // ========================================
 
@@ -592,9 +1218,18 @@ function Orcamentos() {
 
     setOrcamentoSelecionado(orcamento);
 
-    await carregarItensDoOrcamento(
-      orcamento.id
-    );
+
+    await Promise.all([
+
+      carregarItensDoOrcamento(
+        orcamento.id
+      ),
+
+      carregarHistoricoOrcamento(
+        orcamento.id
+      )
+
+    ]);
 
   }
 
@@ -713,6 +1348,7 @@ function Orcamentos() {
 
     if (
       modalProdutoOpen ||
+      modalEdicaoOpen ||
       processandoItemId ||
       processandoOrcamento
     ) {
@@ -722,6 +1358,8 @@ function Orcamentos() {
     setOrcamentoSelecionado(null);
     setItensOrcamento([]);
     setErroItens("");
+    setHistoricoOrcamento([]);
+    setErroHistorico("");
     setErroAcaoItem("");
     setItemEmEdicao(null);
     setQuantidadeEdicao(1);
@@ -1011,12 +1649,21 @@ function Orcamentos() {
         throw error;
       }
 
+      const orcamentoDecididoId =
+        orcamentoSelecionado.id;
+
+
       atualizarStatusOrcamentoLocal(
-        orcamentoSelecionado.id,
+        orcamentoDecididoId,
         decisao
       );
 
       setConfirmacaoFluxo(null);
+
+
+      await carregarHistoricoOrcamento(
+        orcamentoDecididoId
+      );
 
     }
     catch (error) {
@@ -1528,6 +2175,47 @@ function Orcamentos() {
   }
 
 
+  function baixarOrcamentoPdf() {
+
+    if (
+      !orcamentoSelecionado ||
+      itensOrcamento.length === 0
+    ) {
+      return;
+    }
+
+
+    try {
+
+      gerarOrcamentoPdf({
+        orcamento:
+          orcamentoSelecionado,
+
+        itens:
+          itensOrcamento
+      });
+
+    }
+    catch (error) {
+
+      console.error(
+        "Erro ao gerar PDF do orçamento:",
+        error
+      );
+
+
+      mostrarAlertaSistema(
+        "Não foi possível gerar o PDF",
+        error?.message ||
+          "Tente novamente em alguns instantes.",
+        "erro"
+      );
+
+    }
+
+  }
+
+
   const totalOrcamento = useMemo(() => {
 
     return itensOrcamento.reduce(
@@ -1852,6 +2540,44 @@ function Orcamentos() {
 
           </div>
 
+
+          <div className="orcamentos-summary-card">
+
+            <span>
+              Recusados
+            </span>
+
+            <strong>
+              {resumo.recusado}
+            </strong>
+
+            <p>
+              Não aprovados
+            </p>
+
+          </div>
+
+
+          {role === "comercial" && (
+
+            <div className="orcamentos-summary-card">
+
+              <span>
+                Cancelados
+              </span>
+
+              <strong>
+                {resumo.cancelado}
+              </strong>
+
+              <p>
+                Histórico cancelado
+              </p>
+
+            </div>
+
+          )}
+
         </section>
 
 
@@ -1905,6 +2631,93 @@ function Orcamentos() {
 
 
         {/* ================================= */}
+        {/* FILTROS / PESQUISA                */}
+        {/* ================================= */}
+
+        {orcamentos.length > 0 && (
+
+          <section className="orcamentos-list-controls">
+
+            <div className="orcamentos-list-search">
+
+              <span aria-hidden="true">
+                ⌕
+              </span>
+
+              <input
+                type="text"
+                value={pesquisaOrcamentos}
+                onChange={
+                  (event) =>
+                    setPesquisaOrcamentos(
+                      event.target.value
+                    )
+                }
+                placeholder={
+                  role === "comercial"
+                    ? "Pesquisar cliente, documento, contato ou representante..."
+                    : "Pesquisar cliente, documento ou contato..."
+                }
+              />
+
+
+              {pesquisaOrcamentos && (
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setPesquisaOrcamentos("")
+                  }
+                  aria-label="Limpar pesquisa"
+                >
+                  ×
+                </button>
+
+              )}
+
+            </div>
+
+
+            <div className="orcamentos-status-filters">
+
+              {[
+                ["todos", "Todos"],
+                ["rascunho", "Rascunhos"],
+                ["enviado", "Aguardando análise"],
+                ["aprovado", "Aprovados"],
+                ["recusado", "Recusados"],
+                ...(role === "comercial"
+                  ? [["cancelado", "Cancelados"]]
+                  : [])
+              ].map(
+                ([valor, titulo]) => (
+
+                  <button
+                    key={valor}
+                    type="button"
+                    className={
+                      filtroStatus === valor
+                        ? "active"
+                        : ""
+                    }
+                    onClick={() =>
+                      setFiltroStatus(valor)
+                    }
+                  >
+                    {titulo}
+                  </button>
+
+                )
+              )}
+
+            </div>
+
+          </section>
+
+        )}
+
+
+        {/* ================================= */}
         {/* VAZIO                            */}
         {/* ================================= */}
 
@@ -1938,11 +2751,36 @@ function Orcamentos() {
         )}
 
 
+        {orcamentos.length > 0 &&
+          orcamentosFiltrados.length === 0 && (
+
+          <section className="orcamentos-filter-empty">
+
+            <strong>
+              Nenhum orçamento encontrado
+            </strong>
+
+            <p>
+              Não encontramos resultados com os filtros atuais.
+            </p>
+
+            <button
+              type="button"
+              onClick={limparFiltrosOrcamentos}
+            >
+              Limpar filtros
+            </button>
+
+          </section>
+
+        )}
+
+
         {/* ================================= */}
         {/* TABELA                           */}
         {/* ================================= */}
 
-        {orcamentos.length > 0 && (
+        {orcamentosFiltrados.length > 0 && (
 
           <section className="orcamentos-table-card">
 
@@ -1966,6 +2804,14 @@ function Orcamentos() {
                       Contato
                     </th>
 
+                    {role === "comercial" && (
+
+                      <th>
+                        Representante
+                      </th>
+
+                    )}
+
                     <th>
                       Status
                     </th>
@@ -1981,7 +2827,7 @@ function Orcamentos() {
 
                 <tbody>
 
-                  {orcamentos.map(
+                  {orcamentosFiltrados.map(
                     (orcamento) => (
 
                       <tr
@@ -2044,6 +2890,33 @@ function Orcamentos() {
                         <td>
                           {orcamento.cliente_telefone || "-"}
                         </td>
+
+
+                        {role === "comercial" && (
+
+                          <td>
+
+                            <div className="orcamentos-representante-cell">
+
+                              <span>
+                                {representantesPorId[
+                                  orcamento.created_by
+                                ]
+                                  ?.charAt(0)
+                                  ?.toUpperCase() || "R"}
+                              </span>
+
+                              <strong>
+                                {representantesPorId[
+                                  orcamento.created_by
+                                ] || "Representante"}
+                              </strong>
+
+                            </div>
+
+                          </td>
+
+                        )}
 
 
                         <td>
@@ -2504,14 +3377,54 @@ function Orcamentos() {
               </div>
 
 
-              <button
-                type="button"
-                className="orcamentos-modal-close"
-                onClick={fecharOrcamento}
-                aria-label="Fechar"
-              >
-                ×
-              </button>
+              <div className="orcamentos-modal-header-actions">
+
+                <button
+                  type="button"
+                  className="orcamentos-pdf-button"
+                  onClick={baixarOrcamentoPdf}
+                  disabled={
+                    carregandoItens ||
+                    itensOrcamento.length === 0
+                  }
+                  title={
+                    itensOrcamento.length === 0
+                      ? "Adicione pelo menos um produto antes de gerar o PDF."
+                      : "Gerar orçamento em PDF"
+                  }
+                >
+                  <span aria-hidden="true">
+                    ↓
+                  </span>
+
+                  Gerar orçamento
+                </button>
+
+
+                {role === "representante" &&
+                  orcamentoSelecionado.status === "rascunho" && (
+
+                    <button
+                      type="button"
+                      className="orcamentos-edit-button"
+                      onClick={abrirEdicaoOrcamento}
+                    >
+                      Editar orçamento
+                    </button>
+
+                  )}
+
+
+                <button
+                  type="button"
+                  className="orcamentos-modal-close"
+                  onClick={fecharOrcamento}
+                  aria-label="Fechar"
+                >
+                  ×
+                </button>
+
+              </div>
 
             </div>
 
@@ -2519,6 +3432,25 @@ function Orcamentos() {
             <div className="orcamentos-detalhes-body">
 
               <div className="orcamentos-detalhes-info">
+
+                {role === "comercial" && (
+
+                  <div>
+
+                    <span>
+                      REPRESENTANTE
+                    </span>
+
+                    <strong>
+                      {representantesPorId[
+                        orcamentoSelecionado.created_by
+                      ] || "Representante"}
+                    </strong>
+
+                  </div>
+
+                )}
+
 
                 <div>
 
@@ -3335,7 +4267,519 @@ function Orcamentos() {
 
               </div>
 
+
+              {/* ================================= */}
+              {/* HISTÓRICO / AUDITORIA             */}
+              {/* ================================= */}
+
+              <div className="orcamentos-historico">
+
+                <div className="orcamentos-historico-header">
+
+                  <div>
+
+                    <span>
+                      HISTÓRICO DO ORÇAMENTO
+                    </span>
+
+                    <p>
+                      Registro das principais ações realizadas neste orçamento.
+                    </p>
+
+                  </div>
+
+
+                  {!carregandoHistorico && (
+                    <small>
+                      {historicoOrcamento.length}{" "}
+                      {historicoOrcamento.length === 1
+                        ? "registro"
+                        : "registros"}
+                    </small>
+                  )}
+
+                </div>
+
+
+                {carregandoHistorico && (
+
+                  <div className="orcamentos-historico-state">
+
+                    <div className="orcamentos-historico-loader"></div>
+
+                    <span>
+                      Carregando histórico...
+                    </span>
+
+                  </div>
+
+                )}
+
+
+                {!carregandoHistorico &&
+                  erroHistorico && (
+
+                    <div className="orcamentos-historico-error">
+
+                      <strong>
+                        Não foi possível carregar o histórico
+                      </strong>
+
+                      <p>
+                        {erroHistorico}
+                      </p>
+
+                    </div>
+
+                  )}
+
+
+                {!carregandoHistorico &&
+                  !erroHistorico &&
+                  historicoOrcamento.length === 0 && (
+
+                    <div className="orcamentos-historico-empty">
+
+                      Nenhuma movimentação registrada ainda.
+
+                    </div>
+
+                  )}
+
+
+                {!carregandoHistorico &&
+                  !erroHistorico &&
+                  historicoOrcamento.length > 0 && (
+
+                    <div className="orcamentos-historico-timeline">
+
+                      {historicoOrcamento.map(
+                        (registro) => {
+
+                          const dadosEvento =
+                            dadosEventoHistorico(
+                              registro.evento
+                            );
+
+
+                          return (
+
+                            <div
+                              key={registro.id}
+                              className={
+                                `orcamentos-historico-item evento-${registro.evento}`
+                              }
+                            >
+
+                              <div className="orcamentos-historico-marker">
+
+                                <span>
+                                  {dadosEvento.simbolo}
+                                </span>
+
+                              </div>
+
+
+                              <div className="orcamentos-historico-conteudo">
+
+                                <div className="orcamentos-historico-topo">
+
+                                  <strong>
+                                    {dadosEvento.titulo}
+                                  </strong>
+
+                                  <time>
+                                    {formatarData(
+                                      registro.created_at
+                                    )}
+                                  </time>
+
+                                </div>
+
+
+                                <p>
+                                  {dadosEvento.descricao}
+                                </p>
+
+
+                                <div className="orcamentos-historico-autor">
+
+                                  <span>
+                                    Realizado por
+                                  </span>
+
+                                  <strong>
+                                    {registro.ator_nome || "Sistema"}
+                                  </strong>
+
+                                  {registro.ator_role && (
+
+                                    <small>
+                                      {registro.ator_role === "comercial"
+                                        ? "Comercial"
+                                        : registro.ator_role === "representante"
+                                          ? "Representante"
+                                          : "Sistema"}
+                                    </small>
+
+                                  )}
+
+                                </div>
+
+
+                                {registro.status_anterior &&
+                                  registro.status_novo && (
+
+                                    <div className="orcamentos-historico-status-change">
+
+                                      <span>
+                                        {formatarStatus(
+                                          registro.status_anterior
+                                        )}
+                                      </span>
+
+                                      <b>
+                                        →
+                                      </b>
+
+                                      <span>
+                                        {formatarStatus(
+                                          registro.status_novo
+                                        )}
+                                      </span>
+
+                                    </div>
+
+                                  )}
+
+                              </div>
+
+                            </div>
+
+                          );
+
+                        }
+                      )}
+
+                    </div>
+
+                  )}
+
+              </div>
+
             </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+
+      {/* ================================= */}
+      {/* MODAL EDITAR ORÇAMENTO             */}
+      {/* ================================= */}
+
+      {modalEdicaoOpen &&
+        orcamentoSelecionado && (
+
+        <div
+          className="orcamentos-modal-overlay orcamentos-modal-overlay-edicao"
+          onMouseDown={fecharEdicaoOrcamento}
+        >
+
+          <div
+            className="orcamentos-modal orcamentos-modal-edicao"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="titulo-editar-orcamento"
+            onMouseDown={
+              (event) =>
+                event.stopPropagation()
+            }
+          >
+
+            <div className="orcamentos-modal-header">
+
+              <div>
+
+                <span>
+                  RASCUNHO
+                </span>
+
+                <h2 id="titulo-editar-orcamento">
+                  Editar orçamento
+                </h2>
+
+                <p>
+                  Atualize os dados do cliente, venda e entrega antes do envio para análise.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                className="orcamentos-modal-close"
+                onClick={fecharEdicaoOrcamento}
+                disabled={salvandoEdicao}
+                aria-label="Fechar"
+              >
+                ×
+              </button>
+
+            </div>
+
+
+            <form
+              className="orcamentos-form"
+              onSubmit={salvarEdicaoOrcamento}
+            >
+
+              <div className="orcamentos-form-group orcamentos-form-full">
+
+                <label htmlFor="edit_cliente_nome">
+                  Nome do cliente *
+                </label>
+
+                <input
+                  id="edit_cliente_nome"
+                  name="cliente_nome"
+                  type="text"
+                  value={formularioEdicao.cliente_nome}
+                  onChange={alterarCampoEdicao}
+                  placeholder="Nome ou razão social"
+                  maxLength={200}
+                  required
+                  disabled={salvandoEdicao}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group">
+
+                <label htmlFor="edit_cliente_documento">
+                  CPF / CNPJ
+                </label>
+
+                <input
+                  id="edit_cliente_documento"
+                  name="cliente_documento"
+                  type="text"
+                  value={formularioEdicao.cliente_documento}
+                  onChange={alterarCampoEdicao}
+                  placeholder="CPF ou CNPJ"
+                  disabled={salvandoEdicao}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group">
+
+                <label htmlFor="edit_cliente_telefone">
+                  Telefone
+                </label>
+
+                <input
+                  id="edit_cliente_telefone"
+                  name="cliente_telefone"
+                  type="text"
+                  value={formularioEdicao.cliente_telefone}
+                  onChange={alterarCampoEdicao}
+                  placeholder="(00) 00000-0000"
+                  disabled={salvandoEdicao}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group orcamentos-form-full">
+
+                <label htmlFor="edit_cliente_email">
+                  E-mail
+                </label>
+
+                <input
+                  id="edit_cliente_email"
+                  name="cliente_email"
+                  type="email"
+                  value={formularioEdicao.cliente_email}
+                  onChange={alterarCampoEdicao}
+                  placeholder="cliente@empresa.com.br"
+                  disabled={salvandoEdicao}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group orcamentos-form-full">
+
+                <label htmlFor="edit_observacoes">
+                  Observações gerais
+                </label>
+
+                <textarea
+                  id="edit_observacoes"
+                  name="observacoes"
+                  value={formularioEdicao.observacoes}
+                  onChange={alterarCampoEdicao}
+                  placeholder="Informações gerais do orçamento..."
+                  rows={3}
+                  maxLength={2000}
+                  disabled={salvandoEdicao}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-separator orcamentos-form-full">
+
+                <span>
+                  DADOS DA VENDA E ENTREGA
+                </span>
+
+                <p>
+                  Atualize as condições comerciais deste orçamento.
+                </p>
+
+              </div>
+
+
+              <div className="orcamentos-form-group">
+
+                <label htmlFor="edit_frete">
+                  Frete (R$)
+                </label>
+
+                <input
+                  id="edit_frete"
+                  name="frete"
+                  type="number"
+                  min="0"
+                  max="9999999999.99"
+                  step="0.01"
+                  value={formularioEdicao.frete}
+                  onChange={alterarCampoEdicao}
+                  disabled={salvandoEdicao}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group">
+
+                <label htmlFor="edit_condicao_pagamento">
+                  Condição de Pagamento
+                </label>
+
+                <input
+                  id="edit_condicao_pagamento"
+                  name="condicao_pagamento"
+                  type="text"
+                  value={formularioEdicao.condicao_pagamento}
+                  onChange={alterarCampoEdicao}
+                  placeholder="Ex.: 30/60/90 dias"
+                  maxLength={200}
+                  disabled={salvandoEdicao}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group">
+
+                <label htmlFor="edit_local_entrega">
+                  Local de Entrega
+                </label>
+
+                <input
+                  id="edit_local_entrega"
+                  name="local_entrega"
+                  type="text"
+                  value={formularioEdicao.local_entrega}
+                  onChange={alterarCampoEdicao}
+                  placeholder="Endereço ou local de entrega"
+                  maxLength={300}
+                  disabled={salvandoEdicao}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group">
+
+                <label htmlFor="edit_data_entrega">
+                  Data de Entrega
+                </label>
+
+                <input
+                  id="edit_data_entrega"
+                  name="data_entrega"
+                  type="date"
+                  value={formularioEdicao.data_entrega}
+                  onChange={alterarCampoEdicao}
+                  disabled={salvandoEdicao}
+                />
+
+              </div>
+
+
+              <div className="orcamentos-form-group orcamentos-form-full">
+
+                <label htmlFor="edit_observacoes_venda">
+                  Observações Adicionais sobre a Venda
+                </label>
+
+                <textarea
+                  id="edit_observacoes_venda"
+                  name="observacoes_venda"
+                  value={formularioEdicao.observacoes_venda}
+                  onChange={alterarCampoEdicao}
+                  placeholder="Prazo especial, instruções comerciais, detalhes da negociação..."
+                  rows={4}
+                  maxLength={2000}
+                  disabled={salvandoEdicao}
+                />
+
+              </div>
+
+
+              {erroEdicao && (
+
+                <div className="orcamentos-form-error">
+                  {erroEdicao}
+                </div>
+
+              )}
+
+
+              <div className="orcamentos-modal-actions">
+
+                <button
+                  type="button"
+                  className="orcamentos-secondary-button"
+                  onClick={fecharEdicaoOrcamento}
+                  disabled={salvandoEdicao}
+                >
+                  Cancelar
+                </button>
+
+
+                <button
+                  type="submit"
+                  className="orcamentos-primary-button"
+                  disabled={salvandoEdicao}
+                >
+                  {salvandoEdicao
+                    ? "Salvando..."
+                    : "Salvar alterações"}
+                </button>
+
+              </div>
+
+            </form>
 
           </div>
 
