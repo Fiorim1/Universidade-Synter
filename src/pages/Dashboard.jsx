@@ -135,7 +135,7 @@ function Dashboard() {
             image={ImgIcon}
             title="Orçamentos"
             desc="Crie e acompanhe seus orçamentos"
-            route="/orcamentos"
+            enabled={false}
           />
 
 
@@ -207,7 +207,7 @@ function Dashboard() {
             image={TcIcon}
             title="Treinamento Comercial"
             desc="Acesse nossos treinamentos comerciais"
-            route="/treinamento-comercial"
+            enabled={false}
           />
 
 
