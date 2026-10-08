@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
-import NotificationsButton from "../pages/NotificationsButton";
+import NotificationsButton from "../components/NotificationsButton";
 import Profile from "../components/Profile";
 
 import ImgIcon from "../assets/img-icon.png";
@@ -106,6 +106,30 @@ function Orcamentos() {
 
   const [categoriaProduto, setCategoriaProduto] =
     useState("todas");
+
+
+  // ========================================
+  // FUNIL DE PRODUTOS MECÂNICOS
+  // ========================================
+
+  const [modoPesquisaProduto, setModoPesquisaProduto] =
+    useState("geral");
+
+  const [filtroMacaneta, setFiltroMacaneta] =
+    useState("");
+
+  const [filtroRoseta, setFiltroRoseta] =
+    useState("");
+
+  const [filtroFuncao, setFiltroFuncao] =
+    useState("");
+
+  const [filtroAcabamento, setFiltroAcabamento] =
+    useState("");
+
+  const [filtroMaquina, setFiltroMaquina] =
+    useState("");
+
 
   const [produtoSelecionado, setProdutoSelecionado] =
     useState(null);
@@ -1880,6 +1904,12 @@ function Orcamentos() {
     setModalProdutoOpen(true);
     setBuscaProduto("");
     setCategoriaProduto("todas");
+    setModoPesquisaProduto("geral");
+    setFiltroMacaneta("");
+    setFiltroRoseta("");
+    setFiltroFuncao("");
+    setFiltroAcabamento("");
+    setFiltroMaquina("");
     setProdutoSelecionado(null);
     setQuantidadeProduto(1);
     setErroProdutos("");
@@ -1962,6 +1992,466 @@ function Orcamentos() {
   }
 
 
+  function normalizarTextoProduto(valor = "") {
+
+    return String(valor)
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim();
+
+  }
+
+
+  function ehProdutoMecanico(produto) {
+
+    const categoria =
+      normalizarTextoProduto(
+        produto?.categoria
+      );
+
+
+    return (
+      categoria.includes(
+        "macanetas inox 304"
+      ) ||
+      categoria.includes(
+        "fechaduras zamak"
+      )
+    );
+
+  }
+
+
+  function extrairRosetaProduto(produto) {
+
+    const codigo =
+      String(
+        produto?.codigo || ""
+      )
+        .toUpperCase()
+        .trim();
+
+
+    // Nas referências mecânicas Synter,
+    // os dois dígitos imediatamente antes da
+    // identificação de função representam a roseta.
+    //
+    // Exemplos:
+    // X73113IEZ1IP/55 -> Roseta 13
+    // X72401IIIP/55  -> Roseta 01
+    // X11006IBCR/40  -> Roseta 06
+    const encontrado =
+      codigo.match(
+        /(\d{2})(?=I(?:EZ1|I|B))/
+      );
+
+
+    if (!encontrado) {
+      return "";
+    }
+
+
+    return `Roseta ${encontrado[1]}`;
+
+  }
+
+
+  function extrairFuncaoProduto(produto) {
+
+    const texto = normalizarTextoProduto(
+      [
+        produto?.variacao,
+        produto?.tipo_preco,
+        produto?.descricao
+      ]
+        .filter(Boolean)
+        .join(" ")
+    );
+
+
+    if (
+      texto.includes("banheiro")
+    ) {
+      return "Banheiro";
+    }
+
+
+    if (
+      texto.includes("interna")
+    ) {
+      return "Interna";
+    }
+
+
+    if (
+      texto.includes("externa")
+    ) {
+      return "Externa";
+    }
+
+
+    const codigo =
+      String(
+        produto?.codigo || ""
+      ).toUpperCase();
+
+
+    if (
+      codigo.includes("IEZ1")
+    ) {
+      return "Externa";
+    }
+
+
+    if (
+      /II(?:IP|IE|PT|CR)/.test(codigo)
+    ) {
+      return "Interna";
+    }
+
+
+    if (
+      /IB(?:IP|IE|PT|CR)/.test(codigo)
+    ) {
+      return "Banheiro";
+    }
+
+
+    return "";
+
+  }
+
+
+  function extrairAcabamentoProduto(produto) {
+
+    const texto = normalizarTextoProduto(
+      [
+        produto?.nome,
+        produto?.variacao,
+        produto?.descricao
+      ]
+        .filter(Boolean)
+        .join(" ")
+    );
+
+
+    if (
+      texto.includes("escovado")
+    ) {
+      return "Escovado";
+    }
+
+
+    if (
+      texto.includes("polido")
+    ) {
+      return "Polido";
+    }
+
+
+    if (
+      texto.includes("preto")
+    ) {
+      return "Preto";
+    }
+
+
+    if (
+      texto.includes("cromado")
+    ) {
+      return "Cromado";
+    }
+
+
+    const codigo =
+      String(
+        produto?.codigo || ""
+      ).toUpperCase();
+
+
+    if (
+      /PT\/(?:\d|[A-Z])/.test(codigo)
+    ) {
+      return "Preto";
+    }
+
+
+    if (
+      /IP\/(?:\d|[A-Z])/.test(codigo)
+    ) {
+      return "Polido";
+    }
+
+
+    if (
+      /IE\/(?:\d|[A-Z])/.test(codigo)
+    ) {
+      return "Escovado";
+    }
+
+
+    if (
+      /CR\/(?:\d|[A-Z])/.test(codigo)
+    ) {
+      return "Cromado";
+    }
+
+
+    return "";
+
+  }
+
+
+  function extrairMaquinaProduto(produto) {
+
+    const codigo =
+      String(
+        produto?.codigo || ""
+      )
+        .toUpperCase()
+        .trim();
+
+
+    const encontrado =
+      codigo.match(
+        /\/(\d{2})(?:[RQ])?$/
+      );
+
+
+    if (!encontrado) {
+      return "";
+    }
+
+
+    return `${encontrado[1]} mm`;
+
+  }
+
+
+  function obterMacanetaProduto(produto) {
+
+    return String(
+      produto?.nome || ""
+    ).trim();
+
+  }
+
+
+  function ordenarOpcoes(valores) {
+
+    return [
+      ...new Set(
+        valores.filter(Boolean)
+      )
+    ].sort(
+      (a, b) =>
+        String(a).localeCompare(
+          String(b),
+          "pt-BR",
+          {
+            numeric: true,
+            sensitivity: "base"
+          }
+        )
+    );
+
+  }
+
+
+  const produtosMecanicos = useMemo(() => {
+
+    return produtosCatalogo
+      .filter(ehProdutoMecanico)
+      .map(
+        (produto) => ({
+          ...produto,
+
+          _funil: {
+            macaneta:
+              obterMacanetaProduto(
+                produto
+              ),
+
+            roseta:
+              extrairRosetaProduto(
+                produto
+              ),
+
+            funcao:
+              extrairFuncaoProduto(
+                produto
+              ),
+
+            acabamento:
+              extrairAcabamentoProduto(
+                produto
+              ),
+
+            maquina:
+              extrairMaquinaProduto(
+                produto
+              )
+          }
+        })
+      )
+      .filter(
+        (produto) =>
+          produto._funil.macaneta &&
+          produto._funil.roseta &&
+          produto._funil.funcao &&
+          produto._funil.acabamento &&
+          produto._funil.maquina
+      );
+
+  }, [produtosCatalogo]);
+
+
+  const opcoesMacaneta = useMemo(() => {
+
+    return ordenarOpcoes(
+      produtosMecanicos.map(
+        (produto) =>
+          produto._funil.macaneta
+      )
+    );
+
+  }, [produtosMecanicos]);
+
+
+  const opcoesRoseta = useMemo(() => {
+
+    return ordenarOpcoes(
+      produtosMecanicos
+        .filter(
+          (produto) =>
+            !filtroMacaneta ||
+            produto._funil.macaneta ===
+              filtroMacaneta
+        )
+        .map(
+          (produto) =>
+            produto._funil.roseta
+        )
+    );
+
+  }, [
+    produtosMecanicos,
+    filtroMacaneta
+  ]);
+
+
+  const opcoesFuncao = useMemo(() => {
+
+    return ordenarOpcoes(
+      produtosMecanicos
+        .filter(
+          (produto) =>
+            (!filtroMacaneta ||
+              produto._funil.macaneta ===
+                filtroMacaneta) &&
+            (!filtroRoseta ||
+              produto._funil.roseta ===
+                filtroRoseta)
+        )
+        .map(
+          (produto) =>
+            produto._funil.funcao
+        )
+    );
+
+  }, [
+    produtosMecanicos,
+    filtroMacaneta,
+    filtroRoseta
+  ]);
+
+
+  const opcoesAcabamento = useMemo(() => {
+
+    return ordenarOpcoes(
+      produtosMecanicos
+        .filter(
+          (produto) =>
+            (!filtroMacaneta ||
+              produto._funil.macaneta ===
+                filtroMacaneta) &&
+            (!filtroRoseta ||
+              produto._funil.roseta ===
+                filtroRoseta) &&
+            (!filtroFuncao ||
+              produto._funil.funcao ===
+                filtroFuncao)
+        )
+        .map(
+          (produto) =>
+            produto._funil.acabamento
+        )
+    );
+
+  }, [
+    produtosMecanicos,
+    filtroMacaneta,
+    filtroRoseta,
+    filtroFuncao
+  ]);
+
+
+  const opcoesMaquina = useMemo(() => {
+
+    return ordenarOpcoes(
+      produtosMecanicos
+        .filter(
+          (produto) =>
+            (!filtroMacaneta ||
+              produto._funil.macaneta ===
+                filtroMacaneta) &&
+            (!filtroRoseta ||
+              produto._funil.roseta ===
+                filtroRoseta) &&
+            (!filtroFuncao ||
+              produto._funil.funcao ===
+                filtroFuncao) &&
+            (!filtroAcabamento ||
+              produto._funil.acabamento ===
+                filtroAcabamento)
+        )
+        .map(
+          (produto) =>
+            produto._funil.maquina
+        )
+    );
+
+  }, [
+    produtosMecanicos,
+    filtroMacaneta,
+    filtroRoseta,
+    filtroFuncao,
+    filtroAcabamento
+  ]);
+
+
+  const etapasFunilPreenchidas = [
+    filtroMacaneta,
+    filtroRoseta,
+    filtroFuncao,
+    filtroAcabamento,
+    filtroMaquina
+  ].filter(Boolean).length;
+
+
+  function limparFunilMecanico() {
+
+    setFiltroMacaneta("");
+    setFiltroRoseta("");
+    setFiltroFuncao("");
+    setFiltroAcabamento("");
+    setFiltroMaquina("");
+    setProdutoSelecionado(null);
+
+  }
+
+
   const categoriasProdutos = useMemo(() => {
 
     const categorias = produtosCatalogo
@@ -1985,6 +2475,48 @@ function Orcamentos() {
 
 
   const produtosFiltrados = useMemo(() => {
+
+    if (
+      modoPesquisaProduto === "mecanica"
+    ) {
+
+      // Evita despejar centenas de itens antes
+      // de o representante iniciar o funil.
+      if (!filtroMacaneta) {
+        return [];
+      }
+
+
+      return produtosMecanicos.filter(
+        (produto) => {
+
+          return (
+            (!filtroMacaneta ||
+              produto._funil.macaneta ===
+                filtroMacaneta) &&
+
+            (!filtroRoseta ||
+              produto._funil.roseta ===
+                filtroRoseta) &&
+
+            (!filtroFuncao ||
+              produto._funil.funcao ===
+                filtroFuncao) &&
+
+            (!filtroAcabamento ||
+              produto._funil.acabamento ===
+                filtroAcabamento) &&
+
+            (!filtroMaquina ||
+              produto._funil.maquina ===
+                filtroMaquina)
+          );
+
+        }
+      );
+
+    }
+
 
     const termo =
       buscaProduto
@@ -2027,7 +2559,14 @@ function Orcamentos() {
   }, [
     produtosCatalogo,
     buscaProduto,
-    categoriaProduto
+    categoriaProduto,
+    modoPesquisaProduto,
+    produtosMecanicos,
+    filtroMacaneta,
+    filtroRoseta,
+    filtroFuncao,
+    filtroAcabamento,
+    filtroMaquina
   ]);
 
 
@@ -4844,6 +5383,65 @@ function Orcamentos() {
 
             <div className="orcamentos-produtos-body">
 
+              <div className="orcamentos-produtos-modos">
+
+                <button
+                  type="button"
+                  className={
+                    modoPesquisaProduto === "geral"
+                      ? "ativo"
+                      : ""
+                  }
+                  onClick={() => {
+
+                    setModoPesquisaProduto(
+                      "geral"
+                    );
+
+                    setProdutoSelecionado(
+                      null
+                    );
+
+                  }}
+                  disabled={adicionandoProduto}
+                >
+                  Pesquisa geral
+                </button>
+
+
+                <button
+                  type="button"
+                  className={
+                    modoPesquisaProduto === "mecanica"
+                      ? "ativo"
+                      : ""
+                  }
+                  onClick={() => {
+
+                    setModoPesquisaProduto(
+                      "mecanica"
+                    );
+
+                    setBuscaProduto("");
+                    setCategoriaProduto(
+                      "todas"
+                    );
+
+                    setProdutoSelecionado(
+                      null
+                    );
+
+                  }}
+                  disabled={adicionandoProduto}
+                >
+                  Funil mecânico
+                </button>
+
+              </div>
+
+
+              {modoPesquisaProduto === "geral" && (
+
               <div className="orcamentos-produtos-filtros">
 
                 <div className="orcamentos-produtos-busca">
@@ -4916,6 +5514,473 @@ function Orcamentos() {
 
               </div>
 
+              )}
+
+
+              {modoPesquisaProduto === "mecanica" && (
+
+                <div className="orcamentos-funil-mecanico">
+
+                  <div className="orcamentos-funil-topo">
+
+                    <div>
+
+                      <span>
+                        PESQUISA GUIADA
+                      </span>
+
+                      <strong>
+                        Encontre a fechadura mecânica correta
+                      </strong>
+
+                      <p>
+                        Selecione na ordem: maçaneta, roseta, função, acabamento e máquina.
+                      </p>
+
+                    </div>
+
+
+                    <div className="orcamentos-funil-progresso">
+
+                      <strong>
+                        {etapasFunilPreenchidas}/5
+                      </strong>
+
+                      <span>
+                        etapas
+                      </span>
+
+                    </div>
+
+                  </div>
+
+
+                  <div className="orcamentos-funil-barra">
+
+                    <span
+                      style={{
+                        width:
+                          `${(etapasFunilPreenchidas / 5) * 100}%`
+                      }}
+                    ></span>
+
+                  </div>
+
+
+                  <div className="orcamentos-funil-grid">
+
+
+                    {/* 1. MAÇANETA */}
+
+                    <div
+                      className={
+                        `orcamentos-funil-campo ${
+                          filtroMacaneta
+                            ? "preenchido"
+                            : "atual"
+                        }`
+                      }
+                    >
+
+                      <div className="orcamentos-funil-label">
+
+                        <span>
+                          1
+                        </span>
+
+                        <label htmlFor="funil_macaneta">
+                          Maçaneta
+                        </label>
+
+                      </div>
+
+                      <select
+                        id="funil_macaneta"
+                        value={filtroMacaneta}
+                        onChange={
+                          (event) => {
+
+                            setFiltroMacaneta(
+                              event.target.value
+                            );
+
+                            setFiltroRoseta("");
+                            setFiltroFuncao("");
+                            setFiltroAcabamento("");
+                            setFiltroMaquina("");
+                            setProdutoSelecionado(
+                              null
+                            );
+
+                          }
+                        }
+                        disabled={
+                          carregandoProdutos ||
+                          adicionandoProduto
+                        }
+                      >
+
+                        <option value="">
+                          Selecione a maçaneta
+                        </option>
+
+                        {opcoesMacaneta.map(
+                          (opcao) => (
+
+                            <option
+                              key={opcao}
+                              value={opcao}
+                            >
+                              {opcao}
+                            </option>
+
+                          )
+                        )}
+
+                      </select>
+
+                    </div>
+
+
+                    {/* 2. ROSETA */}
+
+                    <div
+                      className={
+                        `orcamentos-funil-campo ${
+                          filtroRoseta
+                            ? "preenchido"
+                            : filtroMacaneta
+                              ? "atual"
+                              : "bloqueado"
+                        }`
+                      }
+                    >
+
+                      <div className="orcamentos-funil-label">
+
+                        <span>
+                          2
+                        </span>
+
+                        <label htmlFor="funil_roseta">
+                          Roseta
+                        </label>
+
+                      </div>
+
+                      <select
+                        id="funil_roseta"
+                        value={filtroRoseta}
+                        onChange={
+                          (event) => {
+
+                            setFiltroRoseta(
+                              event.target.value
+                            );
+
+                            setFiltroFuncao("");
+                            setFiltroAcabamento("");
+                            setFiltroMaquina("");
+                            setProdutoSelecionado(
+                              null
+                            );
+
+                          }
+                        }
+                        disabled={
+                          !filtroMacaneta ||
+                          carregandoProdutos ||
+                          adicionandoProduto
+                        }
+                      >
+
+                        <option value="">
+                          Selecione a roseta
+                        </option>
+
+                        {opcoesRoseta.map(
+                          (opcao) => (
+
+                            <option
+                              key={opcao}
+                              value={opcao}
+                            >
+                              {opcao}
+                            </option>
+
+                          )
+                        )}
+
+                      </select>
+
+                    </div>
+
+
+                    {/* 3. FUNÇÃO */}
+
+                    <div
+                      className={
+                        `orcamentos-funil-campo ${
+                          filtroFuncao
+                            ? "preenchido"
+                            : filtroRoseta
+                              ? "atual"
+                              : "bloqueado"
+                        }`
+                      }
+                    >
+
+                      <div className="orcamentos-funil-label">
+
+                        <span>
+                          3
+                        </span>
+
+                        <label htmlFor="funil_funcao">
+                          Função
+                        </label>
+
+                      </div>
+
+                      <select
+                        id="funil_funcao"
+                        value={filtroFuncao}
+                        onChange={
+                          (event) => {
+
+                            setFiltroFuncao(
+                              event.target.value
+                            );
+
+                            setFiltroAcabamento("");
+                            setFiltroMaquina("");
+                            setProdutoSelecionado(
+                              null
+                            );
+
+                          }
+                        }
+                        disabled={
+                          !filtroRoseta ||
+                          carregandoProdutos ||
+                          adicionandoProduto
+                        }
+                      >
+
+                        <option value="">
+                          Selecione a função
+                        </option>
+
+                        {opcoesFuncao.map(
+                          (opcao) => (
+
+                            <option
+                              key={opcao}
+                              value={opcao}
+                            >
+                              {opcao}
+                            </option>
+
+                          )
+                        )}
+
+                      </select>
+
+                    </div>
+
+
+                    {/* 4. ACABAMENTO */}
+
+                    <div
+                      className={
+                        `orcamentos-funil-campo ${
+                          filtroAcabamento
+                            ? "preenchido"
+                            : filtroFuncao
+                              ? "atual"
+                              : "bloqueado"
+                        }`
+                      }
+                    >
+
+                      <div className="orcamentos-funil-label">
+
+                        <span>
+                          4
+                        </span>
+
+                        <label htmlFor="funil_acabamento">
+                          Acabamento
+                        </label>
+
+                      </div>
+
+                      <select
+                        id="funil_acabamento"
+                        value={filtroAcabamento}
+                        onChange={
+                          (event) => {
+
+                            setFiltroAcabamento(
+                              event.target.value
+                            );
+
+                            setFiltroMaquina("");
+                            setProdutoSelecionado(
+                              null
+                            );
+
+                          }
+                        }
+                        disabled={
+                          !filtroFuncao ||
+                          carregandoProdutos ||
+                          adicionandoProduto
+                        }
+                      >
+
+                        <option value="">
+                          Selecione o acabamento
+                        </option>
+
+                        {opcoesAcabamento.map(
+                          (opcao) => (
+
+                            <option
+                              key={opcao}
+                              value={opcao}
+                            >
+                              {opcao}
+                            </option>
+
+                          )
+                        )}
+
+                      </select>
+
+                    </div>
+
+
+                    {/* 5. MÁQUINA */}
+
+                    <div
+                      className={
+                        `orcamentos-funil-campo ${
+                          filtroMaquina
+                            ? "preenchido"
+                            : filtroAcabamento
+                              ? "atual"
+                              : "bloqueado"
+                        }`
+                      }
+                    >
+
+                      <div className="orcamentos-funil-label">
+
+                        <span>
+                          5
+                        </span>
+
+                        <label htmlFor="funil_maquina">
+                          Máquina
+                        </label>
+
+                      </div>
+
+                      <select
+                        id="funil_maquina"
+                        value={filtroMaquina}
+                        onChange={
+                          (event) => {
+
+                            setFiltroMaquina(
+                              event.target.value
+                            );
+
+                            setProdutoSelecionado(
+                              null
+                            );
+
+                          }
+                        }
+                        disabled={
+                          !filtroAcabamento ||
+                          carregandoProdutos ||
+                          adicionandoProduto
+                        }
+                      >
+
+                        <option value="">
+                          Selecione a máquina
+                        </option>
+
+                        {opcoesMaquina.map(
+                          (opcao) => (
+
+                            <option
+                              key={opcao}
+                              value={opcao}
+                            >
+                              {opcao}
+                            </option>
+
+                          )
+                        )}
+
+                      </select>
+
+                    </div>
+
+                  </div>
+
+
+                  <div className="orcamentos-funil-resumo">
+
+                    <div>
+
+                      {filtroMacaneta ? (
+
+                        <>
+
+                          <strong>
+                            {produtosFiltrados.length}
+                          </strong>
+
+                          <span>
+                            opção(ões) compatível(is)
+                          </span>
+
+                        </>
+
+                      ) : (
+
+                        <span>
+                          Comece selecionando uma maçaneta.
+                        </span>
+
+                      )}
+
+                    </div>
+
+
+                    {etapasFunilPreenchidas > 0 && (
+
+                      <button
+                        type="button"
+                        onClick={limparFunilMecanico}
+                        disabled={adicionandoProduto}
+                      >
+                        Limpar funil
+                      </button>
+
+                    )}
+
+                  </div>
+
+                </div>
+
+              )}
+
 
               {carregandoProdutos && (
 
@@ -4964,7 +6029,10 @@ function Orcamentos() {
 
                         <div className="orcamentos-produtos-vazio">
 
-                          Nenhum produto encontrado com estes filtros.
+                          {modoPesquisaProduto === "mecanica" &&
+                          !filtroMacaneta
+                            ? "Selecione a maçaneta para iniciar o funil mecânico."
+                            : "Nenhum produto encontrado com estes filtros."}
 
                         </div>
 
@@ -5030,10 +6098,37 @@ function Orcamentos() {
                                     </span>
                                   )}
 
-                                  {produto.variacao && (
-                                    <span>
-                                      {produto.variacao}
-                                    </span>
+                                  {modoPesquisaProduto === "mecanica" &&
+                                  produto._funil ? (
+
+                                    <>
+
+                                      <span>
+                                        {produto._funil.roseta}
+                                      </span>
+
+                                      <span>
+                                        {produto._funil.funcao}
+                                      </span>
+
+                                      <span>
+                                        {produto._funil.acabamento}
+                                      </span>
+
+                                      <span>
+                                        {produto._funil.maquina}
+                                      </span>
+
+                                    </>
+
+                                  ) : (
+
+                                    produto.variacao && (
+                                      <span>
+                                        {produto.variacao}
+                                      </span>
+                                    )
+
                                   )}
 
                                 </div>

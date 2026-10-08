@@ -4044,3 +4044,480 @@
   }
 
 }
+
+
+/* =========================================
+   MODOS DE PESQUISA DO CATÁLOGO
+========================================= */
+
+.orcamentos-produtos-modos {
+  display: inline-flex;
+
+  gap: 4px;
+
+  margin-bottom: 16px;
+
+  padding: 4px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+}
+
+
+.orcamentos-produtos-modos button {
+  min-height: 34px;
+
+  padding:
+    0 14px;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: transparent;
+
+  color:
+    rgba(255, 255, 255, 0.44);
+
+  font-size: 9px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+
+.orcamentos-produtos-modos button:hover:not(:disabled) {
+  color:
+    rgba(255, 255, 255, 0.80);
+}
+
+
+.orcamentos-produtos-modos button.ativo {
+  background: #ffffff;
+
+  color: #090909;
+}
+
+
+.orcamentos-produtos-modos button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.45;
+}
+
+
+/* =========================================
+   FUNIL MECÂNICO
+========================================= */
+
+.orcamentos-funil-mecanico {
+  margin-bottom: 18px;
+
+  padding: 18px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.09);
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.025),
+      rgba(255, 255, 255, 0.008)
+    );
+}
+
+
+.orcamentos-funil-topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 24px;
+}
+
+
+.orcamentos-funil-topo > div:first-child > span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color:
+    rgba(255, 255, 255, 0.34);
+
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: 1.4px;
+}
+
+
+.orcamentos-funil-topo > div:first-child > strong {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 13px;
+}
+
+
+.orcamentos-funil-topo > div:first-child > p {
+  margin:
+    6px 0 0;
+
+  color:
+    rgba(255, 255, 255, 0.38);
+
+  font-size: 9px;
+
+  line-height: 1.5;
+}
+
+
+.orcamentos-funil-progresso {
+  min-width: 58px;
+
+  padding:
+    8px 10px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 9px;
+
+  text-align: center;
+}
+
+
+.orcamentos-funil-progresso strong {
+  display: block;
+
+  color: #ffffff;
+
+  font-size: 14px;
+}
+
+
+.orcamentos-funil-progresso span {
+  display: block;
+
+  margin-top: 2px;
+
+  color:
+    rgba(255, 255, 255, 0.30);
+
+  font-size: 7px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+
+.orcamentos-funil-barra {
+  height: 3px;
+
+  margin:
+    14px 0 17px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.07);
+}
+
+
+.orcamentos-funil-barra > span {
+  display: block;
+
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: #ffffff;
+
+  transition:
+    width 0.25s ease;
+}
+
+
+.orcamentos-funil-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      5,
+      minmax(0, 1fr)
+    );
+
+  gap: 9px;
+}
+
+
+.orcamentos-funil-campo {
+  min-width: 0;
+
+  padding: 10px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 9px;
+
+  background:
+    rgba(255, 255, 255, 0.012);
+
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    opacity 0.18s ease;
+}
+
+
+.orcamentos-funil-campo.atual {
+  border-color:
+    rgba(255, 255, 255, 0.20);
+
+  background:
+    rgba(255, 255, 255, 0.027);
+}
+
+
+.orcamentos-funil-campo.preenchido {
+  border-color:
+    rgba(114, 224, 143, 0.15);
+
+  background:
+    rgba(114, 224, 143, 0.025);
+}
+
+
+.orcamentos-funil-campo.bloqueado {
+  opacity: 0.40;
+}
+
+
+.orcamentos-funil-label {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin-bottom: 8px;
+}
+
+
+.orcamentos-funil-label > span {
+  width: 19px;
+  height: 19px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.11);
+
+  border-radius: 50%;
+
+  color:
+    rgba(255, 255, 255, 0.50);
+
+  font-size: 7px;
+  font-weight: 800;
+}
+
+
+.orcamentos-funil-campo.preenchido
+.orcamentos-funil-label > span {
+  border-color:
+    rgba(114, 224, 143, 0.22);
+
+  color: #b9f5c8;
+}
+
+
+.orcamentos-funil-label label {
+  color:
+    rgba(255, 255, 255, 0.64);
+
+  font-size: 8px;
+  font-weight: 800;
+
+  letter-spacing: 0.7px;
+
+  text-transform: uppercase;
+}
+
+
+.orcamentos-funil-campo select {
+  width: 100%;
+  height: 37px;
+
+  padding:
+    0 28px 0 9px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.09);
+
+  border-radius: 7px;
+
+  outline: none;
+
+  background: #111111;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 9px;
+
+  cursor: pointer;
+}
+
+
+.orcamentos-funil-campo select:disabled {
+  cursor: not-allowed;
+
+  color:
+    rgba(255, 255, 255, 0.40);
+}
+
+
+.orcamentos-funil-resumo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-top: 13px;
+
+  padding-top: 12px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.06);
+}
+
+
+.orcamentos-funil-resumo > div {
+  display: flex;
+  align-items: baseline;
+
+  gap: 6px;
+}
+
+
+.orcamentos-funil-resumo strong {
+  color: #ffffff;
+
+  font-size: 14px;
+}
+
+
+.orcamentos-funil-resumo span {
+  color:
+    rgba(255, 255, 255, 0.38);
+
+  font-size: 9px;
+}
+
+
+.orcamentos-funil-resumo button {
+  min-height: 31px;
+
+  padding:
+    0 10px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.09);
+
+  border-radius: 7px;
+
+  background:
+    transparent;
+
+  color:
+    rgba(255, 255, 255, 0.52);
+
+  font-size: 8px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.orcamentos-funil-resumo button:hover:not(:disabled) {
+  border-color:
+    rgba(255, 255, 255, 0.18);
+
+  color: #ffffff;
+}
+
+
+/* =========================================
+   RESPONSIVO - FUNIL MECÂNICO
+========================================= */
+
+@media (max-width: 1050px) {
+
+  .orcamentos-funil-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .orcamentos-produtos-modos {
+    width: 100%;
+  }
+
+
+  .orcamentos-produtos-modos button {
+    flex: 1;
+  }
+
+
+  .orcamentos-funil-topo {
+    flex-direction: column;
+
+    gap: 12px;
+  }
+
+
+  .orcamentos-funil-progresso {
+    align-self: flex-start;
+  }
+
+
+  .orcamentos-funil-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .orcamentos-funil-resumo {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+}
