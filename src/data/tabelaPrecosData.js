@@ -1,1273 +1,614 @@
 const linhas = (texto) =>
-
-  texto
-
-    .trim()
-
-    .split("\n")
-
-    .map((linha) =>
-
-      linha
-
-        .split("|")
-
-        .map((valor) => valor.trim())
-
-    );
-
-
-
-
+  texto
+    .trim()
+    .split("\n")
+    .map((linha) =>
+      linha
+        .split("|")
+        .map((valor) => valor.trim())
+    );
 
 const tabelaPrecosData = {
+  titulo: "Tabela de Preços Synter 2026",
 
+  atualizacao: "16/07/2026",
 
+  categorias: [
+    // =====================================================
+    // DIGITAIS
+    // =====================================================
 
-  titulo: "Tabela de Preços Synter 2026",
+    {
+      id: "digitais",
 
+      titulo: "Digitais",
 
+      colunas: [
+        "Linha",
+        "Modelo",
+        "Referência",
+        "Descrição",
+        "Preço sugerido final / até 3 peças",
+        "Preço venda CNPJ revenda indústria",
+        "Preço venda CNPJ engenharia"
+      ],
 
-  atualizacao: "16/07/2026",
-
-
-
-  categorias: [
-
-
-
-    // =====================================================
-
-    // DIGITAIS
-
-    // =====================================================
-
-
-
-    {
-
-      id: "digitais",
-
-
-
-      titulo: "Digitais",
-
-
-
-      colunas: [
-
-        "Linha",
-
-        "Modelo",
-
-        "Referência",
-
-        "Descrição",
-
-        "Preço sugerido final / até 3 peças",
-
-        "Preço venda CNPJ revenda indústria",
-
-        "Preço venda CNPJ engenharia"
-
-      ],
-
-
-
-      linhas: linhas(\`
-
+      linhas: linhas(`
 SIGNATURE|ERIS FACE ID|X99913FACEBM/60Q|FECHAD. INTELIGENTE ERIS FACE ID|R$ 3.738|R$ 1.869|R$ 2.654
-
 SIGNATURE|AGATA S2 PRO|X93312ABCSBM/55Q|FECHAD. INTELIGENTE AGATA FACE ID|R$ 2.669|R$ 1.335|R$ 2.002
-
 SIGNATURE|VEGA|XDV1S2P565|FECHAD. INTELIGENTE VEGA S2 PERFIL FACE ID|R$ 2.970|R$ 2.079|R$ 2.479
-
 PERFORMANCE|LYRA|XDL1S2P465|FECHAD. INTELIGENTE LYRA PERFIL S2 PRO|R$ 2.144|R$ 1.222|R$ 1.522
-
 PERFORMANCE|SYRIUS S3 MAX|X903013ABBCSBM/60Q|FECHAD. INTELIGENTE SYRIUS S.3 MAX - 60MM PRETA|R$ 1.790|R$ 895|R$ 1.678
-
 PERFORMANCE|SYRIUS S3 PRO|X93512ABBCSBM/55Q|FECHAD. INTELIGENTE SYRIUS S3 PRO|R$ 1.012|R$ 506|R$ 893
-
 ESSENCIAL|SYRIUS S2 PRO NEO WIFI|X93012ABBCSBM/55Q|FECHAD. INTELIGENTE SYRIUS S.2 PRO NEO 55MM PRETA C/WIFI INTEGRADO|R$ 882|R$ 441|R$ 662
-
 ESSENCIAL|SYRIUS S2 PRO NEO BLUE|X93012ABBCSBM/55Q|FECHAD. INTELIGENTE SYRIUS S.2 PRO NEO 55MM PRETA BLUETOOTH|R$ 736|R$ 368|R$ 452
-
 ESSENCIAL|VENUS S3 PRO|X99914ABBCSBM/60Q|FECHAD. INTELIGENTE VENUS S.3 PRO - 60MM PRETA|R$ 1.288|R$ 644|R$ 966
-
 PERFORMANCE|DALLAS S3 PRO|X99914ABBCSBM/SPV|FECHAD. INTELIGENTE DALLAS S.3 PRO - 60MM SOBREPOR 8 - 12MM|R$ 2.740|R$ 1.370|R$ 2.055
-
 PERFORMANCE|GATEWAY G2|XGATEWAYWIFI/BT|GATEWAY WI-FI/BLUETOOTH P/ FECHADURAS MARS/VENUS/SYRIUS|R$ 288|R$ 144|R$ 332
+      `)
+    },
 
-      \`)
+    // =====================================================
+    // MAÇANETAS INOX 304
+    // =====================================================
 
-    },
+    {
+      id: "macanetas-inox-304",
 
+      titulo: "Maçanetas Inox 304",
 
+      colunas: [
+        "Linha",
+        "Maçaneta",
+        "Acabamento",
+        "Referência externa",
+        "Preço externo",
+        "Referência interna",
+        "Preço interno",
+        "Referência banheiro",
+        "Preço banheiro"
+      ],
 
-
-
-    // =====================================================
-
-    // MAÇANETAS INOX 304
-
-    // =====================================================
-
-
-
-    {
-
-      id: "macanetas-inox-304",
-
-
-
-      titulo: "Maçanetas Inox 304",
-
-
-
-      colunas: [
-
-        "Linha",
-
-        "Maçaneta",
-
-        "Acabamento",
-
-        "Referência externa",
-
-        "Preço externo",
-
-        "Referência interna",
-
-        "Preço interno",
-
-        "Referência banheiro",
-
-        "Preço banheiro"
-
-      ],
-
-
-
-      linhas: linhas(\`
-
+      linhas: linhas(`
 PRIME|731 - CRISPUS MAX|POLIDO|X73113IEZ1IP/55|R$ 409,74|X73113IIIP/55|R$ 374,28|X73113IBIP/55|R$ 374,28
-
 PRIME|733 - POLO MAX|POLIDO|X73315IEZ1IP/55|R$ 343,13|X73315IIIP/55|R$ 307,66|X73315IBIP/55|R$ 307,66
-
 PRIME|732 - STAR MAX|POLIDO|X73214IEZ1IP/55|R$ 322,17|X73214IIIP/55|R$ 286,70|X73214IBIP/55|R$ 286,70
-
 PRIME|720 - ACQUA MAX|POLIDO|X72008IEZ1IP/55|R$ 256,33|X72008IIIP/55|R$ 220,86|X72008IBIP/55|R$ 220,86
-
 PRIME|720 - ACQUA MAX|POLIDO|X72008IEZ1IE/55|R$ 244,06|X72008IIIE/55|R$ 208,59|X72008IBIE/55|R$ 208,59
-
 UNIC|721 - CHAMPION|PRETO|X72109IEZ1PT/55|R$ 288,13|X72109IIPT/55|R$ 252,66|X72109IBPT/55|R$ 252,66
-
 UNIC|721 - CHAMPION|POLIDO|X72109IEZ1IP/55|R$ 231,83|X72109IIIP/55|R$ 196,36|X72109IBIP/55|R$ 196,36
-
 UNIC|721 - CHAMPION|ESCOVADO|X72109IEZ1IE/55|R$ 196,18|X72109IIIE/55|R$ 160,71|X72109IBIE/55|R$ 160,71
-
 UNIC|721 - CHAMPION|POLIDO|X72107IEZ1IP/55|R$ 217,11|X72107IIIP/55|R$ 181,64|X72107IBIP/55|R$ 181,64
-
 UNIC|721 - CHAMPION|ESCOVADO|X72107IEZ1IE/55|R$ 181,45|X72107IIIE/55|R$ 145,98|X72107IBIE/55|R$ 145,98
-
 UNIC|721 - CHAMPION|POLIDO|X72107IEZ1IP/40|R$ 200,86|X72107IIIP/40|R$ 165,39|X72107IBIP/40|R$ 165,39
-
 UNIC|721 - CHAMPION|ESCOVADO|X72107IEZ1IE/40|R$ 173,46|X72107IIIE/40|R$ 136,22|X72107IBIE/40|R$ 136,22
-
 PRIME|730 - LUCK|POLIDO|X73009IEZ1IP/55|R$ 202,87|X73009IIIP/55|R$ 167,41|X73009IBIP/55|R$ 167,41
-
 PRIME|730 - LUCK|ESCOVADO|X73009IEZ1IE/55|R$ 190,44|X73009IIIE/55|R$ 155,86|X73009IBIE/55|R$ 155,86
-
 PRIME|730 - LUCK|POLIDO|X73001IEZ1IP/55|R$ 197,80|X73001IIIP/55|R$ 163,22|X73001IBIP/55|R$ 163,22
-
 PRIME|730 - LUCK|ESCOVADO|X73001IEZ1IE/55|R$ 185,55|X73001IIIE/55|R$ 151,86|X73001IBIE/55|R$ 151,86
-
 PRIME|724 - NAVIS|PRETO|X72401IEZ1PT/55|R$ 228,60|X72401IPT/55|R$ 193,00|X72401IBPT/55|R$ 193,00
-
 PRIME|724 - NAVIS|POLIDO|X72401IEZ1IP/55|R$ 193,00|X72401IIIP/55|R$ 166,30|X72401IBIP/55|R$ 166,30
-
 PRIME|724 - NAVIS|ESCOVADO|X72401IEZ1IE/55|R$ 179,11|X72401IIIE/55|R$ 152,95|X72401IBIE/55|R$ 152,95
-
 PRIME|724 - NAVIS|POLIDO|X72404IEZ1IP/55|R$ 183,56|X72404IIIP/55|R$ 157,40|X72404IBIP/55|R$ 157,40
-
 PRIME|724 - NAVIS|ESCOVADO|X72404IEZ1IE/55|R$ 170,21|X72404IIIE/55|R$ 144,05|X72404IBIE/55|R$ 144,05
-
 PRIME|724 - NAVIS|POLIDO|X72404IEZ1IP/40|R$ 173,55|X72404IIIP/40|R$ 138,08|X72404IBIP/40|R$ 138,08
-
 PRIME|724 - NAVIS|ESCOVADO|X72404IEZ1IE/40|R$ 163,04|X72404IIIE/40|R$ 127,57|X72404IBIE/40|R$ 127,57
-
 PRIME|724 - NAVIS|PRETO|X72409IEZ1PT/55|R$ 230,82|X72409IIPT/55|R$ 195,36|X72409IBPT/55|R$ 195,36
-
 PRIME|724 - NAVIS|POLIDO|X72409IEZ1IP/55|R$ 194,02|X72409IIIP/55|R$ 158,55|X72409IBIP/40|R$ 158,55
-
 PRIME|724 - NAVIS|ESCOVADO|X72409IEZ1IE/55|R$ 180,67|X72409IIIE/55|R$ 145,20|X72409IBIE/40|R$ 145,20
-
 PRIME|724 - NAVIS|POLIDO|X72407IEZ1IP/55|R$ 186,90|X72407IIIP/55|R$ 151,43|X72407IBIP/55|R$ 151,43
-
 PRIME|724 - NAVIS|ESCOVADO|X72407IEZ1IE/55|R$ 171,33|X72407IIIE/55|R$ 135,86|X72407IBIE/55|R$ 135,86
-
 PRIME|724 - NAVIS|POLIDO|X72407IEZ1IP/40|R$ 178,00|X72407IIIP/40|R$ 142,53|X72407IBIP/40|R$ 142,53
-
 PRIME|724 - NAVIS|ESCOVADO|X72407IEZ1IE/40|R$ 166,88|X72407IIIE/40|R$ 131,41|X72407IBIE/40|R$ 131,41
-
 PRIME|728 - STAR|PRETO|X72809IEZ1PT/55|R$ 224,94|X72809IIPT/55|R$ 193,91|X72809IBPT/55|R$ 193,91
-
 PRIME|728 - STAR|POLIDO|X72809IEZ1IP/55|R$ 207,35|X72809IIIP/55|R$ 175,43|X72809IBIP/55|R$ 175,43
-
 PRIME|728 - STAR|ESCOVADO|X72809IEZ1IE/55|R$ 191,57|X72809IIIE/55|R$ 155,22|X72809IBIE/55|R$ 155,22
-
 PRIME|728 - STAR|POLIDO|X72807IEZ1IP/55|R$ 194,10|X72807IIIP/55|R$ 162,18|X72807IBIP/55|R$ 162,18
-
 PRIME|728 - STAR|ESCOVADO|X72807IEZ1IE/55|R$ 184,51|X72807IIIE/55|R$ 148,16|X72807IBIE/55|R$ 148,16
-
 PRIME|728 - STAR|POLIDO|X72807IEZ1IP/40|R$ 199,42|X72807IIIP/40|R$ 163,95|X72807IBIP/40|R$ 163,95
-
 PRIME|728 - STAR|ESCOVADO|X72807IEZ1IE/40|R$ 184,23|X72807IIIE/40|R$ 144,33|X72807IBIE/40|R$ 144,33
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 UNIC|722 - MARINE|PRETO|X72201IEZ1PT/55|R$ 212,72|X72201IIIP/55|R$ 181,69|X72201IBIP/55|R$ 181,69
-
 UNIC|722 - MARINE|POLIDO|X72201IEZ1IP/55|R$ 210,97|X72201IIPT/55|R$ 171,07|X72201IBPT/55|R$ 171,07
-
 UNIC|722 - MARINE|PRETO|X72204IEZ1PT/55|R$ 199,84|X72204IIPT/55|R$ 168,81|X72204IBPT/55|R$ 168,81
-
 UNIC|722 - MARINE|POLIDO|X72204IEZ1IP/55|R$ 194,41|X72204IIPT/55|R$ 154,51|X72204IBPT/55|R$ 154,51
-
 UNIC|722 - MARINE|POLIDO|X72204IEZ1IP/40|R$ 176,13|X72204IIIP/40|R$ 136,23|X72204IBIP/40|R$ 136,23
-
 UNIC|722 - MARINE|PRETO|X72209IEZ1PT/55|R$ 212,72|X72209IIPT/55|R$ 181,69|X72209IBPT/55|R$ 181,69
-
 UNIC|722 - MARINE|POLIDO|X72209IEZ1IP/55|R$ 210,97|X72209IIIP/55|R$ 171,07|X72209IBIP/55|R$ 171,07
-
 UNIC|722 - MARINE|POLIDO|X72207IEZ1IP/55|R$ 194,41|X72207IIIP/55|R$ 154,51|X72207IBIP/55|R$ 154,51
-
 UNIC|722 - MARINE|POLIDO|X72207IEZ1IP/40|R$ 176,13|X72207IIIP/40|R$ 136,23|X72207IBIP/40|R$ 136,23
-
 ACESSIBILIDADE|741 - CECI COM PARAFUSO DE FIXAÇÃO NA ROSETA|ESCOVADO|74110IEZ1IE/55|R$ 214,60|INDISPONÍVEL|R$ 172,31|74110IBIE/55|R$ 172,31
-
 ACESSIBILIDADE|741 - CECI COM SUPORTE PLÁSTICO|ESCOVADO|X74101IEZ1IE/55|R$ 193,37|INDISPONÍVEL|R$ 151,08|X74101IBIE/55|R$ 151,08
-
 UNIC|729 - MARINE COLOR|PRETO|X72909IEZ1PT/55|R$ 172,41|X72909IIPT/55|R$ 136,94|X72909IBPT/55|R$ 136,94
-
 UNIC|729 - MARINE COLOR|ESCOVADO|X72909IEZ1IE/55|R$ 151,30|X72909IIIE/55|R$ 115,83|X72909IBIE/55|R$ 115,83
-
 UNIC|729 - MARINE COLOR|ESCOVADO|X72907IEZ1IE/55|R$ 141,06|X72907IIIE/55|R$ 105,59|X72907IBIE/55|R$ 105,59
-
 UNIC|729 - MARINE COLOR|ESCOVADO|X72907IEZ1IE/40|R$ 131,05|X72907IIIE/40|R$ 93,81|X72907IBIE/40|R$ 93,81
-
 UNIC|729 - MARINE COLOR|PRETO|X72901EZ1PT/55|R$ 178,67|X72901IIPT/55|R$ 143,20|X72901IBPT/55|R$ 143,20
-
 UNIC|729 - MARINE COLOR|ESCOVADO|X72901EZ1IE/55|R$ 155,75|X72901IIIE/55|R$ 120,28|X72901IBIE/55|R$ 120,28
-
 UNIC|729 - MARINE COLOR|PRETO|X72904IEZ1PT/55|R$ 157,68|X72904IIPT/55|R$ 122,22|X72904IBPT/55|R$ 122,22
-
 UNIC|729 - MARINE COLOR|ESCOVADO|X72904IEZ1IE/55|R$ 135,73|X72904IIIE/55|R$ 100,26|X72904IBIE/55|R$ 100,26
-
 UNIC|729 - MARINE COLOR|ESCOVADO|X72904IEZ1IE/40|R$ 127,93|X72904IIIE/40|R$ 91,58|X72904IBIE/40|R$ 91,58
+      `),
 
-      \`),
+      observacoes: [
+        "Para fechaduras com cantos redondos (usinagem industrial), acrescer a letra R no final do código.",
+        "Para fechaduras com cantos quadrados, acrescer a letra Q no final do código.",
+        "Cada caixa fechada contém 12 fechaduras.",
+        "Maçaneta Marine Color: acrescentar CZ no final da referência.",
+        "Maçaneta Ceci: acrescentar CZ no final da referência.",
+        "Classificação dos itens destas linhas de acordo com a NBR 14913:2025."
+      ]
+    },
 
+    // =====================================================
+    // FECHADURAS ZAMAK
+    // =====================================================
 
+    {
+      id: "fechaduras-zamak",
 
-      observacoes: [
+      titulo: "Fechaduras Zamak",
 
-        "Para fechaduras com cantos redondos (usinagem industrial), acrescer a letra R no final do código.",
+      colunas: [
+        "Linha",
+        "Maçaneta",
+        "Acabamento",
+        "Referência externa",
+        "Preço externo",
+        "Referência interna",
+        "Preço interno",
+        "Referência banheiro",
+        "Preço banheiro"
+      ],
 
-        "Para fechaduras com cantos quadrados, acrescer a letra Q no final do código.",
-
-        "Cada caixa fechada contém 12 fechaduras.",
-
-        "Maçaneta Marine Color: acrescentar CZ no final da referência.",
-
-        "Maçaneta Ceci: acrescentar CZ no final da referência.",
-
-        "Classificação dos itens destas linhas de acordo com a NBR 14913:2025."
-
-      ]
-
-    },
-
-
-
-
-
-    // =====================================================
-
-    // FECHADURAS ZAMAK
-
-    // =====================================================
-
-
-
-    {
-
-      id: "fechaduras-zamak",
-
-
-
-      titulo: "Fechaduras Zamak",
-
-
-
-      colunas: [
-
-        "Linha",
-
-        "Maçaneta",
-
-        "Acabamento",
-
-        "Referência externa",
-
-        "Preço externo",
-
-        "Referência interna",
-
-        "Preço interno",
-
-        "Referência banheiro",
-
-        "Preço banheiro"
-
-      ],
-
-
-
-      linhas: linhas(\`
-
+      linhas: linhas(`
 GOL|10 - GOL|CROMADO|X11006IEZ1CR/40|R$ 63,24|X11006IICR/40|R$ 43,01|X11006IBCR/40|R$ 43,01
-
 GOL|10 - GOL|CROMADO|X11005IEZ1CR/40|R$ 63,24|X11005IICR/40|R$ 43,01|X11005IBCR/40|R$ 43,01
-
 GOL|10 - GOL|CROMADO|X11007IEZ1CR/40|R$ 64,18|X11007IICR/40|R$ 43,96|X11007IBCR/40|R$ 43,96
-
 GOL|10 - GOL|CROMADO|X11004IEZ1CR/40|R$ 64,18|X11004IICR/40|R$ 43,96|X11004IBCR/40|R$ 43,96
-
 POP|11 - STILLUS|CROMADO|X21105IEZ1CR/40|R$ 69,43|X21105IICR/40|R$ 40,90|X21105IBCR/40|R$ 40,90
-
 POP|11 - STILLUS|CROMADO|X21104IEZ1CR/40|R$ 72,81|X21104IICR/40|R$ 54,88|X21104IBCR/40|R$ 54,88
-
 POP|11 - STILLUS|CROMADO|X21107IEZ1CR/40|R$ 72,81|X21107IICR/40|R$ 54,88|X21107IBCR/40|R$ 54,88
-
 POP|11 - STILLUS|CROMADO|X21104IEZ1CR/55|R$ 77,75|X21104IICR/55|R$ 58,60|X21104IBCR/55|R$ 58,60
-
 POP|11 - STILLUS|CROMADO|X21107IEZ1CR/55|R$ 77,75|X21107IICR/55|R$ 58,60|X21107IBCR/55|R$ 58,60
-
 FLEX|16 - GLORIAM|CROMADO|X51604IEZ1CR/40|R$ 79,54|X51604IICR/40|R$ 59,94|X51604IBCR/40|R$ 59,94
-
 FLEX|16 - GLORIAM|CROMADO|X51604IEZ1CR/55|R$ 85,05|X51604IICR/55|R$ 66,15|X51604IBCR/55|R$ 66,15
-
 FLEX|16 - GLORIAM|CROMADO|X51601IEZ1CR/55|R$ 91,35|X51601IICR/55|R$ 70,88|X51601IBCR/55|R$ 70,88
-
 FLEX|15 - OLYMPIA|CROMADO|X51507IEZ1CR/40|R$ 72,07|X51507IICR/40|R$ 61,11|X51507IBCR/40|R$ 61,11
-
 FLEX|15 - OLYMPIA|CROMADO|X51509IEZ1CR/55|R$ 88,20|X51509IICR/40|R$ 66,15|X51509IBCR/40|R$ 66,15
+      `),
 
-      \`),
+      observacoes: [
+        "Para fechaduras com cantos redondos (usinagem industrial), acrescer a letra R no final do código.",
+        "Para fechaduras com cantos quadrados, acrescer a letra Q no final do código.",
+        "Maçanetas Stillus, Gloriam e Olympia podem ter acabamento preto: substituir CR no código por PT.",
+        "Para acabamento em preto, acrescer 15% sobre o valor líquido do produto.",
+        "Cada caixa fechada contém 12 fechaduras.",
+        "Classificação dos itens destas linhas de acordo com a NBR 14913:2025."
+      ]
+    },
 
+    // =====================================================
+    // AUXILIARES
+    // =====================================================
 
+    {
+      id: "auxiliares",
 
-      observacoes: [
+      titulo: "Auxiliares",
 
-        "Para fechaduras com cantos redondos (usinagem industrial), acrescer a letra R no final do código.",
+      colunas: [
+        "Linha",
+        "Tipo e máquina",
+        "Função e roseta",
+        "Acabamento",
+        "Referência",
+        "Preço da unidade"
+      ],
 
-        "Para fechaduras com cantos quadrados, acrescer a letra Q no final do código.",
-
-        "Maçanetas Stillus, Gloriam e Olympia podem ter acabamento preto: substituir CR no código por PT.",
-
-        "Para acabamento em preto, acrescer 15% sobre o valor líquido do produto.",
-
-        "Cada caixa fechada contém 12 fechaduras.",
-
-        "Classificação dos itens destas linhas de acordo com a NBR 14913:2025."
-
-      ]
-
-    },
-
-
-
-
-
-    // =====================================================
-
-    // AUXILIARES
-
-    // =====================================================
-
-
-
-    {
-
-      id: "auxiliares",
-
-
-
-      titulo: "Auxiliares",
-
-
-
-      colunas: [
-
-        "Linha",
-
-        "Tipo e máquina",
-
-        "Função e roseta",
-
-        "Acabamento",
-
-        "Referência",
-
-        "Preço da unidade"
-
-      ],
-
-
-
-      linhas: linhas(\`
-
+      linhas: linhas(`
 AUXILIARES|ROLETE 55MM|EXTERNA REDONDA G|ESCOVADO|XFRL01IEZ1IP/55|R$ 106,49
-
 AUXILIARES|ROLETE 55MM|EXTERNA REDONDA G|POLIDO|XFRL01IEZ1IE/55|R$ 109,68
-
 AUXILIARES|ROLETE 55MM|EXTERNA REDONDA G|PRETO|XFRL01IEZ1PT/55|R$ 133,19
-
 AUXILIARES|ROLETE 55MM|EXTERNA QUADRADO G|ESCOVADO|XFRL09IEZ1IP/55|R$ 107,21
-
 AUXILIARES|ROLETE 55MM|EXTERNA QUADRADO G|POLIDO|XFRL09IEZ1IE/55|R$ 110,42
-
 AUXILIARES|ROLETE 55MM|EXTERNA QUADRADO G|PRETO|XFRL09IEZ1PT/55|R$ 134,09
-
 AUXILIARES|CORRER 40MM|INTERNA C/CHAVE DOBRÁVEL + CONCHA JASPE 220X55MM|POLIDO|FCCD234IP/40R|R$ 110,27
-
 AUXILIARES|CORRER 40MM|INTERNA C/CHAVE DOBRÁVEL + CONCHA JASPE 220X55MM|POLIDO|FCCDJASPEIP/40R|R$ 232,91
-
 AUXILIARES|CORRER 40MM|BANHEIRO|POLIDO|X209904IBIP/40R|R$ 106,80
-
 AUXILIARES|CORRER 40MM|BANHEIRO|ESCOVADO|X209904IBIE/40R|R$ 109,03
-
 AUXILIARES|CORRER 40MM|BANHEIRO|POLIDO|X209907IBIP/40R|R$ 108,14
-
 AUXILIARES|CORRER 40MM|BANHEIRO|ESCOVADO|X209907IBIE/40R|R$ 110,85
-
 AUXILIARES|CORRER 40MM|BANHEIRO|POLIDO|X209901IBIP/40R|R$ 117,93
-
 AUXILIARES|CORRER 40MM|BANHEIRO|POLIDO|X209901IBIE/40R|R$ 120,15
-
 AUXILIARES|CORRER 40MM|BANHEIRO|POLIDO|X209909IBIP/40R|R$ 120,15
-
 AUXILIARES|CORRER 40MM|BANHEIRO|ESCOVADO|X209909IBIE/40R|R$ 122,38
-
 CORRER EXTERNA|EXTERNA|CILINDRO 60MM ROSETA REDONDA G|POLIDO|X209911IE4IP/40R|R$ 218,05
-
 CORRER EXTERNA|EXTERNA|CILINDRO 60MM ROSETA QUADRADA G|ESCOVADO|X209911IE4IE/40R|R$ 224,55
-
 CORRER EXTERNA|EXTERNA|CILINDRO 60MM ROSETA REDONDA G|POLIDO|X209912IE4IP/40R|R$ 218,05
-
 CORRER EXTERNA|EXTERNA|CILINDRO 60MM ROSETA QUADRADA G|ESCOVADO|X209912IE4IE/40R|R$ 224,55
+      `),
 
-      \`),
+      observacoes: [
+        "Para fechaduras com cantos redondos (usinagem industrial), acrescer a letra R no final do código.",
+        "Para fechaduras com cantos quadrados, acrescer a letra Q no final do código.",
+        "Cada caixa fechada contém 12 fechaduras.",
+        "As fechaduras para porta de correr são padrão europeu."
+      ]
+    },
 
+    // =====================================================
+    // COMPONENTES
+    // =====================================================
 
+    {
+      id: "componentes",
 
-      observacoes: [
+      titulo: "Componentes",
 
-        "Para fechaduras com cantos redondos (usinagem industrial), acrescer a letra R no final do código.",
+      colunas: [
+        "Linha / item",
+        "Descrição",
+        "Complemento",
+        "Referência",
+        "Preço da unidade"
+      ],
 
-        "Para fechaduras com cantos quadrados, acrescer a letra Q no final do código.",
-
-        "Cada caixa fechada contém 12 fechaduras.",
-
-        "As fechaduras para porta de correr são padrão europeu."
-
-      ]
-
-    },
-
-
-
-
-
-    // =====================================================
-
-    // COMPONENTES
-
-    // =====================================================
-
-
-
-    {
-
-      id: "componentes",
-
-
-
-      titulo: "Componentes",
-
-
-
-      colunas: [
-
-        "Linha / item",
-
-        "Descrição",
-
-        "Complemento",
-
-        "Referência",
-
-        "Preço da unidade"
-
-      ],
-
-
-
-      linhas: linhas(\`
-
+      linhas: linhas(`
 COMPLEMENTOS|MÁQUINA 40MM C/FALSA E CONTRA TESTA|EXTERNA|XMQE40CRR|R$ 32,05
-
 COMPLEMENTOS|MÁQUINA 40MM C/FALSA E CONTRA TESTA|INTERNA|XMQI40CRR|R$ 32,05
-
 COMPLEMENTOS|MÁQUINA 40MM C/FALSA E CONTRA TESTA|BANHEIRO|XMQB40CRR|R$ 32,05
-
 COMPLEMENTOS|MÁQUINA 55MM C/FALSA E CONTRA TESTA|EXTERNA|XMQE40CRQ|R$ 51,32
-
 COMPLEMENTOS|MÁQUINA 55MM C/FALSA E CONTRA TESTA|INTERNA|XMQI40CRQ|R$ 51,32
-
 COMPLEMENTOS|MÁQUINA 55MM C/FALSA E CONTRA TESTA|BANHEIRO|XMQB40CRQ|R$ 51,32
-
 COMPLEMENTOS|MÁQUINA 40MM C/FALSA E CONTRA TESTA|EXTERNA AVULSA|XMQE55CRR|R$ 32,05
-
 COMPLEMENTOS|MÁQUINA 40MM C/FALSA E CONTRA TESTA|INTERNA|XMQI55CRR|R$ 32,05
-
 COMPLEMENTOS|MÁQUINA 40MM C/FALSA E CONTRA TESTA|BANHEIRO|XMQB55CRR|R$ 32,05
-
 COMPLEMENTOS|MÁQUINA 55MM C/FALSA E CONTRA TESTA|EXTERNA|XMQE55CRQ|R$ 51,32
-
 COMPLEMENTOS|MÁQUINA 55MM C/FALSA E CONTRA TESTA|INTERNA|XMQI55CRQ|R$ 51,32
-
 COMPLEMENTOS|MÁQUINA 55MM C/FALSA E CONTRA TESTA|BANHEIRO|XMQB55CRQ|R$ 51,32
-
 COMPLEMENTOS|MÁQUINA ROLETE DE 55MM COM FALSA E CONTRA REDONDA|EXTERNA|XMQRL55CRR|R$ 43,89
-
 COMPLEMENTOS|MÁQUINA ROLETE DE 55MM COM FALSA E CONTRA QUADRADA|EXTERNA|XMQRL55CRQ|R$ 43,89
-
 COMPLEMENTOS|CILINDRO 62MM PADRÃO YALE C/ PARAFUSO PARA MÁQUINA DE 55MM E PARA MÁQUINA DE 40MM|EXTERNA DE 40MM OU 55MM; E OU ROLETE 55MM|XCILEZ1CR|R$ 42,29
-
 GUARNIÇÃO GOL|GUARNIÇÃO: 01 PAR DE MAÇANETAS C/ HASTE + SUPORTES + PARAFUSOS + ROSETAS OU ESPELHOS|GOL|VIDE ABAIXO|R$ 37,73
-
 GUARNIÇÃO POP|GUARNIÇÃO: 01 PAR DE MAÇANETAS C/ HASTE + SUPORTES + PARAFUSOS + ROSETAS OU ESPELHOS|STILLUS|VIDE ABAIXO|R$ 45,80
-
 GUARNIÇÃO FLEX|GUARNIÇÃO: 01 PAR DE MAÇANETAS C/ HASTE + SUPORTES + PARAFUSOS + ROSETAS OU ESPELHOS|STILLUS|VIDE ABAIXO|R$ 45,80
-
 GUARNIÇÃO UNIC|GUARNIÇÃO: 01 PAR DE MAÇANETAS C/ HASTE + SUPORTES + PARAFUSOS + ROSETAS OU ESPELHOS|TODAS|VIDE ABAIXO|R$ 132,37
-
 GUARNIÇÃO PRIME|GUARNIÇÃO: 01 PAR DE MAÇANETAS C/ HASTE + SUPORTES + PARAFUSOS + ROSETAS OU ESPELHOS|TODAS|VIDE ABAIXO|R$ 160,23
-
 GUARNIÇÃO CECI OU MARINE II|GUARNIÇÃO: 01 PAR DE MAÇANETAS C/ HASTE + SUPORTES + PARAFUSOS + ROSETAS OU ESPELHOS|CECI|VIDE ABAIXO|R$ 58,43
-
 KIT ROSETA 01 OU 09|2 ROSETAS DA MAÇANETA + 2 ROSETAS DE FUNÇÃO + SUPORTES E PARAFUSOS|INTERNAS, EXTERNAS E BANHEIRO|VIDE ABAIXO|R$ 38,84
-
 KIT ROSETA 04,06,07|2 ROSETAS DA MAÇANETA + 2 ROSETAS DE FUNÇÃO + SUPORTES E PARAFUSOS|INTERNAS, EXTERNAS E BANHEIRO|VIDE ABAIXO|R$ 21,28
+      `)
+    },
 
-      \`)
+    // =====================================================
+    // EXPOSITORES
+    // =====================================================
 
-    },
+    {
+      id: "expositores",
 
+      titulo: "Expositores",
 
+      colunas: [
+        "Referência",
+        "Linha",
+        "Descrição",
+        "Complemento",
+        "Preço da unidade"
+      ],
 
-
-
-    // =====================================================
-
-    // EXPOSITORES
-
-    // =====================================================
-
-
-
-    {
-
-      id: "expositores",
-
-
-
-      titulo: "Expositores",
-
-
-
-      colunas: [
-
-        "Referência",
-
-        "Linha",
-
-        "Descrição",
-
-        "Complemento",
-
-        "Preço da unidade"
-
-      ],
-
-
-
-      linhas: linhas(\`
-
+      linhas: linhas(`
 XCEPOBALCAO55|MECÂNICAS|P/ FECHADURA EXTERNA|CEPO MDF CINZA 365X175X37MM (SÓ MDF) C/ ETIQUETAS C/ REBAIXO|R$ 90,00
-
 XCEPOBALCAO40|MECÂNICAS|P/ FECHADURA EXTERNA|CEPO MDF CINZA (SÓ MDF) 365X175X37MM C/ ETIQUETAS C/ REBAIXO|R$ 90,00
-
 XCEPOGONDOLA55|MECÂNICAS|P/ FECHADURA EXTERNA|CEPO MDF CINZA (SÓ MDF) 365X175X37MM C/ ETIQUETA C/ REBAIXO|R$ 85,00
-
 XCEPOGONDOLA40|MECÂNICAS|P/ FECHADURA EXTERNA|CEPO MDF CINZA (SÓ MDF) 365X175X37MM C/ ETIQUETA C/ REBAIXO|R$ 85,00
-
 XSYRIUSS2PRO|DIGITAIS|INTELIGENTES|CEPO MDS CINZA 400X240X37MM C/ FECHADURA|R$ 399,00
-
 XSYRIUSS3MAX|DIGITAIS|INTELIGENTES|CEPO MDS CINZA 400X240X37MM C/ FECHADURA|R$ 599,00
-
 XVENUSS3PRO|DIGITAIS|INTELIGENTES|CEPO MDS CINZA 400X240X37MM C/ FECHADURA|R$ 599,00
-
 XERISFACEID|DIGITAIS|INTELIGENTES|CEPO MDS CINZA 400X240X37MM C/ FECHADURA|R$ 1.299,00
+      `),
 
-      \`),
+      observacoes: [
+        "Para formar um cepo balcão ou gôndola, escolher o tipo de expositor e informar junto a referência da fechadura escolhida.",
+        "Conceder 50% de desconto no preço final das fechaduras para pedidos de exposição.",
+        "Válido para clientes ou representantes.",
+        "Nos cepos de fechaduras digitais, considerar apenas o cepo com o devido nome, pois a estrutura já contempla MDF e fechadura."
+      ]
+    },
 
+    // =====================================================
+    // DOBRADIÇAS CARTELA
+    // =====================================================
 
+    {
+      id: "dobradicas-cartela",
 
-      observacoes: [
+      titulo: "Dobradiças - Cartela",
 
-        "Para formar um cepo balcão ou gôndola, escolher o tipo de expositor e informar junto a referência da fechadura escolhida.",
+      colunas: [
+        "Item",
+        "Matéria-prima",
+        "Acabamento",
+        "Tamanho",
+        "Referência",
+        "Parafuso",
+        "Peças por cartela",
+        "Preço da cartela"
+      ],
 
-        "Conceder 50% de desconto no preço final das fechaduras para pedidos de exposição.",
-
-        "Válido para clientes ou representantes.",
-
-        "Nos cepos de fechaduras digitais, considerar apenas o cepo com o devido nome, pois a estrutura já contempla MDF e fechadura."
-
-      ]
-
-    },
-
-
-
-
-
-    // =====================================================
-
-    // DOBRADIÇAS CARTELA
-
-    // =====================================================
-
-
-
-    {
-
-      id: "dobradicas-cartela",
-
-
-
-      titulo: "Dobradiças - Cartela",
-
-
-
-      colunas: [
-
-        "Item",
-
-        "Matéria-prima",
-
-        "Acabamento",
-
-        "Tamanho",
-
-        "Referência",
-
-        "Parafuso",
-
-        "Peças por cartela",
-
-        "Preço da cartela"
-
-      ],
-
-
-
-      linhas: linhas(\`
-
+      linhas: linhas(`
 LEME|INOX 304|POLIDO|75X120mm|X331IC|COM|1|R$ 51,44
-
 DOBRADIÇA HAMBURGUESA|INOX 304|POLIDO|70x61MM POLIDO|71IDC / 71IEC|COM|2|R$ 46,72
-
 PREMIUM C/ROLAMENTO|INOX 304|ESCOVADO|3"X 2 1/2" (75,35 x 62,70mm)|X705IXC|COM|3|R$ 62,56
-
 PREMIUM C/ROLAMENTO|INOX 304|POLIDO|3"X 2 1/2" (75,35 x 62,70mm)|X706IXC|COM|3|R$ 70,61
-
 PREMIUM C/ROLAMENTO|INOX 304|ESCOVADO|3 1/2"X3" (88,45mm x 75,30mm)|X700IXC|COM|3|R$ 80,44
-
 PREMIUM C/ROLAMENTO|INOX 304|POLIDO|3 1/2"X3" (88,45mm x 75,30mm)|X701IXC|COM|3|R$ 92,06
-
 PREMIUM C/ROLAMENTO|INOX 304|POLIDO|4X3" - 101,45mm x 76,55mm|X707IXC|COM|3|R$ 128,98
-
 PREMIUM C/ROLAMENTO RAIO 16MM|INOX 304|ESCOVADO|3"X 2 1/2" (75,35 x 62,70mm)|705IER16C|COM|3|R$ 64,44
-
 PREMIUM C/ROLAMENTO RAIO 16MM|INOX 304|POLIDO|3"X 2 1/2" (75,35 x 62,70mm)|X706IPR16IC|COM|3|R$ 72,73
-
 PREMIUM C/ROLAMENTO RAIO 16MM|INOX 304|ESCOVADO|3 1/2"X3" (88,45mm x 75,30mm)|X700IER16IC|COM|3|R$ 82,85
-
 PREMIUM C/ROLAMENTO RAIO 16MM|INOX 304|POLIDO|3 1/2"X3" (88,45mm x 75,30mm)|X701IPR16IC|COM|3|R$ 94,82
-
 DOBRADIÇA AMERICANA - PINO SIMPLES|INOX 304|POLIDO|1½" - 38,2x32,4MM|X15IC|COM|3|R$ 10,38
-
 DOBRADIÇA AMERICANA - PINO SIMPLES|INOX 304|POLIDO|2" - 50,8x43,6MM|X18IC|COM|3|R$ 16,94
-
 DOBRADIÇA AMERICANA - PINO SIMPLES|INOX 304|POLIDO|2½" - 62x44MM|X20IC|COM|3|R$ 20,75
-
 DOBRADIÇA AMERICANA - PINO SIMPLES|INOX 304|POLIDO|3" - 76x47MM|X30IC|COM|3|R$ 31,86
-
 DOBRADIÇA AMERICANA - PINO SIMPLES|INOX 304|POLIDO|3½" - 85x56MM|X40IC|COM|3|R$ 45,63
-
 DOBRADIÇA AMERICANA - PINO SIMPLES|INOX 304|ACABAMENTO|3x2½ - 76x62MM|X54IC|COM|3|R$ 44,04
-
 DOBRADIÇA AMERICANA - PINO SIMPLES|INOX 304|POLIDO|3x3" - 76x76MM|X56IC|COM|3|R$ 50,18
-
 MAXIMA C/ ROLAMENTO|LIGA 201|ESCOVADO|3" x 2 1/2" - 75,35x62,70mm|X105IXC|COM|3|R$ 35,19
-
 MAXIMA C/ ROLAMENTO|LIGA 201|POLIDO|3" x 2 1/2" - 75,35x62,70mm|X106IXC|COM|3|R$ 47,15
-
 MAXIMA C/ ROLAMENTO|LIGA 201|ESCOVADO|3 1/2"X3" - 88,45mmx75,30mm|X100IXC|COM|3|R$ 49,35
-
 MAXIMA C/ ROLAMENTO|LIGA 201|POLIDO|3 1/2"X3" - 88,45mmx75,30mm|X101IXC|COM|3|R$ 62,55
-
 MAXIMA C/ ROLAMENTO|LIGA 201|ESCOVADO|3" x 2 1/2" - 75,35x62,70mm RAIO 16"|X105IER16IC|COM|3|R$ 51,26
-
 MAXIMA C/ ROLAMENTO|LIGA 201|POLIDO|3" x 2 1/2" - 75,35x62,70mm RAIO 16"|X106IPR16IC|COM|3|R$ 36,19
-
 MAXIMA C/ ROLAMENTO|LIGA 201|ESCOVADO|3 1/2"X3" - 88,45mmx75,30mm RAIO16MM|X100IER16IC|COM|3|R$ 48,51
-
 MAXIMA C/ ROLAMENTO|LIGA 201|POLIDO|3 1/2"X3" - 88,45mmx75,30mm RAIO16MM|X101IPR16IC|COM|3|R$ 50,78
-
 AMERICANA C/ ANEIS|AÇO|CROMADO|3" x 2 1/2" - 75,35 x 62,70mm|X105FCC|COM|3|R$ 31,18
-
 AMERICANA C/ ANEIS|AÇO|CROMADO|3" x 2 1/2" - 75,35 x 62,70mm RAIO 16MM|X105FCR16C|COM|3|R$ 31,83
-
 AMERICANA PINO LUXO|AÇO|CROMADO|3 x 2 1/2" CANTO RETO|X601FCC|COM|3|R$ 28,96
-
 AMERICANA PINO LUXO|AÇO|CROMADO|3 x 2 1/2" RAIO 16mm|X601FCR16C|COM|3|R$ 28,96
-
 DOBRADIÇA AMERICANA PINO SIMPLES RAIO 16MM|AÇO|ZINCADO|3x2½" - 76x62mm RAIO 16MM|X50FZR16C|COM|3|R$ 13,94
-
 DOBRADIÇA AMERICANA PINO SIMPLES|AÇO|ZINCADO|3" - 75x47mm|X30FZC|COM|3|R$ 10,13
-
 DOBRADIÇA AMERICANA PINO SIMPLES|AÇO|ZINCADO|3½" - 85x56mm|X40FZC|COM|3|R$ 11,18
-
 DOBRADIÇA AMERICANA PINO SIMPLES|AÇO|ZINCADO|3x2½" - 76x62mm|X50FZC|COM|3|R$ 11,18
+      `),
 
-      \`),
+      observacoes: [
+        "Hamburguesas: usar o código 71IEC para vender dobradiças para o lado esquerdo.",
+        "Hamburguesas: usar o código 71IDC para vender dobradiças para o lado direito."
+      ]
+    },
 
+    // =====================================================
+    // DOBRADIÇAS CAIXAS
+    // =====================================================
 
+    {
+      id: "dobradicas-caixas",
 
-      observacoes: [
+      titulo: "Dobradiças - Caixas",
 
-        "Hamburguesas: usar o código 71IEC para vender dobradiças para o lado esquerdo.",
+      colunas: [
+        "Item",
+        "Tamanho",
+        "Matéria-prima",
+        "Acabamento",
+        "Referência unidade",
+        "Parafuso unidade",
+        "Preço unidade",
+        "Referência caixa",
+        "Parafuso caixa",
+        "Peças por caixa",
+        "Preço caixa"
+      ],
 
-        "Hamburguesas: usar o código 71IDC para vender dobradiças para o lado direito."
-
-      ]
-
-    },
-
-
-
-
-
-    // =====================================================
-
-    // DOBRADIÇAS CAIXAS
-
-    // =====================================================
-
-
-
-    {
-
-      id: "dobradicas-caixas",
-
-
-
-      titulo: "Dobradiças - Caixas",
-
-
-
-      colunas: [
-
-        "Item",
-
-        "Tamanho",
-
-        "Matéria-prima",
-
-        "Acabamento",
-
-        "Referência unidade",
-
-        "Parafuso unidade",
-
-        "Preço unidade",
-
-        "Referência caixa",
-
-        "Parafuso caixa",
-
-        "Peças por caixa",
-
-        "Preço caixa"
-
-      ],
-
-
-
-      linhas: linhas(\`
-
+      linhas: linhas(`
 LEME|75X120mm|INOX 304|POLIDO|X331I|SEM|R$ 49,94|X331ICX10|SEM|10|R$ 499,41
-
 DOBRADIÇA HAMBURGUESA|70x61MM POLIDO|INOX 304|POLIDO|71ID / 71IE|SEM|R$ 23,36|71IDCX / 71IECX|SEM|24|R$ 560,70
-
 PREMIUM C/ROLAMENTO|3"X 2 1/2" (75,35 x 62,70mm)|INOX 304|ESCOVADO|X705IXP|COM|R$ 20,25|X705IXPCX|COM|24|R$ 485,94
-
 PREMIUM C/ROLAMENTO|3"X 2 1/2" (75,35 x 62,70mm)|INOX 304|POLIDO|X706IXP|COM|R$ 22,85|X706IXPCX|COM|24|R$ 548,42
-
 PREMIUM C/ROLAMENTO|3 1/2"X3" (88,45mm x 75,30mm)|INOX 304|ESCOVADO|X700IXP|COM|R$ 26,03|X700IXPCX|COM|24|R$ 624,78
-
 PREMIUM C/ROLAMENTO|3 1/2"X3" (88,45mm x 75,30mm)|INOX 304|POLIDO|X701IXP|COM|R$ 29,79|X701IXPCX|COM|24|R$ 715,03
-
 PREMIUM C/ROLAMENTO|4X3" - 101,45mm x 76,55mm|INOX 304|POLIDO|X707IXP|COM|R$ 41,74|X707IXPCX|COM|12|R$ 500,89
-
 PREMIUM C/ROLAMENTO RAIO 16MM|3"X 2 1/2" (75,35 x 62,70mm)|INOX 304|ESCOVADO|X705IER16P|COM|R$ 20,85|X705IER16PCX|COM|24|R$ 500,52
-
 PREMIUM C/ROLAMENTO RAIO 16MM|3"X 2 1/2" (75,35 x 62,70mm)|INOX 304|POLIDO|X706IPR16P|COM|R$ 23,54|X706IPR16PCX|COM|24|R$ 564,87
-
 PREMIUM C/ROLAMENTO RAIO 16MM|3 1/2"X3" (88,45mm x 75,30mm)|INOX 304|POLIDO|X700IER16P|COM|R$ 26,81|X700IER16PCX|COM|24|R$ 643,52
-
 PREMIUM C/ROLAMENTO RAIO 16MM|3 1/2"X3" (88,45mm x 75,30mm)|INOX 304|POLIDO|X701IPR16P|COM|R$ 30,69|X701IPR16PCX|COM|24|R$ 736,48
-
 DOBRADIÇA AMERICANA - PINO SIMPLES|1½" - 38,2x32,4MM|INOX 304|POLIDO|X15I|SEM|R$ 2,82|X15ICX|SEM|24|R$ 67,67
-
 DOBRADIÇA AMERICANA - PINO SIMPLES|2" - 50,8x43,6MM|INOX 304|POLIDO|X18I|SEM|R$ 4,94|X18ICX|SEM|24|R$ 118,65
-
 DOBRADIÇA AMERICANA - PINO SIMPLES|2½" - 62x44MM|INOX 304|POLIDO|X20I|SEM|R$ 6,17|X20ICX|SEM|24|R$ 148,19
-
 DOBRADIÇA AMERICANA - PINO SIMPLES|3" - 76x47MM|INOX 304|POLIDO|X30I|SEM|R$ 9,77|X30ICX|SEM|24|R$ 234,50
-
 DOBRADIÇA AMERICANA - PINO SIMPLES|3½" - 85x56MM|INOX 304|POLIDO|X40I|SEM|R$ 14,23|X40ICX|SEM|24|R$ 341,42
-
 DOBRADIÇA AMERICANA - PINO SIMPLES|3x2½ - 76x62MM|INOX 304|POLIDO|X54I|SEM|R$ 13,71|X54ICX|SEM|24|R$ 329,11
-
 DOBRADIÇA AMERICANA - PINO SIMPLES|3x3" - 76x76MM|INOX 304|POLIDO|X56I|SEM|R$ 15,70|X56ICX|SEM|24|R$ 376,79
-
 DOBRADIÇA AMERICANA - PINO SIMPLES RAIO 16MM|3x2½ - 76x62MM C/ RAIO 16"|INOX 304|POLIDO|X54IPR16|COM|R$ 14,12|X54IPR16CX|SEM|24|R$ 338,99
-
 MAXIMA C/ ROLAMENTO|3" x 2 1/2" - 75,35x62,70mm|LIGA 201|ESCOVADO|X105IXP|COM|R$ 10,85|X105IXPCX|COM|24|R$ 260,33
-
 MAXIMA C/ ROLAMENTO|3" x 2 1/2" - 75,35x62,70mm|LIGA 201|POLIDO|X106IXP|COM|R$ 14,72|X106IXPCX|COM|24|R$ 353,24
-
 MAXIMA C/ ROLAMENTO|3 1/2"X3" - 88,45mmx75,30mm|LIGA 201|ESCOVADO|X100IXP|COM|R$ 15,43|X100IXPCX|COM|24|R$ 370,33
-
 MAXIMA C/ ROLAMENTO|3 1/2"X3" - 88,45mmx75,30mm|LIGA 201|POLIDO|X101IXP|COM|R$ 19,70|X101IXPCX|COM|24|R$ 472,86
-
 MAXIMA C/ ROLAMENTO|3" x 2 1/2" - 75,35x62,70mm RAIO 16mm|LIGA 201|ESCOVADO|X105IER16P|COM|R$ 11,17|X105IER16PCX|COM|24|R$ 268,13
-
 MAXIMA C/ ROLAMENTO|3" x 2 1/2" - 75,35x62,70mm RAIO 16mm|LIGA 201|POLIDO|X106IPR16P|COM|R$ 15,16|X106IPR16PCX|COM|24|R$ 363,84
-
 MAXIMA C/ ROLAMENTO|3 1/2"X3" - 88,45mmx75,30mm RAIO16MM|LIGA 201|ESCOVADO|X100IER16P|COM|R$ 15,89|X100IER16PCX|COM|24|R$ 381,44
-
 MAXIMA C/ ROLAMENTO|3 1/2"X3" - 88,45mmx75,30mm RAIO16MM|LIGA 201|POLIDO|X101IPR16P|COM|R$ 20,29|X101IPR16PCX|COM|24|R$ 487,04
-
 SOBREPOR|4"X3"|LIGA 201|POLIDA|—|—|R$ 22,54|X360SIPPCX2|COM|2|R$ 45,09
-
 SOBREPOR|4"X3"|LIGA 201|ESCOVADO|—|—|R$ 13,79|X360SIEPCX2|COM|2|R$ 27,58
-
 AMERICANA C/ ANEIS|3" x 2 1/2" - 75,35 x 62,70mm|AÇO|CROMADO|X105FCP|COM|R$ 9,55|X105FCPCX|COM|24|R$ 229,25
-
 AMERICANA C/ ANEIS|3" x 2 1/2" - 75,35 x 62,70mm RAIO 16MM|AÇO|CROMADO|X105FCR16P|COM|R$ 9,76|X105FCR16PCX|COM|24|R$ 234,29
-
 AMERICANA PINO LUXO|3 x 2 1/2" CANTO RETO|AÇO|CROMADO|X601FCP|COM|R$ 8,83|X601FCPCX|COM|24|R$ 211,94
-
 AMERICANA PINO LUXO|3 x 2 1/2" RAIO 16mm|AÇO|CROMADO|X601FCR16P|COM|R$ 8,83|X601FCR16PCX|COM|24|R$ 211,94
-
 DOBRADIÇA AMERICANA PINO SIMPLES RAIO 16MM|3x2½" - 76x62x1,5mm RAIO 16MM|AÇO|ZINCADO|X50FZR16P|COM|R$ 3,97|X50FZR16PCX|SEM|21|R$ 83,38
-
 DOBRADIÇA AMERICANA PINO SIMPLES RAIO 16MM|3x2½" - 76x62x1,95mm RAIO 16MM (CHAPA GROSSA. NBR7178)|AÇO|ZINCADO|X550FZR16P|COM|R$ 3,97|X50FZR16PCX|SEM|21|R$ 83,38
-
 DOBRADIÇA AMERICANA PINO SIMPLES|3" - 75x47mm|AÇO|ZINCADO|X30FZ|SEM|R$ 2,74|X30FZCX|SEM|24|R$ 65,68
-
 DOBRADIÇA AMERICANA PINO SIMPLES|3½" - 85x56mm|AÇO|ZINCADO|X40FZ|SEM|R$ 3,08|X40FZCX|SEM|24|R$ 73,87
-
 DOBRADIÇA AMERICANA PINO SIMPLES|3x2½" - 76x62mm|AÇO|ZINCADO|X50FZ|SEM|R$ 3,08|X50FZCX|SEM|24|R$ 73,87
+      `),
 
-      \`),
+      observacoes: [
+        "Use o código 71IECX para vender dobradiças hamburguesas para o lado esquerdo.",
+        "Use o código 71IDCX para vender dobradiças hamburguesas para o lado direito.",
+        "Produtos com P no final do código têm parafusos na sua estrutura."
+      ]
+    },
 
+    // =====================================================
+    // ACESSÓRIOS CAIXA
+    // =====================================================
 
+    {
+      id: "acessorios-caixa",
 
-      observacoes: [
+      titulo: "Acessórios - Caixa",
 
-        "Use o código 71IECX para vender dobradiças hamburguesas para o lado esquerdo.",
+      colunas: [
+        "Item",
+        "Referência",
+        "Matéria-prima",
+        "Acabamento",
+        "Tamanho",
+        "Quantidade por caixa",
+        "Parafusos",
+        "Preço"
+      ],
 
-        "Use o código 71IDCX para vender dobradiças hamburguesas para o lado direito.",
-
-        "Produtos com P no final do código têm parafusos na sua estrutura."
-
-      ]
-
-    },
-
-
-
-
-
-    // =====================================================
-
-    // ACESSÓRIOS CAIXA
-
-    // =====================================================
-
-
-
-    {
-
-      id: "acessorios-caixa",
-
-
-
-      titulo: "Acessórios - Caixa",
-
-
-
-      colunas: [
-
-        "Item",
-
-        "Referência",
-
-        "Matéria-prima",
-
-        "Acabamento",
-
-        "Tamanho",
-
-        "Quantidade por caixa",
-
-        "Parafusos",
-
-        "Preço"
-
-      ],
-
-
-
-      linhas: linhas(\`
-
+      linhas: linhas(`
 ALÇA|X300ICX|INOX 304|POLIDO|88mm|10|SEM PARAFUSOS|R$ 65,38
-
 ALÇA|X301ICX|INOX 304|POLIDO|111,80mm|10|SEM PARAFUSOS|R$ 93,53
-
 ALÇA|X302ICX|INOX 304|POLIDO|137mm|10|SEM PARAFUSOS|R$ 105,33
-
 BORBOLETA|X200ICX|INOX 304|POLIDO|68x70mm|10|SEM PARAFUSOS|R$ 133,48
-
 CONCHA STAND|X233ICX|INOX 304|POLIDO|95x42mm|10|SEM PARAFUSOS|R$ 69,01
-
 CONCHA STAND C/ FURO|X234ICX|INOX 304|POLIDO|95x42mm|10|SEM PARAFUSOS|R$ 69,01
-
 CREMONA|X116IP|INOX 304|POLIDO|116x35mm|1|COM PARAFUSOS|R$ 33,96
-
 VARA PARA CREMONA|X1200I|INOX 304|POLIDO|1200mm|1|SEM PARAFUSOS|R$ 25,48
-
 VARA PARA CREMONA|X1500I|INOX 304|POLIDO|1500mm|1|SEM PARAFUSOS|R$ 30,87
-
 LEVANTADOR DE GUILHOTINA|X210ICX|INOX 304|POLIDO|41x31mm|10|SEM PARAFUSOS|R$ 51,76
-
 FECHO CONCHA TRAVA (BATE E FECHA)|X235IP|INOX 304|POLIDO|110x61mm|1|COM PARAFUSOS|R$ 48,22
-
 FECHO P/ JANELA CORRER|X5ICX|INOX 304|POLIDO|75x55mm|10|SEM PARAFUSOS|R$ 114,41
-
 FECHO FIO CHATO|X251ICX|INOX 304|POLIDO|62,2x20mm|10|SEM PARAFUSOS|R$ 109,87
-
 FECHO FIO CHATO|X250ICX|INOX 304|POLIDO|90x30mm|10|SEM PARAFUSOS|R$ 208,85
-
 FECHO FIO REDONDO|X282ICX|INOX 304|POLIDO|75mm|10|SEM PARAFUSOS|R$ 158,00
-
 FECHO FIO REDONDO|X283ICX|INOX 304|POLIDO|100X35X100mm|10|SEM PARAFUSOS|R$ 272,41
-
 FECHO PINO BOLA|X10ICX|INOX 304|POLIDO|70x18mm|10|SEM PARAFUSOS|R$ 181,60
-
 GANCHO DE REDE (fixação com parafusos e buchas)|X260IMCX|INOX 304|POLIDO|50x141mm|10|SEM PARAFUSOS|R$ 248,96
-
 PORTA CADEADO|X271ICX|INOX 304|POLIDO|25,2x60mm|10|SEM PARAFUSOS|R$ 154,36
-
 TARGETA|X280ICX|INOX 304|POLIDO|50x38mm|10|SEM PARAFUSOS|R$ 176,16
-
 PRENDEDOR PARA VENEZIANA|X220MICX|INOX 304|POLIDO|36mm - MADEIRA|10|SEM PARAFUSOS|R$ 208,85
+      `),
 
-      \`),
+      observacoes: [
+        "Antes da venda, consulte a disponibilidade de estoque e entrega.",
+        "As referências dos números são formadas colocando o dígito após a terceira posição do código."
+      ]
+    },
 
+    // =====================================================
+    // ACESSÓRIOS CARTELA
+    // =====================================================
 
+    {
+      id: "acessorios-cartela",
 
-      observacoes: [
+      titulo: "Acessórios - Cartela",
 
-        "Antes da venda, consulte a disponibilidade de estoque e entrega.",
+      colunas: [
+        "Item",
+        "Referência",
+        "Matéria-prima",
+        "Tamanho",
+        "Acabamento",
+        "Quantidade por cartela",
+        "Preço"
+      ],
 
-        "As referências dos números são formadas colocando o dígito após a terceira posição do código."
-
-      ]
-
-    },
-
-
-
-
-
-    // =====================================================
-
-    // ACESSÓRIOS CARTELA
-
-    // =====================================================
-
-
-
-    {
-
-      id: "acessorios-cartela",
-
-
-
-      titulo: "Acessórios - Cartela",
-
-
-
-      colunas: [
-
-        "Item",
-
-        "Referência",
-
-        "Matéria-prima",
-
-        "Tamanho",
-
-        "Acabamento",
-
-        "Quantidade por cartela",
-
-        "Preço"
-
-      ],
-
-
-
-      linhas: linhas(\`
-
+      linhas: linhas(`
 PUXADOR ALÇA|X300IC|INOX 304|88mm|POLIDO|1|R$ 8,90
-
 PUXADOR ALÇA|X301IC|INOX 304|111,80mm|POLIDO|1|R$ 12,26
-
 PUXADOR ALÇA|X302IC|INOX 304|137mm|POLIDO|1|R$ 13,62
-
 BORBOLETA P/GUILHOTINA|X200IC|INOX 304|68x70mm|POLIDO|2|R$ 29,96
-
 PUXADOR CONCHA STAND DE EMBUTIR|X233IC|INOX 304|95x42mm|POLIDO|1|R$ 8,63
-
 PUXADOR CONCHA STAND DE EMBUTIR C/ FURO|X234IC|INOX 304|95x42mm|POLIDO|1|R$ 8,63
-
 CREMONA DE SOBREPOR|X116IC|INOX 304|116x35mm|POLIDO|1|R$ 35,14
-
 DOBRADIÇA BASCULANTE (GONZO)|X240IC|INOX 304|61X16mm|POLIDO|1|R$ 23,61
-
 DOBRADIÇA BASCULANTE (GONZO)|X241IC|INOX 304|61X16mm|POLIDO|1|R$ 23,61
-
 FECHO CONCHA TRAVA (BATE E FECHA)|X235IC|INOX 304|110x61mm|POLIDO|1|R$ 50,44
-
 FECHO P/ JANELA CORRER|X5IC|INOX 304|75x55mm|POLIDO|1|R$ 14,80
-
 FECHO FIO CHATO|X251IC|INOX 304|62,2x20mm|POLIDO|1|R$ 14,16
-
 FECHO FIO CHATO|X250IC|INOX 304|90x30mm|POLIDO|1|R$ 18,16
-
 FECHO FIO REDONDO|X282IC|INOX 304|75mm|POLIDO|1|R$ 19,07
-
 FECHO FIO REDONDO|X283IC|INOX 304|100X35X100mm|POLIDO|1|R$ 31,78
-
 FECHO FIO REDONDO|X285IC|INOX 304|100X38X150,3mm|POLIDO|1|R$ 38,14
-
 FECHO FIO REDONDO|X286IC|INOX 304|150X38X150,3mm|POLIDO|1|R$ 60,84
-
 FECHO FIO REDONDO|X288IC|INOX 304|150X38X229mm|POLIDO|1|R$ 76,27
-
 FECHO PINO BOLA|X10IC|INOX 304|70x18mm|POLIDO|1|R$ 22,70
-
 FECHO PORTA CADEADO|X310IC|INOX 304|108x47mm|POLIDO|1|R$ 33,60
-
 FECHO PORTA CADEADO|X311IC|INOX 304|129,3x47mm|POLIDO|1|R$ 36,32
-
 FECHO PORTA CADEADO|X312IC|INOX 304|154x47mm|POLIDO|1|R$ 39,04
-
 LEVANTADOR DE GUILHOTINA|X210IC|INOX 304|41x31mm|POLIDO|2|R$ 13,80
-
 GANCHO DE REDE (fixação com parafusos e buchas)|X260IMC|INOX 304|50x141mm|POLIDO|2|R$ 58,73
-
 NÚMEROS DE 1 AO 9 (FIXAÇÃO PARAFUSOS)|XN0IXC ATÉ XN9IXC|INOX 304|100mm|POLIDO|1|R$ 14,65
-
 NÚMEROS DE 1 A 9 (FIXAÇÃO FITA DUPLA FACE)|XN0DFIPC ATÉ XN9DFIPC|INOX 304|125X85mm|POLIDO|1|R$ 30,57
-
 PINO PIVOTANTE PARA 150 KG (CONJUNTO COM 4 PEÇAS)|X800PIEC|INOX 304|100x25x4mm|ESCOVADO|1|R$ 99,49
-
 PINO PIVOTANTE PARA 300 KG (CONJUNTO COM 4 PEÇAS)|X810PIEC|INOX 304|150x25x4mm|ESCOVADO|1|R$ 208,03
-
 PORTA CADEADO|X271IC|INOX 304|25,2x60mm|POLIDO|1|R$ 22,70
-
 PORTA CADEADO|X272IC|INOX 304|47x140,70m|POLIDO|1|R$ 48,13
-
 TARGETA|X280IC|INOX 304|50x38mm|POLIDO|1|R$ 19,07
-
 PRENDEDOR DE PORTA MAGNÉTICO (FIXAÇÃO PISO OU PAREDE)|XPRENDMAGC|AÇO|70X40 (a X Ø)|ESCOVADO|1|R$ 21,01
-
 PRENDEDOR PARA VENEZIANA|X220MIC|INOX 304|36mm - MADEIRA|POLIDO|2|R$ 47,22
-
 PRENDEDOR PARA VENEZIANA|X222MIC|INOX 304|80mm - MADEIRA|POLIDO|2|R$ 52,67
+      `),
 
-      \`),
+      observacoes: [
+        "Forme a referência dos números colocando o dígito após a terceira posição do código.",
+        "Antes da venda, consulte a disponibilidade de estoque e entrega."
+      ]
+    },
 
+    // =====================================================
+    // PUXADORES
+    // =====================================================
 
+    {
+      id: "puxadores",
 
-      observacoes: [
+      titulo: "Puxadores",
 
-        "Forme a referência dos números colocando o dígito após a terceira posição do código.",
+      colunas: [
+        "Item",
+        "Referência",
+        "Matéria-prima",
+        "Tamanho",
+        "Acabamento",
+        "Quantidade por caixa",
+        "Contém parafusos?",
+        "Preço"
+      ],
 
-        "Antes da venda, consulte a disponibilidade de estoque e entrega."
-
-      ]
-
-    },
-
-
-
-
-
-    // =====================================================
-
-    // PUXADORES
-
-    // =====================================================
-
-
-
-    {
-
-      id: "puxadores",
-
-
-
-      titulo: "Puxadores",
-
-
-
-      colunas: [
-
-        "Item",
-
-        "Referência",
-
-        "Matéria-prima",
-
-        "Tamanho",
-
-        "Acabamento",
-
-        "Quantidade por caixa",
-
-        "Contém parafusos?",
-
-        "Preço"
-
-      ],
-
-
-
-      linhas: linhas(\`
-
+      linhas: linhas(`
 BARRA DE APOIO|XBARRA400|INOX 304|32X400MM|POLIDO|1 PEÇA|SIM|R$ 108,45
-
 BARRA DE APOIO|XBARRA600|INOX 304|32X600MM|POLIDO|1 PEÇA|SIM|R$ 131,80
-
 PUXADOR JADE|XPUXJADE600|INOX 304|40X25X600MM|POLIDO|1 PAR|SIM|R$ 457,43
-
 PUXADOR JADE|XPUXJADE800|INOX 304|40X25X800MM|POLIDO|1 PAR|SIM|R$ 521,60
-
 PUXADOR JADE|XPUXJADE1200|INOX 304|38x25x1200mm|POLIDO|1 PAR|SIM|R$ 626,11
-
 PUXADOR JASPE|XPUXJASPEIP220S|INOX 304|220X55X10MM|POLIDO|BLISTER C/ 1 PAR|SIM|R$ 176,01
-
 PUXADOR JASPE|XPUXJASPEIP320S|INOX 304|320X55X10MM|POLIDO|1 PAR|SIM|R$ 274,09
-
 PUXADOR JASPE|XPUXJASPEIP520S|INOX 304|520X55X10MM|POLIDO|1 PAR|SIM|R$ 372,18
-
 PUXADOR JASPE COM FURO (P/CHAVE DOBRÁVEL)|XPUXJASPECFIP220S|INOX 304|220X55X10MM|POLIDO|BLISTER C/ 1 PAR|SIM|R$ 193,42
-
 PUXADOR JASPE COM FURO (P/CHAVE DOBRÁVEL)|XPUXJASPECFIP30S|INOX 304|320X55X10MM|POLIDO|1 PAR|SIM|R$ 287,80
-
 PUXADOR JASPE COM FURO (P/CHAVE DOBRÁVEL)|XPUXJASPECFIP520S|INOX 304|520X55X10MM|POLIDO|1 PAR|SIM|R$ 390,79
-
 PUXADOR OPALA|XPUXOPALA600|INOX 304|32X600MM|POLIDO|1 PAR|SIM|R$ 316,26
-
 PUXADOR OPALA|XPUXOPALA800|INOX 304|32X800MM|ESCOVADO|1 PAR|SIM|R$ 363,01
-
 PUXADOR OPALA|XPUXOPALA800|INOX 304|38X800MM|POLIDO|1 PAR|SIM|R$ 363,01
-
 PUXADOR OPALA|XPUXOPALA1200|INOX 304|38X1200MM|POLIDO|1 PAR|SIM|R$ 425,08
-
 PUXADOR OPALA|XPUXOPALA1500|INOX 304|25X1200MM|POLIDO|1 PAR|SIM|R$ 498,68
-
 PUXADOR QUARTZO|XPUXQUARTZO300|MATERIA PRIMA|40X10X300MM|POLIDO|1 PAR|SIM|R$ 183,34
-
 PUXADOR QUARTZO|XPUXQUARTZO600|INOX 304|40X10X600MM|POLIDO|1 PAR|SIM|R$ 210,84
-
 PUXADOR QUARTZO|XPUXQUARTZO800|INOX 304|40X10X800MM|POLIDO|1 PAR|SIM|R$ 363,01
+      `),
 
-      \`),
-
-
-
-      observacoes: [
-
-        "Antes da venda, consulte a disponibilidade de estoque e entrega."
-
-      ]
-
-    }
-
-
-
-  ]
-
-
-
+      observacoes: [
+        "Antes da venda, consulte a disponibilidade de estoque e entrega."
+      ]
+    }
+  ]
 };
-
-
-
-
 
 export default tabelaPrecosData;
