@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
-import NotificationsButton from "../pages/NotificationsButton";
+import NotificationsButton from "../components/NotificationsButton";
 import Profile from "../components/Profile";
 
 import ImgIcon from "../assets/img-icon.png";
@@ -175,6 +175,9 @@ function Orcamentos() {
     useState(null);
 
   const [alertaSistema, setAlertaSistema] =
+    useState(null);
+
+  const [baixandoPdfCardId, setBaixandoPdfCardId] =
     useState(null);
 
 
@@ -2714,6 +2717,323 @@ function Orcamentos() {
   }
 
 
+  function numeroCurtoOrcamento(orcamento) {
+
+    const id =
+      String(
+        orcamento?.id || ""
+      )
+        .split("-")[0]
+        .toUpperCase();
+
+
+    return id || "ORCAMENTO";
+
+  }
+
+
+  function textoCompartilhamentoOrcamento(
+    orcamento
+  ) {
+
+    const numero =
+      numeroCurtoOrcamento(
+        orcamento
+      );
+
+
+    const linhas = [
+      `Olá, ${orcamento.cliente_nome || "cliente"}!`,
+      "",
+      `Segue o orçamento Synter ${numero}.`,
+      "",
+      orcamento.condicao_pagamento
+        ? `Condição de pagamento: ${orcamento.condicao_pagamento}`
+        : null,
+      orcamento.local_entrega
+        ? `Local de entrega: ${orcamento.local_entrega}`
+        : null,
+      orcamento.data_entrega
+        ? `Data de entrega: ${new Intl.DateTimeFormat(
+            "pt-BR",
+            {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+              timeZone: "UTC"
+            }
+          ).format(
+            new Date(
+              `${orcamento.data_entrega}T00:00:00Z`
+            )
+          )}`
+        : null,
+      Number(orcamento.frete || 0) > 0
+        ? `Frete: ${formatarMoeda(orcamento.frete)}`
+        : null,
+      "",
+      "Qualquer dúvida, estou à disposição."
+    ];
+
+
+    return linhas
+      .filter(
+        (linha) =>
+          linha !== null &&
+          linha !== undefined
+      )
+      .join("\n");
+
+  }
+
+
+  function telefoneParaWhatsapp(
+    telefone
+  ) {
+
+    let numero =
+      String(
+        telefone || ""
+      )
+        .replace(/\D/g, "");
+
+
+    if (!numero) {
+      return "";
+    }
+
+
+    // Telefones brasileiros informados com DDD,
+    // mas sem o código do país, recebem 55.
+    if (
+      numero.length === 10 ||
+      numero.length === 11
+    ) {
+      numero = `55${numero}`;
+    }
+
+
+    return numero;
+
+  }
+
+
+  function enviarOrcamentoWhatsapp(
+    event,
+    orcamento
+  ) {
+
+    event.stopPropagation();
+
+
+    if (role !== "representante") {
+      return;
+    }
+
+
+    const telefone =
+      telefoneParaWhatsapp(
+        orcamento.cliente_telefone
+      );
+
+
+    if (!telefone) {
+
+      mostrarAlertaSistema(
+        "Telefone não informado",
+        "Cadastre o telefone do cliente para enviar o orçamento pelo WhatsApp.",
+        "erro"
+      );
+
+      return;
+
+    }
+
+
+    const mensagem =
+      textoCompartilhamentoOrcamento(
+        orcamento
+      );
+
+
+    const url =
+      `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+
+
+    window.open(
+      url,
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+  }
+
+
+  function enviarOrcamentoEmail(
+    event,
+    orcamento
+  ) {
+
+    event.stopPropagation();
+
+
+    if (role !== "representante") {
+      return;
+    }
+
+
+    const email =
+      String(
+        orcamento.cliente_email || ""
+      ).trim();
+
+
+    if (!email) {
+
+      mostrarAlertaSistema(
+        "E-mail não informado",
+        "Cadastre o e-mail do cliente para enviar o orçamento.",
+        "erro"
+      );
+
+      return;
+
+    }
+
+
+    const numero =
+      numeroCurtoOrcamento(
+        orcamento
+      );
+
+
+    const assunto =
+      `Orçamento Synter ${numero}`;
+
+
+    const corpo =
+      `${textoCompartilhamentoOrcamento(orcamento)}
+
+Segue o orçamento para sua análise.
+
+Atenciosamente,
+Synter`;
+
+
+    window.location.href =
+      `mailto:${email}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpo)}`;
+
+  }
+
+
+  async function baixarPdfDoCard(
+    event,
+    orcamento
+  ) {
+
+    event.stopPropagation();
+
+
+    if (
+      role !== "representante" ||
+      !orcamento?.id ||
+      baixandoPdfCardId
+    ) {
+      return;
+    }
+
+
+    try {
+
+      setBaixandoPdfCardId(
+        orcamento.id
+      );
+
+
+      const {
+        data,
+        error
+      } = await supabase
+        .from("orcamento_itens")
+        .select(`
+          id,
+          orcamento_id,
+          produto_id,
+          codigo_produto,
+          nome_produto,
+          variacao_produto,
+          tipo_preco,
+          preco_unitario,
+          quantidade,
+          subtotal,
+          created_at,
+          updated_at
+        `)
+        .eq(
+          "orcamento_id",
+          orcamento.id
+        )
+        .order(
+          "created_at",
+          {
+            ascending: true
+          }
+        );
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      const itens =
+        data || [];
+
+
+      if (
+        itens.length === 0
+      ) {
+
+        throw new Error(
+          "Adicione pelo menos um produto antes de gerar o PDF."
+        );
+
+      }
+
+
+      gerarOrcamentoPdf({
+        orcamento,
+        itens
+      });
+
+    }
+    catch (error) {
+
+      console.error(
+        "Erro ao gerar PDF pelo card:",
+        error
+      );
+
+
+      mostrarAlertaSistema(
+        "Não foi possível gerar o PDF",
+        error?.message ||
+          "Tente novamente em alguns instantes.",
+        "erro"
+      );
+
+    }
+    finally {
+
+      setBaixandoPdfCardId(
+        null
+      );
+
+    }
+
+  }
+
+
   function baixarOrcamentoPdf() {
 
     if (
@@ -3359,6 +3679,14 @@ function Orcamentos() {
                       Criado em
                     </th>
 
+                    {role === "representante" && (
+
+                      <th className="orcamentos-acoes-header">
+                        Ações
+                      </th>
+
+                    )}
+
                   </tr>
 
                 </thead>
@@ -3478,6 +3806,97 @@ function Orcamentos() {
                             orcamento.created_at
                           )}
                         </td>
+
+
+                        {role === "representante" && (
+
+                          <td
+                            className="orcamentos-card-acoes-cell"
+                            onClick={
+                              (event) =>
+                                event.stopPropagation()
+                            }
+                            onKeyDown={
+                              (event) =>
+                                event.stopPropagation()
+                            }
+                          >
+
+                            <div className="orcamentos-card-acoes">
+
+                              <button
+                                type="button"
+                                className="orcamentos-card-acao pdf"
+                                onClick={
+                                  (event) =>
+                                    baixarPdfDoCard(
+                                      event,
+                                      orcamento
+                                    )
+                                }
+                                disabled={
+                                  baixandoPdfCardId ===
+                                  orcamento.id
+                                }
+                                title="Baixar orçamento em PDF"
+                                aria-label="Baixar orçamento em PDF"
+                              >
+                                <span>
+                                  PDF
+                                </span>
+                              </button>
+
+
+                              <button
+                                type="button"
+                                className="orcamentos-card-acao whatsapp"
+                                onClick={
+                                  (event) =>
+                                    enviarOrcamentoWhatsapp(
+                                      event,
+                                      orcamento
+                                    )
+                                }
+                                title={
+                                  orcamento.cliente_telefone
+                                    ? "Enviar pelo WhatsApp"
+                                    : "Cliente sem telefone"
+                                }
+                                aria-label="Enviar orçamento pelo WhatsApp"
+                              >
+                                <span aria-hidden="true">
+                                  W
+                                </span>
+                              </button>
+
+
+                              <button
+                                type="button"
+                                className="orcamentos-card-acao email"
+                                onClick={
+                                  (event) =>
+                                    enviarOrcamentoEmail(
+                                      event,
+                                      orcamento
+                                    )
+                                }
+                                title={
+                                  orcamento.cliente_email
+                                    ? "Enviar por e-mail"
+                                    : "Cliente sem e-mail"
+                                }
+                                aria-label="Enviar orçamento por e-mail"
+                              >
+                                <span aria-hidden="true">
+                                  @
+                                </span>
+                              </button>
+
+                            </div>
+
+                          </td>
+
+                        )}
 
                       </tr>
 
