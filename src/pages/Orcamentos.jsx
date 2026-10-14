@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
-import NotificationsButton from "../components/NotificationsButton";
+import NotificationsButton from "../pages/NotificationsButton";
 import Profile from "../components/Profile";
 
 import ImgIcon from "../assets/img-icon.png";
