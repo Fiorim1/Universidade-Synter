@@ -4,7 +4,11 @@
 
 .register-page {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 100vh;
+    min-height: 100svh;
 
     display: flex;
     flex-direction: column;
@@ -12,6 +16,8 @@
     background: #050505;
 
     color: #ffffff;
+
+    overflow-x: hidden;
 }
 
 
@@ -21,15 +27,22 @@
 
 .register-main {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     flex: 1;
 
     display: flex;
+
+    overflow-x: hidden;
 }
 
 
 .register-layout {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 780px;
 
     display: grid;
@@ -48,6 +61,8 @@
 
 .register-left {
     position: relative;
+
+    min-width: 0;
 
     display: flex;
     align-items: center;
@@ -69,6 +84,7 @@
 .register-content {
     width: 100%;
     max-width: 520px;
+    min-width: 0;
 }
 
 
@@ -79,6 +95,8 @@
 
 .register-content .hero-default {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     margin: 0 0 32px;
 }
@@ -118,6 +136,8 @@
     line-height: 1.1;
 
     letter-spacing: -1.5px;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -141,6 +161,8 @@
 
 .register-form {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     display: flex;
     flex-direction: column;
@@ -159,6 +181,8 @@
 
 .register-field {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     display: flex;
     flex-direction: column;
@@ -177,6 +201,9 @@
 
 .register-field input {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     height: 52px;
 
     padding: 0 16px;
@@ -232,6 +259,8 @@
 
 .register-password-grid {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     display: grid;
 
@@ -242,17 +271,27 @@
 }
 
 
+.register-password-grid > * {
+    min-width: 0;
+    max-width: 100%;
+}
+
+
 /* ======================================== */
 /* CAPTCHA                                  */
 /* ======================================== */
 
 .register-captcha {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     display: flex;
     justify-content: flex-start;
 
     margin-top: 2px;
+
+    overflow: hidden;
 }
 
 
@@ -262,6 +301,8 @@
 
 .register-error {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     padding: 12px 14px;
 
@@ -278,6 +319,10 @@
     font-size: 12px;
 
     line-height: 1.5;
+
+    box-sizing: border-box;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -287,6 +332,8 @@
 
 .register-success {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     padding: 12px 14px;
 
@@ -303,6 +350,10 @@
     font-size: 12px;
 
     line-height: 1.5;
+
+    box-sizing: border-box;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -312,11 +363,16 @@
 
 .register-submit {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     height: 52px;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    gap: 12px;
 
     padding: 0 18px;
 
@@ -354,6 +410,8 @@
 
 
 .register-submit-arrow {
+    flex-shrink: 0;
+
     font-size: 18px;
 
     transition: transform 0.25s ease;
@@ -372,6 +430,8 @@
 
 .register-visual {
     position: relative;
+
+    min-width: 0;
 
     overflow: hidden;
 
@@ -420,6 +480,9 @@
     position: relative;
 
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 780px;
 
     display: flex;
@@ -441,6 +504,7 @@
 .register-visual-text {
     width: 100%;
     max-width: 430px;
+    min-width: 0;
 
     display: flex;
     flex-direction: column;
@@ -471,6 +535,8 @@
     line-height: 1.15;
 
     letter-spacing: -1px;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -497,7 +563,7 @@
     display: block;
 
     width: auto;
-    max-width: 420px;
+    max-width: min(420px, 100%);
 
     height: 475px;
 
@@ -524,8 +590,8 @@
 
     .register-layout {
         grid-template-columns:
-            minmax(480px, 1fr)
-            minmax(450px, 1fr);
+            minmax(0, 1fr)
+            minmax(0, 1fr);
     }
 
 
@@ -536,12 +602,18 @@
 
     .register-visual-content {
         padding:
-            60px 35px 0;
+            60px
+            35px
+            0;
     }
 
 
     .register-lock-image {
-        max-width: 350px;
+        max-width:
+            min(
+                350px,
+                100%
+            );
 
         height: 420px;
     }
@@ -549,17 +621,39 @@
 }
 
 
+/* ======================================== */
+/* TABLET / MOBILE                          */
+/* ======================================== */
+
 @media (max-width: 900px) {
 
     .register-layout {
         display: block;
+
+        width: 100%;
+        max-width: 100%;
 
         min-height: auto;
     }
 
 
     .register-left {
-        padding: 55px 25px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        min-height:
+            calc(100svh - 74px);
+
+        padding:
+            48px
+            24px;
+    }
+
+
+    .register-content {
+        width: 100%;
+        max-width: 520px;
     }
 
 
@@ -570,25 +664,148 @@
 }
 
 
+/* ======================================== */
+/* MOBILE                                   */
+/* ======================================== */
+
 @media (max-width: 550px) {
 
-    .register-content {
+    .register-page,
+    .register-main,
+    .register-layout,
+    .register-left,
+    .register-content,
+    .register-form {
+        width: 100%;
         max-width: 100%;
+        min-width: 0;
     }
 
 
-    .register-password-grid {
-        grid-template-columns: 1fr;
+    .register-left {
+        min-height:
+            calc(100svh - 68px);
+
+        align-items: flex-start;
+
+        padding-top: 34px;
+        padding-bottom: 42px;
+
+        padding-left:
+            max(
+                16px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                16px,
+                env(safe-area-inset-right)
+            );
     }
 
 
-    .register-captcha {
-        overflow: hidden;
+    .register-content .hero-default {
+        margin-bottom: 26px;
+    }
+
+
+    .register-content .hero-default h4 {
+        font-size: 9px;
+
+        letter-spacing: 2.4px;
     }
 
 
     .register-content .hero-default h2 {
         font-size: 34px;
+
+        line-height: 1.08;
+
+        letter-spacing: -1px;
+    }
+
+
+    .register-content .hero-default p {
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+
+    .register-password-grid {
+        grid-template-columns:
+            minmax(0, 1fr);
+
+        gap: 17px;
+    }
+
+
+    .register-field input {
+        /*
+            Evita o zoom automático do Safari/iPhone
+            quando o usuário toca nos campos.
+        */
+        font-size: 16px;
+    }
+
+
+    .register-captcha {
+        width: 100%;
+        max-width: 100%;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+
+    .register-submit {
+        height: 50px;
+
+        padding: 0 16px;
+    }
+
+}
+
+
+/* ======================================== */
+/* CELULARES MUITO PEQUENOS                 */
+/* ======================================== */
+
+@media (max-width: 360px) {
+
+    .register-left {
+        padding-top: 28px;
+        padding-bottom: 36px;
+
+        padding-left:
+            max(
+                12px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                12px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .register-content .hero-default h2 {
+        font-size: 30px;
+    }
+
+
+    .register-content .hero-default p {
+        font-size: 12.5px;
+    }
+
+
+    .register-form {
+        gap: 15px;
     }
 
 }

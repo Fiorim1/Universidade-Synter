@@ -4,14 +4,14 @@
 
 .videos-page {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: 100vh;
-
+  min-height: 100svh;
   background: #080808;
   color: #ffffff;
-
   overflow-x: hidden;
 }
-
 
 /* ========================================
    HERO
@@ -19,36 +19,23 @@
 
 .videos-hero-area {
   position: relative;
-
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: 430px;
-
-  border-bottom:
-    1px solid rgba(255, 255, 255, 0.08);
-
-  background:
-    linear-gradient(90deg,
-      #050505 0%,
-      #080808 45%,
-      #0b0b0b 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(90deg, #050505 0%, #080808 45%, #0b0b0b 100%);
+  overflow: hidden;
 }
-
 
 .videos-hero-area::after {
   content: "";
-
   position: absolute;
   inset: 0;
-
-  background:
-    linear-gradient(180deg,
-      rgba(0, 0, 0, 0.05),
-      rgba(0, 0, 0, 0.22));
-
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.22));
   pointer-events: none;
-
   z-index: 0;
 }
-
 
 /* ========================================
    PERFIL
@@ -56,13 +43,11 @@
 
 .videos-profile {
   position: absolute;
-
   top: 28px;
   right: 60px;
-
+  max-width: calc(100% - 40px);
   z-index: 5;
 }
-
 
 /* ========================================
    CONTEÚDO DO HERO
@@ -70,19 +55,14 @@
 
 .videos-hero-content {
   position: relative;
-
   z-index: 2;
-
   width: 100%;
   max-width: 1400px;
-
+  min-width: 0;
   margin: 0 auto;
-
   padding: 75px 60px 70px;
-
   box-sizing: border-box;
 }
-
 
 /* ========================================
    CONTEÚDO PRINCIPAL
@@ -90,76 +70,65 @@
 
 .videos-content {
   position: relative;
-
   width: 100%;
   max-width: 1400px;
-
+  min-width: 0;
   margin: 0 auto;
-
   padding: 38px 60px 70px;
-
   box-sizing: border-box;
 }
-
 
 /* ========================================
    TÍTULO DA SEÇÃO
 ======================================== */
 
 .videos-section-title {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   display: flex;
-
   align-items: center;
-
   gap: 12px;
-
   margin-bottom: 26px;
 }
 
-
 .videos-section-title h4 {
+  min-width: 0;
   margin: 0;
-
   color: #ffffff;
-
   font-size: 13px;
   font-weight: 600;
-
   letter-spacing: 3px;
+  overflow-wrap: anywhere;
 }
-
 
 .videos-section-bar {
   width: 3px;
   height: 20px;
-
+  flex-shrink: 0;
   border-radius: 10px;
-
   background: #ffffff;
-
-  box-shadow:
-    0 0 8px rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.18);
 }
-
 
 /* ========================================
    GRID DOS VÍDEOS
 ======================================== */
 
 .videos-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(3,
-      minmax(0, 1fr));
-
-  gap: 22px;
-
   width: 100%;
-
+  max-width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
   align-items: start;
 }
 
+.videos-grid > * {
+  min-width: 0;
+  max-width: 100%;
+}
 
 /* ========================================
    BARRA DE PESQUISA
@@ -167,60 +136,40 @@
 
 .pesquisa-videos {
   width: 100%;
-
+  max-width: 100%;
+  min-width: 0;
   margin-bottom: 30px;
 }
-
 
 .pesquisa-videos input {
   width: 100%;
   max-width: 420px;
-
+  min-width: 0;
   height: 46px;
-
   padding: 0 18px;
-
-  border:
-    1px solid rgba(255, 255, 255, 0.15);
-
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
-
   background: #0d0d0d;
-
   color: #ffffff;
-
   font-size: 14px;
-
   font-family: inherit;
-
   outline: none;
-
   box-sizing: border-box;
-
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
-
 
 .pesquisa-videos input::placeholder {
   color: #777777;
 }
 
-
 .pesquisa-videos input:hover {
-  border-color:
-    rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.3);
 }
-
 
 .pesquisa-videos input:focus {
-  border-color:
-    rgba(255, 255, 255, 0.5);
-
+  border-color: rgba(255, 255, 255, 0.5);
   background: #111111;
 }
-
 
 /* ========================================
    NENHUM RESULTADO
@@ -228,111 +177,49 @@
 
 .nenhum-video {
   grid-column: 1 / -1;
-
+  min-width: 0;
+  max-width: 100%;
   color: #8d8d8d;
-
   font-size: 14px;
-
   padding: 30px 0;
+  overflow-wrap: anywhere;
 }
-
 
 /* ========================================
-   RESPONSIVO
+   BOTÕES DO CARD
 ======================================== */
 
-@media (max-width: 1150px) {
-
-  .videos-grid {
-    grid-template-columns:
-      repeat(2,
-        minmax(0, 1fr));
-  }
-
-}
-
-
-@media (max-width: 750px) {
-
-  .videos-hero-area {
-    min-height: auto;
-  }
-
-
-  .videos-profile {
-    position: relative;
-
-    top: auto;
-    right: auto;
-
-    display: flex;
-
-    justify-content: flex-end;
-
-    padding: 20px;
-
-    z-index: 5;
-  }
-
-
-  .videos-hero-content {
-    padding:
-      40px 25px 55px;
-  }
-
-
-  .videos-content {
-    padding:
-      30px 25px 50px;
-  }
-
-
-  .videos-grid {
-    grid-template-columns: 1fr;
-  }
-
-}
-
-
-/* ==========================================
-   BOTÕES DO CARD
-========================================== */
-
 .video-card-botoes {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-/* ==========================================
+/* ========================================
    BOTÃO DOWNLOAD
-========================================== */
+======================================== */
 
 .botao-download {
+  min-width: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 9px;
-
   padding: 11px 18px;
-
   background: #252525;
   color: #ffffff;
-
   border: 1px solid #494949;
   border-radius: 8px;
-
   font-size: 14px;
   font-weight: 600;
   font-family: inherit;
-
   cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
+  box-sizing: border-box;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .botao-download:hover:not(:disabled) {
@@ -351,11 +238,14 @@
   line-height: 1;
 }
 
-/* ==========================================
+/* ========================================
    AÇÕES DO MODAL
-========================================== */
+======================================== */
 
 .modal-video-acoes {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -363,36 +253,204 @@
   gap: 12px;
 }
 
-/* ==========================================
+/* ========================================
    ERRO NO DOWNLOAD
-========================================== */
+======================================== */
 
 .video-download-erro {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   margin-top: 10px;
   color: #ffb3b3;
   font-size: 13px;
   line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
-/* ==========================================
-   RESPONSIVIDADE
-========================================== */
+/* ========================================
+   RESPONSIVO - TABLET
+======================================== */
 
-@media (max-width: 480px) {
+@media (max-width: 1150px) {
+  .videos-hero-content,
+  .videos-content {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .videos-profile {
+    right: 40px;
+  }
+
+  .videos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ========================================
+   RESPONSIVO - MOBILE
+======================================== */
+
+@media (max-width: 750px) {
+  .videos-page {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .videos-hero-area {
+    width: 100%;
+    max-width: 100%;
+    min-height: auto;
+  }
+
+  .videos-profile {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-top: 18px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    box-sizing: border-box;
+    z-index: 5;
+  }
+
+  .videos-hero-content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding-top: 32px;
+    padding-bottom: 48px;
+    padding-left: max(18px, env(safe-area-inset-left));
+    padding-right: max(18px, env(safe-area-inset-right));
+  }
+
+  .videos-content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding-top: 28px;
+    padding-bottom: 48px;
+    padding-left: max(18px, env(safe-area-inset-left));
+    padding-right: max(18px, env(safe-area-inset-right));
+  }
+
+  .videos-section-title {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .videos-section-title h4 {
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 2px;
+  }
+
+  .videos-section-bar {
+    height: 18px;
+  }
+
+  .pesquisa-videos {
+    margin-bottom: 24px;
+  }
+
+  .pesquisa-videos input {
+    max-width: 100%;
+    font-size: 16px;
+  }
+
+  .videos-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .nenhum-video {
+    padding: 24px 0;
+  }
+}
+
+/* ========================================
+   MOBILE PEQUENO
+======================================== */
+
+@media (max-width: 500px) {
+  .videos-profile {
+    padding-top: 14px;
+    padding-left: max(14px, env(safe-area-inset-left));
+    padding-right: max(14px, env(safe-area-inset-right));
+  }
+
+  .videos-hero-content {
+    padding-top: 26px;
+    padding-bottom: 40px;
+    padding-left: max(14px, env(safe-area-inset-left));
+    padding-right: max(14px, env(safe-area-inset-right));
+  }
+
+  .videos-content {
+    padding-top: 24px;
+    padding-bottom: 42px;
+    padding-left: max(14px, env(safe-area-inset-left));
+    padding-right: max(14px, env(safe-area-inset-right));
+  }
+
   .video-card-botoes {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .video-card-botoes button {
+  .video-card-botoes button,
+  .video-card-botoes a {
     width: 100%;
+    max-width: 100%;
   }
 
   .modal-video-acoes {
     flex-direction: column;
+    align-items: stretch;
   }
 
-  .modal-video-acoes button {
+  .modal-video-acoes button,
+  .modal-video-acoes a {
     width: 100%;
+    max-width: 100%;
+  }
+
+  .video-download-erro {
+    font-size: 12px;
+  }
+}
+
+/* ========================================
+   TELAS MUITO PEQUENAS
+======================================== */
+
+@media (max-width: 380px) {
+  .videos-profile,
+  .videos-hero-content,
+  .videos-content {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+
+  .videos-section-title h4 {
+    font-size: 10.5px;
+    letter-spacing: 1.6px;
+  }
+
+  .pesquisa-videos input {
+    height: 44px;
+    padding: 0 14px;
+  }
+
+  .videos-grid {
+    gap: 14px;
   }
 }

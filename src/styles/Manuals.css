@@ -3,8 +3,14 @@
 /* ======================================== */
 
 .manuals-page {
+    position: relative;
+
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 100vh;
+    min-height: 100svh;
 
     background: #080808;
     color: #ffffff;
@@ -21,6 +27,9 @@
     position: relative;
 
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 430px;
 
     border-bottom:
@@ -67,6 +76,11 @@
     top: 28px;
     right: 60px;
 
+    max-width:
+        calc(
+            100% - 40px
+        );
+
     z-index: 5;
 }
 
@@ -82,11 +96,13 @@
 
     width: 100%;
     max-width: 1400px;
+    min-width: 0;
 
     margin: 0 auto;
 
     padding:
-        75px 60px
+        75px
+        60px
         70px;
 
     box-sizing: border-box;
@@ -102,14 +118,18 @@
 
     width: 100%;
     max-width: 1400px;
+    min-width: 0;
 
     margin: 0 auto;
 
     padding:
-        50px 60px
+        50px
+        60px
         90px;
 
     box-sizing: border-box;
+
+    z-index: 1;
 }
 
 
@@ -121,6 +141,8 @@
 .mechanical-products,
 .ironwork {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     margin-bottom: 75px;
 }
@@ -138,6 +160,10 @@
 .manuals-container .title {
     position: relative;
 
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     display: flex;
     align-items: center;
 
@@ -146,6 +172,8 @@
     padding-left: 15px;
 
     margin-bottom: 12px;
+
+    box-sizing: border-box;
 }
 
 
@@ -168,11 +196,15 @@
         0 0 8px
         rgba(255, 255, 255, 0.18);
 
-    transform: translateY(-50%);
+    transform:
+        translateY(-50%);
 }
 
 
 .manuals-container .title h4 {
+    min-width: 0;
+    max-width: 100%;
+
     margin: 0;
 
     color: #ffffff;
@@ -183,6 +215,8 @@
     letter-spacing: 3px;
 
     text-transform: uppercase;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -192,6 +226,8 @@
 
 .manuals-container .line {
     width: 100%;
+    max-width: 100%;
+
     height: 1px;
 
     margin-bottom: 28px;
@@ -212,6 +248,8 @@
 
 .cards-manuals {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     display: grid;
 
@@ -251,6 +289,7 @@
 > div[class^="cards-manuals-"]
 > * {
     width: 100%;
+    max-width: 100%;
     min-width: 0;
 
     box-sizing: border-box;
@@ -262,6 +301,7 @@
 /* ======================================== */
 
 .cards-manuals > * {
+    max-width: 100%;
     min-width: 0;
 }
 
@@ -272,6 +312,8 @@
 
 .cards-manuals a {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     box-sizing: border-box;
 }
@@ -323,7 +365,6 @@
 /* GARANTE CONTEÚDO SOBRE O FUNDO           */
 /* ======================================== */
 
-.manuals-container,
 .videos-hero-area {
     position: relative;
 
@@ -352,7 +393,8 @@
 
     .videos-hero-content {
         padding:
-            70px 35px
+            70px
+            35px
             60px;
     }
 
@@ -364,7 +406,8 @@
 
     .manuals-container {
         padding:
-            45px 35px
+            45px
+            35px
             75px;
     }
 
@@ -395,7 +438,18 @@
 
 @media (max-width: 750px) {
 
+    .manuals-page {
+        width: 100%;
+        max-width: 100%;
+
+        overflow-x: hidden;
+    }
+
+
     .videos-hero-area {
+        width: 100%;
+        max-width: 100%;
+
         min-height: auto;
     }
 
@@ -406,28 +460,75 @@
         top: auto;
         right: auto;
 
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
         display: flex;
+        align-items: center;
         justify-content: flex-end;
 
-        padding:
-            20px 20px
-            0;
+        padding-top: 18px;
+
+        padding-left:
+            max(
+                16px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                16px,
+                env(safe-area-inset-right)
+            );
+
+        box-sizing: border-box;
 
         z-index: 5;
     }
 
 
     .videos-hero-content {
-        padding:
-            40px 25px
-            55px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        padding-top: 30px;
+        padding-bottom: 48px;
+
+        padding-left:
+            max(
+                18px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                18px,
+                env(safe-area-inset-right)
+            );
     }
 
 
     .manuals-container {
-        padding:
-            35px 25px
-            60px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        padding-top: 32px;
+        padding-bottom: 58px;
+
+        padding-left:
+            max(
+                18px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                18px,
+                env(safe-area-inset-right)
+            );
     }
 
 
@@ -441,6 +542,8 @@
     .manuals-container .title h4 {
         font-size: 12px;
 
+        line-height: 1.4;
+
         letter-spacing: 2.2px;
     }
 
@@ -451,9 +554,20 @@
 
 
     .cards-manuals {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            minmax(0, 1fr);
 
         gap: 18px;
+    }
+
+
+    .cards-manuals > *,
+    .cards-manuals
+    > div[class^="cards-manuals-"]
+    > * {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
     }
 
 
@@ -473,23 +587,67 @@
 @media (max-width: 500px) {
 
     .videos-profile {
-        padding:
-            18px 18px
-            0;
+        padding-top: 14px;
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
     }
 
 
     .videos-hero-content {
-        padding:
-            35px 20px
-            45px;
+        padding-top: 26px;
+        padding-bottom: 40px;
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
     }
 
 
     .manuals-container {
-        padding:
-            30px 18px
-            50px;
+        padding-top: 26px;
+        padding-bottom: 48px;
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .manuals-container .title {
+        min-height: 24px;
+
+        padding-left: 12px;
+    }
+
+
+    .manuals-container .title::before {
+        height: 18px;
     }
 
 
@@ -500,8 +658,64 @@
     }
 
 
+    .manuals-container .line {
+        margin-bottom: 18px;
+    }
+
+
     .cards-manuals {
         gap: 16px;
+    }
+
+
+    .digials-products,
+    .mechanical-products,
+    .ironwork {
+        margin-bottom: 44px;
+    }
+
+}
+
+
+/* ======================================== */
+/* RESPONSIVO - MUITO PEQUENO               */
+/* ======================================== */
+
+@media (max-width: 380px) {
+
+    .videos-profile,
+    .videos-hero-content,
+    .manuals-container {
+        padding-left:
+            max(
+                12px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                12px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .manuals-container .title h4 {
+        font-size: 10.5px;
+
+        letter-spacing: 1.6px;
+    }
+
+
+    .cards-manuals {
+        gap: 14px;
+    }
+
+
+    .digials-products,
+    .mechanical-products,
+    .ironwork {
+        margin-bottom: 38px;
     }
 
 }

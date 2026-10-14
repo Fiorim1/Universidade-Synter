@@ -4817,7 +4817,7 @@ Synter`;
                                             processandoItemId === item.id
                                           }
                                         >
-                                          Cancelar
+                                          Cancelar edição
                                         </button>
 
                                       </div>
@@ -4861,8 +4861,8 @@ Synter`;
                                         {processandoItemId === item.id
                                           ? "Removendo..."
                                           : confirmandoRemocaoId === item.id
-                                            ? "Confirmar remoção"
-                                            : "Remover"}
+                                            ? "Confirmar retirada"
+                                            : "Retirar item"}
                                       </button>
 
                                     </>
@@ -6658,10 +6658,26 @@ Synter`;
                 <button
                   type="button"
                   className="orcamentos-secondary-button"
-                  onClick={fecharAdicionarProduto}
+                  onClick={() => {
+
+                    if (produtoSelecionado) {
+
+                      setProdutoSelecionado(null);
+                      setQuantidadeProduto(1);
+                      setErroProdutos("");
+
+                      return;
+
+                    }
+
+                    fecharAdicionarProduto();
+
+                  }}
                   disabled={adicionandoProduto}
                 >
-                  Cancelar
+                  {produtoSelecionado
+                    ? "Retirar item"
+                    : "Fechar"}
                 </button>
 
 

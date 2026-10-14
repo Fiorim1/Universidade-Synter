@@ -1,26 +1,50 @@
 /* ======================================== */
 
+
+
 /* PÁGINA TABELA DE PREÇOS                  */
+
+
 
 /* ======================================== */
 
 
 
+
+
+
+
 .tabela-precos-page {
 
+
+
     width: 100%;
+
+
 
     min-height: 100vh;
 
 
 
+
+
+
+
     background: #080808;
+
+
 
     color: #ffffff;
 
 
 
+
+
+
+
     overflow-x: hidden;
+
+
 
 }
 
@@ -28,17 +52,37 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* HERO                                     */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-hero-area {
 
+
+
     position: relative;
+
+
+
+
 
 
 
@@ -46,25 +90,49 @@
 
 
 
+
+
+
+
     border-bottom:
+
+
 
         1px solid rgba(255, 255, 255, 0.08);
 
 
 
+
+
+
+
     background:
+
+
 
         linear-gradient(
 
+
+
             90deg,
+
+
 
             #050505 0%,
 
+
+
             #080808 45%,
+
+
 
             #0b0b0b 100%
 
+
+
         );
+
+
 
 }
 
@@ -72,21 +140,45 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* CAMADA DO HERO                           */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-hero-area::after {
 
+
+
     content: "";
 
 
 
+
+
+
+
     position: absolute;
+
+
+
+
 
 
 
@@ -94,17 +186,35 @@
 
 
 
+
+
+
+
     background:
+
+
 
         linear-gradient(
 
+
+
             180deg,
+
+
 
             rgba(0, 0, 0, 0.05),
 
+
+
             rgba(0, 0, 0, 0.28)
 
+
+
         );
+
+
+
+
 
 
 
@@ -112,7 +222,13 @@
 
 
 
+
+
+
+
     z-index: 0;
+
+
 
 }
 
@@ -120,27 +236,55 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* PERFIL                                   */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-profile {
 
+
+
     position: absolute;
+
+
+
+
 
 
 
     top: 28px;
 
+
+
     right: 60px;
 
 
 
+
+
+
+
     z-index: 5;
+
+
 
 }
 
@@ -148,17 +292,37 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* CONTEÚDO DO HERO                         */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-hero-content {
 
+
+
     position: relative;
+
+
+
+
 
 
 
@@ -166,13 +330,27 @@
 
 
 
+
+
+
+
     width: 100%;
+
+
 
     max-width: 1400px;
 
 
 
+
+
+
+
     margin: 0 auto;
+
+
+
+
 
 
 
@@ -180,7 +358,13 @@
 
 
 
+
+
+
+
     box-sizing: border-box;
+
+
 
 }
 
@@ -188,23 +372,49 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* ÁREA PRINCIPAL                           */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-content {
 
+
+
     position: relative;
+
+
+
+
 
 
 
     width: 100%;
 
+
+
     max-width: 1400px;
+
+
+
+
 
 
 
@@ -212,11 +422,21 @@
 
 
 
+
+
+
+
     padding: 45px 60px 90px;
 
 
 
+
+
+
+
     box-sizing: border-box;
+
+
 
 }
 
@@ -224,21 +444,45 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* TOPO DA PÁGINA                           */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-topo {
 
+
+
     display: flex;
+
+
 
     align-items: flex-end;
 
+
+
     justify-content: space-between;
+
+
+
+
 
 
 
@@ -246,9 +490,21 @@
 
 
 
+
+
+
+
     margin-bottom: 30px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -256,13 +512,23 @@
 
 .tabela-precos-titulo-area {
 
+
+
     display: flex;
+
+
 
     flex-direction: column;
 
 
 
+
+
+
+
     gap: 13px;
+
+
 
 }
 
@@ -270,25 +536,55 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* TÍTULO DE SEÇÃO                          */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-section-title {
 
+
+
     display: flex;
+
+
 
     align-items: center;
 
 
 
+
+
+
+
     gap: 12px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -296,7 +592,13 @@
 
 .tabela-precos-section-title h4 {
 
+
+
     margin: 0;
+
+
+
+
 
 
 
@@ -304,15 +606,33 @@
 
 
 
+
+
+
+
     font-size: 13px;
+
+
 
     font-weight: 600;
 
 
 
+
+
+
+
     letter-spacing: 3px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -320,9 +640,17 @@
 
 .tabela-precos-section-bar {
 
+
+
     width: 3px;
 
+
+
     height: 20px;
+
+
+
+
 
 
 
@@ -330,7 +658,15 @@
 
 
 
+
+
+
+
     border-radius: 10px;
+
+
+
+
 
 
 
@@ -338,11 +674,21 @@
 
 
 
+
+
+
+
     box-shadow:
+
+
 
         0 0 8px
 
+
+
         rgba(255, 255, 255, 0.18);
+
+
 
 }
 
@@ -350,25 +696,55 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* INFORMAÇÕES DA TABELA                    */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-info {
 
+
+
     display: flex;
+
+
 
     flex-direction: column;
 
 
 
+
+
+
+
     gap: 6px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -376,19 +752,39 @@
 
 .tabela-precos-info span {
 
+
+
     color: #ffffff;
+
+
+
+
 
 
 
     font-size: 23px;
 
+
+
     font-weight: 600;
+
+
+
+
 
 
 
     letter-spacing: -0.5px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -396,11 +792,19 @@
 
 .tabela-precos-info small {
 
+
+
     color: #777777;
 
 
 
+
+
+
+
     font-size: 12px;
+
+
 
 }
 
@@ -408,25 +812,53 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* CONTADOR                                 */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-total {
 
+
+
     min-width: 105px;
+
+
+
+
 
 
 
     display: flex;
 
+
+
     flex-direction: column;
 
+
+
     align-items: flex-end;
+
+
+
+
 
 
 
@@ -434,9 +866,19 @@
 
 
 
+
+
+
+
     border:
 
+
+
         1px solid rgba(255, 255, 255, 0.10);
+
+
+
+
 
 
 
@@ -444,19 +886,41 @@
 
 
 
+
+
+
+
     background:
+
+
 
         linear-gradient(
 
+
+
             145deg,
+
+
 
             #111111,
 
+
+
             #0a0a0a
+
+
 
         );
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -464,19 +928,39 @@
 
 .tabela-precos-total span {
 
+
+
     color: #ffffff;
+
+
+
+
 
 
 
     font-size: 28px;
 
+
+
     font-weight: 700;
+
+
+
+
 
 
 
     line-height: 1;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -484,7 +968,13 @@
 
 .tabela-precos-total small {
 
+
+
     margin-top: 5px;
+
+
+
+
 
 
 
@@ -492,7 +982,15 @@
 
 
 
+
+
+
+
     font-size: 10px;
+
+
+
+
 
 
 
@@ -500,7 +998,13 @@
 
 
 
+
+
+
+
     letter-spacing: 1px;
+
+
 
 }
 
@@ -508,21 +1012,43 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* FILTROS                                  */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-filtros {
 
+
+
     width: 100%;
 
 
 
+
+
+
+
     margin-bottom: 18px;
+
+
 
 }
 
@@ -530,17 +1056,37 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* CAMPO DE PESQUISA                        */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-pesquisa {
 
+
+
     position: relative;
+
+
+
+
 
 
 
@@ -548,15 +1094,31 @@
 
 
 
+
+
+
+
     display: flex;
+
+
 
     align-items: center;
 
 
 
+
+
+
+
     border:
 
+
+
         1px solid rgba(255, 255, 255, 0.11);
+
+
+
+
 
 
 
@@ -564,27 +1126,57 @@
 
 
 
+
+
+
+
     background:
+
+
 
         linear-gradient(
 
+
+
             145deg,
+
+
 
             #111111,
 
+
+
             #0b0b0b
+
+
 
         );
 
 
 
+
+
+
+
     transition:
+
+
 
         border-color 0.2s ease,
 
+
+
         background 0.2s ease;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -592,15 +1184,31 @@
 
 .tabela-precos-pesquisa:focus-within {
 
+
+
     border-color:
+
+
 
         rgba(255, 255, 255, 0.35);
 
 
 
+
+
+
+
     background: #101010;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -608,15 +1216,29 @@
 
 .tabela-precos-search-icon {
 
+
+
     width: 55px;
+
+
+
+
 
 
 
     display: flex;
 
+
+
     align-items: center;
 
+
+
     justify-content: center;
+
+
+
+
 
 
 
@@ -624,13 +1246,29 @@
 
 
 
+
+
+
+
     color: #777777;
+
+
+
+
 
 
 
     font-size: 24px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -638,9 +1276,17 @@
 
 .tabela-precos-pesquisa input {
 
+
+
     width: 100%;
 
+
+
     height: 58px;
+
+
+
+
 
 
 
@@ -648,9 +1294,19 @@
 
 
 
+
+
+
+
     border: none;
 
+
+
     outline: none;
+
+
+
+
 
 
 
@@ -658,7 +1314,15 @@
 
 
 
+
+
+
+
     color: #ffffff;
+
+
+
+
 
 
 
@@ -666,9 +1330,21 @@
 
 
 
+
+
+
+
     font-size: 14px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -676,7 +1352,11 @@
 
 .tabela-precos-pesquisa input::placeholder {
 
+
+
     color: #606060;
+
+
 
 }
 
@@ -684,19 +1364,41 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* LIMPAR PESQUISA                          */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-limpar-pesquisa {
 
+
+
     width: 45px;
 
+
+
     height: 45px;
+
+
+
+
 
 
 
@@ -704,11 +1406,23 @@
 
 
 
+
+
+
+
     display: flex;
+
+
 
     align-items: center;
 
+
+
     justify-content: center;
+
+
+
+
 
 
 
@@ -716,11 +1430,23 @@
 
 
 
+
+
+
+
     border: none;
 
 
 
+
+
+
+
     border-radius: 9px;
+
+
+
+
 
 
 
@@ -728,7 +1454,15 @@
 
 
 
+
+
+
+
     color: #777777;
+
+
+
+
 
 
 
@@ -736,17 +1470,37 @@
 
 
 
+
+
+
+
     cursor: pointer;
+
+
+
+
 
 
 
     transition:
 
+
+
         color 0.2s ease,
+
+
 
         background 0.2s ease;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -754,13 +1508,23 @@
 
 .tabela-precos-limpar-pesquisa:hover {
 
+
+
     color: #ffffff;
+
+
+
+
 
 
 
     background:
 
+
+
         rgba(255, 255, 255, 0.06);
+
+
 
 }
 
@@ -768,23 +1532,49 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* CATEGORIAS                               */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-categorias {
 
+
+
     width: 100%;
+
+
+
+
 
 
 
     display: flex;
 
+
+
     align-items: center;
+
+
+
+
 
 
 
@@ -792,7 +1582,15 @@
 
 
 
+
+
+
+
     margin-bottom: 45px;
+
+
+
+
 
 
 
@@ -800,15 +1598,33 @@
 
 
 
+
+
+
+
     overflow-x: auto;
+
+
+
+
 
 
 
     scrollbar-width: thin;
 
+
+
     scrollbar-color: #333333 transparent;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -816,9 +1632,19 @@
 
 .tabela-precos-categorias::-webkit-scrollbar {
 
+
+
     height: 5px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -826,11 +1652,19 @@
 
 .tabela-precos-categorias::-webkit-scrollbar-thumb {
 
+
+
     background: #333333;
 
 
 
+
+
+
+
     border-radius: 10px;
+
+
 
 }
 
@@ -838,17 +1672,37 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* BOTÕES DAS CATEGORIAS                    */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .categoria-button {
 
+
+
     min-height: 39px;
+
+
+
+
 
 
 
@@ -856,17 +1710,35 @@
 
 
 
+
+
+
+
     flex-shrink: 0;
+
+
+
+
 
 
 
     border:
 
+
+
         1px solid rgba(255, 255, 255, 0.10);
 
 
 
+
+
+
+
     border-radius: 9px;
+
+
+
+
 
 
 
@@ -874,7 +1746,15 @@
 
 
 
+
+
+
+
     color: #777777;
+
+
+
+
 
 
 
@@ -882,9 +1762,19 @@
 
 
 
+
+
+
+
     font-size: 11px;
 
+
+
     font-weight: 600;
+
+
+
+
 
 
 
@@ -892,15 +1782,33 @@
 
 
 
+
+
+
+
     cursor: pointer;
+
+
+
+
 
 
 
     transition:
 
+
+
         0.2s ease;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -908,19 +1816,39 @@
 
 .categoria-button:hover {
 
+
+
     color: #ffffff;
+
+
+
+
 
 
 
     border-color:
 
+
+
         rgba(255, 255, 255, 0.22);
+
+
+
+
 
 
 
     background: #131313;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -928,7 +1856,13 @@
 
 .categoria-button-active {
 
+
+
     background: #ffffff;
+
+
+
+
 
 
 
@@ -936,9 +1870,21 @@
 
 
 
+
+
+
+
     color: #080808;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -946,35 +1892,67 @@
 
 .categoria-button-active:hover {
 
+
+
     background: #e9e9e9;
+
+
+
+
 
 
 
     color: #080808;
 
+
+
 }
 
 
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* RESULTADOS                               */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-resultados {
 
+
+
     display: flex;
+
+
 
     flex-direction: column;
 
 
 
+
+
+
+
     gap: 55px;
+
+
 
 }
 
@@ -982,17 +1960,35 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* CATEGORIA                                */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-categoria {
 
+
+
     width: 100%;
+
+
 
 }
 
@@ -1000,21 +1996,45 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* CABEÇALHO DA CATEGORIA                   */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-categoria-header {
 
+
+
     display: flex;
+
+
 
     align-items: flex-end;
 
+
+
     justify-content: space-between;
+
+
+
+
 
 
 
@@ -1022,9 +2042,21 @@
 
 
 
+
+
+
+
     margin-bottom: 18px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1032,15 +2064,31 @@
 
 .tabela-precos-categoria-titulo {
 
+
+
     display: flex;
+
+
 
     align-items: center;
 
 
 
+
+
+
+
     gap: 12px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1048,7 +2096,13 @@
 
 .tabela-precos-categoria-titulo h2 {
 
+
+
     margin: 0;
+
+
+
+
 
 
 
@@ -1056,15 +2110,33 @@
 
 
 
+
+
+
+
     font-size: 20px;
+
+
 
     font-weight: 600;
 
 
 
+
+
+
+
     letter-spacing: -0.4px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1072,11 +2144,21 @@
 
 .tabela-precos-categoria-header p {
 
+
+
     margin:
+
+
 
         8px 0 0
 
+
+
         15px;
+
+
+
+
 
 
 
@@ -1084,7 +2166,13 @@
 
 
 
+
+
+
+
     font-size: 11px;
+
+
 
 }
 
@@ -1092,17 +2180,37 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* CONTAINER DA TABELA                      */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-table-wrapper {
 
+
+
     width: 100%;
+
+
+
+
 
 
 
@@ -1110,9 +2218,19 @@
 
 
 
+
+
+
+
     border:
 
+
+
         1px solid rgba(255, 255, 255, 0.10);
+
+
+
+
 
 
 
@@ -1120,25 +2238,53 @@
 
 
 
+
+
+
+
     background:
+
+
 
         linear-gradient(
 
+
+
             145deg,
+
+
 
             #0d0d0d,
 
+
+
             #090909
+
+
 
         );
 
 
 
+
+
+
+
     scrollbar-width: thin;
+
+
 
     scrollbar-color: #3a3a3a #111111;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1146,9 +2292,19 @@
 
 .tabela-precos-table-wrapper::-webkit-scrollbar {
 
+
+
     height: 7px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1156,9 +2312,19 @@
 
 .tabela-precos-table-wrapper::-webkit-scrollbar-track {
 
+
+
     background: #111111;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1166,11 +2332,19 @@
 
 .tabela-precos-table-wrapper::-webkit-scrollbar-thumb {
 
+
+
     background: #383838;
 
 
 
+
+
+
+
     border-radius: 20px;
+
+
 
 }
 
@@ -1178,17 +2352,37 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* TABELA                                   */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-table {
 
+
+
     width: 100%;
+
+
+
+
 
 
 
@@ -1196,31 +2390,65 @@
 
 
 
+
+
+
+
     border-collapse: collapse;
+
+
+
+
 
 
 
     color: #ffffff;
 
+
+
 }
 
 
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* CABEÇALHO DA TABELA                      */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-table thead {
 
+
+
     background: #121212;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1228,15 +2456,29 @@
 
 .tabela-precos-table th {
 
+
+
     padding:
+
+
 
         17px 16px;
 
 
 
+
+
+
+
     border-bottom:
 
+
+
         1px solid rgba(255, 255, 255, 0.10);
+
+
+
+
 
 
 
@@ -1244,9 +2486,19 @@
 
 
 
+
+
+
+
     font-size: 10px;
 
+
+
     font-weight: 700;
+
+
+
+
 
 
 
@@ -1254,17 +2506,33 @@
 
 
 
+
+
+
+
     letter-spacing: 0.8px;
+
+
+
+
 
 
 
     text-align: left;
 
+
+
     text-transform: uppercase;
 
 
 
+
+
+
+
     white-space: nowrap;
+
+
 
 }
 
@@ -1272,25 +2540,53 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* CÉLULAS                                  */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-table td {
 
+
+
     padding:
+
+
 
         17px 16px;
 
 
 
+
+
+
+
     border-bottom:
 
+
+
         1px solid rgba(255, 255, 255, 0.055);
+
+
+
+
 
 
 
@@ -1298,7 +2594,15 @@
 
 
 
+
+
+
+
     font-size: 11px;
+
+
+
+
 
 
 
@@ -1306,15 +2610,29 @@
 
 
 
+
+
+
+
     vertical-align: middle;
+
+
+
+
 
 
 
     transition:
 
+
+
         background 0.2s ease,
 
+
+
         color 0.2s ease;
+
+
 
 }
 
@@ -1322,21 +2640,47 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* LINHA DA TABELA                          */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-table tbody tr {
 
+
+
     transition:
+
+
 
         background 0.2s ease;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1344,11 +2688,23 @@
 
 .tabela-precos-table tbody tr:hover {
 
+
+
     background:
+
+
 
         rgba(255, 255, 255, 0.035);
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1356,9 +2712,19 @@
 
 .tabela-precos-table tbody tr:hover td {
 
+
+
     color: #ffffff;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1366,7 +2732,11 @@
 
 .tabela-precos-table tbody tr:last-child td {
 
+
+
     border-bottom: none;
+
+
 
 }
 
@@ -1374,21 +2744,43 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* PRIMEIRA COLUNA                          */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-table td:first-child {
 
+
+
     color: #ffffff;
 
 
 
+
+
+
+
     font-weight: 600;
+
+
 
 }
 
@@ -1396,17 +2788,37 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* PREÇOS                                   */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-valor {
 
+
+
     color: #ffffff !important;
+
+
+
+
 
 
 
@@ -1414,9 +2826,17 @@
 
 
 
+
+
+
+
     white-space: nowrap;
 
+
+
     text-align: center;
+
+
 
 }
 
@@ -1424,17 +2844,37 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* OBSERVAÇÕES                              */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-observacoes {
 
+
+
     margin-top: 15px;
+
+
+
+
 
 
 
@@ -1442,9 +2882,19 @@
 
 
 
+
+
+
+
     border:
 
+
+
         1px solid rgba(255, 255, 255, 0.08);
+
+
+
+
 
 
 
@@ -1452,9 +2902,17 @@
 
 
 
+
+
+
+
     background:
 
+
+
         rgba(255, 255, 255, 0.025);
+
+
 
 }
 
@@ -1462,19 +2920,41 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* TÍTULO DAS OBSERVAÇÕES                   */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-observacoes-title {
 
+
+
     display: flex;
 
+
+
     align-items: center;
+
+
+
+
 
 
 
@@ -1482,9 +2962,21 @@
 
 
 
+
+
+
+
     margin-bottom: 14px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1492,23 +2984,45 @@
 
 .tabela-precos-observacoes-title span {
 
+
+
     width: 25px;
+
+
 
     height: 25px;
 
 
 
+
+
+
+
     display: flex;
 
+
+
     align-items: center;
+
+
 
     justify-content: center;
 
 
 
+
+
+
+
     border:
 
+
+
         1px solid rgba(255, 255, 255, 0.20);
+
+
+
+
 
 
 
@@ -1516,15 +3030,33 @@
 
 
 
+
+
+
+
     color: #ffffff;
+
+
+
+
 
 
 
     font-size: 11px;
 
+
+
     font-weight: 700;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1532,7 +3064,13 @@
 
 .tabela-precos-observacoes-title h4 {
 
+
+
     margin: 0;
+
+
+
+
 
 
 
@@ -1540,9 +3078,19 @@
 
 
 
+
+
+
+
     font-size: 11px;
 
+
+
     font-weight: 600;
+
+
+
+
 
 
 
@@ -1550,7 +3098,13 @@
 
 
 
+
+
+
+
     text-transform: uppercase;
+
+
 
 }
 
@@ -1558,23 +3112,51 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* LISTA DAS OBSERVAÇÕES                    */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-observacoes ul {
 
+
+
     margin: 0;
+
+
+
+
 
 
 
     padding-left: 38px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1582,9 +3164,17 @@
 
 .tabela-precos-observacoes li {
 
+
+
     margin:
 
+
+
         6px 0;
+
+
+
+
 
 
 
@@ -1592,11 +3182,21 @@
 
 
 
+
+
+
+
     font-size: 11px;
 
 
 
+
+
+
+
     line-height: 1.6;
+
+
 
 }
 
@@ -1604,17 +3204,37 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* NENHUM RESULTADO                         */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-vazio {
 
+
+
     width: 100%;
+
+
+
+
 
 
 
@@ -1622,13 +3242,27 @@
 
 
 
+
+
+
+
     display: flex;
+
+
 
     flex-direction: column;
 
+
+
     align-items: center;
 
+
+
     justify-content: center;
+
+
+
+
 
 
 
@@ -1636,9 +3270,19 @@
 
 
 
+
+
+
+
     border:
 
+
+
         1px solid rgba(255, 255, 255, 0.08);
+
+
+
+
 
 
 
@@ -1646,21 +3290,41 @@
 
 
 
+
+
+
+
     background:
+
+
 
         linear-gradient(
 
+
+
             145deg,
+
+
 
             #0e0e0e,
 
+
+
             #090909
+
+
 
         );
 
 
 
+
+
+
+
     text-align: center;
+
+
 
 }
 
@@ -1668,27 +3332,57 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* ÍCONE VAZIO                              */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-vazio-icon {
 
+
+
     width: 55px;
+
+
 
     height: 55px;
 
 
 
+
+
+
+
     display: flex;
+
+
 
     align-items: center;
 
+
+
     justify-content: center;
+
+
+
+
 
 
 
@@ -1696,13 +3390,27 @@
 
 
 
+
+
+
+
     border:
+
+
 
         1px solid rgba(255, 255, 255, 0.16);
 
 
 
+
+
+
+
     border-radius: 50%;
+
+
+
+
 
 
 
@@ -1710,9 +3418,21 @@
 
 
 
+
+
+
+
     font-size: 29px;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1720,7 +3440,13 @@
 
 .tabela-precos-vazio h3 {
 
+
+
     margin: 0;
+
+
+
+
 
 
 
@@ -1728,11 +3454,25 @@
 
 
 
+
+
+
+
     font-size: 19px;
+
+
 
     font-weight: 600;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1740,13 +3480,25 @@
 
 .tabela-precos-vazio p {
 
+
+
     max-width: 400px;
+
+
+
+
 
 
 
     margin:
 
+
+
         10px 0 20px;
+
+
+
+
 
 
 
@@ -1754,11 +3506,21 @@
 
 
 
+
+
+
+
     font-size: 12px;
 
 
 
+
+
+
+
     line-height: 1.6;
+
+
 
 }
 
@@ -1766,23 +3528,49 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* BOTÃO LIMPAR FILTROS                     */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-vazio button {
 
+
+
     min-height: 41px;
+
+
+
+
 
 
 
     padding:
 
+
+
         0 20px;
+
+
+
+
 
 
 
@@ -1790,7 +3578,15 @@
 
 
 
+
+
+
+
     border-radius: 9px;
+
+
+
+
 
 
 
@@ -1798,7 +3594,15 @@
 
 
 
+
+
+
+
     color: #080808;
+
+
+
+
 
 
 
@@ -1806,9 +3610,19 @@
 
 
 
+
+
+
+
     font-size: 11px;
 
+
+
     font-weight: 700;
+
+
+
+
 
 
 
@@ -1816,13 +3630,29 @@
 
 
 
+
+
+
+
     transition:
+
+
 
         background 0.2s ease,
 
+
+
         transform 0.2s ease;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -1830,13 +3660,23 @@
 
 .tabela-precos-vazio button:hover {
 
+
+
     background: #dddddd;
+
+
+
+
 
 
 
     transform:
 
+
+
         translateY(-1px);
+
+
 
 }
 
@@ -1844,17 +3684,37 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* EFEITO DE FUNDO                          */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
 .tabela-precos-page::before {
 
+
+
     content: "";
+
+
+
+
 
 
 
@@ -1862,15 +3722,31 @@
 
 
 
+
+
+
+
     width: 700px;
+
+
 
     height: 700px;
 
 
 
+
+
+
+
     right: -350px;
 
+
+
     bottom: -350px;
+
+
+
+
 
 
 
@@ -1878,9 +3754,19 @@
 
 
 
+
+
+
+
     background:
 
+
+
         rgba(255, 255, 255, 0.025);
+
+
+
+
 
 
 
@@ -1888,11 +3774,21 @@
 
 
 
+
+
+
+
     pointer-events: none;
 
 
 
+
+
+
+
     z-index: 0;
+
+
 
 }
 
@@ -1900,11 +3796,25 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* RESPONSIVO - TABLET                      */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
@@ -1912,15 +3822,33 @@
 
 
 
+
+
+
+
     .tabela-precos-hero-content {
+
+
 
         padding:
 
+
+
             70px 35px
+
+
 
             60px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -1928,13 +3856,27 @@
 
     .tabela-precos-content {
 
+
+
         padding:
+
+
 
             40px 35px
 
+
+
             70px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -1942,9 +3884,19 @@
 
     .tabela-precos-profile {
 
+
+
         right: 35px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -1952,9 +3904,19 @@
 
     .tabela-precos-topo {
 
+
+
         align-items: flex-start;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -1962,9 +3924,17 @@
 
     .tabela-precos-table {
 
+
+
         min-width: 950px;
 
+
+
     }
+
+
+
+
 
 
 
@@ -1974,11 +3944,25 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* RESPONSIVO - MOBILE                      */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
@@ -1986,11 +3970,25 @@
 
 
 
+
+
+
+
     .tabela-precos-hero-area {
+
+
 
         min-height: auto;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -1998,31 +3996,63 @@
 
     .tabela-precos-profile {
 
+
+
         position: relative;
+
+
+
+
 
 
 
         top: auto;
 
+
+
         right: auto;
+
+
+
+
 
 
 
         display: flex;
 
+
+
         justify-content: flex-end;
+
+
+
+
 
 
 
         padding:
 
+
+
             20px 20px 0;
+
+
+
+
 
 
 
         z-index: 5;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2030,13 +4060,27 @@
 
     .tabela-precos-hero-content {
 
+
+
         padding:
+
+
 
             35px 25px
 
+
+
             55px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2044,13 +4088,27 @@
 
     .tabela-precos-content {
 
+
+
         padding:
+
+
 
             32px 25px
 
+
+
             60px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2060,9 +4118,19 @@
 
 
 
+
+
+
+
     .tabela-precos-topo {
 
+
+
         flex-direction: column;
+
+
+
+
 
 
 
@@ -2070,9 +4138,21 @@
 
 
 
+
+
+
+
         gap: 20px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2080,13 +4160,27 @@
 
     .tabela-precos-total {
 
+
+
         width: fit-content;
+
+
+
+
 
 
 
         align-items: flex-start;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2096,15 +4190,33 @@
 
 
 
+
+
+
+
     .tabela-precos-pesquisa input {
+
+
 
         height: 54px;
 
 
 
+
+
+
+
         font-size: 13px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2114,9 +4226,17 @@
 
 
 
+
+
+
+
     .tabela-precos-categorias {
 
+
+
         margin-bottom: 38px;
+
+
 
     }
 
@@ -2124,19 +4244,43 @@
 
 
 
+
+
+
+
+
+
     /* ======================================== */
+
+
 
     /* ESCONDER COLUNA LINHA NO MOBILE          */
 
+
+
     /* ======================================== */
+
+
+
+
 
 
 
     .coluna-linha-mobile {
 
+
+
         display: none;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2146,11 +4290,25 @@
 
 
 
+
+
+
+
     .tabela-precos-table {
+
+
 
         min-width: 900px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2158,15 +4316,31 @@
 
     .tabela-precos-table th {
 
+
+
         padding:
+
+
 
             15px 14px;
 
 
 
+
+
+
+
         font-size: 9px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2174,15 +4348,31 @@
 
     .tabela-precos-table td {
 
+
+
         padding:
+
+
 
             15px 14px;
 
 
 
+
+
+
+
         font-size: 10px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2192,13 +4382,27 @@
 
 
 
+
+
+
+
     .tabela-precos-observacoes {
+
+
 
         padding:
 
+
+
             20px;
 
+
+
     }
+
+
+
+
 
 
 
@@ -2208,11 +4412,25 @@
 
 
 
+
+
+
+
+
+
 /* ======================================== */
+
+
 
 /* RESPONSIVO - CELULAR PEQUENO             */
 
+
+
 /* ======================================== */
+
+
+
+
 
 
 
@@ -2220,15 +4438,33 @@
 
 
 
+
+
+
+
     .tabela-precos-hero-content {
+
+
 
         padding:
 
+
+
             30px 20px
+
+
 
             45px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2236,13 +4472,27 @@
 
     .tabela-precos-content {
 
+
+
         padding:
+
+
 
             28px 18px
 
+
+
             50px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2250,11 +4500,23 @@
 
     .tabela-precos-profile {
 
+
+
         padding:
+
+
 
             18px 18px 0;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2262,9 +4524,19 @@
 
     .tabela-precos-info span {
 
+
+
         font-size: 19px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2272,13 +4544,27 @@
 
     .tabela-precos-section-title h4 {
 
+
+
         font-size: 11px;
+
+
+
+
 
 
 
         letter-spacing: 2px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2286,9 +4572,19 @@
 
     .tabela-precos-categoria-titulo h2 {
 
+
+
         font-size: 18px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2296,19 +4592,39 @@
 
     .categoria-button {
 
+
+
         min-height: 37px;
+
+
+
+
 
 
 
         padding:
 
+
+
             0 14px;
+
+
+
+
 
 
 
         font-size: 10px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2316,9 +4632,19 @@
 
     .tabela-precos-search-icon {
 
+
+
         width: 48px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2326,9 +4652,19 @@
 
     .tabela-precos-pesquisa input {
 
+
+
         font-size: 12px;
 
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -2336,53 +4672,107 @@
 
     .tabela-precos-vazio {
 
+
+
         min-height: 280px;
+
+
 
     }
 
 
 
+
+
+
+
 }
+
+
+
+
 
 
 
 /* =====================================================
 
+
+
    LINHA CLICÁVEL
 
-===================================================== */
+
+
+\===================================================== */
+
+
+
+
 
 
 
 .tabela-precos-produto-linha {
 
+
+
   cursor: pointer;
+
+
+
+
 
 
 
   transition:
 
+
+
     background 0.2s ease,
+
+
 
     transform 0.2s ease;
 
+
+
 }
+
+
+
+
 
 
 
 .tabela-precos-produto-linha:hover {
 
+
+
   background: rgba(255, 255, 255, 0.06);
 
+
+
 }
+
+
+
+
 
 
 
 .tabela-precos-produto-linha:hover td {
 
+
+
   background: rgba(255, 255, 255, 0.035);
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -2390,15 +4780,29 @@
 
 /* =====================================================
 
+
+
    FUNDO DO MODAL
 
-===================================================== */
+
+
+\===================================================== */
+
+
+
+
 
 
 
 .produto-modal-fundo {
 
+
+
   position: fixed;
+
+
+
+
 
 
 
@@ -2406,15 +4810,31 @@
 
 
 
+
+
+
+
   z-index: 999999;
+
+
+
+
 
 
 
   display: flex;
 
+
+
   align-items: center;
 
+
+
   justify-content: center;
+
+
+
+
 
 
 
@@ -2422,7 +4842,15 @@
 
 
 
+
+
+
+
   box-sizing: border-box;
+
+
+
+
 
 
 
@@ -2430,13 +4858,25 @@
 
 
 
+
+
+
+
   backdrop-filter: blur(12px);
+
+
 
   -webkit-backdrop-filter: blur(12px);
 
 
 
+
+
+
+
   animation: produtoModalFundo 0.2s ease;
+
+
 
 }
 
@@ -2444,101 +4884,205 @@
 
 
 
+
+
+
+
+
+
 /* =====================================================
+
+
 
    MODAL
 
-===================================================== */
+
+
+\===================================================== */
+
+
+
+
 
 
 
 .produto-modal {
+
   position: relative;
 
+
+
   width: 100%;
+
   max-width: 900px;
+
+
 
   max-height: 90vh;
 
+
+
   display: grid;
 
+
+
   grid-template-columns:
+
     minmax(300px, 0.9fr)
+
     minmax(300px, 1.1fr);
 
+
+
   background: linear-gradient(
+
     145deg,
+
     #161616 0%,
+
     #090909 100%
+
   );
 
+
+
   border:
+
     1px solid
+
     rgba(255, 255, 255, 0.12);
+
+
 
   border-radius: 24px;
 
+
+
   box-shadow:
+
     0 40px 100px rgba(0, 0, 0, 0.65),
+
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 
+
+
   overflow-x: hidden;
+
   overflow-y: auto;
 
+
+
   overscroll-behavior: contain;
+
   -webkit-overflow-scrolling: touch;
 
+
+
   scrollbar-width: thin;
+
   scrollbar-color: #414141 #111111;
 
+
+
   animation:
+
     produtoModalEntrada
+
     0.25s ease;
+
 }
 
 
+
+
+
 /* =====================================================
+
    SCROLL DO MODAL
-===================================================== */
+
+\===================================================== */
+
+
 
 .produto-modal::-webkit-scrollbar {
+
   width: 7px;
+
 }
+
+
 
 .produto-modal::-webkit-scrollbar-track {
+
   background: #111111;
+
 }
+
+
 
 .produto-modal::-webkit-scrollbar-thumb {
+
   background: #414141;
+
   border-radius: 20px;
+
 }
 
+
+
 .produto-modal::-webkit-scrollbar-thumb:hover {
+
   background: #5a5a5a;
+
 }
+
+
+
+
+
+
 
 
 
 
 
 /* =====================================================
+
+
 
    BOTÃO FECHAR
 
-===================================================== */
+
+
+\===================================================== */
+
+
+
+
 
 
 
 .produto-modal-fechar {
 
+
+
   position: absolute;
+
+
+
+
 
 
 
   top: 16px;
 
+
+
   right: 16px;
+
+
+
+
 
 
 
@@ -2546,9 +5090,19 @@
 
 
 
+
+
+
+
   width: 42px;
 
+
+
   height: 42px;
+
+
+
+
 
 
 
@@ -2556,11 +5110,23 @@
 
 
 
+
+
+
+
   display: flex;
+
+
 
   align-items: center;
 
+
+
   justify-content: center;
+
+
+
+
 
 
 
@@ -2568,21 +5134,43 @@
 
 
 
+
+
+
+
   border:
 
+
+
     1px solid
+
+
 
     rgba(255, 255, 255, 0.12);
 
 
 
+
+
+
+
   background:
+
+
 
     rgba(15, 15, 15, 0.86);
 
 
 
+
+
+
+
   color: #ffffff;
+
+
+
+
 
 
 
@@ -2590,31 +5178,65 @@
 
 
 
+
+
+
+
   cursor: pointer;
+
+
+
+
 
 
 
   transition:
 
+
+
     background 0.2s ease,
+
+
 
     transform 0.2s ease;
 
+
+
 }
+
+
+
+
 
 
 
 .produto-modal-fechar:hover {
 
+
+
   background:
+
+
 
     rgba(255, 255, 255, 0.12);
 
 
 
+
+
+
+
   transform: rotate(90deg);
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -2622,23 +5244,45 @@
 
 /* =====================================================
 
+
+
    IMAGEM
 
-===================================================== */
+
+
+\===================================================== */
+
+
+
+
 
 
 
 .produto-modal-imagem-area {
 
+
+
   min-height: 500px;
+
+
+
+
 
 
 
   display: flex;
 
+
+
   align-items: center;
 
+
+
   justify-content: center;
+
+
+
+
 
 
 
@@ -2646,31 +5290,63 @@
 
 
 
+
+
+
+
   box-sizing: border-box;
+
+
+
+
 
 
 
   background:
 
+
+
     linear-gradient(
+
+
 
       145deg,
 
+
+
       #ffffff,
+
+
 
       #ededed
 
+
+
     );
+
+
 
 }
 
 
 
+
+
+
+
 .produto-modal-imagem {
+
+
 
   width: 100%;
 
+
+
   max-width: 420px;
+
+
+
+
 
 
 
@@ -2678,7 +5354,15 @@
 
 
 
+
+
+
+
   object-fit: contain;
+
+
+
+
 
 
 
@@ -2686,15 +5370,29 @@
 
 
 
+
+
+
+
   filter:
+
+
 
     drop-shadow(
 
+
+
       0 20px 25px
+
+
 
       rgba(0, 0, 0, 0.15)
 
+
+
     );
+
+
 
 }
 
@@ -2702,17 +5400,37 @@
 
 
 
+
+
+
+
+
+
 /* =====================================================
+
+
 
    SEM IMAGEM
 
-===================================================== */
+
+
+\===================================================== */
+
+
+
+
 
 
 
 .produto-sem-imagem {
 
+
+
   width: 100%;
+
+
+
+
 
 
 
@@ -2720,13 +5438,27 @@
 
 
 
+
+
+
+
   display: flex;
+
+
 
   flex-direction: column;
 
+
+
   align-items: center;
 
+
+
   justify-content: center;
+
+
+
+
 
 
 
@@ -2734,43 +5466,89 @@
 
 
 
+
+
+
+
   border:
 
+
+
     1px dashed
+
+
 
     rgba(0, 0, 0, 0.18);
 
 
 
+
+
+
+
   border-radius: 18px;
 
+
+
 }
+
+
+
+
 
 
 
 .produto-sem-imagem span {
 
+
+
   font-size: 55px;
+
+
+
+
 
 
 
   margin-bottom: 12px;
 
+
+
 }
+
+
+
+
 
 
 
 .produto-sem-imagem p {
 
+
+
   margin: 0;
+
+
+
+
 
 
 
   font-size: 14px;
 
+
+
   font-weight: 600;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -2778,27 +5556,53 @@
 
 /* =====================================================
 
+
+
    CONTEÚDO
 
-===================================================== */
+
+
+\===================================================== */
+
+
+
+
 
 
 
 .produto-modal-conteudo {
 
+
+
   padding: 45px 35px 35px;
+
+
+
+
 
 
 
   box-sizing: border-box;
 
+
+
 }
+
+
+
+
 
 
 
 .produto-modal-categoria {
 
+
+
   display: inline-block;
+
+
+
+
 
 
 
@@ -2806,15 +5610,31 @@
 
 
 
+
+
+
+
   color:
+
+
 
     rgba(255, 255, 255, 0.48);
 
 
 
+
+
+
+
   font-size: 11px;
 
+
+
   font-weight: 700;
+
+
+
+
 
 
 
@@ -2822,21 +5642,43 @@
 
 
 
+
+
+
+
   text-transform: uppercase;
+
+
 
 }
 
 
 
+
+
+
+
 .produto-modal-conteudo h2 {
+
+
 
   margin:
 
-    0
+
 
     0
+
+
+
+    0
+
+
 
     28px;
+
+
+
+
 
 
 
@@ -2844,13 +5686,25 @@
 
 
 
+
+
+
+
   font-size: 27px;
+
+
 
   font-weight: 750;
 
 
 
+
+
+
+
   line-height: 1.2;
+
+
 
 }
 
@@ -2858,17 +5712,37 @@
 
 
 
+
+
+
+
+
+
 /* =====================================================
+
+
 
    DADOS
 
-===================================================== */
+
+
+\===================================================== */
+
+
+
+
 
 
 
 .produto-modal-dados {
 
+
+
   display: flex;
+
+
+
+
 
 
 
@@ -2876,11 +5750,23 @@
 
 
 
+
+
+
+
   border:
+
+
 
     1px solid
 
+
+
     rgba(255, 255, 255, 0.08);
+
+
+
+
 
 
 
@@ -2888,23 +5774,47 @@
 
 
 
+
+
+
+
   overflow: hidden;
+
+
 
 }
 
 
 
+
+
+
+
 .produto-modal-dado {
+
+
 
   display: grid;
 
 
 
+
+
+
+
   grid-template-columns:
+
+
 
     minmax(120px, 0.8fr)
 
+
+
     minmax(150px, 1.2fr);
+
+
+
+
 
 
 
@@ -2912,59 +5822,121 @@
 
 
 
+
+
+
+
   padding: 14px 16px;
+
+
+
+
 
 
 
   border-bottom:
 
+
+
     1px solid
+
+
 
     rgba(255, 255, 255, 0.07);
 
+
+
 }
+
+
+
+
 
 
 
 .produto-modal-dado:last-child {
 
+
+
   border-bottom: none;
 
+
+
 }
+
+
+
+
 
 
 
 .produto-modal-dado span {
 
+
+
   color:
+
+
 
     rgba(255, 255, 255, 0.46);
 
 
 
+
+
+
+
   font-size: 12px;
+
+
 
   font-weight: 600;
 
+
+
 }
+
+
+
+
 
 
 
 .produto-modal-dado strong {
 
+
+
   color: #ffffff;
+
+
+
+
 
 
 
   font-size: 14px;
 
+
+
   font-weight: 600;
+
+
+
+
 
 
 
   word-break: break-word;
 
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -2972,9 +5944,17 @@
 
 /* =====================================================
 
+
+
    ANIMAÇÕES
 
-===================================================== */
+
+
+\===================================================== */
+
+
+
+
 
 
 
@@ -2982,23 +5962,49 @@
 
 
 
+
+
+
+
   from {
+
+
 
     opacity: 0;
 
+
+
   }
+
+
+
+
 
 
 
   to {
 
+
+
     opacity: 1;
+
+
 
   }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -3008,39 +6014,81 @@
 
 
 
+
+
+
+
   from {
+
+
 
     opacity: 0;
 
 
 
+
+
+
+
     transform:
+
+
 
       translateY(20px)
 
+
+
       scale(0.97);
 
+
+
   }
+
+
+
+
 
 
 
   to {
 
+
+
     opacity: 1;
+
+
+
+
 
 
 
     transform:
 
+
+
       translateY(0)
 
+
+
       scale(1);
+
+
 
   }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -3048,9 +6096,17 @@
 
 /* =====================================================
 
+
+
    RESPONSIVO
 
-===================================================== */
+
+
+\===================================================== */
+
+
+
+
 
 
 
@@ -3058,61 +6114,125 @@
 
 
 
+
+
+
+
   .produto-modal-fundo {
+
+
 
     padding: 16px;
 
+
+
   }
+
+
+
+
 
 
 
   .produto-modal {
 
+
+
     grid-template-columns: 1fr;
+
+
+
+
 
 
 
     max-width: 600px;
 
+
+
   }
+
+
+
+
 
 
 
   .produto-modal-imagem-area {
 
+
+
     min-height: 350px;
+
+
+
+
 
 
 
     padding: 30px;
 
+
+
   }
+
+
+
+
 
 
 
   .produto-modal-imagem {
 
+
+
     max-height: 320px;
 
+
+
   }
+
+
+
+
 
 
 
   .produto-modal-conteudo {
 
+
+
     padding:
+
+
 
       30px
 
+
+
       24px
 
+
+
       25px;
+
+
 
   }
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
 
 
 
@@ -3122,60 +6242,873 @@
 
 
 
+
+
+
+
   .produto-modal-fundo {
+
+
 
     padding: 10px;
 
+
+
   }
+
+
+
+
 
 
 
   .produto-modal {
 
+
+
     border-radius: 18px;
 
+
+
   }
+
+
+
+
 
 
 
   .produto-modal-imagem-area {
 
+
+
     min-height: 280px;
+
+
+
+
 
 
 
     padding: 25px;
 
+
+
   }
+
+
+
+
 
 
 
   .produto-modal-imagem {
 
+
+
     max-height: 250px;
 
+
+
   }
+
+
+
+
 
 
 
   .produto-modal-conteudo h2 {
 
+
+
     font-size: 22px;
 
+
+
   }
+
+
+
+
 
 
 
   .produto-modal-dado {
 
+
+
     grid-template-columns: 1fr;
+
+
+
+
 
 
 
     gap: 5px;
 
+
+
   }
 
 
+
+
+
+
+
+}
+/* ========================================
+   AJUSTES FINAIS DE RESPONSIVIDADE MOBILE
+   ======================================== */
+
+.tabela-precos-page,
+.tabela-precos-hero-area,
+.tabela-precos-hero-content,
+.tabela-precos-content,
+.tabela-precos-topo,
+.tabela-precos-titulo-area,
+.tabela-precos-filtros,
+.tabela-precos-pesquisa,
+.tabela-precos-categorias,
+.tabela-precos-resultados,
+.tabela-precos-categoria,
+.tabela-precos-categoria-header,
+.tabela-precos-table-wrapper,
+.tabela-precos-observacoes,
+.tabela-precos-vazio,
+.produto-modal-fundo,
+.produto-modal,
+.produto-modal-imagem-area,
+.produto-modal-conteudo,
+.produto-modal-dados {
+    max-width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
+}
+
+
+.tabela-precos-page {
+    width: 100%;
+
+    min-height: 100vh;
+    min-height: 100svh;
+
+    overflow-x: hidden;
+}
+
+
+.tabela-precos-hero-area,
+.tabela-precos-content {
+    overflow-x: hidden;
+}
+
+
+/* A tabela pode continuar larga, mas somente ela rola horizontalmente. */
+.tabela-precos-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    -webkit-overflow-scrolling: touch;
+
+    overscroll-behavior-x: contain;
+}
+
+
+.tabela-precos-table {
+    max-width: none;
+}
+
+
+/* ========================================
+   TABLET
+   ======================================== */
+
+@media (max-width: 750px) {
+
+    .tabela-precos-hero-area {
+        width: 100%;
+
+        min-height: auto;
+    }
+
+
+    .tabela-precos-profile {
+        position: relative;
+
+        top: auto;
+        right: auto;
+
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        padding-top: 18px;
+
+        padding-left:
+            max(
+                16px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                16px,
+                env(safe-area-inset-right)
+            );
+
+        box-sizing: border-box;
+
+        z-index: 5;
+    }
+
+
+    .tabela-precos-hero-content {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        padding-top: 30px;
+        padding-bottom: 48px;
+
+        padding-left:
+            max(
+                18px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                18px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .tabela-precos-content {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        padding-top: 30px;
+        padding-bottom: 58px;
+
+        padding-left:
+            max(
+                18px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                18px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .tabela-precos-topo {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 18px;
+    }
+
+
+    .tabela-precos-titulo-area,
+    .tabela-precos-info,
+    .tabela-precos-section-title,
+    .tabela-precos-categoria-header,
+    .tabela-precos-categoria-titulo {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+
+    .tabela-precos-section-title h4,
+    .tabela-precos-info span,
+    .tabela-precos-info small,
+    .tabela-precos-categoria-titulo h2,
+    .tabela-precos-categoria-header p {
+        overflow-wrap: anywhere;
+    }
+
+
+    .tabela-precos-total {
+        width: fit-content;
+        max-width: 100%;
+        min-width: 0;
+
+        align-items: flex-start;
+    }
+
+
+    .tabela-precos-pesquisa {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+
+    .tabela-precos-pesquisa input {
+        min-width: 0;
+
+        /*
+          Evita zoom automático no Safari/iPhone
+          ao tocar no campo de pesquisa.
+        */
+        font-size: 16px;
+    }
+
+
+    .tabela-precos-categorias {
+        width: 100%;
+        max-width: 100%;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        -webkit-overflow-scrolling: touch;
+
+        overscroll-behavior-x: contain;
+    }
+
+
+    .categoria-button {
+        flex-shrink: 0;
+    }
+
+
+    /*
+      Mantém a coluna "Linha" escondida no mobile,
+      conforme o comportamento já existente.
+    */
+    .coluna-linha-mobile {
+        display: none;
+    }
+
+
+    .tabela-precos-table {
+        min-width: 900px;
+    }
+
+
+    .tabela-precos-observacoes {
+        width: 100%;
+        max-width: 100%;
+
+        padding: 20px;
+    }
+
+
+    .tabela-precos-observacoes ul {
+        padding-left: 26px;
+    }
+
+
+    /* Modal do produto */
+
+    .produto-modal-fundo {
+        align-items: flex-start;
+
+        padding-top:
+            max(
+                14px,
+                env(safe-area-inset-top)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
+
+        padding-bottom:
+            max(
+                14px,
+                env(safe-area-inset-bottom)
+            );
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+
+    .produto-modal {
+        width: 100%;
+        max-width: 600px;
+        min-width: 0;
+
+        grid-template-columns:
+            minmax(0, 1fr);
+
+        max-height:
+            calc(
+                100svh -
+                max(28px, env(safe-area-inset-top)) -
+                max(28px, env(safe-area-inset-bottom))
+            );
+
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+
+    .produto-modal-imagem-area {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        min-height: 330px;
+
+        padding: 28px;
+    }
+
+
+    .produto-modal-imagem {
+        width: 100%;
+        max-width: 360px;
+
+        height: auto;
+
+        max-height: 320px;
+    }
+
+
+    .produto-modal-conteudo {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        padding:
+            30px
+            24px
+            26px;
+    }
+
+
+    .produto-modal-conteudo h2 {
+        max-width: 100%;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    .produto-modal-dado {
+        min-width: 0;
+
+        grid-template-columns:
+            minmax(110px, 0.8fr)
+            minmax(0, 1.2fr);
+    }
+
+
+    .produto-modal-dado strong {
+        min-width: 0;
+
+        overflow-wrap: anywhere;
+    }
+
+}
+
+
+/* ========================================
+   MOBILE
+   ======================================== */
+
+@media (max-width: 500px) {
+
+    .tabela-precos-profile {
+        padding-top: 14px;
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .tabela-precos-hero-content {
+        padding-top: 26px;
+        padding-bottom: 40px;
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .tabela-precos-content {
+        padding-top: 24px;
+        padding-bottom: 48px;
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .tabela-precos-info span {
+        font-size: 19px;
+    }
+
+
+    .tabela-precos-section-title {
+        gap: 10px;
+    }
+
+
+    .tabela-precos-section-title h4 {
+        font-size: 11px;
+
+        letter-spacing: 2px;
+    }
+
+
+    .tabela-precos-pesquisa {
+        border-radius: 11px;
+    }
+
+
+    .tabela-precos-search-icon {
+        width: 46px;
+
+        font-size: 21px;
+    }
+
+
+    .tabela-precos-pesquisa input {
+        height: 52px;
+
+        padding-right: 10px;
+
+        font-size: 16px;
+    }
+
+
+    .tabela-precos-limpar-pesquisa {
+        width: 40px;
+        height: 40px;
+
+        margin-right: 5px;
+    }
+
+
+    .tabela-precos-categorias {
+        gap: 7px;
+
+        margin-bottom: 32px;
+    }
+
+
+    .categoria-button {
+        min-height: 37px;
+
+        padding:
+            0
+            14px;
+
+        font-size: 10px;
+    }
+
+
+    .tabela-precos-categoria-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 8px;
+    }
+
+
+    .tabela-precos-categoria-titulo h2 {
+        font-size: 18px;
+    }
+
+
+    .tabela-precos-categoria-header p {
+        margin:
+            6px
+            0
+            0;
+    }
+
+
+    .tabela-precos-table {
+        min-width: 820px;
+    }
+
+
+    .tabela-precos-table th {
+        padding:
+            14px
+            12px;
+
+        font-size: 9px;
+    }
+
+
+    .tabela-precos-table td {
+        padding:
+            14px
+            12px;
+
+        font-size: 10px;
+    }
+
+
+    .tabela-precos-observacoes {
+        padding:
+            18px
+            16px;
+    }
+
+
+    .tabela-precos-observacoes ul {
+        padding-left: 22px;
+    }
+
+
+    .tabela-precos-vazio {
+        min-height: 260px;
+
+        padding:
+            36px
+            18px;
+    }
+
+
+    /* Modal do produto */
+
+    .produto-modal-fundo {
+        padding-top:
+            max(
+                10px,
+                env(safe-area-inset-top)
+            );
+
+        padding-right:
+            max(
+                10px,
+                env(safe-area-inset-right)
+            );
+
+        padding-bottom:
+            max(
+                10px,
+                env(safe-area-inset-bottom)
+            );
+
+        padding-left:
+            max(
+                10px,
+                env(safe-area-inset-left)
+            );
+    }
+
+
+    .produto-modal {
+        max-width: 100%;
+
+        max-height:
+            calc(
+                100svh -
+                max(20px, env(safe-area-inset-top)) -
+                max(20px, env(safe-area-inset-bottom))
+            );
+
+        border-radius: 16px;
+    }
+
+
+    .produto-modal-fechar {
+        top: 12px;
+        right: 12px;
+
+        width: 38px;
+        height: 38px;
+
+        font-size: 21px;
+    }
+
+
+    .produto-modal-imagem-area {
+        min-height: 260px;
+
+        padding:
+            22px
+            18px;
+    }
+
+
+    .produto-modal-imagem {
+        max-width: 100%;
+        max-height: 240px;
+    }
+
+
+    .produto-sem-imagem {
+        min-height: 220px;
+    }
+
+
+    .produto-modal-conteudo {
+        padding:
+            26px
+            18px
+            22px;
+    }
+
+
+    .produto-modal-conteudo h2 {
+        margin-bottom: 22px;
+
+        font-size: 22px;
+    }
+
+
+    .produto-modal-dado {
+        grid-template-columns:
+            minmax(0, 1fr);
+
+        gap: 5px;
+
+        padding:
+            13px
+            14px;
+    }
+
+
+    .produto-modal-dado span {
+        font-size: 11px;
+    }
+
+
+    .produto-modal-dado strong {
+        font-size: 13px;
+    }
+
+}
+
+
+/* ========================================
+   CELULARES MUITO PEQUENOS
+   ======================================== */
+
+@media (max-width: 380px) {
+
+    .tabela-precos-profile,
+    .tabela-precos-hero-content,
+    .tabela-precos-content {
+        padding-left:
+            max(
+                12px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                12px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .tabela-precos-total {
+        width: 100%;
+
+        align-items: flex-start;
+    }
+
+
+    .tabela-precos-table {
+        min-width: 780px;
+    }
+
+
+    .tabela-precos-observacoes {
+        padding:
+            16px
+            14px;
+    }
+
+
+    .produto-modal-fundo {
+        padding: 8px;
+    }
+
+
+    .produto-modal {
+        border-radius: 14px;
+    }
+
+
+    .produto-modal-imagem-area {
+        min-height: 230px;
+
+        padding:
+            18px
+            14px;
+    }
+
+
+    .produto-modal-imagem {
+        max-height: 210px;
+    }
+
+
+    .produto-modal-conteudo {
+        padding:
+            24px
+            14px
+            20px;
+    }
+
+
+    .produto-modal-conteudo h2 {
+        font-size: 20px;
+    }
 
 }

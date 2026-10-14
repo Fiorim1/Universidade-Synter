@@ -1,856 +1,2159 @@
 /* ==========================================
+
    PÁGINA
-========================================== */
+
+\========================================== */
+
+
 
 .assistencia-page {
+
   min-height: 100vh;
+
   background: #080808;
+
   color: #ffffff;
+
 }
 
 
+
+
+
 /* ==========================================
+
    HERO
-========================================== */
+
+\========================================== */
+
+
 
 .assistencia-hero-area {
+
   position: relative;
 
+
+
   width: 100%;
+
+
 
   border-bottom: 1px solid #1a1a1a;
 
+
+
   background: #080808;
+
 }
+
+
+
 
 
 .assistencia-hero-content {
+
   width: 100%;
+
+
 
   max-width: 1400px;
 
+
+
   margin: 0 auto;
 
+
+
   padding: 70px 40px 90px;
+
 }
+
+
+
 
 
 .assistencia-profile {
+
   position: absolute;
+
+
 
   top: 28px;
 
+
+
   right: max(
+
     40px,
+
     calc((100% - 1400px) / 2 + 40px)
+
   );
 
+
+
   z-index: 20;
+
 }
 
 
+
+
+
 /* ==========================================
+
    CONTAINER PRINCIPAL
-========================================== */
+
+\========================================== */
+
+
 
 .assistencia-container {
+
   width: 100%;
+
+
 
   max-width: 1400px;
 
+
+
   margin: 0 auto;
 
+
+
   padding: 70px 40px 100px;
+
 }
 
 
+
+
+
 /* ==========================================
+
    CABEÇALHO DA SEÇÃO
-========================================== */
+
+\========================================== */
+
+
 
 .assistencia-heading {
+
   display: flex;
+
+
 
   align-items: flex-start;
 
+
+
   gap: 18px;
 
+
+
   margin-bottom: 42px;
+
 }
+
+
+
 
 
 .assistencia-heading-line {
+
   width: 3px;
+
   height: 68px;
+
+
 
   flex-shrink: 0;
 
+
+
   border-radius: 999px;
 
+
+
   background: #ffffff;
+
 }
+
+
+
 
 
 .assistencia-heading span {
+
   display: block;
+
+
 
   margin-bottom: 8px;
 
+
+
   color: #777777;
+
+
 
   font-size: 10px;
 
+
+
   font-weight: 700;
 
+
+
   letter-spacing: 2px;
+
 }
+
+
+
 
 
 .assistencia-heading h1 {
+
   margin: 0;
+
+
 
   color: #ffffff;
 
+
+
   font-size: clamp(
+
     28px,
+
     4vw,
+
     42px
+
   );
+
+
 
   font-weight: 700;
 
+
+
   line-height: 1.1;
+
 }
+
+
+
 
 
 .assistencia-heading p {
+
   max-width: 650px;
+
+
 
   margin: 12px 0 0;
 
+
+
   color: #8f8f8f;
+
+
 
   font-size: 14px;
 
+
+
   line-height: 1.7;
+
 }
 
 
+
+
+
 /* ==========================================
+
    PESQUISA
-========================================== */
+
+\========================================== */
+
+
 
 .assistencia-search {
+
   width: 100%;
+
+
 
   margin-bottom: 45px;
 
+
+
   padding: 28px;
+
+
 
   border: 1px solid #202020;
 
+
+
   border-radius: 16px;
 
+
+
   background: #0d0d0d;
+
 }
+
+
+
 
 
 .assistencia-search-field {
+
   width: 100%;
+
 }
+
+
+
 
 
 .assistencia-search-field label {
+
   display: block;
+
+
 
   margin-bottom: 11px;
 
+
+
   color: #b5b5b5;
+
+
 
   font-size: 12px;
 
+
+
   font-weight: 600;
+
 }
+
+
+
 
 
 .assistencia-search-row {
+
   display: flex;
+
+
 
   align-items: center;
 
+
+
   gap: 12px;
+
 }
+
+
+
 
 
 .assistencia-search-row input {
+
   width: 100%;
+
   height: 54px;
+
+
 
   padding: 0 18px;
 
+
+
   border: 1px solid #303030;
 
+
+
   border-radius: 10px;
+
+
 
   outline: none;
 
+
+
   background: #080808;
+
+
 
   color: #ffffff;
 
+
+
   font-family: inherit;
+
+
 
   font-size: 14px;
 
+
+
   transition:
+
     border-color 0.2s ease,
+
     box-shadow 0.2s ease;
+
 }
+
+
+
 
 
 .assistencia-search-row input::placeholder {
+
   color: #606060;
+
 }
+
+
+
 
 
 .assistencia-search-row input:focus {
+
   border-color: #666666;
 
+
+
   box-shadow:
+
     0 0 0 3px
+
     rgba(255, 255, 255, 0.04);
+
 }
+
+
+
 
 
 .assistencia-search-row button {
+
   min-width: 190px;
+
   height: 54px;
+
+
 
   padding: 0 24px;
 
+
+
   border: 1px solid #ffffff;
+
+
 
   border-radius: 10px;
 
+
+
   cursor: pointer;
+
+
 
   background: #ffffff;
 
+
+
   color: #080808;
+
+
 
   font-family: inherit;
 
+
+
   font-size: 13px;
+
+
 
   font-weight: 700;
 
+
+
   transition:
+
     transform 0.2s ease,
+
     background 0.2s ease;
+
 }
+
+
+
 
 
 .assistencia-search-row button:hover {
+
   transform: translateY(-2px);
 
+
+
   background: #e8e8e8;
+
 }
+
+
+
 
 
 .assistencia-search-row button:disabled {
+
   cursor: not-allowed;
+
+
 
   transform: none;
 
+
+
   opacity: 0.5;
+
 }
+
+
+
 
 
 /* ==========================================
+
    LOADING
-========================================== */
+
+\========================================== */
+
+
 
 .assistencia-loading {
+
   display: flex;
+
+
 
   align-items: center;
 
+
+
   justify-content: center;
+
+
 
   flex-direction: column;
 
+
+
   gap: 14px;
+
+
 
   padding: 65px 20px;
 
+
+
   color: #888888;
+
 }
+
+
+
 
 
 .assistencia-loading p {
+
   margin: 0;
 
+
+
   font-size: 13px;
+
 }
+
+
+
 
 
 .assistencia-spinner {
+
   width: 34px;
+
   height: 34px;
+
+
 
   border: 3px solid #252525;
 
+
+
   border-top-color: #ffffff;
+
+
 
   border-radius: 50%;
 
+
+
   animation:
+
     assistencia-spin
+
     0.8s linear infinite;
+
 }
+
+
+
 
 
 @keyframes assistencia-spin {
 
+
+
   to {
+
     transform: rotate(360deg);
+
   }
+
+
 
 }
 
 
+
+
+
 /* ==========================================
+
    MENSAGEM
-========================================== */
+
+\========================================== */
+
+
 
 .assistencia-message {
+
   margin: 25px 0;
+
+
 
   padding: 22px 24px;
 
+
+
   border: 1px solid #252525;
+
+
 
   border-radius: 14px;
 
+
+
   background: #0e0e0e;
+
 }
+
+
+
 
 
 .assistencia-message strong {
+
   display: block;
+
+
 
   margin-bottom: 7px;
 
+
+
   color: #ffffff;
 
+
+
   font-size: 13px;
+
 }
+
+
+
 
 
 .assistencia-message p {
+
   margin: 0;
+
+
 
   color: #858585;
 
+
+
   font-size: 13px;
 
+
+
   line-height: 1.6;
+
 }
+
+
+
 
 
 /* ==========================================
+
    RESULTADOS
-========================================== */
+
+\========================================== */
+
+
 
 .assistencia-results {
+
   margin-top: 30px;
+
 }
+
+
+
 
 
 .assistencia-results-header {
+
   display: flex;
+
+
 
   align-items: center;
 
+
+
   justify-content: space-between;
+
+
 
   gap: 25px;
 
+
+
   margin-bottom: 24px;
+
 }
+
+
+
 
 
 .assistencia-results-header span {
+
   display: block;
+
+
 
   margin-bottom: 7px;
 
+
+
   color: #6f6f6f;
+
+
 
   font-size: 10px;
 
+
+
   font-weight: 700;
 
+
+
   letter-spacing: 1.8px;
+
 }
+
+
+
 
 
 .assistencia-results-header h2 {
+
   margin: 0;
 
+
+
   color: #ffffff;
+
+
 
   font-size: 24px;
 
+
+
   font-weight: 650;
+
 }
+
+
+
 
 
 .assistencia-results-count {
+
   display: flex;
+
+
 
   align-items: center;
 
+
+
   justify-content: center;
 
+
+
   width: 46px;
+
   height: 46px;
+
+
 
   border: 1px solid #282828;
 
+
+
   border-radius: 12px;
+
+
 
   background: #111111;
 
+
+
   color: #ffffff;
+
+
 
   font-size: 15px;
 
+
+
   font-weight: 700;
+
 }
+
+
+
 
 
 /* ==========================================
+
    CARDS
-========================================== */
+
+\========================================== */
+
+
 
 .assistencia-cards {
+
   display: grid;
 
+
+
   grid-template-columns:
+
     repeat(
+
       auto-fit,
+
       minmax(340px, 1fr)
+
     );
 
+
+
   gap: 20px;
+
 }
+
+
+
 
 
 .assistencia-card {
+
   overflow: hidden;
+
+
 
   border: 1px solid #222222;
 
+
+
   border-radius: 16px;
 
+
+
   background:
+
     linear-gradient(
+
       145deg,
+
       #111111,
+
       #0a0a0a
+
     );
 
+
+
   transition:
+
     transform 0.25s ease,
+
     border-color 0.25s ease,
+
     box-shadow 0.25s ease;
+
 }
+
+
+
 
 
 .assistencia-card:hover {
+
   transform: translateY(-4px);
+
+
 
   border-color: #3a3a3a;
 
+
+
   box-shadow:
+
     0 18px 45px
+
     rgba(0, 0, 0, 0.4);
+
 }
 
 
+
+
+
 /* ==========================================
+
    TOPO DO CARD
-========================================== */
+
+\========================================== */
+
+
 
 .assistencia-card-top {
+
   display: flex;
+
+
 
   align-items: flex-start;
 
+
+
   justify-content: space-between;
+
+
 
   gap: 20px;
 
+
+
   padding: 24px;
 
+
+
   border-bottom: 1px solid #202020;
+
 }
+
+
+
 
 
 .assistencia-card-number span {
+
   display: block;
+
+
 
   margin-bottom: 6px;
 
+
+
   color: #6f6f6f;
+
+
 
   font-size: 9px;
 
+
+
   font-weight: 700;
 
+
+
   letter-spacing: 1.8px;
+
 }
+
+
+
 
 
 .assistencia-card-number strong {
+
   color: #ffffff;
+
+
 
   font-size: 25px;
 
+
+
   font-weight: 700;
+
 }
+
+
+
 
 
 .assistencia-card-status {
+
   max-width: 160px;
+
+
 
   padding: 7px 12px;
 
+
+
   border: 1px solid #303030;
+
+
 
   border-radius: 999px;
 
+
+
   background: #151515;
+
+
 
   color: #bdbdbd;
 
+
+
   font-size: 10px;
+
+
 
   font-weight: 600;
 
+
+
   text-align: center;
+
 }
 
 
+
+
+
 /* ==========================================
+
    CONTEÚDO DO CARD
-========================================== */
+
+\========================================== */
+
+
 
 .assistencia-card-content {
+
   display: grid;
 
+
+
   grid-template-columns:
+
     repeat(2, 1fr);
+
+
 
   gap: 20px;
 
+
+
   padding: 24px;
+
 }
+
+
+
 
 
 .assistencia-card-item {
+
   min-width: 0;
+
 }
+
+
+
 
 
 .assistencia-card-item span {
+
   display: block;
+
+
 
   margin-bottom: 7px;
 
+
+
   color: #666666;
+
+
 
   font-size: 10px;
 
+
+
   font-weight: 600;
+
 }
+
+
+
 
 
 .assistencia-card-item strong {
+
   display: block;
+
+
 
   overflow: hidden;
 
+
+
   color: #ededed;
+
+
 
   font-size: 13px;
 
+
+
   font-weight: 600;
+
+
 
   line-height: 1.5;
 
+
+
   text-overflow: ellipsis;
+
 }
 
 
+
+
+
 /* ==========================================
+
    RODAPÉ DO CARD
-========================================== */
+
+\========================================== */
+
+
 
 .assistencia-card-footer {
+
   display: flex;
 
+
+
   align-items: center;
+
+
 
   justify-content: space-between;
 
+
+
   gap: 18px;
+
+
 
   padding: 18px 24px;
 
+
+
   border-top: 1px solid #202020;
 
+
+
   background: #090909;
+
 }
+
+
+
 
 
 .assistencia-card-footer span {
+
   display: block;
+
+
 
   margin-bottom: 4px;
 
+
+
   color: #626262;
+
+
 
   font-size: 9px;
 
+
+
   font-weight: 700;
 
+
+
   letter-spacing: 1px;
+
 }
+
+
+
 
 
 .assistencia-card-footer p {
+
   margin: 0;
+
+
 
   color: #adadad;
 
+
+
   font-size: 11px;
+
 }
+
+
+
 
 
 .assistencia-download-button {
+
   display: flex;
+
+
 
   align-items: center;
 
+
+
   justify-content: center;
+
+
 
   gap: 8px;
 
+
+
   min-width: 135px;
+
   height: 42px;
+
+
 
   padding: 0 16px;
 
+
+
   border: none;
+
+
 
   border-radius: 9px;
 
+
+
   cursor: pointer;
+
+
 
   background: #ffffff;
 
+
+
   color: #080808;
+
+
 
   font-family: inherit;
 
+
+
   font-size: 11px;
+
+
 
   font-weight: 700;
 
+
+
   transition:
+
     transform 0.2s ease,
+
     background 0.2s ease;
+
 }
+
+
+
 
 
 .assistencia-download-button span {
+
   margin: 0;
+
+
 
   color: #080808;
 
+
+
   font-size: 15px;
 
+
+
   letter-spacing: 0;
+
 }
+
+
+
 
 
 .assistencia-download-button:hover {
+
   transform: translateY(-2px);
 
+
+
   background: #e8e8e8;
+
 }
 
 
+
+
+
 /* ==========================================
+
    ESTADO INICIAL
-========================================== */
+
+\========================================== */
+
+
 
 .assistencia-empty {
+
   display: flex;
+
+
 
   align-items: center;
 
+
+
   justify-content: center;
+
+
 
   flex-direction: column;
 
+
+
   min-height: 280px;
+
+
 
   padding: 40px 20px;
 
+
+
   border: 1px dashed #282828;
+
+
 
   border-radius: 16px;
 
+
+
   background: #0a0a0a;
 
+
+
   text-align: center;
+
 }
+
+
+
 
 
 .assistencia-empty-icon {
+
   display: flex;
+
+
 
   align-items: center;
 
+
+
   justify-content: center;
 
+
+
   width: 52px;
+
   height: 52px;
+
+
 
   margin-bottom: 18px;
 
+
+
   border: 1px solid #2a2a2a;
+
+
 
   border-radius: 13px;
 
+
+
   background: #111111;
+
+
 
   color: #ffffff;
 
+
+
   font-size: 21px;
+
 }
+
+
+
 
 
 .assistencia-empty h3 {
+
   margin: 0 0 9px;
+
+
 
   color: #ffffff;
 
+
+
   font-size: 18px;
 
+
+
   font-weight: 650;
+
 }
 
 
+
+
+
 .assistencia-empty p {
+
   max-width: 410px;
+
+
 
   margin: 0;
 
+
+
   color: #737373;
+
+
 
   font-size: 12px;
 
+
+
   line-height: 1.7;
+
+}
+
+
+
+
+
+/* ==========================================
+
+   RESPONSIVO
+
+\========================================== */
+
+
+
+@media (max-width: 900px) {
+
+
+
+  .assistencia-hero-content {
+
+    padding:
+
+      65px 24px
+
+      75px;
+
+  }
+
+
+
+
+
+  .assistencia-profile {
+
+    right: 24px;
+
+  }
+
+
+
+
+
+  .assistencia-container {
+
+    padding:
+
+      55px 24px 80px;
+
+  }
+
+
+
+
+
+  .assistencia-search-row {
+
+    flex-direction: column;
+
+  }
+
+
+
+
+
+  .assistencia-search-row button {
+
+    width: 100%;
+
+
+
+    min-width: 0;
+
+  }
+
+
+
+
+
+  .assistencia-cards {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+
+}
+
+
+
+
+
+@media (max-width: 600px) {
+
+
+
+  .assistencia-hero-content {
+
+    padding:
+
+      55px 18px
+
+      65px;
+
+  }
+
+
+
+
+
+  .assistencia-profile {
+
+    top: 18px;
+
+
+
+    right: 18px;
+
+  }
+
+
+
+
+
+  .assistencia-container {
+
+    padding:
+
+      45px 18px
+
+      65px;
+
+  }
+
+
+
+
+
+  .assistencia-search {
+
+    padding: 20px;
+
+  }
+
+
+
+
+
+  .assistencia-heading-line {
+
+    height: 62px;
+
+  }
+
+
+
+
+
+  .assistencia-card-top {
+
+    flex-direction: column;
+
+  }
+
+
+
+
+
+  .assistencia-card-content {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+
+
+
+  .assistencia-card-footer {
+
+    align-items: stretch;
+
+
+
+    flex-direction: column;
+
+  }
+
+
+
+
+
+  .assistencia-download-button {
+
+    width: 100%;
+
+  }
+
+
+
+
+
+  .assistencia-results-header {
+
+    align-items: flex-start;
+
+  }
+
+
+
+}
+/* ==========================================
+   AJUSTES FINAIS DE RESPONSIVIDADE MOBILE
+   ========================================== */
+
+.assistencia-page,
+.assistencia-hero-area,
+.assistencia-hero-content,
+.assistencia-container,
+.assistencia-heading,
+.assistencia-search,
+.assistencia-search-field,
+.assistencia-search-row,
+.assistencia-results,
+.assistencia-results-header,
+.assistencia-cards,
+.assistencia-card,
+.assistencia-card-top,
+.assistencia-card-content,
+.assistencia-card-footer,
+.assistencia-empty {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  box-sizing: border-box;
+}
+
+
+.assistencia-page {
+  min-height: 100vh;
+  min-height: 100svh;
+
+  overflow-x: hidden;
+}
+
+
+.assistencia-hero-area {
+  overflow: hidden;
+}
+
+
+.assistencia-heading > div,
+.assistencia-results-header > div,
+.assistencia-card-number,
+.assistencia-card-item,
+.assistencia-card-footer > div {
+  min-width: 0;
+  max-width: 100%;
+}
+
+
+.assistencia-heading h1,
+.assistencia-heading p,
+.assistencia-results-header h2,
+.assistencia-card-number strong,
+.assistencia-card-status,
+.assistencia-card-item strong,
+.assistencia-card-footer p,
+.assistencia-message strong,
+.assistencia-message p,
+.assistencia-empty h3,
+.assistencia-empty p {
+  max-width: 100%;
+
+  overflow-wrap: anywhere;
 }
 
 
 /* ==========================================
-   RESPONSIVO
-========================================== */
+   TABLET
+   ========================================== */
 
 @media (max-width: 900px) {
 
   .assistencia-hero-content {
-    padding:
-      65px 24px
-      75px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    padding-top: 58px;
+    padding-bottom: 66px;
+
+    padding-left:
+      max(
+        20px,
+        env(safe-area-inset-left)
+      );
+
+    padding-right:
+      max(
+        20px,
+        env(safe-area-inset-right)
+      );
   }
 
 
   .assistencia-profile {
-    right: 24px;
+    right:
+      max(
+        20px,
+        env(safe-area-inset-right)
+      );
   }
 
 
   .assistencia-container {
-    padding:
-      55px 24px 80px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    padding-top: 48px;
+    padding-bottom: 72px;
+
+    padding-left:
+      max(
+        20px,
+        env(safe-area-inset-left)
+      );
+
+    padding-right:
+      max(
+        20px,
+        env(safe-area-inset-right)
+      );
+  }
+
+
+  .assistencia-search {
+    padding: 24px;
   }
 
 
   .assistencia-search-row {
     flex-direction: column;
+
+    align-items: stretch;
+  }
+
+
+  .assistencia-search-row input {
+    min-width: 0;
+    max-width: 100%;
   }
 
 
   .assistencia-search-row button {
     width: 100%;
-
+    max-width: 100%;
     min-width: 0;
   }
 
 
   .assistencia-cards {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+
+  .assistencia-card {
+    min-width: 0;
+    max-width: 100%;
   }
 
 }
 
 
+/* ==========================================
+   MOBILE
+   ========================================== */
+
 @media (max-width: 600px) {
 
-  .assistencia-hero-content {
-    padding:
-      55px 18px
-      65px;
+  .assistencia-profile {
+    position: relative;
+
+    top: auto;
+    right: auto;
+
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    padding-top: 14px;
+
+    padding-left:
+      max(
+        14px,
+        env(safe-area-inset-left)
+      );
+
+    padding-right:
+      max(
+        14px,
+        env(safe-area-inset-right)
+      );
+
+    box-sizing: border-box;
+
+    z-index: 20;
   }
 
 
-  .assistencia-profile {
-    top: 18px;
+  .assistencia-hero-content {
+    padding-top: 28px;
+    padding-bottom: 48px;
 
-    right: 18px;
+    padding-left:
+      max(
+        14px,
+        env(safe-area-inset-left)
+      );
+
+    padding-right:
+      max(
+        14px,
+        env(safe-area-inset-right)
+      );
   }
 
 
   .assistencia-container {
-    padding:
-      45px 18px
-      65px;
+    padding-top: 38px;
+    padding-bottom: 58px;
+
+    padding-left:
+      max(
+        14px,
+        env(safe-area-inset-left)
+      );
+
+    padding-right:
+      max(
+        14px,
+        env(safe-area-inset-right)
+      );
   }
 
 
-  .assistencia-search {
-    padding: 20px;
+  .assistencia-heading {
+    gap: 13px;
+
+    margin-bottom: 30px;
   }
 
 
   .assistencia-heading-line {
-    height: 62px;
+    height: 56px;
+  }
+
+
+  .assistencia-heading h1 {
+    font-size:
+      clamp(
+        26px,
+        8vw,
+        34px
+      );
+
+    line-height: 1.12;
+  }
+
+
+  .assistencia-heading p {
+    margin-top: 10px;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+  }
+
+
+  .assistencia-search {
+    margin-bottom: 34px;
+
+    padding: 18px;
+
+    border-radius: 14px;
+  }
+
+
+  .assistencia-search-field label {
+    font-size: 11px;
+  }
+
+
+  .assistencia-search-row {
+    gap: 10px;
+  }
+
+
+  .assistencia-search-row input {
+    height: 50px;
+
+    padding:
+      0
+      14px;
+
+    /*
+      Evita zoom automático do Safari/iPhone
+      ao tocar no campo de pesquisa.
+    */
+    font-size: 16px;
+  }
+
+
+  .assistencia-search-row button {
+    height: 50px;
+
+    padding:
+      0
+      16px;
+
+    font-size: 12px;
+  }
+
+
+  .assistencia-message {
+    margin:
+      20px
+      0;
+
+    padding:
+      18px
+      16px;
+  }
+
+
+  .assistencia-results {
+    margin-top: 24px;
+  }
+
+
+  .assistencia-results-header {
+    align-items: flex-start;
+
+    gap: 16px;
+
+    margin-bottom: 18px;
+  }
+
+
+  .assistencia-results-header h2 {
+    font-size: 21px;
+  }
+
+
+  .assistencia-results-count {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    font-size: 14px;
+  }
+
+
+  .assistencia-cards {
+    gap: 14px;
+  }
+
+
+  .assistencia-card {
+    border-radius: 14px;
   }
 
 
   .assistencia-card-top {
     flex-direction: column;
+
+    gap: 12px;
+
+    padding: 18px;
+  }
+
+
+  .assistencia-card-number strong {
+    font-size: 22px;
+  }
+
+
+  .assistencia-card-status {
+    max-width: 100%;
+
+    padding:
+      6px
+      10px;
+
+    text-align: left;
   }
 
 
   .assistencia-card-content {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    gap: 16px;
+
+    padding: 18px;
+  }
+
+
+  .assistencia-card-item strong {
+    white-space: normal;
+
+    text-overflow: clip;
+
+    overflow-wrap: anywhere;
   }
 
 
@@ -858,16 +2161,96 @@
     align-items: stretch;
 
     flex-direction: column;
+
+    gap: 14px;
+
+    padding:
+      16px
+      18px;
   }
 
 
   .assistencia-download-button {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    height: 44px;
   }
 
 
-  .assistencia-results-header {
-    align-items: flex-start;
+  .assistencia-empty {
+    min-height: 240px;
+
+    padding:
+      34px
+      18px;
+
+    border-radius: 14px;
+  }
+
+}
+
+
+/* ==========================================
+   CELULARES PEQUENOS
+   ========================================== */
+
+@media (max-width: 380px) {
+
+  .assistencia-profile,
+  .assistencia-hero-content,
+  .assistencia-container {
+    padding-left:
+      max(
+        12px,
+        env(safe-area-inset-left)
+      );
+
+    padding-right:
+      max(
+        12px,
+        env(safe-area-inset-right)
+      );
+  }
+
+
+  .assistencia-heading {
+    gap: 10px;
+  }
+
+
+  .assistencia-heading-line {
+    width: 3px;
+    height: 52px;
+  }
+
+
+  .assistencia-heading h1 {
+    font-size: 25px;
+  }
+
+
+  .assistencia-search {
+    padding: 15px;
+  }
+
+
+  .assistencia-card-top,
+  .assistencia-card-content {
+    padding: 16px;
+  }
+
+
+  .assistencia-card-footer {
+    padding:
+      15px
+      16px;
+  }
+
+
+  .assistencia-results-header h2 {
+    font-size: 19px;
   }
 
 }

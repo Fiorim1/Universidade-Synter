@@ -35,10 +35,17 @@ function ForgotPassword() {
 
     const turnstileRef = useRef(null)
 
+    const turnstileSiteKey =
+        import.meta.env.VITE_TURNSTILE_SITE_KEY
+
 
     async function handleSubmit(e) {
 
         e.preventDefault()
+
+        if (loading) {
+            return
+        }
 
         setMessage("")
         setErrorMsg("")
@@ -46,6 +53,10 @@ function ForgotPassword() {
         const cleanEmail =
             sanitizeEmail(email)
 
+
+        // ========================================
+        // E-MAIL
+        // ========================================
 
         if (!validateEmail(cleanEmail)) {
 
@@ -57,6 +68,32 @@ function ForgotPassword() {
         }
 
 
+        // ========================================
+        // CONFIGURAÇÃO DO TURNSTILE
+        // ========================================
+
+        if (!turnstileSiteKey) {
+
+            if (import.meta.env.DEV) {
+
+                console.error(
+                    "VITE_TURNSTILE_SITE_KEY não configurada."
+                )
+
+            }
+
+            setErrorMsg(
+                "Não foi possível validar a segurança da solicitação."
+            )
+
+            return
+        }
+
+
+        // ========================================
+        // CAPTCHA
+        // ========================================
+
         if (!captchaToken) {
 
             setErrorMsg(
@@ -66,6 +103,10 @@ function ForgotPassword() {
             return
         }
 
+
+        // ========================================
+        // SOLICITAÇÃO
+        // ========================================
 
         setLoading(true)
 
@@ -90,50 +131,89 @@ function ForgotPassword() {
                 if (import.meta.env.DEV) {
 
                     console.error(
-                        "Erro na recuperação:",
+                        "Erro na recuperação de senha:",
                         error.message
                     )
+
                 }
 
 
+                /*
+                    Mensagem genérica.
+
+                    Não expomos:
+                    - se o e-mail existe;
+                    - se a conta está ativa;
+                    - qualquer informação interna.
+                */
+
                 setErrorMsg(
-                    "Não foi possível processar a solicitação."
+                    "Não foi possível processar a solicitação. Tente novamente em alguns instantes."
                 )
 
                 return
             }
 
 
-            /*
-                Mensagem genérica por segurança.
+            // ========================================
+            // RESPOSTA SEGURA
+            // ========================================
 
-                Não informa se o e-mail existe
-                ou não na base de usuários.
+            /*
+                IMPORTANTE:
+
+                A mensagem permanece genérica
+                para impedir enumeração de usuários.
+
+                Nunca informar:
+
+                "Este e-mail não está cadastrado."
+
+                ou:
+
+                "Conta encontrada."
             */
 
             setMessage(
                 "Se existir uma conta vinculada a este e-mail, enviaremos um link para redefinir sua senha."
             )
 
-        } catch (error) {
+
+            // Opcionalmente limpa o campo após a solicitação
+            setEmail("")
+
+        }
+        catch (error) {
 
             if (import.meta.env.DEV) {
-                console.error(error)
+
+                console.error(
+                    "Erro inesperado na recuperação:",
+                    error
+                )
+
             }
 
 
             setErrorMsg(
-                "Não foi possível processar a solicitação."
+                "Não foi possível processar a solicitação. Tente novamente em alguns instantes."
             )
 
-        } finally {
+        }
+        finally {
+
+            // ========================================
+            // INVALIDA O CAPTCHA UTILIZADO
+            // ========================================
 
             turnstileRef.current?.reset()
 
             setCaptchaToken("")
 
             setLoading(false)
+
         }
+
     }
 
 
@@ -159,10 +239,10 @@ function ForgotPassword() {
 
 
                             <Hero
-    one="Esqueceu sua senha?"
-    two="Não se preocupe!"
-    three="Digite seu e-mail abaixo e enviaremos um link para redefinir sua senha."
-/>
+                                one="Esqueceu sua senha?"
+                                two="Não se preocupe!"
+                                three="Digite seu e-mail abaixo e enviaremos um link para redefinir sua senha."
+                            />
 
 
                             <form
@@ -175,7 +255,11 @@ function ForgotPassword() {
 
                                 {errorMsg && (
 
-                                    <div className="forgot-error">
+                                    <div
+                                        className="forgot-error"
+                                        role="alert"
+                                        aria-live="polite"
+                                    >
                                         {errorMsg}
                                     </div>
 
@@ -194,15 +278,25 @@ function ForgotPassword() {
 
                                     <input
                                         id="email"
+                                        name="email"
                                         type="email"
+
                                         value={email}
+
                                         onChange={(e) =>
                                             setEmail(
                                                 e.target.value
                                             )
                                         }
+
                                         placeholder="seuemail@empresa.com"
+
                                         autoComplete="email"
+
+                                        maxLength={254}
+
+                                        disabled={loading}
+
                                         required
                                     />
 
@@ -216,16 +310,33 @@ function ForgotPassword() {
 
                                     <Turnstile
                                         ref={turnstileRef}
+
                                         siteKey={
-                                            import.meta.env
-                                                .VITE_TURNSTILE_SITE_KEY
+                                            turnstileSiteKey
                                         }
-                                        onSuccess={
-                                            setCaptchaToken
-                                        }
-                                        onExpire={() =>
+
+                                        onSuccess={(token) => {
+
+                                            setCaptchaToken(token)
+                                            setErrorMsg("")
+
+                                        }}
+
+                                        onExpire={() => {
+
                                             setCaptchaToken("")
-                                        }
+
+                                        }}
+
+                                        onError={() => {
+
+                                            setCaptchaToken("")
+
+                                            setErrorMsg(
+                                                "Não foi possível validar a verificação de segurança. Tente novamente."
+                                            )
+
+                                        }}
                                     />
 
                                 </div>
@@ -237,15 +348,21 @@ function ForgotPassword() {
                                 <button
                                     className="forgot-submit"
                                     type="submit"
-                                    disabled={loading}
+
+                                    disabled={
+                                        loading ||
+                                        !captchaToken
+                                    }
                                 >
 
                                     <span>
+
                                         {
                                             loading
                                                 ? "Enviando..."
                                                 : "Enviar link"
                                         }
+
                                     </span>
 
 
@@ -265,7 +382,11 @@ function ForgotPassword() {
 
                                 {message && (
 
-                                    <div className="forgot-success">
+                                    <div
+                                        className="forgot-success"
+                                        role="status"
+                                        aria-live="polite"
+                                    >
 
                                         <span className="forgot-success-icon">
                                             ✓
@@ -286,9 +407,12 @@ function ForgotPassword() {
                                 <button
                                     className="forgot-back"
                                     type="button"
+
                                     onClick={() =>
                                         navigate("/login")
                                     }
+
+                                    disabled={loading}
                                 >
                                     ← Voltar para o login
                                 </button>

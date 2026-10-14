@@ -4,6 +4,9 @@
 
 .cads-container {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 115px;
 
     display: flex;
@@ -16,9 +19,11 @@
     position: relative;
 
     background:
-        linear-gradient(135deg,
+        linear-gradient(
+            135deg,
             rgba(18, 18, 18, 0.98),
-            rgba(10, 10, 10, 0.98));
+            rgba(10, 10, 10, 0.98)
+        );
 
     border:
         1px solid rgba(255, 255, 255, 0.12);
@@ -58,13 +63,16 @@
     inset: 0;
 
     background:
-        linear-gradient(120deg,
+        linear-gradient(
+            120deg,
             rgba(255, 255, 255, 0.035),
-            transparent 42%);
+            transparent 42%
+        );
 
     opacity: 0;
 
-    transition: opacity 0.3s ease;
+    transition:
+        opacity 0.3s ease;
 
     pointer-events: none;
 }
@@ -75,15 +83,18 @@
 /* ======================================== */
 
 .cads-container:hover {
-    transform: translateY(-3px);
+    transform:
+        translateY(-3px);
 
     border-color:
         rgba(255, 255, 255, 0.32);
 
     background:
-        linear-gradient(135deg,
+        linear-gradient(
+            135deg,
             #1a1a1a,
-            #101010);
+            #101010
+        );
 
     box-shadow:
         0 12px 30px rgba(0, 0, 0, 0.32);
@@ -138,6 +149,8 @@
     width: 52px;
     height: 52px;
 
+    max-width: 100%;
+
     object-fit: contain;
 }
 
@@ -154,12 +167,15 @@
     flex: 1;
 
     min-width: 0;
+    max-width: 100%;
 
     color: #ffffff;
 }
 
 
 .content-text-cards h3 {
+    min-width: 0;
+
     margin: 0 0 6px 0;
 
     color: #ffffff;
@@ -168,13 +184,16 @@
     font-weight: 600;
 
     line-height: 1.2;
+
+    overflow-wrap: anywhere;
 }
 
 
 .content-text-cards p {
-    margin: 0;
-
+    min-width: 0;
     max-width: 230px;
+
+    margin: 0;
 
     color: #8f8f8f;
 
@@ -182,6 +201,8 @@
     font-weight: 400;
 
     line-height: 1.45;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -221,38 +242,43 @@
 
 
 .cads-container:hover .card-arrow {
-    transform: translateX(3px);
+    transform:
+        translateX(3px);
 
-    background:
-        #ffffff;
+    background: #ffffff;
 
-    border-color:
-        #ffffff;
+    border-color: #ffffff;
 
     color: #111111;
 }
 
-/* ==========================================
-   CARD DESABILITADO
-========================================== */
+
+/* ======================================== */
+/* CARD DESABILITADO                        */
+/* ======================================== */
 
 .card-disabled {
     cursor: pointer;
 }
 
 
-/* ==========================================
-   OVERLAY
-========================================== */
+/* ======================================== */
+/* OVERLAY                                  */
+/* ======================================== */
 
 .card-production-overlay {
     position: fixed;
+
     inset: 0;
 
     width: 100%;
-    height: 100vh;
+    max-width: 100%;
 
-    background: rgba(0, 0, 0, 0.78);
+    min-height: 100vh;
+    min-height: 100svh;
+
+    background:
+        rgba(0, 0, 0, 0.78);
 
     backdrop-filter: blur(7px);
     -webkit-backdrop-filter: blur(7px);
@@ -261,32 +287,71 @@
     align-items: center;
     justify-content: center;
 
-    padding: 20px;
+    padding:
+        max(
+            20px,
+            env(safe-area-inset-top)
+        )
+        max(
+            20px,
+            env(safe-area-inset-right)
+        )
+        max(
+            20px,
+            env(safe-area-inset-bottom)
+        )
+        max(
+            20px,
+            env(safe-area-inset-left)
+        );
+
+    box-sizing: border-box;
+
+    overflow-y: auto;
 
     z-index: 99999;
 }
 
 
-/* ==========================================
-   MODAL
-========================================== */
+/* ======================================== */
+/* MODAL                                    */
+/* ======================================== */
 
 .card-production-modal {
     position: relative;
 
     width: 100%;
     max-width: 460px;
+    min-width: 0;
+
+    max-height:
+        calc(
+            100svh -
+            max(40px, env(safe-area-inset-top)) -
+            max(40px, env(safe-area-inset-bottom))
+        );
+
+    overflow-y: auto;
+    overscroll-behavior: contain;
 
     background:
-        linear-gradient(145deg,
+        linear-gradient(
+            145deg,
             #111111 0%,
-            #090909 100%);
+            #090909 100%
+        );
 
-    border: 1px solid #292929;
+    border:
+        1px solid #292929;
 
     border-radius: 18px;
 
-    padding: 38px 34px 32px;
+    padding:
+        38px
+        34px
+        32px;
+
+    box-sizing: border-box;
 
     box-shadow:
         0 30px 80px rgba(0, 0, 0, 0.6);
@@ -296,9 +361,9 @@
 }
 
 
-/* ==========================================
-   BOTÃO X
-========================================== */
+/* ======================================== */
+/* BOTÃO X                                  */
+/* ======================================== */
 
 .card-production-close {
     position: absolute;
@@ -310,11 +375,12 @@
     height: 36px;
 
     border-radius: 10px;
+
     border: none;
 
     background: none;
 
-    color: #999;
+    color: #999999;
 
     display: flex;
     align-items: center;
@@ -322,11 +388,17 @@
 
     cursor: pointer;
 
-    transition: 0.2s ease;
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
 }
 
+
 .card-production-close:hover {
-    color: red;
+    color: #ff5a5a;
+
+    background:
+        rgba(255, 255, 255, 0.04);
 }
 
 
@@ -336,15 +408,19 @@
 }
 
 
-/* ==========================================
-   ÍCONE
-========================================== */
+/* ======================================== */
+/* ÍCONE                                    */
+/* ======================================== */
 
 .card-production-icon {
     width: 52px;
     height: 52px;
 
-    border: 1px solid #333333;
+    flex-shrink: 0;
+
+    border:
+        1px solid #333333;
+
     border-radius: 14px;
 
     background: #151515;
@@ -365,11 +441,14 @@
 }
 
 
-/* ==========================================
-   CONTEÚDO
-========================================== */
+/* ======================================== */
+/* CONTEÚDO                                 */
+/* ======================================== */
 
 .card-production-content {
+    min-width: 0;
+    max-width: 100%;
+
     display: flex;
     flex-direction: column;
 }
@@ -390,41 +469,53 @@
 
 
 .card-production-content h2 {
+    min-width: 0;
+
     margin: 0 0 12px;
 
     color: #ffffff;
 
     font-size: 25px;
     font-weight: 700;
+
+    overflow-wrap: anywhere;
 }
 
 
 .card-production-content p {
-    margin: 0;
-
+    min-width: 0;
     max-width: 360px;
+
+    margin: 0;
 
     color: #999999;
 
     font-size: 14px;
     line-height: 1.6;
+
+    overflow-wrap: anywhere;
 }
 
 
-/* ==========================================
-   BOTÃO ENTENDI
-========================================== */
+/* ======================================== */
+/* BOTÃO ENTENDI                            */
+/* ======================================== */
 
 .card-production-button {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     margin-top: 28px;
 
-    padding: 13px 18px;
+    padding:
+        13px
+        18px;
 
-    border: 1px solid #ffffff29;
+    border:
+        1px solid #ffffff29;
+
     border-radius: 10px;
-
 
     color: #ffffff;
 
@@ -433,50 +524,44 @@
 
     cursor: pointer;
 
-    transition: 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+
     background: none;
 }
 
 
-/* ==========================================
-   ANIMAÇÃO
-========================================== */
+.card-production-button:hover {
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    border-color:
+        rgba(255, 255, 255, 0.24);
+}
+
+
+/* ======================================== */
+/* ANIMAÇÃO                                 */
+/* ======================================== */
 
 @keyframes productionModalOpen {
 
     from {
         opacity: 0;
+
         transform:
-            translateY(10px) scale(0.98);
+            translateY(10px)
+            scale(0.98);
     }
 
     to {
         opacity: 1;
+
         transform:
-            translateY(0) scale(1);
-    }
-
-}
-
-
-/* ==========================================
-   MOBILE
-========================================== */
-
-@media (max-width: 600px) {
-
-    .card-production-modal {
-        max-width: 100%;
-
-        padding:
-            34px 24px 26px;
-
-        border-radius: 16px;
-    }
-
-
-    .card-production-content h2 {
-        font-size: 22px;
+            translateY(0)
+            scale(1);
     }
 
 }
@@ -489,7 +574,13 @@
 @media (max-width: 650px) {
 
     .cads-container {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
         min-height: 105px;
+
+        gap: 14px;
 
         padding: 14px;
     }
@@ -507,12 +598,19 @@
     }
 
 
+    .content-text-cards {
+        min-width: 0;
+    }
+
+
     .content-text-cards h3 {
         font-size: 15px;
     }
 
 
     .content-text-cards p {
+        max-width: 100%;
+
         font-size: 11px;
     }
 
@@ -522,6 +620,191 @@
         height: 31px;
 
         font-size: 16px;
+    }
+
+
+    .card-production-overlay {
+        align-items: flex-start;
+
+        padding-top:
+            max(
+                14px,
+                env(safe-area-inset-top)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
+
+        padding-bottom:
+            max(
+                14px,
+                env(safe-area-inset-bottom)
+            );
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+    }
+
+
+    .card-production-modal {
+        max-width: 100%;
+
+        max-height:
+            calc(
+                100svh -
+                max(28px, env(safe-area-inset-top)) -
+                max(28px, env(safe-area-inset-bottom))
+            );
+
+        padding:
+            34px
+            24px
+            26px;
+
+        border-radius: 16px;
+    }
+
+
+    .card-production-content h2 {
+        font-size: 22px;
+    }
+
+}
+
+
+/* ======================================== */
+/* CELULARES PEQUENOS                       */
+/* ======================================== */
+
+@media (max-width: 420px) {
+
+    .cads-container {
+        min-height: 96px;
+
+        gap: 12px;
+
+        padding: 12px;
+    }
+
+
+    .card-image {
+        width: 58px;
+        height: 58px;
+
+        border-radius: 10px;
+    }
+
+
+    .card-image img {
+        width: 40px;
+        height: 40px;
+    }
+
+
+    .content-text-cards h3 {
+        margin-bottom: 4px;
+
+        font-size: 14px;
+    }
+
+
+    .content-text-cards p {
+        font-size: 10.5px;
+
+        line-height: 1.4;
+    }
+
+
+    .card-arrow {
+        width: 29px;
+        height: 29px;
+
+        font-size: 15px;
+    }
+
+
+    .card-production-modal {
+        padding:
+            32px
+            18px
+            22px;
+    }
+
+
+    .card-production-close {
+        top: 12px;
+        right: 12px;
+    }
+
+
+    .card-production-icon {
+        width: 48px;
+        height: 48px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .card-production-content h2 {
+        font-size: 20px;
+    }
+
+
+    .card-production-content p {
+        font-size: 13px;
+    }
+
+}
+
+
+/* ======================================== */
+/* CELULARES MUITO PEQUENOS                 */
+/* ======================================== */
+
+@media (max-width: 360px) {
+
+    .cads-container {
+        align-items: flex-start;
+    }
+
+
+    .card-image {
+        width: 54px;
+        height: 54px;
+    }
+
+
+    .card-image img {
+        width: 36px;
+        height: 36px;
+    }
+
+
+    .card-arrow {
+        width: 28px;
+        height: 28px;
+
+        margin-top: 2px;
+    }
+
+
+    .card-production-overlay {
+        padding:
+            10px;
+    }
+
+
+    .card-production-modal {
+        padding:
+            30px
+            15px
+            20px;
     }
 
 }

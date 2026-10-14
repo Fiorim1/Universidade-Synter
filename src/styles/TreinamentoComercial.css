@@ -4,7 +4,11 @@
 
 .treinamento-comercial-page {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 100vh;
+    min-height: 100svh;
 
     background: #080808;
     color: #ffffff;
@@ -20,6 +24,10 @@
 .treinamento-comercial-hero {
     position: relative;
 
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 430px;
 
     border-bottom:
@@ -32,6 +40,8 @@
             #080808 45%,
             #0b0b0b 100%
         );
+
+    overflow: hidden;
 }
 
 
@@ -39,6 +49,7 @@
     content: "";
 
     position: absolute;
+
     inset: 0;
 
     background:
@@ -64,6 +75,11 @@
     top: 28px;
     right: 60px;
 
+    max-width:
+        calc(
+            100% - 40px
+        );
+
     z-index: 5;
 }
 
@@ -79,11 +95,15 @@
 
     width: 100%;
     max-width: 1400px;
+    min-width: 0;
 
-    margin: 0 auto;
+    margin:
+        0
+        auto;
 
     padding:
-        75px 60px
+        75px
+        60px
         70px;
 
     box-sizing: border-box;
@@ -97,11 +117,15 @@
 .treinamento-comercial-content {
     width: 100%;
     max-width: 1400px;
+    min-width: 0;
 
-    margin: 0 auto;
+    margin:
+        0
+        auto;
 
     padding:
-        45px 60px
+        45px
+        60px
         90px;
 
     box-sizing: border-box;
@@ -113,6 +137,10 @@
 /* ======================================== */
 
 .treinamento-comercial-title {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     display: flex;
     align-items: center;
 
@@ -123,6 +151,9 @@
 
 
 .treinamento-comercial-title h4 {
+    min-width: 0;
+    max-width: 100%;
+
     margin: 0;
 
     color: #ffffff;
@@ -130,7 +161,11 @@
     font-size: 13px;
     font-weight: 600;
 
+    line-height: 1.4;
+
     letter-spacing: 3px;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -155,23 +190,37 @@
 /* ======================================== */
 
 .treinamento-comercial-intro {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     margin-bottom: 35px;
 }
 
 
 .treinamento-comercial-intro h2 {
+    min-width: 0;
+    max-width: 100%;
+
     margin:
-        0 0 8px;
+        0
+        0
+        8px;
 
     color: #ffffff;
 
     font-size: 24px;
     font-weight: 600;
+
+    line-height: 1.2;
+
+    overflow-wrap: anywhere;
 }
 
 
 .treinamento-comercial-intro p {
     max-width: 650px;
+    min-width: 0;
 
     margin: 0;
 
@@ -180,6 +229,8 @@
     font-size: 13px;
 
     line-height: 1.7;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -189,6 +240,8 @@
 
 .treinamento-comercial-grid {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     display: grid;
 
@@ -208,8 +261,10 @@
 /* CARD                                     */
 /* ======================================== */
 
+.treinamento-comercial-grid > *,
 .treinamento-comercial-grid .cads-container {
     width: 100%;
+    max-width: 100%;
     min-width: 0;
 
     height: 100%;
@@ -224,10 +279,16 @@
 
 @media (max-width: 1100px) {
 
+    .treinamento-comercial-hero-content,
     .treinamento-comercial-content {
-        padding:
-            40px 35px
-            70px;
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+
+
+    .treinamento-comercial-content {
+        padding-top: 40px;
+        padding-bottom: 70px;
     }
 
 
@@ -255,7 +316,18 @@
 
 @media (max-width: 750px) {
 
+    .treinamento-comercial-page {
+        width: 100%;
+        max-width: 100%;
+
+        overflow-x: hidden;
+    }
+
+
     .treinamento-comercial-hero {
+        width: 100%;
+        max-width: 100%;
+
         min-height: auto;
     }
 
@@ -266,39 +338,119 @@
         top: auto;
         right: auto;
 
-        display: flex;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
 
+        display: flex;
+        align-items: center;
         justify-content: flex-end;
 
-        padding:
-            20px 20px
-            0;
+        padding-top: 18px;
+
+        padding-left:
+            max(
+                16px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                16px,
+                env(safe-area-inset-right)
+            );
+
+        box-sizing: border-box;
+
+        z-index: 5;
     }
 
 
     .treinamento-comercial-hero-content {
-        padding:
-            40px 25px
-            55px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        padding-top: 30px;
+        padding-bottom: 48px;
+
+        padding-left:
+            max(
+                18px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                18px,
+                env(safe-area-inset-right)
+            );
     }
 
 
     .treinamento-comercial-content {
-        padding:
-            32px 25px
-            60px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        padding-top: 30px;
+        padding-bottom: 58px;
+
+        padding-left:
+            max(
+                18px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                18px,
+                env(safe-area-inset-right)
+            );
     }
 
 
-    .treinamento-comercial-grid {
-        grid-template-columns: 1fr;
+    .treinamento-comercial-title {
+        gap: 10px;
 
-        gap: 18px;
+        margin-bottom: 22px;
+    }
+
+
+    .treinamento-comercial-title h4 {
+        font-size: 11px;
+
+        letter-spacing: 2px;
+    }
+
+
+    .treinamento-comercial-bar {
+        height: 18px;
+    }
+
+
+    .treinamento-comercial-intro {
+        margin-bottom: 28px;
     }
 
 
     .treinamento-comercial-intro h2 {
         font-size: 21px;
+    }
+
+
+    .treinamento-comercial-intro p {
+        max-width: 100%;
+
+        font-size: 13px;
+    }
+
+
+    .treinamento-comercial-grid {
+        grid-template-columns:
+            minmax(0, 1fr);
+
+        gap: 18px;
     }
 
 }
@@ -310,17 +462,56 @@
 
 @media (max-width: 500px) {
 
-    .treinamento-comercial-content {
-        padding:
-            28px 18px
-            50px;
+    .treinamento-comercial-profile {
+        padding-top: 14px;
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
     }
 
 
     .treinamento-comercial-hero-content {
-        padding:
-            35px 20px
-            45px;
+        padding-top: 26px;
+        padding-bottom: 40px;
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .treinamento-comercial-content {
+        padding-top: 24px;
+        padding-bottom: 48px;
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
     }
 
 
@@ -328,6 +519,70 @@
         font-size: 11px;
 
         letter-spacing: 2px;
+    }
+
+
+    .treinamento-comercial-intro {
+        margin-bottom: 24px;
+    }
+
+
+    .treinamento-comercial-intro h2 {
+        font-size: 20px;
+    }
+
+
+    .treinamento-comercial-intro p {
+        font-size: 12.5px;
+
+        line-height: 1.6;
+    }
+
+
+    .treinamento-comercial-grid {
+        gap: 16px;
+    }
+
+}
+
+
+/* ======================================== */
+/* CELULAR MUITO PEQUENO                    */
+/* ======================================== */
+
+@media (max-width: 380px) {
+
+    .treinamento-comercial-profile,
+    .treinamento-comercial-hero-content,
+    .treinamento-comercial-content {
+        padding-left:
+            max(
+                12px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                12px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .treinamento-comercial-title h4 {
+        font-size: 10.5px;
+
+        letter-spacing: 1.6px;
+    }
+
+
+    .treinamento-comercial-intro h2 {
+        font-size: 19px;
+    }
+
+
+    .treinamento-comercial-grid {
+        gap: 14px;
     }
 
 }

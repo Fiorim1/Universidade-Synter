@@ -4,16 +4,21 @@
 
 .header-all {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     position: relative;
     z-index: 100;
 
     background: rgba(5, 5, 5, 0.96);
 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.08);
 
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
+
+    overflow-x: hidden;
 }
 
 
@@ -24,11 +29,15 @@
 .header-container {
     width: 100%;
     max-width: 1400px;
+    min-width: 0;
 
     min-height: 88px;
 
     margin: 0 auto;
-    padding: 0 40px;
+
+    padding:
+        0
+        40px;
 
     display: flex;
     align-items: center;
@@ -51,6 +60,7 @@
 
 .header-logo {
     width: 135px;
+    max-width: 100%;
     height: auto;
 
     display: block;
@@ -66,6 +76,8 @@
 .header-nav {
     display: flex;
     align-items: center;
+
+    min-width: 0;
 
     gap: 26px;
 
@@ -89,7 +101,8 @@
 
     cursor: pointer;
 
-    transition: color 0.25s ease;
+    transition:
+        color 0.25s ease;
 }
 
 
@@ -130,6 +143,8 @@
     display: flex;
     align-items: center;
 
+    min-width: 0;
+
     gap: 16px;
 
     margin-left: auto;
@@ -155,7 +170,8 @@
 
     white-space: nowrap;
 
-    transition: opacity 0.25s ease;
+    transition:
+        opacity 0.25s ease;
 }
 
 
@@ -179,6 +195,8 @@
     display: flex;
     align-items: center;
 
+    flex-shrink: 0;
+
     gap: 7px;
 }
 
@@ -186,6 +204,8 @@
 .header-social button {
     width: 29px;
     height: 29px;
+
+    flex: 0 0 29px;
 
     display: flex;
     align-items: center;
@@ -205,21 +225,23 @@
     transition:
         background-color 0.25s ease,
         transform 0.25s ease;
-
-        
 }
 
 
 .header-social button:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background:
+        rgba(255, 255, 255, 0.08);
 
-    transform: translateY(-1px);
+    transform:
+        translateY(-1px);
 }
 
 
 .header-social img {
     width: 30px;
     height: 30px;
+
+    max-width: 30px;
 
     object-fit: contain;
 }
@@ -237,11 +259,14 @@
     display: flex;
     align-items: center;
 
+    flex-shrink: 0;
+
     gap: 18px;
 
     background: transparent;
 
-    border: 1px solid rgba(255, 255, 255, 0.55);
+    border:
+        1px solid rgba(255, 255, 255, 0.55);
 
     border-radius: 9px;
 
@@ -273,13 +298,15 @@
 .header-contact-arrow {
     font-size: 18px;
 
-    transition: transform 0.25s ease;
+    transition:
+        transform 0.25s ease;
 }
 
 
 .header-contact-button:hover
 .header-contact-arrow {
-    transform: translateX(3px);
+    transform:
+        translateX(3px);
 }
 
 
@@ -291,9 +318,12 @@
     width: 1px;
     height: 42px;
 
+    flex-shrink: 0;
+
     margin: 0 3px;
 
-    background: rgba(255, 255, 255, 0.16);
+    background:
+        rgba(255, 255, 255, 0.16);
 }
 
 
@@ -305,6 +335,8 @@
     display: flex;
     align-items: center;
 
+    min-width: 0;
+
     flex-shrink: 0;
 }
 
@@ -314,6 +346,13 @@
 /* ======================================== */
 
 @media (max-width: 1250px) {
+
+    .header-container {
+        padding:
+            0
+            28px;
+    }
+
 
     .header-nav {
         gap: 18px;
@@ -343,17 +382,65 @@
 }
 
 
+/* ======================================== */
+/* MOBILE                                   */
+/* ======================================== */
+
 @media (max-width: 750px) {
 
+    .header-all {
+        width: 100%;
+        max-width: 100%;
+
+        overflow-x: hidden;
+    }
+
+
     .header-container {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
         min-height: 74px;
 
-        padding: 0 20px;
+        padding-left:
+            max(
+                16px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                16px,
+                env(safe-area-inset-right)
+            );
+
+        gap: 12px;
+    }
+
+
+    .header-logo-link {
+        min-width: 0;
+
+        flex-shrink: 1;
     }
 
 
     .header-logo {
         width: 115px;
+
+        max-width: 115px;
+    }
+
+
+    .header-actions {
+        min-width: 0;
+
+        gap: 8px;
+
+        margin-left: auto;
+
+        flex-shrink: 0;
     }
 
 
@@ -369,6 +456,50 @@
 
     .header-contact-button {
         display: none;
+    }
+
+
+    .header-profile {
+        min-width: 0;
+
+        flex-shrink: 0;
+    }
+
+}
+
+
+/* ======================================== */
+/* CELULARES PEQUENOS                       */
+/* ======================================== */
+
+@media (max-width: 420px) {
+
+    .header-container {
+        min-height: 68px;
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .header-logo {
+        width: 105px;
+
+        max-width: 105px;
+    }
+
+
+    .header-actions {
+        gap: 6px;
     }
 
 }

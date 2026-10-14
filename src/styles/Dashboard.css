@@ -3,379 +3,341 @@
 /* ======================================== */
 .dashboard-page {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     min-height: 100vh;
+    min-height: 100svh;
     background: #080808;
     color: #ffffff;
     overflow-x: hidden;
 }
 
-
 /* ======================================== */
 /* HERO                                     */
 /* ======================================== */
-
 .dashboard-hero-area {
     position: relative;
-
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     min-height: 430px;
-
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-
-    background:
-        linear-gradient(
-            90deg,
-            #050505 0%,
-            #080808 45%,
-            #0b0b0b 100%
-        );
+    background: linear-gradient(90deg, #050505 0%, #080808 45%, #0b0b0b 100%);
+    overflow: hidden;
 }
-
-
-/* ======================================== */
-/* FUNDO DO HERO                            */
-/* ======================================== */
 
 .dashboard-hero-area::after {
     content: "";
-
     position: absolute;
-
     inset: 0;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(0, 0, 0, 0.05),
-            rgba(0, 0, 0, 0.22)
-        );
-
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.22));
     pointer-events: none;
-
     z-index: 0;
 }
-
 
 /* ======================================== */
 /* PERFIL                                   */
 /* ======================================== */
-
 .dashboard-profile {
     position: absolute;
-
     top: 28px;
     right: 60px;
-
     z-index: 5;
+    max-width: calc(100% - 40px);
 }
-
 
 /* ======================================== */
 /* CONTEÚDO HERO                            */
 /* ======================================== */
-
 .dashboard-hero-content {
     position: relative;
-
     z-index: 2;
-
     width: 100%;
     max-width: 1400px;
-
+    min-width: 0;
     margin: 0 auto;
-
     padding: 75px 60px 70px;
-
     box-sizing: border-box;
 }
-
 
 /* ======================================== */
 /* ÁREA PRINCIPAL                           */
 /* ======================================== */
-
 .dashboard-content {
     position: relative;
-
     width: 100%;
     max-width: 1400px;
-
+    min-width: 0;
     margin: 0 auto;
-
     padding: 38px 60px 70px;
-
     box-sizing: border-box;
-
     background: transparent;
 }
-
 
 /* ======================================== */
 /* ACESSO RÁPIDO                            */
 /* ======================================== */
-
 .dashboard-section-title {
     display: flex;
     align-items: center;
-
+    min-width: 0;
     gap: 12px;
-
     margin-bottom: 26px;
 }
 
-
 .dashboard-section-title h4 {
+    min-width: 0;
     margin: 0;
-
     color: #ffffff;
-
     font-size: 13px;
     font-weight: 600;
-
     letter-spacing: 3px;
+    overflow-wrap: anywhere;
 }
-
 
 .dashboard-section-bar {
     width: 3px;
     height: 20px;
-
+    flex-shrink: 0;
     border-radius: 10px;
-
     background: #ffffff;
-
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.18);
 }
-
 
 /* ======================================== */
 /* GRID DOS CARDS DO DASHBOARD              */
 /* ======================================== */
-
 .cards {
     display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
-
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 }
 
+.cards > * {
+    min-width: 0;
+    max-width: 100%;
+}
 
 /* ======================================== */
 /* FUNDO DA ÁREA DOS CARDS                  */
 /* ======================================== */
-
 .dashboard-page::before {
     content: "";
-
     position: fixed;
-
     width: 650px;
     height: 650px;
-
     right: -320px;
     bottom: -320px;
-
     border-radius: 50%;
-
     background: rgba(255, 255, 255, 0.025);
-
     filter: blur(140px);
-
     pointer-events: none;
-
     z-index: 0;
 }
-
 
 /* ======================================== */
 /* RESPONSIVO DASHBOARD                     */
 /* ======================================== */
-
 @media (max-width: 1150px) {
-
-    .cards {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+    .dashboard-hero-content,
+    .dashboard-content {
+        padding-left: 40px;
+        padding-right: 40px;
     }
 
+    .dashboard-profile {
+        right: 40px;
+    }
+
+    .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
-
+/* ======================================== */
+/* MOBILE                                   */
+/* ======================================== */
 @media (max-width: 750px) {
+    .dashboard-page {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
 
     .dashboard-hero-area {
+        width: 100%;
         min-height: auto;
-
         background-position: 70% center;
     }
 
-
     .dashboard-profile {
         position: relative;
-
         top: auto;
         right: auto;
-
+        width: 100%;
+        max-width: 100%;
         display: flex;
         justify-content: flex-end;
-
-        padding: 20px;
-
+        align-items: center;
+        padding-top: 18px;
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+        box-sizing: border-box;
         z-index: 5;
     }
 
-
     .dashboard-hero-content {
-        padding: 40px 25px 55px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        padding-top: 32px;
+        padding-bottom: 48px;
+        padding-left: max(18px, env(safe-area-inset-left));
+        padding-right: max(18px, env(safe-area-inset-right));
     }
-
 
     .dashboard-content {
-        padding: 30px 25px 50px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        padding-top: 28px;
+        padding-bottom: 48px;
+        padding-left: max(18px, env(safe-area-inset-left));
+        padding-right: max(18px, env(safe-area-inset-right));
     }
 
+    .dashboard-section-title {
+        width: 100%;
+        max-width: 100%;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-section-title h4 {
+        font-size: 11px;
+        line-height: 1.4;
+        letter-spacing: 2px;
+    }
+
+    .dashboard-section-bar {
+        height: 18px;
+    }
 
     .cards {
-        grid-template-columns: 1fr;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
     }
 
+    .dashboard-page::before {
+        width: 400px;
+        height: 400px;
+        right: -260px;
+        bottom: -240px;
+        filter: blur(100px);
+    }
 }
 
+@media (max-width: 420px) {
+    .dashboard-profile {
+        padding-top: 14px;
+        padding-left: max(14px, env(safe-area-inset-left));
+        padding-right: max(14px, env(safe-area-inset-right));
+    }
+
+    .dashboard-hero-content {
+        padding-top: 26px;
+        padding-bottom: 40px;
+        padding-left: max(14px, env(safe-area-inset-left));
+        padding-right: max(14px, env(safe-area-inset-right));
+    }
+
+    .dashboard-content {
+        padding-top: 24px;
+        padding-bottom: 42px;
+        padding-left: max(14px, env(safe-area-inset-left));
+        padding-right: max(14px, env(safe-area-inset-right));
+    }
+}
 
 /* ======================================== */
 /* MANUAIS                                  */
 /* ======================================== */
-
 .manuals-container {
     display: flex;
     flex-direction: column;
-
     align-items: center;
-
     width: 100%;
-
+    max-width: 100%;
+    min-width: 0;
     padding: 32px 45px 50px;
-
     color: #ffffff;
-
     box-sizing: border-box;
-
     gap: 55px;
+    overflow-x: hidden;
 }
-
-
-/* ======================================== */
-/* SEÇÕES DOS PRODUTOS                      */
-/* ======================================== */
-
-/*
-    Mantive "digials-products" porque
-    é assim que está escrito no seu JSX.
-*/
 
 .digials-products,
 .mechanical-products,
 .ironwork {
     width: 100%;
     max-width: 1260px;
-
+    min-width: 0;
     margin: 0 auto;
-
     box-sizing: border-box;
 }
-
-
-/* ======================================== */
-/* TÍTULOS DAS SEÇÕES                       */
-/* ======================================== */
-
-/*
-    Mesmo padrão visual de:
-    | VÍDEOS DE INSTALAÇÃO
-*/
 
 .title {
     display: flex;
     align-items: center;
-
     width: 100%;
-
+    max-width: 100%;
+    min-width: 0;
     gap: 12px;
-
     margin-bottom: 24px;
 }
 
-
-/* Barra branca vertical */
-
 .title::before {
     content: "";
-
     width: 3px;
     height: 20px;
-
     flex-shrink: 0;
-
     border-radius: 10px;
-
     background: #ffffff;
-
-    box-shadow:
-        0 0 8px rgba(255, 255, 255, 0.18);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.18);
 }
-
-
-/* Texto do título */
 
 .title h4 {
+    min-width: 0;
     margin: 0;
-
     color: #ffffff;
-
     font-size: 13px;
     font-weight: 600;
-
-    line-height: 1;
-
+    line-height: 1.2;
     letter-spacing: 3px;
-
     text-transform: uppercase;
+    overflow-wrap: anywhere;
 }
-
-
-/* ======================================== */
-/* REMOVE A LINHA ANTIGA                    */
-/* ======================================== */
 
 .line {
     display: none;
 }
 
-
-/* ======================================== */
-/* CONTAINER DOS CARDS                      */
-/* ======================================== */
-
 .cards-manuals {
     display: flex;
     flex-direction: column;
-
     width: 100%;
-
+    max-width: 100%;
+    min-width: 0;
     gap: 15px;
-
     margin: 0;
-
     box-sizing: border-box;
 }
-
-
-/* ======================================== */
-/* LINHAS DOS CARDS                         */
-/* ======================================== */
 
 .cards-manuals-1,
 .cards-manuals-2,
@@ -386,20 +348,13 @@
 .cards-manuals-7 {
     display: flex;
     align-items: stretch;
-
     width: 100%;
-
+    max-width: 100%;
+    min-width: 0;
     gap: 15px;
-
     margin: 0;
-
     box-sizing: border-box;
 }
-
-
-/* ======================================== */
-/* TAMANHO IGUAL PARA TODOS OS CARDS        */
-/* ======================================== */
 
 .cards-manuals-1 > *,
 .cards-manuals-2 > *,
@@ -409,24 +364,16 @@
 .cards-manuals-6 > *,
 .cards-manuals-7 > * {
     flex: 1 1 0;
-
     min-width: 0;
-
+    max-width: 100%;
     box-sizing: border-box;
 }
 
-
-/* ======================================== */
-/* RESPONSIVO DOS MANUAIS                   */
-/* ======================================== */
-
 @media (max-width: 1100px) {
-
     .manuals-container {
         padding-left: 30px;
         padding-right: 30px;
     }
-
 
     .cards-manuals-1,
     .cards-manuals-2,
@@ -438,7 +385,6 @@
         flex-wrap: wrap;
     }
 
-
     .cards-manuals-1 > *,
     .cards-manuals-2 > *,
     .cards-manuals-3 > *,
@@ -448,46 +394,35 @@
     .cards-manuals-7 > * {
         flex: 1 1 calc(50% - 15px);
     }
-
 }
 
-
-/* ======================================== */
-/* RESPONSIVO MOBILE                        */
-/* ======================================== */
-
 @media (max-width: 650px) {
-
     .manuals-container {
-        padding: 25px 20px 35px;
-
+        width: 100%;
+        max-width: 100%;
+        padding-top: 25px;
+        padding-bottom: 35px;
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
         gap: 40px;
     }
 
-
-    /* Títulos */
-
     .title {
+        width: 100%;
         gap: 10px;
-
         margin-bottom: 20px;
     }
-
 
     .title::before {
         width: 3px;
         height: 18px;
     }
 
-
     .title h4 {
         font-size: 11px;
-
+        line-height: 1.4;
         letter-spacing: 2px;
     }
-
-
-    /* Cards */
 
     .cards-manuals-1,
     .cards-manuals-2,
@@ -497,10 +432,11 @@
     .cards-manuals-6,
     .cards-manuals-7 {
         flex-direction: column;
-
+        flex-wrap: nowrap;
+        width: 100%;
+        max-width: 100%;
         gap: 12px;
     }
-
 
     .cards-manuals-1 > *,
     .cards-manuals-2 > *,
@@ -510,8 +446,16 @@
     .cards-manuals-6 > *,
     .cards-manuals-7 > * {
         width: 100%;
-
+        max-width: 100%;
+        min-width: 0;
         flex: none;
     }
+}
 
+@media (max-width: 420px) {
+    .manuals-container {
+        padding-left: max(14px, env(safe-area-inset-left));
+        padding-right: max(14px, env(safe-area-inset-right));
+        gap: 32px;
+    }
 }

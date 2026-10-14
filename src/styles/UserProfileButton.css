@@ -3,6 +3,8 @@
 /* ======================================== */
 
 .user-profile-button {
+    max-width: 100%;
+    min-width: 0;
     min-height: 48px;
 
     display: flex;
@@ -10,7 +12,11 @@
 
     gap: 10px;
 
-    padding: 5px 12px 5px 6px;
+    padding:
+        5px
+        12px
+        5px
+        6px;
 
     background:
         rgba(15, 15, 15, 0.88);
@@ -23,6 +29,8 @@
     color: #ffffff;
 
     cursor: pointer;
+
+    box-sizing: border-box;
 
     transition:
         background-color 0.25s ease,
@@ -46,7 +54,8 @@
     box-shadow:
         0 8px 24px rgba(0, 0, 0, 0.30);
 
-    transform: translateY(-1px);
+    transform:
+        translateY(-1px);
 }
 
 
@@ -62,7 +71,7 @@
     align-items: center;
     justify-content: center;
 
-    flex-shrink: 0;
+    flex: 0 0 38px;
 
     border-radius: 50%;
 
@@ -90,6 +99,7 @@
 /* ======================================== */
 
 .user-profile-name {
+    min-width: 0;
     max-width: 145px;
 
     overflow: hidden;
@@ -110,6 +120,8 @@
 /* ======================================== */
 
 .user-profile-arrow {
+    flex-shrink: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -130,30 +142,118 @@
 .user-profile-arrow {
     color: #ffffff;
 
-    transform: translateY(2px);
+    transform:
+        translateY(2px);
 }
 
 
 /* ======================================== */
-/* RESPONSIVO                               */
+/* TABLET                                   */
+/* ======================================== */
+
+@media (max-width: 900px) {
+
+    .user-profile-button {
+        min-height: 46px;
+
+        gap: 8px;
+
+        padding:
+            4px
+            10px
+            4px
+            5px;
+    }
+
+
+    .user-profile-avatar {
+        width: 36px;
+        height: 36px;
+
+        flex-basis: 36px;
+
+        font-size: 12px;
+    }
+
+
+    .user-profile-name {
+        max-width: 110px;
+
+        font-size: 11px;
+    }
+
+}
+
+
+/* ======================================== */
+/* MOBILE                                   */
 /* ======================================== */
 
 @media (max-width: 650px) {
 
-    .user-profile-name {
-        display: none;
+    .user-profile-button {
+        width: 46px;
+        max-width: 46px;
+        min-width: 46px;
+
+        min-height: 46px;
+
+        flex: 0 0 46px;
+
+        justify-content: center;
+
+        gap: 0;
+
+        padding: 4px;
+
+        border-radius: 50%;
     }
 
 
+    .user-profile-name,
     .user-profile-arrow {
         display: none;
     }
 
 
-    .user-profile-button {
-        padding: 5px;
+    .user-profile-avatar {
+        width: 36px;
+        height: 36px;
 
-        border-radius: 50%;
+        flex: 0 0 36px;
+
+        font-size: 12px;
+    }
+
+}
+
+
+/* ======================================== */
+/* CELULARES PEQUENOS                       */
+/* ======================================== */
+
+@media (max-width: 420px) {
+
+    .user-profile-button {
+        width: 42px;
+        max-width: 42px;
+        min-width: 42px;
+
+        min-height: 42px;
+
+        flex-basis: 42px;
+
+        padding: 3px;
+    }
+
+
+    .user-profile-avatar {
+        width: 34px;
+        height: 34px;
+
+        flex-basis: 34px;
+
+        font-size: 11px;
     }
 
 }

@@ -3,7 +3,12 @@
 /* ======================================== */
 
 .hero-all {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     color: #ffffff;
+
     box-sizing: border-box;
 }
 
@@ -13,18 +18,29 @@
 /* ======================================== */
 
 .hero-default {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
 
     margin: 30px;
+
+    box-sizing: border-box;
 }
 
 
 .hero-default h4,
 .hero-default h2,
 .hero-default p {
+    min-width: 0;
+    max-width: 100%;
+
     margin: 10px;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -41,11 +57,15 @@
 
     font-size: 2.5rem;
     font-weight: 600;
+
+    line-height: 1.12;
 }
 
 
 .hero-default p {
     color: #a6a6a6;
+
+    line-height: 1.6;
 }
 
 
@@ -56,6 +76,7 @@
 .hero-dashboard {
     width: 100%;
     max-width: 720px;
+    min-width: 0;
 
     display: flex;
     flex-direction: column;
@@ -70,8 +91,13 @@
 /* ======================================== */
 
 .hero-eyebrow {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 
     margin-bottom: 18px;
 
@@ -83,10 +109,11 @@
     letter-spacing: 2px;
 
     text-transform: uppercase;
+
     gap: 20px;
+
+    overflow-wrap: anywhere;
 }
-
-
 
 
 /* ======================================== */
@@ -94,19 +121,28 @@
 /* ======================================== */
 
 .hero-dashboard h1 {
-    margin: 0;
-
+    width: 100%;
     max-width: 700px;
+    min-width: 0;
+
+    margin: 0;
 
     color: #ffffff;
 
-    font-size: clamp(3rem, 5vw, 4.5rem);
+    font-size:
+        clamp(
+            3rem,
+            5vw,
+            4.5rem
+        );
 
     font-weight: 650;
 
     line-height: 1.05;
 
     letter-spacing: -2px;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -115,15 +151,23 @@
 /* ======================================== */
 
 .hero-description {
+    width: 100%;
     max-width: 640px;
+    min-width: 0;
 
-    margin: 24px 0 34px 0;
+    margin:
+        24px
+        0
+        34px
+        0;
 
     color: #a8a8a8;
 
     font-size: 16px;
 
     line-height: 1.7;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -132,12 +176,15 @@
 /* ======================================== */
 
 .hero-features {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 
     gap: 35px;
-
-    width: 100%;
 
     padding-top: 25px;
 
@@ -151,6 +198,8 @@
 /* ======================================== */
 
 .hero-feature {
+    min-width: 0;
+
     display: flex;
     align-items: center;
 
@@ -193,6 +242,8 @@
 .hero-feature strong {
     display: block;
 
+    min-width: 0;
+
     margin-bottom: 4px;
 
     color: #ffffff;
@@ -211,6 +262,8 @@
 .hero-feature span {
     display: block;
 
+    min-width: 0;
+
     color: #858585;
 
     font-size: 10px;
@@ -220,10 +273,20 @@
 
 
 /* ======================================== */
-/* RESPONSIVO                               */
+/* RESPONSIVO TABLET                        */
 /* ======================================== */
 
 @media (max-width: 850px) {
+
+    .hero-default {
+        width: 100%;
+        max-width: 100%;
+
+        margin:
+            24px
+            20px;
+    }
+
 
     .hero-dashboard {
         max-width: 100%;
@@ -231,40 +294,185 @@
 
 
     .hero-dashboard h1 {
-        font-size: 3.4rem;
+        max-width: 100%;
+
+        font-size:
+            clamp(
+                2.7rem,
+                7vw,
+                3.4rem
+            );
 
         letter-spacing: -1.5px;
     }
 
 
-    .hero-features {
-        flex-wrap: wrap;
+    .hero-description {
+        max-width: 100%;
+    }
 
+
+    .hero-features {
         gap: 22px;
     }
 
 }
 
 
+/* ======================================== */
+/* RESPONSIVO MOBILE                        */
+/* ======================================== */
+
 @media (max-width: 550px) {
 
+    .hero-default {
+        margin:
+            20px
+            16px;
+    }
+
+
+    .hero-default h4,
+    .hero-default h2,
+    .hero-default p {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+
+    .hero-default h4 {
+        font-size: 12px;
+    }
+
+
+    .hero-default h2 {
+        font-size:
+            clamp(
+                1.9rem,
+                9vw,
+                2.3rem
+            );
+
+        line-height: 1.1;
+    }
+
+
+    .hero-default p {
+        font-size: 14px;
+    }
+
+
+    .hero-eyebrow {
+        gap: 10px;
+
+        margin-bottom: 15px;
+
+        font-size: 10px;
+
+        letter-spacing: 1.6px;
+    }
+
+
     .hero-dashboard h1 {
-        font-size: 2.7rem;
+        font-size:
+            clamp(
+                2.15rem,
+                10.5vw,
+                2.7rem
+            );
+
+        line-height: 1.04;
+
+        letter-spacing: -1.1px;
     }
 
 
     .hero-description {
+        margin:
+            20px
+            0
+            26px;
+
         font-size: 14px;
+
+        line-height: 1.6;
     }
 
 
     .hero-features {
         flex-direction: column;
 
-        align-items: flex-start;
+        align-items: stretch;
+
+        gap: 16px;
+
+        padding-top: 20px;
+    }
+
+
+    .hero-feature {
+        width: 100%;
+        max-width: 100%;
+    }
+
+
+    .hero-feature strong,
+    .hero-feature span {
+        white-space: normal;
+
+        overflow-wrap: anywhere;
     }
 
 }
+
+
+/* ======================================== */
+/* CELULARES PEQUENOS                       */
+/* ======================================== */
+
+@media (max-width: 380px) {
+
+    .hero-default {
+        margin:
+            16px
+            12px;
+    }
+
+
+    .hero-dashboard h1 {
+        font-size:
+            clamp(
+                2rem,
+                10vw,
+                2.35rem
+            );
+    }
+
+
+    .hero-description {
+        font-size: 13px;
+    }
+
+
+    .hero-feature-icon {
+        width: 34px;
+        height: 34px;
+
+        font-size: 13px;
+    }
+
+
+    .hero-feature strong {
+        font-size: 11px;
+    }
+
+
+    .hero-feature span {
+        font-size: 9.5px;
+    }
+
+}
+
 
 /* ======================================== */
 /* ALINHAMENTO DO HERO NO FORGOT PASSWORD   */
@@ -272,8 +480,16 @@
 
 .forgot-content .hero-default {
     width: 100%;
-    margin: 0 0 38px 0;
+    max-width: 100%;
+    min-width: 0;
+
+    margin:
+        0
+        0
+        38px
+        0;
 }
+
 
 .forgot-content .hero-default h4,
 .forgot-content .hero-default h2,
@@ -282,16 +498,38 @@
     margin-right: 0;
 }
 
+
 .forgot-content .hero-default h4 {
     margin-top: 0;
 }
+
 
 .forgot-content .hero-default h2 {
     margin-top: 14px;
     margin-bottom: 16px;
 }
 
+
 .forgot-content .hero-default p {
     margin-top: 0;
     margin-bottom: 0;
+}
+
+
+/* ======================================== */
+/* FORGOT PASSWORD NO MOBILE                */
+/* ======================================== */
+
+@media (max-width: 550px) {
+
+    .forgot-content .hero-default {
+        margin-bottom: 28px;
+    }
+
+
+    .forgot-content .hero-default h2 {
+        margin-top: 10px;
+        margin-bottom: 12px;
+    }
+
 }

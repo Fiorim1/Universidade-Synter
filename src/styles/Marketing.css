@@ -6,7 +6,11 @@
     position: relative;
 
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 100vh;
+    min-height: 100svh;
 
     display: flex;
     flex-direction: column;
@@ -26,9 +30,13 @@
     position: relative;
 
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 465px;
 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom:
+        1px solid rgba(255, 255, 255, 0.08);
 
     background:
         radial-gradient(
@@ -82,6 +90,11 @@
     top: 28px;
     right: 60px;
 
+    max-width:
+        calc(
+            100% - 40px
+        );
+
     z-index: 10;
 }
 
@@ -97,6 +110,7 @@
 
     width: 100%;
     max-width: 1400px;
+    min-width: 0;
 
     margin: 0 auto;
 
@@ -120,6 +134,7 @@
 
     width: 100%;
     max-width: 1400px;
+    min-width: 0;
 
     margin: 0 auto;
 
@@ -139,12 +154,14 @@
 /* ======================================== */
 
 .marketing-page .dashboard-section-title {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     display: flex;
     align-items: center;
 
     gap: 12px;
-
-    width: 100%;
 
     margin-bottom: 26px;
 }
@@ -165,7 +182,8 @@
     background: #ffffff;
 
     box-shadow:
-        0 0 8px rgba(255, 255, 255, 0.18);
+        0 0 8px
+        rgba(255, 255, 255, 0.18);
 }
 
 
@@ -174,6 +192,9 @@
 /* ======================================== */
 
 .marketing-page .dashboard-section-title h4 {
+    min-width: 0;
+    max-width: 100%;
+
     margin: 0;
 
     color: #ffffff;
@@ -181,11 +202,13 @@
     font-size: 13px;
     font-weight: 600;
 
-    line-height: 1;
+    line-height: 1.2;
 
     letter-spacing: 3px;
 
     text-transform: uppercase;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -194,16 +217,21 @@
 /* ======================================== */
 
 .marketing-page .cards {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     display: grid;
 
     grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
 
     align-items: stretch;
 
     gap: 16px;
-
-    width: 100%;
 
     margin: 0;
 
@@ -217,6 +245,7 @@
 
 .marketing-page .cards > * {
     width: 100%;
+    max-width: 100%;
     min-width: 0;
 
     height: 100%;
@@ -278,7 +307,10 @@
 
     .marketing-page .cards {
         grid-template-columns:
-            repeat(2, minmax(0, 1fr));
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
     }
 
 }
@@ -291,6 +323,9 @@
 @media (max-width: 850px) {
 
     .marketing-page .dashboard-hero-area {
+        width: 100%;
+        max-width: 100%;
+
         min-height: auto;
     }
 
@@ -301,38 +336,109 @@
         top: auto;
         right: auto;
 
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
         display: flex;
+        align-items: center;
         justify-content: flex-end;
 
-        width: 100%;
+        padding-top: 18px;
 
-        padding:
-            22px
-            25px
-            0;
+        padding-left:
+            max(
+                16px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                16px,
+                env(safe-area-inset-right)
+            );
 
         box-sizing: border-box;
     }
 
 
     .marketing-page .dashboard-hero-content {
-        padding:
-            35px
-            25px
-            55px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        padding-top: 32px;
+        padding-bottom: 50px;
+
+        padding-left:
+            max(
+                18px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                18px,
+                env(safe-area-inset-right)
+            );
     }
 
 
     .marketing-page .dashboard-content {
-        padding:
-            32px
-            25px
-            60px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        padding-top: 30px;
+        padding-bottom: 58px;
+
+        padding-left:
+            max(
+                18px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                18px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .marketing-page .dashboard-section-title {
+        gap: 10px;
+
+        margin-bottom: 22px;
+    }
+
+
+    .marketing-page .dashboard-section-title h4 {
+        font-size: 11px;
+
+        line-height: 1.4;
+
+        letter-spacing: 2px;
+    }
+
+
+    .marketing-page .dashboard-section-bar {
+        height: 18px;
     }
 
 
     .marketing-page .cards {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            minmax(0, 1fr);
+
+        gap: 16px;
+    }
+
+
+    .marketing-page .cards > * {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
     }
 
 }
@@ -345,33 +451,62 @@
 @media (max-width: 550px) {
 
     .marketing-page .dashboard-profile {
-        padding:
-            18px
-            20px
-            0;
+        padding-top: 14px;
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
     }
 
 
     .marketing-page .dashboard-hero-content {
-        padding:
-            30px
-            20px
-            45px;
+        padding-top: 26px;
+        padding-bottom: 42px;
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
     }
 
 
     .marketing-page .dashboard-content {
-        padding:
-            28px
-            20px
-            45px;
+        padding-top: 24px;
+        padding-bottom: 48px;
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
     }
 
 
     .marketing-page .dashboard-section-title {
         gap: 10px;
 
-        margin-bottom: 22px;
+        margin-bottom: 20px;
     }
 
 
@@ -389,6 +524,43 @@
 
     .marketing-page .cards {
         gap: 14px;
+    }
+
+}
+
+
+/* ======================================== */
+/* RESPONSIVO - CELULAR PEQUENO             */
+/* ======================================== */
+
+@media (max-width: 380px) {
+
+    .marketing-page .dashboard-profile,
+    .marketing-page .dashboard-hero-content,
+    .marketing-page .dashboard-content {
+        padding-left:
+            max(
+                12px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                12px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .marketing-page .dashboard-section-title h4 {
+        font-size: 10.5px;
+
+        letter-spacing: 1.6px;
+    }
+
+
+    .marketing-page .cards {
+        gap: 12px;
     }
 
 }

@@ -8,6 +8,8 @@
     right: 28px;
     bottom: 28px;
 
+    max-width: 100%;
+
     z-index: 9999;
 
     font-family: inherit;
@@ -21,6 +23,8 @@
 .synter-assistant-button {
     width: 62px;
     height: 62px;
+
+    flex: 0 0 62px;
 
     display: flex;
     align-items: center;
@@ -51,6 +55,8 @@
     letter-spacing: 1px;
 
     cursor: pointer;
+
+    box-sizing: border-box;
 
     box-shadow:
         0 15px 45px
@@ -84,6 +90,13 @@
     bottom: 78px;
 
     width: 380px;
+    max-width:
+        calc(
+            100vw - 32px
+        );
+
+    min-width: 0;
+
     height: 560px;
 
     display: flex;
@@ -97,8 +110,9 @@
 
     border-radius: 18px;
 
-    background:
-        #0b0b0b;
+    background: #0b0b0b;
+
+    box-sizing: border-box;
 
     box-shadow:
         0 25px 80px
@@ -140,14 +154,21 @@
 /* ======================================== */
 
 .synter-chat-header {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 75px;
 
     padding:
-        0 18px;
+        0
+        18px;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    gap: 12px;
 
     flex-shrink: 0;
 
@@ -161,6 +182,8 @@
             #111111,
             #080808
         );
+
+    box-sizing: border-box;
 }
 
 
@@ -169,6 +192,9 @@
 /* ======================================== */
 
 .synter-chat-user {
+    min-width: 0;
+    max-width: 100%;
+
     display: flex;
     align-items: center;
 
@@ -179,6 +205,8 @@
 .synter-chat-avatar {
     width: 40px;
     height: 40px;
+
+    flex: 0 0 40px;
 
     display: flex;
     align-items: center;
@@ -196,6 +224,9 @@
 
 
 .synter-chat-user > div:last-child {
+    min-width: 0;
+    max-width: 100%;
+
     display: flex;
     flex-direction: column;
 
@@ -204,19 +235,37 @@
 
 
 .synter-chat-user strong {
+    min-width: 0;
+    max-width: 100%;
+
     color: #ffffff;
 
     font-size: 13px;
     font-weight: 600;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
 }
 
 
 .synter-chat-user span {
+    min-width: 0;
+    max-width: 100%;
+
     color: #686868;
 
     font-size: 9px;
 
     letter-spacing: 0.5px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
 }
 
 
@@ -227,6 +276,8 @@
 .synter-chat-close {
     width: 34px;
     height: 34px;
+
+    flex: 0 0 34px;
 
     display: flex;
     align-items: center;
@@ -265,9 +316,15 @@
 /* ======================================== */
 
 .synter-chat-messages {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     flex: 1;
 
-    padding: 20px 16px;
+    padding:
+        20px
+        16px;
 
     display: flex;
     flex-direction: column;
@@ -275,9 +332,13 @@
     gap: 12px;
 
     overflow-y: auto;
+    overflow-x: hidden;
 
-    background:
-        #090909;
+    overscroll-behavior: contain;
+
+    background: #090909;
+
+    box-sizing: border-box;
 
     scrollbar-width: thin;
 
@@ -293,9 +354,11 @@
 
 .synter-message {
     max-width: 82%;
+    min-width: 0;
 
     padding:
-        11px 13px;
+        11px
+        13px;
 
     border-radius: 13px;
 
@@ -306,6 +369,9 @@
     white-space: pre-wrap;
 
     word-break: break-word;
+    overflow-wrap: anywhere;
+
+    box-sizing: border-box;
 }
 
 
@@ -351,12 +417,15 @@
     gap: 5px;
 
     width: fit-content;
+    max-width: 100%;
 }
 
 
 .synter-typing span {
     width: 6px;
     height: 6px;
+
+    flex-shrink: 0;
 
     border-radius: 50%;
 
@@ -404,10 +473,15 @@
 /* ======================================== */
 
 .synter-chat-form {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 70px;
 
     padding:
-        10px 12px;
+        10px
+        12px;
 
     display: flex;
     align-items: flex-end;
@@ -421,6 +495,8 @@
         rgba(255, 255, 255, 0.08);
 
     background: #0c0c0c;
+
+    box-sizing: border-box;
 }
 
 
@@ -429,13 +505,17 @@
 /* ======================================== */
 
 .synter-chat-form textarea {
-    flex: 1;
+    flex: 1 1 auto;
+
+    min-width: 0;
+    max-width: 100%;
 
     min-height: 44px;
     max-height: 110px;
 
     padding:
-        13px 14px;
+        13px
+        14px;
 
     resize: none;
 
@@ -480,7 +560,7 @@
     width: 44px;
     height: 44px;
 
-    flex-shrink: 0;
+    flex: 0 0 44px;
 
     display: flex;
     align-items: center;
@@ -499,6 +579,8 @@
     font-size: 20px;
 
     cursor: pointer;
+
+    box-sizing: border-box;
 
     transition:
         background 0.2s ease,
@@ -526,8 +608,14 @@
 /* ======================================== */
 
 .synter-chat-footer {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     padding:
-        6px 15px 9px;
+        6px
+        15px
+        9px;
 
     flex-shrink: 0;
 
@@ -540,6 +628,45 @@
     text-align: center;
 
     letter-spacing: 0.5px;
+
+    box-sizing: border-box;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ======================================== */
+/* TABLET                                   */
+/* ======================================== */
+
+@media (max-width: 768px) {
+
+    .synter-assistant {
+        right:
+            max(
+                18px,
+                env(safe-area-inset-right)
+            );
+
+        bottom:
+            max(
+                18px,
+                env(safe-area-inset-bottom)
+            );
+    }
+
+
+    .synter-chat {
+        width:
+            min(
+                380px,
+                calc(100vw - 32px)
+            );
+
+        max-width:
+            calc(100vw - 32px);
+    }
+
 }
 
 
@@ -550,34 +677,280 @@
 @media (max-width: 500px) {
 
     .synter-assistant {
-        right: 18px;
-        bottom: 18px;
+        right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
+
+        bottom:
+            max(
+                14px,
+                env(safe-area-inset-bottom)
+            );
     }
 
 
     .synter-assistant-button {
-        width: 56px;
-        height: 56px;
+        width: 54px;
+        height: 54px;
+
+        flex-basis: 54px;
+
+        font-size: 13px;
     }
 
 
     .synter-chat {
         position: fixed;
 
-        left: 12px;
-        right: 12px;
-
-        bottom: 86px;
-
-        width: auto;
-
-        height:
-            min(
-                620px,
-                calc(100vh - 115px)
+        top:
+            max(
+                12px,
+                env(safe-area-inset-top)
             );
 
+        right:
+            max(
+                10px,
+                env(safe-area-inset-right)
+            );
+
+        bottom:
+            max(
+                78px,
+                calc(
+                    env(safe-area-inset-bottom) + 68px
+                )
+            );
+
+        left:
+            max(
+                10px,
+                env(safe-area-inset-left)
+            );
+
+        width: auto;
+        max-width: none;
+        min-width: 0;
+
+        height: auto;
+        max-height: none;
+
         border-radius: 16px;
+    }
+
+
+    .synter-chat-header {
+        min-height: 66px;
+
+        padding:
+            0
+            14px;
+
+        gap: 10px;
+    }
+
+
+    .synter-chat-avatar {
+        width: 36px;
+        height: 36px;
+
+        flex-basis: 36px;
+
+        font-size: 14px;
+    }
+
+
+    .synter-chat-user strong {
+        font-size: 12px;
+    }
+
+
+    .synter-chat-user span {
+        font-size: 8.5px;
+    }
+
+
+    .synter-chat-close {
+        width: 32px;
+        height: 32px;
+
+        flex-basis: 32px;
+
+        font-size: 22px;
+    }
+
+
+    .synter-chat-messages {
+        padding:
+            16px
+            12px;
+
+        gap: 10px;
+    }
+
+
+    .synter-message {
+        max-width: 88%;
+
+        padding:
+            10px
+            12px;
+
+        font-size: 11.5px;
+
+        line-height: 1.5;
+    }
+
+
+    .synter-chat-form {
+        min-height: 66px;
+
+        padding:
+            9px
+            10px;
+
+        gap: 7px;
+    }
+
+
+    .synter-chat-form textarea {
+        min-height: 44px;
+        max-height: 96px;
+
+        padding:
+            11px
+            12px;
+
+        /*
+            Evita zoom automático no Safari/iPhone
+            ao tocar no campo.
+        */
+        font-size: 16px;
+    }
+
+
+    .synter-chat-form button {
+        width: 44px;
+        height: 44px;
+
+        flex-basis: 44px;
+    }
+
+
+    .synter-chat-footer {
+        padding:
+            6px
+            12px
+            8px;
+
+        font-size: 7.5px;
+    }
+
+}
+
+
+/* ======================================== */
+/* CELULAR PEQUENO                          */
+/* ======================================== */
+
+@media (max-width: 380px) {
+
+    .synter-assistant {
+        right:
+            max(
+                12px,
+                env(safe-area-inset-right)
+            );
+
+        bottom:
+            max(
+                12px,
+                env(safe-area-inset-bottom)
+            );
+    }
+
+
+    .synter-assistant-button {
+        width: 50px;
+        height: 50px;
+
+        flex-basis: 50px;
+
+        font-size: 12px;
+    }
+
+
+    .synter-chat {
+        top:
+            max(
+                8px,
+                env(safe-area-inset-top)
+            );
+
+        right:
+            max(
+                8px,
+                env(safe-area-inset-right)
+            );
+
+        bottom:
+            max(
+                70px,
+                calc(
+                    env(safe-area-inset-bottom) + 60px
+                )
+            );
+
+        left:
+            max(
+                8px,
+                env(safe-area-inset-left)
+            );
+
+        border-radius: 14px;
+    }
+
+
+    .synter-chat-header {
+        min-height: 62px;
+
+        padding:
+            0
+            12px;
+    }
+
+
+    .synter-chat-messages {
+        padding:
+            14px
+            10px;
+    }
+
+
+    .synter-message {
+        max-width: 90%;
+
+        font-size: 11px;
+    }
+
+
+    .synter-chat-form {
+        padding:
+            8px;
+    }
+
+
+    .synter-chat-form textarea {
+        padding:
+            10px
+            11px;
+    }
+
+
+    .synter-chat-footer {
+        font-size: 7px;
     }
 
 }

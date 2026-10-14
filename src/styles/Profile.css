@@ -7,13 +7,37 @@
 
     inset: 0;
 
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    min-height: 100vh;
+    min-height: 100svh;
+
     display: flex;
     align-items: center;
     justify-content: center;
 
-    padding: 20px;
+    padding:
+        max(
+            20px,
+            env(safe-area-inset-top)
+        )
+        max(
+            20px,
+            env(safe-area-inset-right)
+        )
+        max(
+            20px,
+            env(safe-area-inset-bottom)
+        )
+        max(
+            20px,
+            env(safe-area-inset-left)
+        );
 
-    background: rgba(0, 0, 0, 0.72);
+    background:
+        rgba(0, 0, 0, 0.72);
 
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -21,6 +45,9 @@
     z-index: 9999;
 
     box-sizing: border-box;
+
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 
@@ -33,6 +60,14 @@
 
     width: 100%;
     max-width: 470px;
+    min-width: 0;
+
+    max-height:
+        calc(
+            100svh -
+            max(40px, env(safe-area-inset-top)) -
+            max(40px, env(safe-area-inset-bottom))
+        );
 
     padding: 32px;
 
@@ -54,6 +89,11 @@
 
     box-shadow:
         0 30px 80px rgba(0, 0, 0, 0.60);
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    overscroll-behavior: contain;
 
     animation:
         profileOpen 0.25s ease;
@@ -102,13 +142,13 @@
     align-items: center;
     justify-content: center;
 
+    flex-shrink: 0;
+
     padding: 0;
 
-    background:
-        none;
+    background: none;
 
-    border:
-        none;
+    border: none;
 
     border-radius: 9px;
 
@@ -119,11 +159,17 @@
 
     cursor: pointer;
 
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease;
 }
 
 
 .profile-close:hover {
-    color: #ff0000;
+    color: #ff5a5a;
+
+    background:
+        rgba(255, 255, 255, 0.04);
 }
 
 
@@ -132,12 +178,18 @@
 /* ======================================== */
 
 .profile-header {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     display: flex;
     align-items: center;
 
     gap: 18px;
 
     padding-right: 40px;
+
+    box-sizing: border-box;
 }
 
 
@@ -153,7 +205,7 @@
     align-items: center;
     justify-content: center;
 
-    flex-shrink: 0;
+    flex: 0 0 66px;
 
     border-radius: 50%;
 
@@ -182,6 +234,7 @@
 
 .profile-header-text {
     min-width: 0;
+    max-width: 100%;
 }
 
 
@@ -196,25 +249,40 @@
     font-weight: 700;
 
     letter-spacing: 2px;
+
+    overflow-wrap: anywhere;
 }
 
 
 .profile-header-text h1 {
+    min-width: 0;
+    max-width: 100%;
+
     margin: 0;
 
     color: #ffffff;
 
     font-size: 24px;
     font-weight: 600;
+
+    overflow-wrap: anywhere;
 }
 
 
 .profile-header-text p {
-    margin: 5px 0 0;
+    min-width: 0;
+    max-width: 100%;
+
+    margin:
+        5px
+        0
+        0;
 
     color: #777777;
 
     font-size: 11px;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -224,9 +292,12 @@
 
 .profile-line {
     width: 100%;
+    max-width: 100%;
     height: 1px;
 
-    margin: 27px 0;
+    margin:
+        27px
+        0;
 
     background:
         rgba(255, 255, 255, 0.08);
@@ -238,6 +309,10 @@
 /* ======================================== */
 
 .profile-info {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     display: flex;
     flex-direction: column;
 
@@ -246,6 +321,10 @@
 
 
 .profile-info-item {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 65px;
 
     display: flex;
@@ -254,7 +333,9 @@
 
     gap: 6px;
 
-    padding: 0 16px;
+    padding:
+        0
+        16px;
 
     background:
         rgba(255, 255, 255, 0.025);
@@ -294,6 +375,9 @@
 
 
 .profile-info-value {
+    min-width: 0;
+    max-width: 100%;
+
     overflow: hidden;
 
     color: #ffffff;
@@ -313,15 +397,22 @@
 
 .profile-logout {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 48px;
 
     margin-top: 24px;
 
-    padding: 0 16px;
+    padding:
+        0
+        16px;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    gap: 12px;
 
     background: transparent;
 
@@ -336,6 +427,8 @@
     font-weight: 600;
 
     cursor: pointer;
+
+    box-sizing: border-box;
 
     transition:
         background-color 0.25s ease,
@@ -354,6 +447,8 @@
 
 
 .profile-logout-arrow {
+    flex-shrink: 0;
+
     color: #858585;
 
     font-size: 18px;
@@ -366,7 +461,8 @@
 
 .profile-logout:hover
 .profile-logout-arrow {
-    transform: translateX(4px);
+    transform:
+        translateX(4px);
 
     color: #ffffff;
 }
@@ -378,13 +474,67 @@
 
 @media (max-width: 550px) {
 
+    .profile-overlay {
+        align-items: flex-start;
+
+        padding-top:
+            max(
+                14px,
+                env(safe-area-inset-top)
+            );
+
+        padding-right:
+            max(
+                14px,
+                env(safe-area-inset-right)
+            );
+
+        padding-bottom:
+            max(
+                14px,
+                env(safe-area-inset-bottom)
+            );
+
+        padding-left:
+            max(
+                14px,
+                env(safe-area-inset-left)
+            );
+    }
+
+
     .profile-modal {
-        padding: 26px 20px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        max-height:
+            calc(
+                100svh -
+                max(28px, env(safe-area-inset-top)) -
+                max(28px, env(safe-area-inset-bottom))
+            );
+
+        padding:
+            26px
+            20px;
+
+        border-radius: 14px;
+    }
+
+
+    .profile-close {
+        top: 14px;
+        right: 14px;
     }
 
 
     .profile-header {
+        align-items: center;
+
         gap: 14px;
+
+        padding-right: 38px;
     }
 
 
@@ -392,12 +542,132 @@
         width: 56px;
         height: 56px;
 
+        flex-basis: 56px;
+
         font-size: 16px;
     }
 
 
     .profile-header-text h1 {
         font-size: 21px;
+    }
+
+
+    .profile-header-text p {
+        font-size: 10.5px;
+    }
+
+
+    .profile-line {
+        margin:
+            22px
+            0;
+    }
+
+
+    .profile-info-item {
+        min-height: 60px;
+
+        padding:
+            0
+            14px;
+    }
+
+
+    .profile-info-value {
+        font-size: 12px;
+    }
+
+
+    .profile-logout {
+        min-height: 46px;
+
+        margin-top: 20px;
+
+        padding:
+            0
+            14px;
+    }
+
+}
+
+
+/* ======================================== */
+/* CELULARES PEQUENOS                       */
+/* ======================================== */
+
+@media (max-width: 380px) {
+
+    .profile-overlay {
+        padding:
+            10px;
+    }
+
+
+    .profile-modal {
+        padding:
+            24px
+            16px;
+
+        border-radius: 12px;
+    }
+
+
+    .profile-close {
+        top: 10px;
+        right: 10px;
+
+        width: 32px;
+        height: 32px;
+
+        font-size: 20px;
+    }
+
+
+    .profile-header {
+        gap: 12px;
+
+        padding-right: 32px;
+    }
+
+
+    .profile-avatar {
+        width: 50px;
+        height: 50px;
+
+        flex-basis: 50px;
+
+        font-size: 14px;
+    }
+
+
+    .profile-header-text > span {
+        font-size: 8px;
+
+        letter-spacing: 1.5px;
+    }
+
+
+    .profile-header-text h1 {
+        font-size: 18px;
+    }
+
+
+    .profile-header-text p {
+        font-size: 10px;
+    }
+
+
+    .profile-info-value {
+        /*
+            Em telas muito estreitas permitimos quebra
+            para não aumentar a largura do modal.
+        */
+        white-space: normal;
+
+        text-overflow: clip;
+
+        overflow-wrap: anywhere;
     }
 
 }

@@ -4,13 +4,19 @@
 
 .login-page {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 100vh;
+    min-height: 100svh;
 
     display: flex;
     flex-direction: column;
 
     background: #050505;
     color: #ffffff;
+
+    overflow-x: hidden;
 }
 
 
@@ -20,14 +26,22 @@
 
 .login-main {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     flex: 1;
 
     display: flex;
+
+    overflow-x: hidden;
 }
 
 
 .login-container {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 720px;
 
     display: grid;
@@ -46,6 +60,8 @@
 
 .login-left {
     position: relative;
+
+    min-width: 0;
 
     display: flex;
     align-items: center;
@@ -67,6 +83,7 @@
 .login-content {
     width: 100%;
     max-width: 470px;
+    min-width: 0;
 }
 
 
@@ -76,6 +93,8 @@
 
 .login-form {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     display: flex;
     flex-direction: column;
@@ -92,6 +111,7 @@
 
 .login-field {
     width: 100%;
+    min-width: 0;
 
     display: flex;
     flex-direction: column;
@@ -110,6 +130,9 @@
 
 .login-field input {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     height: 52px;
 
     padding: 0 16px;
@@ -165,10 +188,13 @@
 
 .login-password-header {
     width: 100%;
+    min-width: 0;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    gap: 12px;
 }
 
 
@@ -199,12 +225,16 @@
 
 .captcha-container {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     display: flex;
     justify-content: flex-start;
     align-items: center;
 
     margin-top: 4px;
+
+    overflow: hidden;
 }
 
 
@@ -214,6 +244,8 @@
 
 .auth-error {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 
     padding: 12px 14px;
 
@@ -230,6 +262,8 @@
     font-size: 12px;
 
     box-sizing: border-box;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -239,11 +273,16 @@
 
 .login-submit {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     height: 52px;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    gap: 12px;
 
     padding: 0 18px;
 
@@ -281,6 +320,8 @@
 
 
 .login-submit-arrow {
+    flex-shrink: 0;
+
     font-size: 18px;
 
     transition: transform 0.25s ease;
@@ -301,6 +342,8 @@
     align-items: center;
     justify-content: center;
 
+    flex-wrap: wrap;
+
     gap: 5px;
 
     margin-top: 4px;
@@ -308,6 +351,8 @@
     color: #777777;
 
     font-size: 11px;
+
+    text-align: center;
 }
 
 
@@ -337,6 +382,8 @@
 
 .login-visual {
     position: relative;
+
+    min-width: 0;
 
     overflow: hidden;
 
@@ -417,6 +464,9 @@
     position: relative;
 
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 720px;
 
     display: flex;
@@ -440,6 +490,7 @@
 
     width: 100%;
     max-width: 430px;
+    min-width: 0;
 
     display: flex;
     flex-direction: column;
@@ -498,7 +549,7 @@
     display: block;
 
     width: auto;
-    max-width: 430px;
+    max-width: min(430px, 100%);
 
     height: 470px;
 
@@ -524,8 +575,8 @@
 
     .login-container {
         grid-template-columns:
-            minmax(450px, 1fr)
-            minmax(450px, 1fr);
+            minmax(0, 1fr)
+            minmax(0, 1fr);
     }
 
 
@@ -542,7 +593,7 @@
 
 
     .login-lock-image {
-        max-width: 360px;
+        max-width: min(360px, 100%);
 
         height: 430px;
     }
@@ -550,21 +601,38 @@
 }
 
 
+/* ======================================== */
+/* TABLET / MOBILE                          */
+/* ======================================== */
+
 @media (max-width: 850px) {
 
     .login-container {
         display: block;
+
+        width: 100%;
+        max-width: 100%;
 
         min-height: auto;
     }
 
 
     .login-left {
+        width: 100%;
+        max-width: 100%;
+
         min-height:
-            calc(100vh - 74px);
+            calc(100svh - 74px);
 
         padding:
-            55px 25px;
+            48px
+            24px;
+    }
+
+
+    .login-content {
+        width: 100%;
+        max-width: 470px;
     }
 
 
@@ -575,15 +643,127 @@
 }
 
 
+/* ======================================== */
+/* MOBILE                                   */
+/* ======================================== */
+
 @media (max-width: 500px) {
 
-    .login-content {
+    .login-page,
+    .login-main,
+    .login-container,
+    .login-left,
+    .login-content,
+    .login-form {
+        width: 100%;
         max-width: 100%;
+        min-width: 0;
+    }
+
+
+    .login-left {
+        min-height:
+            calc(100svh - 68px);
+
+        align-items: flex-start;
+
+        padding-top: 38px;
+        padding-bottom: 42px;
+
+        padding-left:
+            max(
+                16px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                16px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .login-field input {
+        /*
+            Evita zoom automático do Safari/iPhone
+            quando o usuário toca no campo.
+        */
+        font-size: 16px;
+    }
+
+
+    .login-password-header {
+        align-items: flex-end;
+    }
+
+
+    .login-submit {
+        height: 50px;
+
+        padding: 0 16px;
     }
 
 
     .captcha-container {
-        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+}
+
+
+/* ======================================== */
+/* CELULARES MUITO PEQUENOS                 */
+/* ======================================== */
+
+@media (max-width: 360px) {
+
+    .login-left {
+        padding-top: 30px;
+        padding-bottom: 36px;
+
+        padding-left:
+            max(
+                12px,
+                env(safe-area-inset-left)
+            );
+
+        padding-right:
+            max(
+                12px,
+                env(safe-area-inset-right)
+            );
+    }
+
+
+    .login-form {
+        gap: 17px;
+    }
+
+
+    .login-password-header {
+        gap: 8px;
+    }
+
+
+    .forgot-password {
+        font-size: 10px;
+    }
+
+
+    .create-account {
+        font-size: 10px;
+    }
+
+
+    .create-account button {
+        font-size: 10px;
     }
 
 }

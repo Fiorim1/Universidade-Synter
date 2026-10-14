@@ -3,7 +3,12 @@
 ========================================== */
 
 .notfound-page {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
   min-height: 100vh;
+  min-height: 100svh;
 
   display: flex;
   flex-direction: column;
@@ -12,7 +17,8 @@
 
   color: #ffffff;
 
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 
@@ -23,6 +29,10 @@
 .notfound-main {
   position: relative;
 
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
   flex: 1;
 
   display: flex;
@@ -31,7 +41,11 @@
 
   min-height: 680px;
 
-  padding: 80px 30px;
+  padding:
+    80px
+    30px;
+
+  box-sizing: border-box;
 
   overflow: hidden;
 
@@ -53,6 +67,7 @@
   content: "";
 
   position: absolute;
+
   inset: 0;
 
   opacity: 0.25;
@@ -69,7 +84,8 @@
     );
 
   background-size:
-    45px 45px;
+    45px
+    45px;
 
   pointer-events: none;
 }
@@ -125,8 +141,11 @@
 
   width: 100%;
   max-width: 900px;
+  min-width: 0;
 
   text-align: center;
+
+  box-sizing: border-box;
 }
 
 
@@ -137,6 +156,8 @@
 .notfound-code-wrapper {
   position: relative;
 
+  max-width: 100%;
+
   display: inline-flex;
 
   align-items: center;
@@ -146,22 +167,29 @@
 }
 
 
-.notfound-code {
-  position: relative;
+.notfound-code,
+.notfound-code-shadow {
+  max-width: 100%;
 
-  z-index: 2;
-
-  font-size: clamp(
-    130px,
-    20vw,
-    260px
-  );
+  font-size:
+    clamp(
+      130px,
+      20vw,
+      260px
+    );
 
   font-weight: 800;
 
   line-height: 0.85;
 
   letter-spacing: -12px;
+}
+
+
+.notfound-code {
+  position: relative;
+
+  z-index: 2;
 
   color: transparent;
 
@@ -182,18 +210,6 @@
 
   z-index: 1;
 
-  font-size: clamp(
-    130px,
-    20vw,
-    260px
-  );
-
-  font-weight: 800;
-
-  line-height: 0.85;
-
-  letter-spacing: -12px;
-
   color: #101010;
 
   user-select: none;
@@ -205,27 +221,35 @@
 ========================================== */
 
 .notfound-content h1 {
+  min-width: 0;
+  max-width: 100%;
+
   margin: 0;
 
-  font-size: clamp(
-    30px,
-    5vw,
-    56px
-  );
+  font-size:
+    clamp(
+      30px,
+      5vw,
+      56px
+    );
 
   font-weight: 700;
 
   line-height: 1.1;
 
   letter-spacing: -1.5px;
+
+  overflow-wrap: anywhere;
 }
 
 
 .notfound-content > p {
   max-width: 620px;
+  min-width: 0;
 
   margin:
-    22px auto
+    22px
+    auto
     0;
 
   color: #898989;
@@ -233,6 +257,8 @@
   font-size: 14px;
 
   line-height: 1.8;
+
+  overflow-wrap: anywhere;
 }
 
 
@@ -241,6 +267,10 @@
 ========================================== */
 
 .notfound-system {
+  width: 100%;
+  max-width: 500px;
+  min-width: 0;
+
   display: flex;
 
   align-items: center;
@@ -248,10 +278,9 @@
 
   gap: 15px;
 
-  max-width: 500px;
-
   margin:
-    60px auto
+    60px
+    auto
     0;
 }
 
@@ -259,6 +288,8 @@
 .notfound-system span {
   width: 55px;
   height: 1px;
+
+  flex-shrink: 1;
 
   background:
     linear-gradient(
@@ -280,6 +311,8 @@
 
 
 .notfound-system p {
+  min-width: 0;
+
   margin: 0;
 
   color: #555555;
@@ -303,20 +336,57 @@
   .notfound-main {
     min-height: 620px;
 
-    padding:
-      70px 24px;
+    padding-top: 70px;
+    padding-bottom: 70px;
+
+    padding-left:
+      max(
+        24px,
+        env(safe-area-inset-left)
+      );
+
+    padding-right:
+      max(
+        24px,
+        env(safe-area-inset-right)
+      );
   }
 
 }
 
 
+/* ==========================================
+   MOBILE
+========================================== */
+
 @media (max-width: 600px) {
 
   .notfound-main {
-    min-height: 560px;
+    min-height: 100svh;
 
-    padding:
-      55px 18px;
+    padding-top:
+      max(
+        48px,
+        env(safe-area-inset-top)
+      );
+
+    padding-bottom:
+      max(
+        48px,
+        env(safe-area-inset-bottom)
+      );
+
+    padding-left:
+      max(
+        18px,
+        env(safe-area-inset-left)
+      );
+
+    padding-right:
+      max(
+        18px,
+        env(safe-area-inset-right)
+      );
   }
 
 
@@ -325,25 +395,46 @@
   }
 
 
-  .notfound-code {
-    letter-spacing: -7px;
+  .notfound-code,
+  .notfound-code-shadow {
+    font-size:
+      clamp(
+        92px,
+        31vw,
+        150px
+      );
 
+    letter-spacing: -7px;
+  }
+
+
+  .notfound-code {
     -webkit-text-stroke:
       1px #ffffff;
   }
 
 
   .notfound-code-shadow {
-    letter-spacing: -7px;
+    top: 8px;
+    left: 8px;
   }
 
 
   .notfound-content h1 {
-    font-size: 34px;
+    font-size:
+      clamp(
+        28px,
+        9vw,
+        34px
+      );
+
+    letter-spacing: -1px;
   }
 
 
   .notfound-content > p {
+    margin-top: 18px;
+
     font-size: 13px;
 
     line-height: 1.7;
@@ -351,9 +442,11 @@
 
 
   .notfound-system {
+    max-width: 100%;
+
     gap: 10px;
 
-    margin-top: 45px;
+    margin-top: 42px;
   }
 
 
@@ -366,6 +459,156 @@
     font-size: 8px;
 
     letter-spacing: 1px;
+  }
+
+}
+
+
+/* ==========================================
+   CELULAR PEQUENO
+========================================== */
+
+@media (max-width: 420px) {
+
+  .notfound-main {
+    padding-top:
+      max(
+        40px,
+        env(safe-area-inset-top)
+      );
+
+    padding-bottom:
+      max(
+        40px,
+        env(safe-area-inset-bottom)
+      );
+
+    padding-left:
+      max(
+        14px,
+        env(safe-area-inset-left)
+      );
+
+    padding-right:
+      max(
+        14px,
+        env(safe-area-inset-right)
+      );
+  }
+
+
+  .notfound-code,
+  .notfound-code-shadow {
+    font-size:
+      clamp(
+        82px,
+        30vw,
+        125px
+      );
+
+    letter-spacing: -5px;
+  }
+
+
+  .notfound-code-shadow {
+    top: 6px;
+    left: 6px;
+  }
+
+
+  .notfound-content h1 {
+    font-size:
+      clamp(
+        26px,
+        8.5vw,
+        31px
+      );
+  }
+
+
+  .notfound-content > p {
+    font-size: 12.5px;
+  }
+
+
+  .notfound-system {
+    gap: 8px;
+
+    margin-top: 36px;
+  }
+
+
+  .notfound-system span {
+    width: 18px;
+  }
+
+
+  .notfound-system p {
+    font-size: 7.5px;
+
+    letter-spacing: 0.8px;
+  }
+
+}
+
+
+/* ==========================================
+   CELULAR MUITO PEQUENO
+========================================== */
+
+@media (max-width: 360px) {
+
+  .notfound-main {
+    padding-left:
+      max(
+        12px,
+        env(safe-area-inset-left)
+      );
+
+    padding-right:
+      max(
+        12px,
+        env(safe-area-inset-right)
+      );
+  }
+
+
+  .notfound-code,
+  .notfound-code-shadow {
+    font-size:
+      clamp(
+        74px,
+        29vw,
+        110px
+      );
+
+    letter-spacing: -4px;
+  }
+
+
+  .notfound-content h1 {
+    font-size: 25px;
+  }
+
+
+  .notfound-system {
+    flex-wrap: wrap;
+
+    row-gap: 8px;
+  }
+
+
+  .notfound-system span {
+    width: 15px;
+  }
+
+
+  .notfound-system p {
+    white-space: normal;
+
+    text-align: center;
+
+    overflow-wrap: anywhere;
   }
 
 }

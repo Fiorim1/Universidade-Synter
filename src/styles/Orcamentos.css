@@ -1640,7 +1640,7 @@
 
 
 
-  border-radius: 50%;
+  border-radius: 14px;
 
 
 
@@ -9144,6 +9144,544 @@
 
   .orcamentos-card-acoes {
     justify-content: flex-start;
+  }
+
+}
+/* =========================================
+   AJUSTES FINAIS DE RESPONSIVIDADE MOBILE
+   ========================================= */
+
+.orcamentos-page,
+.orcamentos-hero,
+.orcamentos-hero-container,
+.orcamentos-content,
+.orcamentos-table-card,
+.orcamentos-table-wrapper,
+.orcamentos-modal,
+.orcamentos-modal-detalhes,
+.orcamentos-modal-produtos,
+.orcamentos-detalhes-body,
+.orcamentos-produtos-body,
+.orcamentos-itens-lista,
+.orcamentos-item,
+.orcamentos-funil-mecanico {
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.orcamentos-page {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow-x: hidden;
+}
+
+.orcamentos-hero,
+.orcamentos-content {
+  overflow-x: hidden;
+}
+
+.orcamentos-table-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.orcamentos-modal-overlay {
+  box-sizing: border-box;
+}
+
+.orcamentos-modal {
+  overscroll-behavior: contain;
+}
+
+@media (max-width: 768px) {
+
+  .orcamentos-hero-container,
+  .orcamentos-content {
+    width: 100%;
+    max-width: 100%;
+
+    padding-left:
+      max(
+        16px,
+        env(safe-area-inset-left)
+      );
+
+    padding-right:
+      max(
+        16px,
+        env(safe-area-inset-right)
+      );
+
+    box-sizing: border-box;
+  }
+
+  .orcamentos-hero-container {
+    padding-top: 104px;
+    padding-bottom: 44px;
+  }
+
+  .orcamentos-profile {
+    right:
+      max(
+        16px,
+        env(safe-area-inset-right)
+      );
+  }
+
+  .orcamentos-content {
+    padding-top: 34px;
+    padding-bottom: 64px;
+  }
+
+  .orcamentos-hero h1 {
+    max-width: 100%;
+
+    font-size:
+      clamp(
+        34px,
+        10vw,
+        44px
+      );
+
+    line-height: 1.03;
+    letter-spacing: -1.3px;
+    overflow-wrap: anywhere;
+  }
+
+  .orcamentos-hero-description {
+    max-width: 100%;
+    font-size: 14px;
+  }
+
+  .orcamentos-summary-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .orcamentos-summary-card {
+    min-width: 0;
+  }
+
+  .orcamentos-modal-overlay {
+    align-items: flex-start;
+
+    padding-top:
+      max(
+        12px,
+        env(safe-area-inset-top)
+      );
+
+    padding-right:
+      max(
+        12px,
+        env(safe-area-inset-right)
+      );
+
+    padding-bottom:
+      max(
+        12px,
+        env(safe-area-inset-bottom)
+      );
+
+    padding-left:
+      max(
+        12px,
+        env(safe-area-inset-left)
+      );
+
+    overflow-y: auto;
+  }
+
+  .orcamentos-modal {
+    width: 100%;
+    max-width: 100%;
+
+    max-height:
+      calc(
+        100svh -
+        max(12px, env(safe-area-inset-top)) -
+        max(12px, env(safe-area-inset-bottom))
+      );
+  }
+
+  .orcamentos-modal-header,
+  .orcamentos-detalhes-body,
+  .orcamentos-produtos-body,
+  .orcamentos-form {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .orcamentos-form-group,
+  .orcamentos-form-group input,
+  .orcamentos-form-group textarea,
+  .orcamentos-produtos-busca,
+  .orcamentos-produtos-categoria,
+  .orcamentos-quantidade,
+  .orcamentos-produtos-busca input,
+  .orcamentos-produtos-categoria select,
+  .orcamentos-quantidade input,
+  .orcamentos-item-edicao-linha input,
+  .orcamentos-funil-campo select {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .orcamentos-form-group input,
+  .orcamentos-form-group textarea,
+  .orcamentos-produtos-busca input,
+  .orcamentos-produtos-categoria select,
+  .orcamentos-quantidade input,
+  .orcamentos-item-edicao-linha input,
+  .orcamentos-funil-campo select {
+    font-size: 16px;
+  }
+
+  .orcamentos-item {
+    width: 100%;
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .orcamentos-item-produto,
+  .orcamentos-item-preco-unitario,
+  .orcamentos-item-valores,
+  .orcamentos-item-acoes,
+  .orcamentos-item-edicao {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .orcamentos-item-acoes,
+  .orcamentos-card-acoes {
+    justify-content: flex-start;
+  }
+
+  .orcamentos-produto-card,
+  .orcamentos-produto-selecionado {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .orcamentos-funil-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .orcamentos-hero-container {
+    padding-top: 96px;
+    padding-bottom: 38px;
+  }
+
+  .orcamentos-content {
+    padding-top: 28px;
+    padding-bottom: 52px;
+  }
+
+  .orcamentos-eyebrow {
+    gap: 9px;
+    margin-bottom: 17px;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+  }
+
+  .orcamentos-hero h1 {
+    font-size:
+      clamp(
+        32px,
+        10.5vw,
+        38px
+      );
+  }
+
+  .orcamentos-hero-description {
+    margin-top: 20px;
+    line-height: 1.6;
+  }
+
+  .orcamentos-hero-divider {
+    margin:
+      26px 0
+      18px;
+  }
+
+  .orcamentos-role {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .orcamentos-summary-grid {
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    gap: 12px;
+    margin-bottom: 42px;
+  }
+
+  .orcamentos-summary-card {
+    min-height: auto;
+    padding: 18px;
+  }
+
+  .orcamentos-summary-card strong {
+    font-size: 30px;
+  }
+
+  .orcamentos-section-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .orcamentos-table-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .orcamentos-table {
+    min-width: 760px;
+  }
+
+  .orcamentos-modal-header {
+    gap: 14px;
+
+    padding:
+      20px
+      16px;
+  }
+
+  .orcamentos-modal-header h2 {
+    font-size: 20px;
+    overflow-wrap: anywhere;
+  }
+
+  .orcamentos-form {
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    gap: 16px;
+
+    padding:
+      20px
+      16px;
+  }
+
+  .orcamentos-form-full,
+  .orcamentos-form-error,
+  .orcamentos-modal-actions {
+    grid-column: auto;
+  }
+
+  .orcamentos-modal-actions {
+    flex-direction: column-reverse;
+    gap: 9px;
+  }
+
+  .orcamentos-modal-actions button {
+    width: 100%;
+  }
+
+  .orcamentos-detalhes-body,
+  .orcamentos-produtos-body {
+    padding:
+      20px
+      16px
+      24px;
+  }
+
+  .orcamentos-detalhes-info {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .orcamentos-detalhes-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .orcamentos-produtos-filtros,
+  .orcamentos-produto-card,
+  .orcamentos-produto-selecionado {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .orcamentos-produto-preco,
+  .orcamentos-produto-total-previo {
+    text-align: left;
+  }
+
+  .orcamentos-produtos-lista {
+    max-height:
+      min(
+        330px,
+        42svh
+      );
+  }
+
+  .orcamentos-item {
+    padding: 14px;
+    gap: 14px;
+  }
+
+  .orcamentos-item-preco-unitario,
+  .orcamentos-item-valores {
+    text-align: left;
+  }
+
+  .orcamentos-item-edicao-linha {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .orcamentos-item-edicao-linha input {
+    width: 100%;
+    height: 44px;
+  }
+
+  .orcamentos-item-edicao-linha .orcamentos-item-btn,
+  .orcamentos-item-acoes .orcamentos-item-btn {
+    width: 100%;
+  }
+
+  .orcamentos-item-acoes {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .orcamentos-total {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .orcamentos-fluxo-acoes {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .orcamentos-fluxo-acoes button {
+    width: 100%;
+  }
+
+  .orcamentos-confirmacao-fluxo {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .orcamentos-confirmacao-acoes {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .orcamentos-confirmacao-acoes button {
+    width: 100%;
+  }
+
+  .orcamentos-produtos-modos {
+    width: 100%;
+    display: flex;
+  }
+
+  .orcamentos-produtos-modos button {
+    min-width: 0;
+    flex: 1 1 0;
+    padding:
+      0
+      8px;
+  }
+
+  .orcamentos-funil-mecanico {
+    padding: 14px;
+  }
+
+  .orcamentos-funil-grid {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+  .orcamentos-card-acoes-cell {
+    min-width: 150px;
+  }
+
+  .orcamentos-card-acoes {
+    flex-wrap: nowrap;
+  }
+
+}
+
+@media (max-width: 380px) {
+
+  .orcamentos-hero-container,
+  .orcamentos-content {
+    padding-left:
+      max(
+        12px,
+        env(safe-area-inset-left)
+      );
+
+    padding-right:
+      max(
+        12px,
+        env(safe-area-inset-right)
+      );
+  }
+
+  .orcamentos-profile {
+    right:
+      max(
+        12px,
+        env(safe-area-inset-right)
+      );
+  }
+
+  .orcamentos-modal-overlay {
+    padding: 8px;
+  }
+
+  .orcamentos-modal-header,
+  .orcamentos-form,
+  .orcamentos-detalhes-body,
+  .orcamentos-produtos-body {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .orcamentos-hero h1 {
+    font-size: 30px;
+  }
+
+  .orcamentos-section-title h4 {
+    letter-spacing: 2px;
+  }
+
+  .orcamentos-card-acao {
+    width: 35px;
+  }
+
+  .orcamentos-card-acao.pdf {
+    width: 41px;
   }
 
 }
