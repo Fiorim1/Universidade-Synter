@@ -808,3 +808,92 @@
     }
 
 }
+
+/* ======================================== */
+/* CENTRALIZAR MODAL PROJETO EM PRODUÇÃO    */
+/* ======================================== */
+
+.card-production-overlay {
+    position: fixed !important;
+
+    inset: 0 !important;
+
+    width: 100% !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding:
+        max(16px, env(safe-area-inset-top))
+        max(16px, env(safe-area-inset-right))
+        max(16px, env(safe-area-inset-bottom))
+        max(16px, env(safe-area-inset-left)) !important;
+
+    box-sizing: border-box;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    z-index: 99999;
+}
+
+
+.card-production-modal {
+    position: relative !important;
+
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+
+    width: 100%;
+    max-width: 460px;
+
+    max-height:
+        calc(
+            100dvh - 32px
+        );
+
+    margin: auto !important;
+
+    overflow-y: auto;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================== */
+/* MOBILE                                   */
+/* ======================================== */
+
+@media (max-width: 600px) {
+
+    .card-production-overlay {
+        align-items: center !important;
+        justify-content: center !important;
+
+        padding:
+            max(14px, env(safe-area-inset-top))
+            max(14px, env(safe-area-inset-right))
+            max(14px, env(safe-area-inset-bottom))
+            max(14px, env(safe-area-inset-left)) !important;
+    }
+
+
+    .card-production-modal {
+        width: 100%;
+        max-width: 420px;
+
+        margin: auto !important;
+
+        max-height:
+            calc(
+                100dvh - 28px
+            );
+    }
+
+}
