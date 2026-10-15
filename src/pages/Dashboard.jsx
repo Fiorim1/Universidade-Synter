@@ -135,7 +135,7 @@ function Dashboard() {
             image={ImgIcon}
             title="Orçamentos"
             desc="Crie e acompanhe seus orçamentos"
-            enabled={false}
+            route="/orcamentos"
           />
 
 
