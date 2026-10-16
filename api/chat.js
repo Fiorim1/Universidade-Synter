@@ -10,6 +10,10 @@ const openai =
     });
 
 
+// ==========================================
+// LIMITES
+// ==========================================
+
 const MAX_TEXT_LENGTH =
     6000;
 
@@ -17,19 +21,35 @@ const MAX_IMAGE_BYTES =
     3 * 1024 * 1024;
 
 const MAX_AUDIO_BYTES =
-    6 * 1024 * 1024;
+    3 * 1024 * 1024;
 
+const MAX_FILE_BYTES =
+    3 * 1024 * 1024;
+
+const MAX_TOTAL_BYTES =
+    3 * 1024 * 1024;
+
+
+// ==========================================
+// IMAGEM
+// ==========================================
 
 const IMAGE_DATA_URL =
-    /^data:image\/(jpeg|png|webp);base64,([A-Za-z0-9+/=\r\n]+)$/i;
+    /^data:image\/(jpeg|jpg|png|webp);base64,([A-Za-z0-9+/=\r\n]+)$/i;
 
+
+// ==========================================
+// ÁUDIOS ACEITOS PARA TRANSCRIÇÃO
+// ==========================================
 
 const AUDIO_MIME_TYPES =
     new Set([
+        "audio/flac",
         "audio/webm",
         "audio/mp4",
         "audio/mpeg",
         "audio/mp3",
+        "audio/mpga",
         "audio/wav",
         "audio/x-wav",
         "audio/ogg",
@@ -38,31 +58,46 @@ const AUDIO_MIME_TYPES =
     ]);
 
 
+// ==========================================
+// INSTRUÇÕES DA SYNTIA
+// ==========================================
+
 const INSTRUCTIONS = `
 Você é o Assistente Synter, integrado à plataforma Universidade Synter.
 
-Sua função é auxiliar usuários da plataforma de forma profissional, clara e objetiva.
+Sua função é auxiliar os usuários da plataforma de forma profissional, clara e objetiva.
 
 Regras:
 
 - Responda sempre em português do Brasil.
-- Seja educado e profissional.
+- Seja educado, profissional e objetivo.
 - Prefira respostas diretas e fáceis de entender.
 - Quando não tiver certeza sobre uma informação interna da Synter, informe que não possui essa informação.
 - Nunca invente especificações de produtos, procedimentos técnicos, preços ou políticas da empresa.
-- Não diga que tem acesso a documentos internos se eles ainda não tiverem sido disponibilizados para você.
+- Não diga que tem acesso a documentos internos se eles não tiverem sido fornecidos na conversa.
 - Ajude com dúvidas gerais sobre tecnologia, produtos, treinamentos, documentos e uso da Universidade Synter.
 - Quando a pergunta envolver segurança ou procedimentos técnicos que possam causar danos, oriente o usuário a confirmar a informação no manual oficial.
-- Quando receber uma foto, analise somente o que for realmente visível.
-- Diferencie observação visual de hipótese técnica.
-- Não afirme que uma peça está defeituosa apenas pela aparência quando a imagem não for suficiente para concluir isso.
-- Quando a mensagem vier de um áudio transcrito, considere que podem existir pequenos erros de transcrição.
-- Se um trecho essencial estiver ambíguo, peça confirmação ao usuário.
+
+Sobre imagens:
+- Analise somente aquilo que realmente estiver visível.
+- Diferencie uma observação visual de uma hipótese técnica.
+- Não afirme que uma peça está defeituosa somente pela aparência quando a imagem não for suficiente para essa conclusão.
+
+Sobre áudios:
+- O conteúdo de áudio pode chegar transcrito.
+- Considere que podem existir pequenos erros de transcrição.
+- Se algum trecho essencial estiver ambíguo, peça confirmação.
+
+Sobre arquivos:
+- Analise somente informações realmente presentes no arquivo enviado.
+- Não invente páginas, campos, números, dados ou informações que não aparecem no arquivo.
+- Se o arquivo não puder ser interpretado corretamente, informe isso ao usuário.
+- Quando o usuário enviar um arquivo sem explicar o que deseja, faça uma análise geral curta e pergunte como pode ajudá-lo com aquele conteúdo.
 `;
 
 
 // ==========================================
-// UTILITÁRIOS
+// TEXTO
 // ==========================================
 
 function normalizarTexto(
@@ -81,19 +116,53 @@ function normalizarTexto(
 }
 
 
+// ==========================================
+// BASE64
+// ==========================================
+
+function limparBase64(
+    valor
+) {
+
+    return String(
+        valor || ""
+    )
+        .replace(
+            /\s/g,
+            ""
+        );
+
+}
+
+
+function base64Valido(
+    valor
+) {
+
+    const base64 =
+        limparBase64(
+            valor
+        );
+
+    if (!base64) {
+        return false;
+    }
+
+    return /^[A-Za-z0-9+/]*={0,2}$/.test(
+        base64
+    );
+
+}
+
+
 function tamanhoBase64EmBytes(
     base64
 ) {
 
     const limpo =
-        String(
-            base64 || ""
-        )
-            .replace(
-                /\s/g,
-                ""
-            );
-
+        limparBase64(
+            base64
+        );
 
     const padding =
         limpo.endsWith("==")
@@ -101,7 +170,6 @@ function tamanhoBase64EmBytes(
             : limpo.endsWith("=")
                 ? 1
                 : 0;
-
 
     return Math.max(
         0,
@@ -116,7 +184,41 @@ function tamanhoBase64EmBytes(
 
 
 // ==========================================
-// VALIDAR IMAGEM
+// NOME DO ARQUIVO
+// ==========================================
+
+function sanitizarNomeArquivo(
+    nome
+) {
+
+    const limpo =
+        String(
+            nome || "arquivo"
+        )
+            .replace(
+                /[\u0000-\u001F\u007F]/g,
+                ""
+            )
+            .replace(
+                /[\\/]/g,
+                "_"
+            )
+            .trim()
+            .slice(
+                0,
+                180
+            );
+
+    return (
+        limpo ||
+        "arquivo"
+    );
+
+}
+
+
+// ==========================================
+// IMAGEM
 // ==========================================
 
 function validarImagem(
@@ -124,9 +226,16 @@ function validarImagem(
 ) {
 
     if (!image) {
-        return null;
-    }
 
+        return {
+            valor:
+                null,
+
+            tamanho:
+                0
+        };
+
+    }
 
     if (
         typeof image !==
@@ -139,12 +248,10 @@ function validarImagem(
 
     }
 
-
     const encontrada =
         image.match(
             IMAGE_DATA_URL
         );
-
 
     if (!encontrada) {
 
@@ -154,15 +261,16 @@ function validarImagem(
 
     }
 
-
     const base64 =
         encontrada[2];
 
-
-    if (
+    const tamanho =
         tamanhoBase64EmBytes(
             base64
-        ) >
+        );
+
+    if (
+        tamanho >
         MAX_IMAGE_BYTES
     ) {
 
@@ -172,14 +280,18 @@ function validarImagem(
 
     }
 
+    return {
+        valor:
+            image,
 
-    return image;
+        tamanho
+    };
 
 }
 
 
 // ==========================================
-// ÁUDIO
+// MIME DO ÁUDIO
 // ==========================================
 
 function normalizarMimeAudio(
@@ -196,11 +308,24 @@ function normalizarMimeAudio(
 }
 
 
+// ==========================================
+// EXTENSÃO DO ÁUDIO
+// ==========================================
+
 function extensaoAudio(
-    mimeType
+    mimeType,
+    nome = ""
 ) {
 
-    const mapa = {
+    const mime =
+        normalizarMimeAudio(
+            mimeType
+        );
+
+    const mapaMime = {
+
+        "audio/flac":
+            "flac",
 
         "audio/webm":
             "webm",
@@ -213,6 +338,9 @@ function extensaoAudio(
 
         "audio/mp3":
             "mp3",
+
+        "audio/mpga":
+            "mpga",
 
         "audio/wav":
             "wav",
@@ -231,21 +359,53 @@ function extensaoAudio(
 
     };
 
+    if (
+        mapaMime[mime]
+    ) {
 
-    return (
-        mapa[
-            normalizarMimeAudio(
-                mimeType
-            )
-        ] ||
+        return mapaMime[
+            mime
+        ];
+
+    }
+
+    const extensao =
+        String(
+            nome
+        )
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+    const permitidas = [
+        "flac",
+        "mp3",
+        "mp4",
+        "mpeg",
+        "mpga",
+        "m4a",
+        "ogg",
+        "wav",
         "webm"
-    );
+    ];
+
+    if (
+        permitidas.includes(
+            extensao
+        )
+    ) {
+
+        return extensao;
+
+    }
+
+    return "webm";
 
 }
 
 
 // ==========================================
-// PREVIOUS RESPONSE ID
+// PREVIOUS RESPONSE
 // ==========================================
 
 function validarPreviousResponseId(
@@ -256,16 +416,15 @@ function validarPreviousResponseId(
         return null;
     }
 
-
     const id =
         String(
             valor
         )
             .trim();
 
-
     if (
-        id.length > 200 ||
+        id.length >
+            200 ||
         !/^resp_[A-Za-z0-9_-]+$/.test(
             id
         )
@@ -275,8 +434,105 @@ function validarPreviousResponseId(
 
     }
 
-
     return id;
+
+}
+
+
+// ==========================================
+// VALIDAR ARQUIVO GENÉRICO
+// ==========================================
+
+function validarArquivo(
+    file
+) {
+
+    if (!file) {
+
+        return {
+            valor:
+                null,
+
+            tamanho:
+                0
+        };
+
+    }
+
+    if (
+        typeof file !==
+        "object"
+    ) {
+
+        throw new Error(
+            "Formato de arquivo inválido."
+        );
+
+    }
+
+    const nome =
+        sanitizarNomeArquivo(
+            file.name
+        );
+
+    const mimeType =
+        String(
+            file.mimeType ||
+            "application/octet-stream"
+        )
+            .trim()
+            .slice(
+                0,
+                150
+            );
+
+    const base64 =
+        limparBase64(
+            file.data
+        );
+
+    if (
+        !base64 ||
+        !base64Valido(
+            base64
+        )
+    ) {
+
+        throw new Error(
+            "O conteúdo do arquivo é inválido."
+        );
+
+    }
+
+    const tamanho =
+        tamanhoBase64EmBytes(
+            base64
+        );
+
+    if (
+        tamanho >
+        MAX_FILE_BYTES
+    ) {
+
+        throw new Error(
+            "O arquivo ultrapassa o limite permitido."
+        );
+
+    }
+
+    return {
+        valor: {
+            name:
+                nome,
+
+            mimeType,
+
+            data:
+                base64
+        },
+
+        tamanho
+    };
 
 }
 
@@ -295,7 +551,6 @@ async function validarUsuario(
             ""
         );
 
-
     if (
         !authorization.startsWith(
             "Bearer "
@@ -306,27 +561,22 @@ async function validarUsuario(
 
     }
 
-
     const token =
         authorization
             .slice(7)
             .trim();
 
-
     if (!token) {
         return null;
     }
-
 
     const supabaseUrl =
         process.env.SUPABASE_URL ||
         process.env.VITE_SUPABASE_URL;
 
-
     const supabaseAnonKey =
         process.env.SUPABASE_ANON_KEY ||
         process.env.VITE_SUPABASE_ANON_KEY;
-
 
     if (
         !supabaseUrl ||
@@ -341,14 +591,12 @@ async function validarUsuario(
 
     }
 
-
     try {
 
         const resposta =
             await fetch(
                 `${supabaseUrl}/auth/v1/user`,
                 {
-
                     method:
                         "GET",
 
@@ -361,19 +609,19 @@ async function validarUsuario(
                             `Bearer ${token}`
 
                     }
-
                 }
             );
 
+        if (
+            !resposta.ok
+        ) {
 
-        if (!resposta.ok) {
             return null;
-        }
 
+        }
 
         const usuario =
             await resposta.json();
-
 
         return usuario?.id
             ? usuario
@@ -386,7 +634,6 @@ async function validarUsuario(
             "Erro ao validar sessão no Supabase:",
             error
         );
-
 
         return null;
 
@@ -404,32 +651,20 @@ async function transcreverAudio(
 ) {
 
     if (!audio) {
-        return "";
+
+        return {
+            texto:
+                "",
+
+            tamanho:
+                0
+        };
+
     }
 
-
-    const base64 =
-        String(
-            audio.data || ""
-        )
-            .replace(
-                /\s/g,
-                ""
-            );
-
-
-    const mimeType =
-        normalizarMimeAudio(
-            audio.mimeType
-        );
-
-
     if (
-        !base64 ||
-        !mimeType ||
-        !AUDIO_MIME_TYPES.has(
-            mimeType
-        )
+        typeof audio !==
+        "object"
     ) {
 
         throw new Error(
@@ -438,11 +673,99 @@ async function transcreverAudio(
 
     }
 
+    const base64 =
+        limparBase64(
+            audio.data
+        );
 
     if (
+        !base64 ||
+        !base64Valido(
+            base64
+        )
+    ) {
+
+        throw new Error(
+            "O conteúdo do áudio é inválido."
+        );
+
+    }
+
+    const mimeType =
+        normalizarMimeAudio(
+            audio.mimeType
+        );
+
+    const nomeOriginal =
+        sanitizarNomeArquivo(
+            audio.name ||
+            "audio"
+        );
+
+    const extensao =
+        extensaoAudio(
+            mimeType,
+            nomeOriginal
+        );
+
+    const mimePorExtensao = {
+
+        flac:
+            "audio/flac",
+
+        mp3:
+            "audio/mpeg",
+
+        mp4:
+            "audio/mp4",
+
+        mpeg:
+            "audio/mpeg",
+
+        mpga:
+            "audio/mpeg",
+
+        m4a:
+            "audio/mp4",
+
+        ogg:
+            "audio/ogg",
+
+        wav:
+            "audio/wav",
+
+        webm:
+            "audio/webm"
+
+    };
+
+    const mimeFinal =
+        AUDIO_MIME_TYPES.has(
+            mimeType
+        )
+            ? mimeType
+            : mimePorExtensao[
+                extensao
+            ];
+
+
+    if (
+        !mimeFinal
+    ) {
+
+        throw new Error(
+            "Esse formato de áudio não é compatível com a transcrição."
+        );
+
+    }
+
+    const tamanho =
         tamanhoBase64EmBytes(
             base64
-        ) >
+        );
+
+    if (
+        tamanho >
         MAX_AUDIO_BYTES
     ) {
 
@@ -452,13 +775,11 @@ async function transcreverAudio(
 
     }
 
-
     const buffer =
         Buffer.from(
             base64,
             "base64"
         );
-
 
     if (
         buffer.length <
@@ -471,12 +792,8 @@ async function transcreverAudio(
 
     }
 
-
     const nomeSeguro =
-        `audio-synter.${extensaoAudio(
-            mimeType
-        )}`;
-
+        `audio-synter.${extensao}`;
 
     const arquivo =
         await toFile(
@@ -484,7 +801,7 @@ async function transcreverAudio(
             nomeSeguro,
             {
                 type:
-                    mimeType
+                    mimeFinal
             }
         );
 
@@ -508,9 +825,17 @@ async function transcreverAudio(
             });
 
 
-    return String(
-        transcricao.text || ""
-    ).trim();
+    return {
+
+        texto:
+            String(
+                transcricao.text ||
+                ""
+            ).trim(),
+
+        tamanho
+
+    };
 
 }
 
@@ -551,17 +876,20 @@ export default async function handler(
     }
 
 
+    let recebeuArquivo =
+        false;
+
+
     try {
 
         // ======================================
-        // VALIDA USUÁRIO
+        // USUÁRIO LOGADO
         // ======================================
 
         const usuario =
             await validarUsuario(
                 req
             );
-
 
         if (!usuario) {
 
@@ -578,13 +906,13 @@ export default async function handler(
 
 
         // ======================================
-        // RECEBE DADOS
+        // BODY
         // ======================================
 
         const corpo =
             req.body &&
             typeof req.body ===
-            "object"
+                "object"
                 ? req.body
                 : {};
 
@@ -595,11 +923,40 @@ export default async function handler(
             );
 
 
-        const image =
+        // ======================================
+        // IMAGEM
+        // ======================================
+
+        const imagemValidada =
             validarImagem(
                 corpo.image
             );
 
+        const image =
+            imagemValidada.valor;
+
+
+        // ======================================
+        // ARQUIVO
+        // ======================================
+
+        const arquivoValidado =
+            validarArquivo(
+                corpo.file
+            );
+
+        const file =
+            arquivoValidado.valor;
+
+        recebeuArquivo =
+            Boolean(
+                file
+            );
+
+
+        // ======================================
+        // CONTEXTO
+        // ======================================
 
         const previousResponseId =
             validarPreviousResponseId(
@@ -608,13 +965,16 @@ export default async function handler(
 
 
         // ======================================
-        // TRANSCRIÇÃO DO ÁUDIO
+        // ÁUDIO
         // ======================================
 
-        const transcription =
+        const audioResult =
             await transcreverAudio(
                 corpo.audio
             );
+
+        const transcription =
+            audioResult.texto;
 
 
         if (
@@ -633,6 +993,33 @@ ${transcription}`
 
 
         // ======================================
+        // LIMITE TOTAL
+        // ======================================
+
+        const tamanhoTotal =
+            imagemValidada.tamanho +
+            arquivoValidado.tamanho +
+            audioResult.tamanho;
+
+
+        if (
+            tamanhoTotal >
+            MAX_TOTAL_BYTES
+        ) {
+
+            return res
+                .status(400)
+                .json({
+
+                    error:
+                        "Os anexos juntos ultrapassam o limite permitido. Envie os arquivos separadamente."
+
+                });
+
+        }
+
+
+        // ======================================
         // COMPATIBILIDADE COM FRONTEND ANTIGO
         // ======================================
 
@@ -646,8 +1033,9 @@ ${transcription}`
                 corpo.messages
             ) &&
             corpo.messages.length >
-            0 &&
+                0 &&
             !image &&
+            !file &&
             !corpo.audio &&
             !corpo.message
         ) {
@@ -686,12 +1074,13 @@ ${transcription}`
 
 
         // ======================================
-        // VALIDA CONTEÚDO
+        // PRECISA TER CONTEÚDO
         // ======================================
 
         if (
             !texto &&
             !image &&
+            !file &&
             !historicoAntigo
         ) {
 
@@ -700,7 +1089,7 @@ ${transcription}`
                 .json({
 
                     error:
-                        "Envie uma mensagem, foto ou áudio."
+                        "Envie uma mensagem, imagem, áudio ou arquivo."
 
                 });
 
@@ -728,17 +1117,67 @@ ${transcription}`
                 [];
 
 
+            // ==================================
+            // TEXTO
+            // ==================================
+
+            let textoEntrada =
+                texto;
+
+
+            if (
+                !textoEntrada
+            ) {
+
+                if (
+                    file &&
+                    image
+                ) {
+
+                    textoEntrada =
+                        "Analise a imagem e o arquivo enviados e explique de forma objetiva o conteúdo.";
+
+                }
+                else if (
+                    file
+                ) {
+
+                    textoEntrada =
+                        "Analise o arquivo enviado e explique de forma objetiva o conteúdo.";
+
+                }
+                else if (
+                    image
+                ) {
+
+                    textoEntrada =
+                        "Analise esta imagem e explique de forma objetiva o que é possível observar.";
+
+                }
+                else {
+
+                    textoEntrada =
+                        "Analise o conteúdo enviado.";
+
+                }
+
+            }
+
+
             content.push({
 
                 type:
                     "input_text",
 
                 text:
-                    texto ||
-                    "Analise esta imagem e explique de forma objetiva o que é possível observar."
+                    textoEntrada
 
             });
 
+
+            // ==================================
+            // IMAGEM
+            // ==================================
 
             if (
                 image
@@ -754,6 +1193,30 @@ ${transcription}`
 
                     detail:
                         "auto"
+
+                });
+
+            }
+
+
+            // ==================================
+            // ARQUIVO
+            // ==================================
+
+            if (
+                file
+            ) {
+
+                content.push({
+
+                    type:
+                        "input_file",
+
+                    filename:
+                        file.name,
+
+                    file_data:
+                        file.data
 
                 });
 
@@ -777,7 +1240,7 @@ ${transcription}`
 
 
         // ======================================
-        // OPENAI RESPONSES API
+        // OPENAI
         // ======================================
 
         const parametros = {
@@ -805,7 +1268,7 @@ ${transcription}`
 
 
         // ======================================
-        // MANTER CONTEXTO
+        // CONTINUAÇÃO DA CONVERSA
         // ======================================
 
         if (
@@ -819,7 +1282,7 @@ ${transcription}`
 
 
         // ======================================
-        // ENVIA PARA OPENAI
+        // RESPOSTA DA OPENAI
         // ======================================
 
         const response =
@@ -828,10 +1291,6 @@ ${transcription}`
                     parametros
                 );
 
-
-        // ======================================
-        // RESPOSTA
-        // ======================================
 
         const resposta =
             response.output_text
@@ -871,9 +1330,7 @@ ${transcription}`
             });
 
     }
-    catch (
-        error
-    ) {
+    catch (error) {
 
         console.error(
             "Erro Assistente Synter:",
@@ -887,6 +1344,9 @@ ${transcription}`
 
                 code:
                     error?.code,
+
+                type:
+                    error?.type,
 
                 message:
                     error?.message
@@ -903,22 +1363,63 @@ ${transcription}`
 
 
         // ======================================
-        // ERROS DE ARQUIVO
+        // FORMATO DE ARQUIVO NÃO SUPORTADO
         // ======================================
 
         if (
-            mensagem.includes(
-                "imagem"
-            ) ||
-            mensagem.includes(
-                "áudio"
-            ) ||
-            mensagem.includes(
-                "Formato"
-            ) ||
-            mensagem.includes(
-                "limite"
+            recebeuArquivo &&
+            (
+                error?.status === 400 ||
+                mensagem
+                    .toLowerCase()
+                    .includes(
+                        "unsupported"
+                    )
             )
+        ) {
+
+            return res
+                .status(400)
+                .json({
+
+                    error:
+                        "Esse tipo de arquivo não pôde ser interpretado pela IA. Tente enviar em PDF, Word, Excel, CSV, TXT ou outro formato de documento compatível."
+
+                });
+
+        }
+
+
+        // ======================================
+        // ERROS DE ANEXOS
+        // ======================================
+
+        const mensagemMinuscula =
+            mensagem
+                .toLowerCase();
+
+
+        if (
+            mensagemMinuscula
+                .includes(
+                    "imagem"
+                ) ||
+            mensagemMinuscula
+                .includes(
+                    "áudio"
+                ) ||
+            mensagemMinuscula
+                .includes(
+                    "arquivo"
+                ) ||
+            mensagemMinuscula
+                .includes(
+                    "formato"
+                ) ||
+            mensagemMinuscula
+                .includes(
+                    "limite"
+                )
         ) {
 
             return res

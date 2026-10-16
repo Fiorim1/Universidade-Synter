@@ -9,8 +9,20 @@ import { supabase } from "../services/supabaseClient";
 import "../styles/SynterAssistant.css";
 
 
-const LIMITE_IMAGEM = 10 * 1024 * 1024;
-const LIMITE_GRAVACAO = 60;
+const LIMITE_IMAGEM =
+    10 * 1024 * 1024;
+
+const LIMITE_ARQUIVO =
+    3 * 1024 * 1024;
+
+const LIMITE_AUDIO =
+    3 * 1024 * 1024;
+
+const LIMITE_TOTAL =
+    3 * 1024 * 1024;
+
+const LIMITE_GRAVACAO =
+    60;
 
 
 function SynterAssistant() {
@@ -34,14 +46,36 @@ function SynterAssistant() {
             }
         ]);
 
-    const [previousResponseId, setPreviousResponseId] =
-        useState(null);
+
+    // ==========================================
+    // CONTEXTO DA CONVERSA
+    // ==========================================
+
+    const [
+        previousResponseId,
+        setPreviousResponseId
+    ] = useState(null);
+
+
+    // ==========================================
+    // IMAGEM
+    // ==========================================
 
     const [imagem, setImagem] =
         useState(null);
 
-    const [processandoImagem, setProcessandoImagem] =
-        useState(false);
+
+    // ==========================================
+    // ARQUIVO
+    // ==========================================
+
+    const [arquivo, setArquivo] =
+        useState(null);
+
+
+    // ==========================================
+    // ÁUDIO
+    // ==========================================
 
     const [audio, setAudio] =
         useState(null);
@@ -49,17 +83,33 @@ function SynterAssistant() {
     const [gravando, setGravando] =
         useState(false);
 
-    const [tempoGravacao, setTempoGravacao] =
-        useState(0);
+    const [
+        tempoGravacao,
+        setTempoGravacao
+    ] = useState(0);
+
+
+    // ==========================================
+    // PROCESSAMENTO
+    // ==========================================
+
+    const [
+        processandoAnexo,
+        setProcessandoAnexo
+    ] = useState(false);
 
     const [erroMidia, setErroMidia] =
         useState("");
 
 
+    // ==========================================
+    // REFS
+    // ==========================================
+
     const mensagensRef =
         useRef(null);
 
-    const imagemInputRef =
+    const arquivoInputRef =
         useRef(null);
 
     const mediaRecorderRef =
@@ -82,7 +132,7 @@ function SynterAssistant() {
 
 
     // ==========================================
-    // ROLAR PARA A ÚLTIMA MENSAGEM
+    // ROLAR PARA ÚLTIMA MENSAGEM
     // ==========================================
 
     useEffect(() => {
@@ -98,6 +148,7 @@ function SynterAssistant() {
         mensagens,
         carregando,
         imagem,
+        arquivo,
         audio,
         gravando
     ]);
@@ -112,15 +163,20 @@ function SynterAssistant() {
         return () => {
 
             if (timerRef.current) {
-                clearInterval(timerRef.current);
+
+                clearInterval(
+                    timerRef.current
+                );
+
             }
 
             if (mediaStreamRef.current) {
 
                 mediaStreamRef.current
                     .getTracks()
-                    .forEach((track) =>
-                        track.stop()
+                    .forEach(
+                        (track) =>
+                            track.stop()
                     );
 
             }
@@ -138,9 +194,12 @@ function SynterAssistant() {
 
         if (
             typeof crypto !== "undefined" &&
-            typeof crypto.randomUUID === "function"
+            typeof crypto.randomUUID ===
+                "function"
         ) {
+
             return crypto.randomUUID();
+
         }
 
         return `${Date.now()}-${Math.random()
@@ -150,83 +209,412 @@ function SynterAssistant() {
     }
 
 
-    function formatarTempo(segundos) {
+    function formatarTempo(
+        segundos
+    ) {
 
         const minutos =
-            Math.floor(segundos / 60);
+            Math.floor(
+                segundos / 60
+            );
 
         const restante =
             segundos % 60;
 
-        return `${String(minutos).padStart(2, "0")}:${String(
+        return `${String(
+            minutos
+        ).padStart(
+            2,
+            "0"
+        )}:${String(
             restante
-        ).padStart(2, "0")}`;
+        ).padStart(
+            2,
+            "0"
+        )}`;
 
     }
 
 
-    function arquivoParaDataUrl(arquivo) {
+    function formatarBytes(
+        bytes = 0
+    ) {
 
-        return new Promise((resolve, reject) => {
+        if (!bytes) {
+            return "0 KB";
+        }
 
-            const leitor =
-                new FileReader();
+        if (
+            bytes <
+            1024 * 1024
+        ) {
 
-            leitor.onload = () =>
-                resolve(String(leitor.result || ""));
+            return `${(
+                bytes / 1024
+            ).toFixed(1)} KB`;
 
-            leitor.onerror = () =>
-                reject(
-                    new Error(
-                        "Não foi possível ler o arquivo."
-                    )
+        }
+
+        return `${(
+            bytes /
+            1024 /
+            1024
+        ).toFixed(2)} MB`;
+
+    }
+
+
+    function arquivoParaDataUrl(
+        arquivoSelecionado
+    ) {
+
+        return new Promise(
+            (
+                resolve,
+                reject
+            ) => {
+
+                const leitor =
+                    new FileReader();
+
+                leitor.onload =
+                    () =>
+                        resolve(
+                            String(
+                                leitor.result ||
+                                ""
+                            )
+                        );
+
+                leitor.onerror =
+                    () =>
+                        reject(
+                            new Error(
+                                "Não foi possível ler o arquivo."
+                            )
+                        );
+
+                leitor.readAsDataURL(
+                    arquivoSelecionado
                 );
 
-            leitor.readAsDataURL(arquivo);
-
-        });
-
-    }
-
-
-    function carregarImagem(src) {
-
-        return new Promise((resolve, reject) => {
-
-            const img =
-                new Image();
-
-            img.onload = () =>
-                resolve(img);
-
-            img.onerror = () =>
-                reject(
-                    new Error(
-                        "Não foi possível processar a imagem."
-                    )
-                );
-
-            img.src = src;
-
-        });
-
-    }
-
-
-    function tamanhoDataUrl(dataUrl) {
-
-        const base64 =
-            String(dataUrl)
-                .split(",")[1] || "";
-
-        return Math.ceil(
-            base64.length * 0.75
+            }
         );
 
     }
 
 
-    async function otimizarImagem(arquivo) {
+    function carregarImagem(
+        src
+    ) {
+
+        return new Promise(
+            (
+                resolve,
+                reject
+            ) => {
+
+                const img =
+                    new Image();
+
+                img.onload =
+                    () =>
+                        resolve(
+                            img
+                        );
+
+                img.onerror =
+                    () =>
+                        reject(
+                            new Error(
+                                "Não foi possível processar a imagem."
+                            )
+                        );
+
+                img.src =
+                    src;
+
+            }
+        );
+
+    }
+
+
+    function tamanhoDataUrl(
+        dataUrl
+    ) {
+
+        const base64 =
+            String(
+                dataUrl
+            )
+                .split(",")[1] ||
+            "";
+
+        return Math.ceil(
+            base64.length *
+            0.75
+        );
+
+    }
+
+
+    function obterBase64(
+        dataUrl
+    ) {
+
+        return String(
+            dataUrl || ""
+        )
+            .split(",")[1] ||
+            "";
+
+    }
+
+
+    function obterExtensao(
+        nome = ""
+    ) {
+
+        const partes =
+            String(nome)
+                .split(".");
+
+        if (
+            partes.length <
+            2
+        ) {
+
+            return "";
+
+        }
+
+        return partes
+            .pop()
+            .toLowerCase();
+
+    }
+
+
+    function ehImagem(
+        file
+    ) {
+
+        const extensao =
+            obterExtensao(
+                file.name
+            );
+
+        return (
+            file.type?.startsWith(
+                "image/"
+            ) ||
+            [
+                "jpg",
+                "jpeg",
+                "png",
+                "webp"
+            ].includes(
+                extensao
+            )
+        );
+
+    }
+
+
+    function ehAudio(
+        file
+    ) {
+
+        const extensao =
+            obterExtensao(
+                file.name
+            );
+
+        return (
+            file.type?.startsWith(
+                "audio/"
+            ) ||
+            [
+                "mp3",
+                "mp4",
+                "mpeg",
+                "mpga",
+                "m4a",
+                "ogg",
+                "wav",
+                "webm",
+                "flac"
+            ].includes(
+                extensao
+            )
+        );
+
+    }
+
+
+    function mimeAudioPorArquivo(
+        file
+    ) {
+
+        if (
+            file.type?.startsWith(
+                "audio/"
+            )
+        ) {
+
+            return file.type;
+
+        }
+
+        const extensao =
+            obterExtensao(
+                file.name
+            );
+
+        const mapa = {
+            mp3: "audio/mpeg",
+            mp4: "audio/mp4",
+            mpeg: "audio/mpeg",
+            mpga: "audio/mpeg",
+            m4a: "audio/mp4",
+            ogg: "audio/ogg",
+            wav: "audio/wav",
+            webm: "audio/webm",
+            flac: "audio/flac"
+        };
+
+        return (
+            mapa[extensao] ||
+            "application/octet-stream"
+        );
+
+    }
+
+
+    function extensaoAudio(
+        mime = ""
+    ) {
+
+        const tipo =
+            mime
+                .split(";")[0]
+                .toLowerCase();
+
+        const mapa = {
+            "audio/webm":
+                "webm",
+
+            "audio/mp4":
+                "mp4",
+
+            "audio/mpeg":
+                "mp3",
+
+            "audio/mp3":
+                "mp3",
+
+            "audio/wav":
+                "wav",
+
+            "audio/x-wav":
+                "wav",
+
+            "audio/ogg":
+                "ogg",
+
+            "audio/flac":
+                "flac"
+        };
+
+        return (
+            mapa[tipo] ||
+            "webm"
+        );
+
+    }
+
+
+    function mimeAudioPreferido() {
+
+        if (
+            typeof MediaRecorder ===
+            "undefined"
+        ) {
+
+            return "";
+
+        }
+
+        const opcoes = [
+            "audio/webm;codecs=opus",
+            "audio/webm",
+            "audio/mp4",
+            "audio/ogg;codecs=opus"
+        ];
+
+        return (
+            opcoes.find(
+                (tipo) =>
+                    MediaRecorder
+                        .isTypeSupported?.(
+                            tipo
+                        )
+            ) ||
+            ""
+        );
+
+    }
+
+
+    function limparTimer() {
+
+        if (
+            timerRef.current
+        ) {
+
+            clearInterval(
+                timerRef.current
+            );
+
+            timerRef.current =
+                null;
+
+        }
+
+    }
+
+
+    function encerrarStream() {
+
+        if (
+            !mediaStreamRef.current
+        ) {
+
+            return;
+
+        }
+
+        mediaStreamRef.current
+            .getTracks()
+            .forEach(
+                (track) =>
+                    track.stop()
+            );
+
+        mediaStreamRef.current =
+            null;
+
+    }
+
+
+    // ==========================================
+    // OTIMIZAR IMAGEM
+    // ==========================================
+
+    async function otimizarImagem(
+        arquivoSelecionado
+    ) {
 
         const tiposPermitidos = [
             "image/jpeg",
@@ -235,43 +623,53 @@ function SynterAssistant() {
         ];
 
         if (
+            arquivoSelecionado.type &&
             !tiposPermitidos.includes(
-                arquivo.type
+                arquivoSelecionado.type
             )
         ) {
 
             throw new Error(
-                "Envie uma foto JPG, PNG ou WEBP."
+                "A imagem precisa ser JPG, PNG ou WEBP."
             );
 
         }
 
         if (
-            arquivo.size >
+            arquivoSelecionado.size >
             LIMITE_IMAGEM
         ) {
 
             throw new Error(
-                "A imagem é muito grande. Use uma foto de até 10 MB."
+                "A imagem é muito grande. Use uma imagem de até 10 MB."
             );
 
         }
 
         const original =
             await arquivoParaDataUrl(
-                arquivo
+                arquivoSelecionado
             );
 
-        // Preserva imagens pequenas, inclusive screenshots.
         if (
-            arquivo.size <=
-            1.5 * 1024 * 1024
+            arquivoSelecionado.size <=
+            1.2 * 1024 * 1024
         ) {
 
             return {
-                dataUrl: original,
-                nome: arquivo.name || "imagem",
-                tipo: arquivo.type
+                dataUrl:
+                    original,
+
+                nome:
+                    arquivoSelecionado.name ||
+                    "imagem",
+
+                tipo:
+                    arquivoSelecionado.type ||
+                    "image/jpeg",
+
+                tamanho:
+                    arquivoSelecionado.size
             };
 
         }
@@ -280,6 +678,7 @@ function SynterAssistant() {
             await carregarImagem(
                 original
             );
+
 
         function gerarDataUrl(
             limite,
@@ -294,14 +693,16 @@ function SynterAssistant() {
 
             const escala =
                 maiorLado > limite
-                    ? limite / maiorLado
+                    ? limite /
+                      maiorLado
                     : 1;
 
             const largura =
                 Math.max(
                     1,
                     Math.round(
-                        img.naturalWidth * escala
+                        img.naturalWidth *
+                        escala
                     )
                 );
 
@@ -309,7 +710,8 @@ function SynterAssistant() {
                 Math.max(
                     1,
                     Math.round(
-                        img.naturalHeight * escala
+                        img.naturalHeight *
+                        escala
                     )
                 );
 
@@ -318,16 +720,23 @@ function SynterAssistant() {
                     "canvas"
                 );
 
-            canvas.width = largura;
-            canvas.height = altura;
+            canvas.width =
+                largura;
+
+            canvas.height =
+                altura;
 
             const contexto =
-                canvas.getContext("2d");
+                canvas.getContext(
+                    "2d"
+                );
 
             if (!contexto) {
+
                 throw new Error(
                     "Não foi possível preparar a imagem."
                 );
+
             }
 
             contexto.fillStyle =
@@ -355,175 +764,231 @@ function SynterAssistant() {
 
         }
 
+
         let dataUrl =
             gerarDataUrl(
                 1600,
-                0.80
+                0.78
             );
 
         if (
-            tamanhoDataUrl(dataUrl) >
-            2.5 * 1024 * 1024
+            tamanhoDataUrl(
+                dataUrl
+            ) >
+            1.8 * 1024 * 1024
         ) {
 
             dataUrl =
                 gerarDataUrl(
                     1200,
-                    0.68
+                    0.65
                 );
 
         }
 
         if (
-            tamanhoDataUrl(dataUrl) >
-            3 * 1024 * 1024
+            tamanhoDataUrl(
+                dataUrl
+            ) >
+            LIMITE_TOTAL
         ) {
 
             throw new Error(
-                "A imagem continuou muito grande. Tente outra foto."
+                "A imagem continuou muito grande. Tente outra imagem."
             );
 
         }
 
         return {
             dataUrl,
+
             nome:
-                arquivo.name ||
+                arquivoSelecionado.name ||
                 "imagem.jpg",
-            tipo: "image/jpeg"
-        };
 
-    }
+            tipo:
+                "image/jpeg",
 
-
-    function mimeAudioPreferido() {
-
-        if (
-            typeof MediaRecorder ===
-            "undefined"
-        ) {
-            return "";
-        }
-
-        const opcoes = [
-            "audio/webm;codecs=opus",
-            "audio/webm",
-            "audio/mp4",
-            "audio/ogg;codecs=opus"
-        ];
-
-        return (
-            opcoes.find((tipo) =>
-                MediaRecorder.isTypeSupported?.(
-                    tipo
+            tamanho:
+                tamanhoDataUrl(
+                    dataUrl
                 )
-            ) || ""
-        );
-
-    }
-
-
-    function extensaoAudio(mime = "") {
-
-        const tipo =
-            mime
-                .split(";")[0]
-                .toLowerCase();
-
-        const mapa = {
-            "audio/webm": "webm",
-            "audio/mp4": "mp4",
-            "audio/mpeg": "mp3",
-            "audio/mp3": "mp3",
-            "audio/wav": "wav",
-            "audio/x-wav": "wav",
-            "audio/ogg": "ogg"
         };
 
-        return mapa[tipo] ||
-            "webm";
-
-    }
-
-
-    function limparTimer() {
-
-        if (timerRef.current) {
-
-            clearInterval(
-                timerRef.current
-            );
-
-            timerRef.current =
-                null;
-
-        }
-
-    }
-
-
-    function encerrarStream() {
-
-        if (!mediaStreamRef.current) {
-            return;
-        }
-
-        mediaStreamRef.current
-            .getTracks()
-            .forEach((track) =>
-                track.stop()
-            );
-
-        mediaStreamRef.current =
-            null;
-
     }
 
 
     // ==========================================
-    // FOTO
+    // SELECIONAR QUALQUER ARQUIVO
     // ==========================================
 
-    async function selecionarImagem(evento) {
+    async function selecionarArquivo(
+        evento
+    ) {
 
-        const arquivo =
-            evento.target.files?.[0];
+        const selecionado =
+            evento.target
+                .files?.[0];
 
-        evento.target.value = "";
+        evento.target.value =
+            "";
 
-        if (!arquivo) {
+        if (!selecionado) {
             return;
         }
 
         try {
 
             setErroMidia("");
-            setProcessandoImagem(true);
+            setProcessandoAnexo(
+                true
+            );
 
-            const preparada =
-                await otimizarImagem(
-                    arquivo
+
+            // ==================================
+            // IMAGEM
+            // ==================================
+
+            if (
+                ehImagem(
+                    selecionado
+                )
+            ) {
+
+                const preparada =
+                    await otimizarImagem(
+                        selecionado
+                    );
+
+                setImagem(
+                    preparada
                 );
 
-            setImagem(preparada);
+                setArquivo(
+                    null
+                );
+
+                return;
+
+            }
+
+
+            // ==================================
+            // ÁUDIO SELECIONADO DO COMPUTADOR
+            // ==================================
+
+            if (
+                ehAudio(
+                    selecionado
+                )
+            ) {
+
+                if (
+                    selecionado.size >
+                    LIMITE_AUDIO
+                ) {
+
+                    throw new Error(
+                        "O áudio deve ter no máximo 3 MB."
+                    );
+
+                }
+
+                const dataUrl =
+                    await arquivoParaDataUrl(
+                        selecionado
+                    );
+
+                setAudio({
+                    dataUrl,
+
+                    base64:
+                        obterBase64(
+                            dataUrl
+                        ),
+
+                    mimeType:
+                        mimeAudioPorArquivo(
+                            selecionado
+                        ),
+
+                    nome:
+                        selecionado.name ||
+                        "audio",
+
+                    duracao:
+                        null,
+
+                    tamanho:
+                        selecionado.size
+                });
+
+                return;
+
+            }
+
+
+            // ==================================
+            // ARQUIVO GENÉRICO
+            // ==================================
+
+            if (
+                selecionado.size >
+                LIMITE_ARQUIVO
+            ) {
+
+                throw new Error(
+                    "O arquivo deve ter no máximo 3 MB."
+                );
+
+            }
+
+            const dataUrl =
+                await arquivoParaDataUrl(
+                    selecionado
+                );
+
+            setArquivo({
+                nome:
+                    selecionado.name ||
+                    "arquivo",
+
+                mimeType:
+                    selecionado.type ||
+                    "application/octet-stream",
+
+                tamanho:
+                    selecionado.size,
+
+                base64:
+                    obterBase64(
+                        dataUrl
+                    )
+            });
+
+            setImagem(
+                null
+            );
 
         }
         catch (error) {
 
             console.error(
-                "Erro ao selecionar imagem:",
+                "Erro ao selecionar arquivo:",
                 error
             );
 
             setErroMidia(
                 error?.message ||
-                "Não foi possível adicionar a imagem."
+                "Não foi possível adicionar o arquivo."
             );
 
         }
         finally {
 
-            setProcessandoImagem(false);
+            setProcessandoAnexo(
+                false
+            );
 
         }
 
@@ -531,7 +996,48 @@ function SynterAssistant() {
 
 
     // ==========================================
-    // ÁUDIO
+    // REMOVER ANEXOS
+    // ==========================================
+
+    function removerImagem() {
+
+        if (carregando) {
+            return;
+        }
+
+        setImagem(null);
+        setErroMidia("");
+
+    }
+
+
+    function removerArquivo() {
+
+        if (carregando) {
+            return;
+        }
+
+        setArquivo(null);
+        setErroMidia("");
+
+    }
+
+
+    function removerAudio() {
+
+        if (carregando) {
+            return;
+        }
+
+        setAudio(null);
+        setTempoGravacao(0);
+        setErroMidia("");
+
+    }
+
+
+    // ==========================================
+    // MICROFONE
     // ==========================================
 
     async function iniciarGravacao() {
@@ -539,14 +1045,18 @@ function SynterAssistant() {
         if (
             carregando ||
             gravando ||
-            processandoImagem
+            processandoAnexo
         ) {
+
             return;
+
         }
 
         if (
-            !navigator.mediaDevices?.getUserMedia ||
-            typeof MediaRecorder === "undefined"
+            !navigator.mediaDevices
+                ?.getUserMedia ||
+            typeof MediaRecorder ===
+                "undefined"
         ) {
 
             setErroMidia(
@@ -554,19 +1064,27 @@ function SynterAssistant() {
             );
 
             return;
+
         }
 
         try {
 
             setErroMidia("");
             setAudio(null);
-            setTempoGravacao(0);
 
-            tempoGravacaoRef.current = 0;
-            descartarGravacaoRef.current = false;
+            setTempoGravacao(
+                0
+            );
+
+            tempoGravacaoRef.current =
+                0;
+
+            descartarGravacaoRef.current =
+                false;
 
             const stream =
-                await navigator.mediaDevices
+                await navigator
+                    .mediaDevices
                     .getUserMedia({
                         audio: true
                     });
@@ -580,8 +1098,11 @@ function SynterAssistant() {
             const opcoes =
                 mime
                     ? {
-                        mimeType: mime,
-                        audioBitsPerSecond: 64000
+                        mimeType:
+                            mime,
+
+                        audioBitsPerSecond:
+                            64000
                     }
                     : undefined;
 
@@ -597,35 +1118,66 @@ function SynterAssistant() {
             audioChunksRef.current =
                 [];
 
+
             recorder.ondataavailable =
-                (evento) => {
+                (eventoAudio) => {
 
                     if (
-                        evento.data &&
-                        evento.data.size > 0
+                        eventoAudio.data &&
+                        eventoAudio.data
+                            .size > 0
                     ) {
 
-                        audioChunksRef.current.push(
-                            evento.data
-                        );
+                        audioChunksRef.current
+                            .push(
+                                eventoAudio.data
+                            );
 
                     }
 
                 };
 
+
+            recorder.onerror =
+                () => {
+
+                    setErroMidia(
+                        "A gravação foi interrompida pelo navegador."
+                    );
+
+                    limparTimer();
+
+                    encerrarStream();
+
+                    setGravando(
+                        false
+                    );
+
+                };
+
+
             recorder.onstop =
                 async () => {
 
                     limparTimer();
+
                     encerrarStream();
-                    setGravando(false);
+
+                    setGravando(
+                        false
+                    );
 
                     if (
-                        descartarGravacaoRef.current
+                        descartarGravacaoRef
+                            .current
                     ) {
 
-                        descartarGravacaoRef.current = false;
-                        audioChunksRef.current = [];
+                        descartarGravacaoRef.current =
+                            false;
+
+                        audioChunksRef.current =
+                            [];
+
                         return;
 
                     }
@@ -641,17 +1193,34 @@ function SynterAssistant() {
                             new Blob(
                                 audioChunksRef.current,
                                 {
-                                    type: mimeFinal
+                                    type:
+                                        mimeFinal
                                 }
                             );
 
                         audioChunksRef.current =
                             [];
 
-                        if (blob.size < 800) {
+                        if (
+                            blob.size <
+                            800
+                        ) {
+
                             throw new Error(
                                 "O áudio ficou muito curto. Grave novamente."
                             );
+
+                        }
+
+                        if (
+                            blob.size >
+                            LIMITE_AUDIO
+                        ) {
+
+                            throw new Error(
+                                "O áudio ficou muito grande."
+                            );
+
                         }
 
                         const dataUrl =
@@ -661,18 +1230,29 @@ function SynterAssistant() {
 
                         setAudio({
                             dataUrl,
+
                             base64:
-                                dataUrl.split(",")[1] || "",
-                            mimeType: mimeFinal,
+                                obterBase64(
+                                    dataUrl
+                                ),
+
+                            mimeType:
+                                mimeFinal,
+
                             nome:
                                 `audio-synter.${extensaoAudio(
                                     mimeFinal
                                 )}`,
+
                             duracao:
                                 Math.max(
                                     1,
-                                    tempoGravacaoRef.current
-                                )
+                                    tempoGravacaoRef
+                                        .current
+                                ),
+
+                            tamanho:
+                                blob.size
                         });
 
                     }
@@ -692,28 +1272,38 @@ function SynterAssistant() {
 
                 };
 
-            recorder.start(250);
-            setGravando(true);
+
+            recorder.start(
+                250
+            );
+
+            setGravando(
+                true
+            );
 
             timerRef.current =
-                setInterval(() => {
+                setInterval(
+                    () => {
 
-                    tempoGravacaoRef.current += 1;
+                        tempoGravacaoRef.current +=
+                            1;
 
-                    setTempoGravacao(
-                        tempoGravacaoRef.current
-                    );
+                        setTempoGravacao(
+                            tempoGravacaoRef.current
+                        );
 
-                    if (
-                        tempoGravacaoRef.current >=
-                        LIMITE_GRAVACAO
-                    ) {
+                        if (
+                            tempoGravacaoRef.current >=
+                            LIMITE_GRAVACAO
+                        ) {
 
-                        pararGravacao();
+                            pararGravacao();
 
-                    }
+                        }
 
-                }, 1000);
+                    },
+                    1000
+                );
 
         }
         catch (error) {
@@ -724,8 +1314,12 @@ function SynterAssistant() {
             );
 
             limparTimer();
+
             encerrarStream();
-            setGravando(false);
+
+            setGravando(
+                false
+            );
 
             if (
                 error?.name ===
@@ -737,6 +1331,7 @@ function SynterAssistant() {
                 );
 
                 return;
+
             }
 
             setErroMidia(
@@ -755,9 +1350,12 @@ function SynterAssistant() {
 
         if (
             !recorder ||
-            recorder.state === "inactive"
+            recorder.state ===
+                "inactive"
         ) {
+
             return;
+
         }
 
         recorder.stop();
@@ -775,20 +1373,59 @@ function SynterAssistant() {
 
         if (
             recorder &&
-            recorder.state !== "inactive"
+            recorder.state !==
+                "inactive"
         ) {
+
             recorder.stop();
+
         }
         else {
+
             limparTimer();
+
             encerrarStream();
-            setGravando(false);
+
+            setGravando(
+                false
+            );
+
         }
 
         setAudio(null);
-        setTempoGravacao(0);
-        tempoGravacaoRef.current = 0;
+
+        setTempoGravacao(
+            0
+        );
+
+        tempoGravacaoRef.current =
+            0;
+
         setErroMidia("");
+
+    }
+
+
+    // ==========================================
+    // TAMANHO TOTAL DO ENVIO
+    // ==========================================
+
+    function calcularTamanhoTotal() {
+
+        return (
+            (
+                imagem?.tamanho ||
+                0
+            ) +
+            (
+                arquivo?.tamanho ||
+                0
+            ) +
+            (
+                audio?.tamanho ||
+                0
+            )
+        );
 
     }
 
@@ -797,7 +1434,9 @@ function SynterAssistant() {
     // ENVIAR
     // ==========================================
 
-    async function enviarMensagem(evento) {
+    async function enviarMensagem(
+        evento
+    ) {
 
         evento?.preventDefault();
 
@@ -807,15 +1446,33 @@ function SynterAssistant() {
         if (
             carregando ||
             gravando ||
-            processandoImagem ||
+            processandoAnexo ||
             (
                 !texto &&
                 !imagem &&
+                !arquivo &&
                 !audio
             )
         ) {
+
             return;
+
         }
+
+
+        if (
+            calcularTamanhoTotal() >
+            LIMITE_TOTAL
+        ) {
+
+            setErroMidia(
+                "Os anexos juntos ultrapassam 3 MB. Remova um anexo ou envie separadamente."
+            );
+
+            return;
+
+        }
+
 
         const idMensagem =
             criarId();
@@ -826,24 +1483,58 @@ function SynterAssistant() {
         const imagemAtual =
             imagem;
 
+        const arquivoAtual =
+            arquivo;
+
         const audioAtual =
             audio;
 
+
         const mensagemUsuario = {
-            id: idMensagem,
-            role: "user",
-            content: textoAtual,
+
+            id:
+                idMensagem,
+
+            role:
+                "user",
+
+            content:
+                textoAtual,
+
             image:
-                imagemAtual?.dataUrl ||
+                imagemAtual
+                    ?.dataUrl ||
                 null,
+
+            file:
+                arquivoAtual
+                    ? {
+                        nome:
+                            arquivoAtual.nome,
+
+                        mimeType:
+                            arquivoAtual.mimeType,
+
+                        tamanho:
+                            arquivoAtual.tamanho
+                    }
+                    : null,
+
             audio:
-                audioAtual?.dataUrl ||
+                audioAtual
+                    ?.dataUrl ||
                 null,
+
             audioDuration:
-                audioAtual?.duracao ||
+                audioAtual
+                    ?.duracao ||
                 null,
-            transcription: ""
+
+            transcription:
+                ""
+
         };
+
 
         setMensagens(
             (estadoAtual) => [
@@ -852,11 +1543,21 @@ function SynterAssistant() {
             ]
         );
 
+
         setMensagem("");
+
         setImagem(null);
+
+        setArquivo(null);
+
         setAudio(null);
+
         setErroMidia("");
-        setCarregando(true);
+
+        setCarregando(
+            true
+        );
+
 
         try {
 
@@ -868,42 +1569,69 @@ function SynterAssistant() {
                 await supabase.auth
                     .getSession();
 
-            if (!session?.access_token) {
+
+            if (
+                !session?.access_token
+            ) {
+
                 throw new Error(
                     "Sua sessão expirou. Entre novamente na plataforma."
                 );
+
             }
+
 
             const resposta =
                 await fetch(
                     "/api/chat",
                     {
-                        method: "POST",
+                        method:
+                            "POST",
 
                         headers: {
+
                             "Content-Type":
                                 "application/json",
 
                             Authorization:
                                 `Bearer ${session.access_token}`
+
                         },
 
                         body:
                             JSON.stringify({
+
                                 message:
                                     textoAtual,
 
                                 image:
-                                    imagemAtual?.dataUrl ||
+                                    imagemAtual
+                                        ?.dataUrl ||
                                     null,
+
+                                file:
+                                    arquivoAtual
+                                        ? {
+                                            name:
+                                                arquivoAtual.nome,
+
+                                            mimeType:
+                                                arquivoAtual.mimeType,
+
+                                            data:
+                                                arquivoAtual.base64
+                                        }
+                                        : null,
 
                                 audio:
                                     audioAtual
                                         ? {
                                             data:
                                                 audioAtual.base64,
+
                                             mimeType:
                                                 audioAtual.mimeType,
+
                                             name:
                                                 audioAtual.nome
                                         }
@@ -912,29 +1640,40 @@ function SynterAssistant() {
                                 previousResponseId:
                                     previousResponseId ||
                                     null
+
                             })
+
                     }
                 );
+
 
             const dados =
                 await resposta.json();
 
+
             if (!resposta.ok) {
+
                 throw new Error(
                     dados.error ||
                     "Erro ao consultar assistente."
                 );
+
             }
 
-            if (dados.transcription) {
+
+            if (
+                dados.transcription
+            ) {
 
                 setMensagens(
                     (estadoAtual) =>
                         estadoAtual.map(
                             (item) =>
-                                item.id === idMensagem
+                                item.id ===
+                                idMensagem
                                     ? {
                                         ...item,
+
                                         transcription:
                                             dados.transcription
                                     }
@@ -944,18 +1683,29 @@ function SynterAssistant() {
 
             }
 
-            if (dados.responseId) {
+
+            if (
+                dados.responseId
+            ) {
+
                 setPreviousResponseId(
                     dados.responseId
                 );
+
             }
+
 
             setMensagens(
                 (estadoAtual) => [
                     ...estadoAtual,
+
                     {
-                        id: criarId(),
-                        role: "assistant",
+                        id:
+                            criarId(),
+
+                        role:
+                            "assistant",
+
                         content:
                             dados.message
                     }
@@ -965,10 +1715,11 @@ function SynterAssistant() {
         }
         catch (error) {
 
-            console.error(error);
+            console.error(
+                error
+            );
 
-            // Remove a mensagem otimista e restaura
-            // o conteúdo para permitir uma nova tentativa.
+
             setMensagens(
                 (estadoAtual) =>
                     estadoAtual.filter(
@@ -978,16 +1729,35 @@ function SynterAssistant() {
                     )
             );
 
-            setMensagem(textoAtual);
-            setImagem(imagemAtual);
-            setAudio(audioAtual);
+
+            setMensagem(
+                textoAtual
+            );
+
+            setImagem(
+                imagemAtual
+            );
+
+            setArquivo(
+                arquivoAtual
+            );
+
+            setAudio(
+                audioAtual
+            );
+
 
             setMensagens(
                 (estadoAtual) => [
                     ...estadoAtual,
+
                     {
-                        id: criarId(),
-                        role: "assistant",
+                        id:
+                            criarId(),
+
+                        role:
+                            "assistant",
+
                         content:
                             error?.message ||
                             "Não consegui responder agora. Tente novamente em alguns instantes."
@@ -997,24 +1767,32 @@ function SynterAssistant() {
 
         }
         finally {
-            setCarregando(false);
+
+            setCarregando(
+                false
+            );
+
         }
 
     }
 
 
     // ==========================================
-    // ENTER PARA ENVIAR
+    // ENTER
     // ==========================================
 
-    function handleKeyDown(evento) {
+    function handleKeyDown(
+        evento
+    ) {
 
         if (
-            evento.key === "Enter" &&
+            evento.key ===
+                "Enter" &&
             !evento.shiftKey
         ) {
 
             evento.preventDefault();
+
             enviarMensagem();
 
         }
@@ -1022,14 +1800,14 @@ function SynterAssistant() {
     }
 
 
+    // ==========================================
+    // RENDER
+    // ==========================================
+
     return (
 
         <div className="synter-assistant">
 
-
-            {/* ================================= */}
-            {/* JANELA                            */}
-            {/* ================================= */}
 
             {aberto && (
 
@@ -1045,6 +1823,7 @@ function SynterAssistant() {
                             <div className="synter-chat-avatar">
                                 S
                             </div>
+
 
                             <div>
 
@@ -1082,88 +1861,133 @@ function SynterAssistant() {
                         ref={mensagensRef}
                     >
 
-                        {mensagens.map((item) => (
+                        {mensagens.map(
+                            (item) => (
 
-                            <div
-                                key={item.id}
-                                className={
-                                    item.role === "user"
-                                        ? "synter-message synter-message-user"
-                                        : "synter-message synter-message-assistant"
-                                }
-                            >
+                                <div
+                                    key={item.id}
+                                    className={
+                                        item.role ===
+                                        "user"
+                                            ? "synter-message synter-message-user"
+                                            : "synter-message synter-message-assistant"
+                                    }
+                                >
 
-                                {item.image && (
+                                    {item.image && (
 
-                                    <img
-                                        src={item.image}
-                                        alt="Imagem enviada ao Assistente Synter"
-                                        className="synter-message-image"
-                                    />
-
-                                )}
-
-
-                                {item.audio && (
-
-                                    <div className="synter-message-audio">
-
-                                        <audio
-                                            controls
-                                            preload="metadata"
-                                            src={item.audio}
+                                        <img
+                                            src={item.image}
+                                            alt="Imagem enviada"
+                                            className="synter-message-image"
                                         />
 
-                                        {item.audioDuration && (
-                                            <small>
-                                                Áudio •{" "}
-                                                {formatarTempo(
-                                                    item.audioDuration
-                                                )}
-                                            </small>
-                                        )}
-
-                                    </div>
-
-                                )}
+                                    )}
 
 
-                                {item.content && (
-                                    <div className="synter-message-text">
-                                        {item.content}
-                                    </div>
-                                )}
+                                    {item.file && (
+
+                                        <div className="synter-message-file">
+
+                                            <div className="synter-file-icon">
+                                                📄
+                                            </div>
+
+                                            <div className="synter-file-info">
+
+                                                <strong>
+                                                    {item.file.nome}
+                                                </strong>
+
+                                                <span>
+                                                    {formatarBytes(
+                                                        item.file.tamanho
+                                                    )}
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    )}
 
 
-                                {item.transcription && (
+                                    {item.audio && (
 
-                                    <div className="synter-message-transcription">
+                                        <div className="synter-message-audio">
 
-                                        <span>
-                                            Transcrição
-                                        </span>
+                                            <audio
+                                                controls
+                                                preload="metadata"
+                                                src={item.audio}
+                                            />
 
-                                        <p>
-                                            {item.transcription}
-                                        </p>
+                                            {item.audioDuration && (
 
-                                    </div>
+                                                <small>
 
-                                )}
+                                                    Áudio •{" "}
 
-                            </div>
+                                                    {formatarTempo(
+                                                        item.audioDuration
+                                                    )}
 
-                        ))}
+                                                </small>
+
+                                            )}
+
+                                        </div>
+
+                                    )}
+
+
+                                    {item.content && (
+
+                                        <div className="synter-message-text">
+
+                                            {item.content}
+
+                                        </div>
+
+                                    )}
+
+
+                                    {item.transcription && (
+
+                                        <div className="synter-message-transcription">
+
+                                            <span>
+                                                Transcrição
+                                            </span>
+
+                                            <p>
+                                                {item.transcription}
+                                            </p>
+
+                                        </div>
+
+                                    )}
+
+                                </div>
+
+                            )
+                        )}
 
 
                         {carregando && (
 
                             <div
-                                className="synter-message synter-message-assistant synter-typing"
+                                className="
+                                    synter-message
+                                    synter-message-assistant
+                                    synter-typing
+                                "
                             >
+
                                 <span></span>
                                 <span></span>
                                 <span></span>
+
                             </div>
 
                         )}
@@ -1171,41 +1995,53 @@ function SynterAssistant() {
                     </div>
 
 
-                    {/* INPUT */}
+                    {/* FORM */}
 
                     <form
                         className="synter-chat-form"
                         onSubmit={enviarMensagem}
                     >
 
+
+                        {/* INPUT DE QUALQUER ARQUIVO */}
+
                         <input
-                            ref={imagemInputRef}
+                            ref={arquivoInputRef}
                             type="file"
-                            accept="image/jpeg,image/png,image/webp"
                             className="synter-file-input"
-                            onChange={selecionarImagem}
+                            onChange={selecionarArquivo}
                             disabled={
                                 carregando ||
-                                processandoImagem
+                                processandoAnexo
                             }
                         />
 
 
+                        {/* ANEXOS */}
+
                         {(
                             imagem ||
+                            arquivo ||
                             audio ||
                             gravando ||
-                            processandoImagem
+                            processandoAnexo
                         ) && (
 
                             <div className="synter-attachment-area">
 
-                                {processandoImagem && (
+
+                                {processandoAnexo && (
+
                                     <div className="synter-attachment-processing">
-                                        Preparando imagem...
+
+                                        Preparando arquivo...
+
                                     </div>
+
                                 )}
 
+
+                                {/* IMAGEM */}
 
                                 {imagem && (
 
@@ -1217,20 +2053,21 @@ function SynterAssistant() {
                                         />
 
                                         <div>
+
                                             <strong>
                                                 Imagem anexada
                                             </strong>
+
                                             <span>
                                                 {imagem.nome}
                                             </span>
+
                                         </div>
 
                                         <button
                                             type="button"
                                             className="synter-attachment-remove"
-                                            onClick={() =>
-                                                setImagem(null)
-                                            }
+                                            onClick={removerImagem}
                                             disabled={carregando}
                                             aria-label="Remover imagem"
                                         >
@@ -1242,29 +2079,83 @@ function SynterAssistant() {
                                 )}
 
 
+                                {/* ARQUIVO */}
+
+                                {arquivo && (
+
+                                    <div className="synter-file-preview">
+
+                                        <div className="synter-file-preview-icon">
+                                            📄
+                                        </div>
+
+                                        <div className="synter-file-preview-info">
+
+                                            <strong>
+                                                {arquivo.nome}
+                                            </strong>
+
+                                            <span>
+
+                                                {formatarBytes(
+                                                    arquivo.tamanho
+                                                )}
+
+                                                {arquivo.mimeType
+                                                    ? ` • ${arquivo.mimeType}`
+                                                    : ""}
+
+                                            </span>
+
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            className="synter-attachment-remove"
+                                            onClick={removerArquivo}
+                                            disabled={carregando}
+                                            aria-label="Remover arquivo"
+                                        >
+                                            ×
+                                        </button>
+
+                                    </div>
+
+                                )}
+
+
+                                {/* GRAVANDO */}
+
                                 {gravando && (
 
                                     <div className="synter-recording-preview">
 
                                         <div className="synter-recording-status">
+
                                             <span className="synter-recording-dot"></span>
+
                                             <strong>
                                                 Gravando
                                             </strong>
+
                                             <time>
                                                 {formatarTempo(
                                                     tempoGravacao
                                                 )}
                                             </time>
+
                                         </div>
 
+
                                         <div className="synter-recording-actions">
+
                                             <button
                                                 type="button"
                                                 onClick={cancelarGravacao}
                                             >
                                                 Cancelar
                                             </button>
+
                                             <button
                                                 type="button"
                                                 className="synter-recording-stop"
@@ -1272,6 +2163,7 @@ function SynterAssistant() {
                                             >
                                                 Parar
                                             </button>
+
                                         </div>
 
                                     </div>
@@ -1279,7 +2171,10 @@ function SynterAssistant() {
                                 )}
 
 
-                                {!gravando && audio && (
+                                {/* ÁUDIO */}
+
+                                {!gravando &&
+                                    audio && (
 
                                     <div className="synter-audio-preview">
 
@@ -1290,17 +2185,19 @@ function SynterAssistant() {
                                         />
 
                                         <span>
-                                            {formatarTempo(
-                                                audio.duracao
-                                            )}
+
+                                            {audio.duracao
+                                                ? formatarTempo(
+                                                    audio.duracao
+                                                )
+                                                : "Áudio"}
+
                                         </span>
 
                                         <button
                                             type="button"
                                             className="synter-attachment-remove"
-                                            onClick={() =>
-                                                setAudio(null)
-                                            }
+                                            onClick={removerAudio}
                                             disabled={carregando}
                                             aria-label="Remover áudio"
                                         >
@@ -1316,35 +2213,48 @@ function SynterAssistant() {
                         )}
 
 
+                        {/* ERRO */}
+
                         {erroMidia && (
+
                             <div
                                 className="synter-media-error"
                                 role="alert"
                             >
                                 {erroMidia}
                             </div>
+
                         )}
 
 
+                        {/* COMPOSITOR */}
+
                         <div className="synter-chat-compose-row">
+
+
+                            {/* ARQUIVO */}
 
                             <button
                                 type="button"
                                 className="synter-chat-tool-button"
                                 onClick={() =>
-                                    imagemInputRef.current?.click()
+                                    arquivoInputRef
+                                        .current
+                                        ?.click()
                                 }
                                 disabled={
                                     carregando ||
                                     gravando ||
-                                    processandoImagem
+                                    processandoAnexo
                                 }
-                                aria-label="Adicionar foto"
-                                title="Adicionar foto"
+                                aria-label="Adicionar arquivo"
+                                title="Adicionar arquivo"
                             >
                                 +
                             </button>
 
+
+                            {/* TEXTO */}
 
                             <textarea
                                 placeholder="Digite sua pergunta..."
@@ -1360,6 +2270,8 @@ function SynterAssistant() {
                             />
 
 
+                            {/* MICROFONE */}
+
                             <button
                                 type="button"
                                 className={
@@ -1374,7 +2286,7 @@ function SynterAssistant() {
                                 }
                                 disabled={
                                     carregando ||
-                                    processandoImagem
+                                    processandoAnexo
                                 }
                                 aria-label={
                                     gravando
@@ -1389,21 +2301,29 @@ function SynterAssistant() {
                             >
 
                                 {gravando ? (
+
                                     <span className="synter-stop-icon"></span>
+
                                 ) : (
+
                                     <svg
                                         viewBox="0 0 24 24"
                                         aria-hidden="true"
                                     >
+
                                         <path
                                             d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21H8v2h8v-2h-3v-3.08A7 7 0 0 0 19 11h-2Z"
                                             fill="currentColor"
                                         />
+
                                     </svg>
+
                                 )}
 
                             </button>
 
+
+                            {/* ENVIAR */}
 
                             <button
                                 type="submit"
@@ -1411,10 +2331,11 @@ function SynterAssistant() {
                                 disabled={
                                     carregando ||
                                     gravando ||
-                                    processandoImagem ||
+                                    processandoAnexo ||
                                     (
                                         !mensagem.trim() &&
                                         !imagem &&
+                                        !arquivo &&
                                         !audio
                                     )
                                 }
@@ -1429,13 +2350,17 @@ function SynterAssistant() {
 
 
                     <div className="synter-chat-footer">
+
                         Assistente com Inteligência Artificial
+
                     </div>
 
                 </div>
 
             )}
 
+
+            {/* BOTÃO FLUTUANTE */}
 
             <button
                 type="button"
@@ -1448,7 +2373,11 @@ function SynterAssistant() {
                 }
                 aria-label="Abrir Assistente Synter"
             >
-                {aberto ? "×" : "AI"}
+
+                {aberto
+                    ? "×"
+                    : "AI"}
+
             </button>
 
 

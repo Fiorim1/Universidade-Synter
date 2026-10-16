@@ -24,6 +24,8 @@
     width: 62px;
     height: 62px;
 
+    flex: 0 0 62px;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -98,6 +100,8 @@
 
     max-height:
         calc(100vh - 130px);
+
+    min-width: 0;
 
     display: flex;
     flex-direction: column;
@@ -184,7 +188,7 @@
 
 
 /* ======================================== */
-/* IDENTIFICAÇÃO                            */
+/* USUÁRIO                                  */
 /* ======================================== */
 
 .synter-chat-user {
@@ -320,11 +324,11 @@
     overflow-y: auto;
     overflow-x: hidden;
 
+    overscroll-behavior: contain;
+
     background: #090909;
 
     box-sizing: border-box;
-
-    overscroll-behavior: contain;
 
     scrollbar-width: thin;
 
@@ -339,7 +343,9 @@
 /* ======================================== */
 
 .synter-message {
-    max-width: 82%;
+    max-width: 84%;
+
+    min-width: 0;
 
     padding:
         11px
@@ -395,7 +401,7 @@
 
 
 /* ======================================== */
-/* IMAGEM ENVIADA                           */
+/* IMAGEM NA MENSAGEM                       */
 /* ======================================== */
 
 .synter-message-image {
@@ -417,11 +423,95 @@
 
 
 /* ======================================== */
-/* ÁUDIO ENVIADO                            */
+/* ARQUIVO NA MENSAGEM                      */
+/* ======================================== */
+
+.synter-message-file {
+    width: 100%;
+
+    min-width: 200px;
+
+    margin-bottom: 9px;
+
+    padding:
+        9px
+        10px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    border:
+        1px solid
+        rgba(0, 0, 0, 0.10);
+
+    border-radius: 9px;
+
+    background:
+        rgba(0, 0, 0, 0.045);
+
+    box-sizing: border-box;
+}
+
+
+.synter-file-icon {
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background:
+        rgba(0, 0, 0, 0.08);
+
+    font-size: 17px;
+}
+
+
+.synter-file-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.synter-file-info strong {
+    max-width: 190px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 10px;
+}
+
+
+.synter-file-info span {
+    font-size: 8px;
+
+    opacity: 0.55;
+}
+
+
+/* ======================================== */
+/* ÁUDIO NA MENSAGEM                        */
 /* ======================================== */
 
 .synter-message-audio {
     width: 100%;
+
+    min-width: 0;
 
     display: flex;
     flex-direction: column;
@@ -584,208 +674,13 @@
 
 
 /* ======================================== */
-/* LINHA DO CAMPO                           */
-/* ======================================== */
-
-.synter-chat-compose-row {
-    width: 100%;
-
-    display: flex;
-    align-items: flex-end;
-
-    gap: 7px;
-}
-
-
-/* ======================================== */
-/* TEXTAREA                                 */
-/* ======================================== */
-
-.synter-chat-compose-row textarea {
-    flex: 1;
-
-    min-width: 0;
-
-    min-height: 44px;
-    max-height: 100px;
-
-    padding:
-        12px
-        13px;
-
-    resize: none;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.10);
-
-    border-radius: 10px;
-
-    outline: none;
-
-    background: #121212;
-
-    color: #ffffff;
-
-    font-family: inherit;
-
-    font-size: 12px;
-
-    line-height: 1.4;
-
-    box-sizing: border-box;
-}
-
-
-.synter-chat-compose-row textarea::placeholder {
-    color: #555555;
-}
-
-
-.synter-chat-compose-row textarea:focus {
-    border-color:
-        rgba(255, 255, 255, 0.28);
-}
-
-
-/* ======================================== */
-/* BOTÕES FOTO E MICROFONE                  */
-/* ======================================== */
-
-.synter-chat-tool-button {
-    width: 42px;
-    height: 44px;
-
-    flex: 0 0 42px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.11);
-
-    border-radius: 10px;
-
-    background: #121212;
-
-    color: #b2b2b2;
-
-    font-family: inherit;
-
-    font-size: 21px;
-
-    cursor: pointer;
-
-    box-sizing: border-box;
-
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease;
-}
-
-
-.synter-chat-tool-button:hover:not(:disabled) {
-    background: #181818;
-
-    border-color:
-        rgba(255, 255, 255, 0.22);
-
-    color: #ffffff;
-}
-
-
-.synter-chat-mic-button svg {
-    width: 17px;
-    height: 17px;
-}
-
-
-.synter-chat-mic-button.gravando {
-    color: #ff8d8d;
-
-    border-color:
-        rgba(255, 90, 90, 0.26);
-
-    background:
-        rgba(255, 70, 70, 0.07);
-}
-
-
-.synter-stop-icon {
-    width: 10px;
-    height: 10px;
-
-    border-radius: 2px;
-
-    background: currentColor;
-}
-
-
-/* ======================================== */
-/* BOTÃO ENVIAR                             */
-/* ======================================== */
-
-.synter-chat-send-button {
-    width: 44px;
-    height: 44px;
-
-    flex: 0 0 44px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background: #ffffff;
-
-    color: #090909;
-
-    font-family: inherit;
-
-    font-size: 20px;
-
-    cursor: pointer;
-
-    box-sizing: border-box;
-
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-}
-
-
-.synter-chat-send-button:hover:not(:disabled) {
-    background: #dedede;
-
-    transform:
-        translateY(-1px);
-}
-
-
-.synter-chat-tool-button:disabled,
-.synter-chat-send-button:disabled {
-    opacity: 0.35;
-
-    cursor: not-allowed;
-}
-
-
-/* ======================================== */
 /* ÁREA DE ANEXOS                           */
 /* ======================================== */
 
 .synter-attachment-area {
     width: 100%;
+
+    min-width: 0;
 
     display: flex;
     flex-direction: column;
@@ -794,7 +689,12 @@
 }
 
 
+/* ======================================== */
+/* PRÉVIAS                                  */
+/* ======================================== */
+
 .synter-image-preview,
+.synter-file-preview,
 .synter-audio-preview,
 .synter-recording-preview,
 .synter-attachment-processing {
@@ -816,7 +716,7 @@
 
 
 /* ======================================== */
-/* PRÉVIA DA IMAGEM                         */
+/* IMAGEM                                   */
 /* ======================================== */
 
 .synter-image-preview {
@@ -840,6 +740,8 @@
     object-fit: cover;
 
     border-radius: 7px;
+
+    background: #151515;
 }
 
 
@@ -872,12 +774,84 @@
 
 
 /* ======================================== */
+/* ARQUIVO                                  */
+/* ======================================== */
+
+.synter-file-preview {
+    display: grid;
+
+    grid-template-columns:
+        42px
+        minmax(0, 1fr)
+        28px;
+
+    align-items: center;
+
+    gap: 9px;
+}
+
+
+.synter-file-preview-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 8px;
+
+    background: #151515;
+
+    font-size: 18px;
+}
+
+
+.synter-file-preview-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.synter-file-preview-info strong {
+    color: #eeeeee;
+
+    font-size: 10px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.synter-file-preview-info span {
+    color: #6f6f6f;
+
+    font-size: 8px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* ======================================== */
 /* REMOVER ANEXO                            */
 /* ======================================== */
 
 .synter-attachment-remove {
     width: 28px;
     height: 28px;
+
+    flex: 0 0 28px;
 
     display: flex;
     align-items: center;
@@ -910,8 +884,15 @@
 }
 
 
+.synter-attachment-remove:disabled {
+    opacity: 0.35;
+
+    cursor: not-allowed;
+}
+
+
 /* ======================================== */
-/* PRÉVIA DO ÁUDIO                          */
+/* ÁUDIO                                    */
 /* ======================================== */
 
 .synter-audio-preview {
@@ -959,6 +940,8 @@
 
 
 .synter-recording-status {
+    min-width: 0;
+
     display: flex;
     align-items: center;
 
@@ -971,6 +954,8 @@
 .synter-recording-dot {
     width: 7px;
     height: 7px;
+
+    flex: 0 0 7px;
 
     border-radius: 50%;
 
@@ -1046,6 +1031,14 @@
 }
 
 
+.synter-recording-actions button:hover {
+    color: #ffffff;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+}
+
+
 .synter-recording-actions
 .synter-recording-stop {
     color: #ffaaaa;
@@ -1092,6 +1085,220 @@
     font-size: 9px;
 
     line-height: 1.4;
+}
+
+
+/* ======================================== */
+/* LINHA PRINCIPAL                          */
+/* ======================================== */
+
+.synter-chat-compose-row {
+    width: 100%;
+
+    min-width: 0;
+
+    display: flex;
+    align-items: flex-end;
+
+    gap: 7px;
+}
+
+
+/* ======================================== */
+/* TEXTAREA                                 */
+/* ======================================== */
+
+.synter-chat-compose-row textarea {
+    flex: 1 1 auto;
+
+    min-width: 0;
+
+    min-height: 44px;
+    max-height: 100px;
+
+    padding:
+        12px
+        13px;
+
+    resize: none;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background: #121212;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+    box-sizing: border-box;
+}
+
+
+.synter-chat-compose-row textarea::placeholder {
+    color: #555555;
+}
+
+
+.synter-chat-compose-row textarea:focus {
+    border-color:
+        rgba(255, 255, 255, 0.28);
+}
+
+
+.synter-chat-compose-row textarea:disabled {
+    opacity: 0.55;
+}
+
+
+/* ======================================== */
+/* BOTÃO + E MICROFONE                      */
+/* ======================================== */
+
+.synter-chat-tool-button {
+    width: 42px;
+    height: 44px;
+
+    flex: 0 0 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.11);
+
+    border-radius: 10px;
+
+    background: #121212;
+
+    color: #b2b2b2;
+
+    font-family: inherit;
+
+    font-size: 21px;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.synter-chat-tool-button:hover:not(:disabled) {
+    background: #181818;
+
+    border-color:
+        rgba(255, 255, 255, 0.22);
+
+    color: #ffffff;
+
+    transform:
+        translateY(-1px);
+}
+
+
+.synter-chat-tool-button:disabled {
+    opacity: 0.35;
+
+    cursor: not-allowed;
+}
+
+
+.synter-chat-mic-button svg {
+    width: 17px;
+    height: 17px;
+}
+
+
+.synter-chat-mic-button.gravando {
+    color: #ff8d8d;
+
+    border-color:
+        rgba(255, 90, 90, 0.26);
+
+    background:
+        rgba(255, 70, 70, 0.07);
+}
+
+
+.synter-stop-icon {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 2px;
+
+    background: currentColor;
+}
+
+
+/* ======================================== */
+/* ENVIAR                                   */
+/* ======================================== */
+
+.synter-chat-send-button {
+    width: 44px;
+    height: 44px;
+
+    flex: 0 0 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #090909;
+
+    font-family: inherit;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.synter-chat-send-button:hover:not(:disabled) {
+    background: #dedede;
+
+    transform:
+        translateY(-1px);
+}
+
+
+.synter-chat-send-button:disabled {
+    opacity: 0.35;
+
+    cursor: not-allowed;
 }
 
 
@@ -1180,6 +1387,8 @@
         width: 54px;
         height: 54px;
 
+        flex-basis: 54px;
+
         font-size: 13px;
     }
 
@@ -1214,6 +1423,7 @@
             );
 
         width: auto;
+
         height: auto;
 
         max-width: none;
@@ -1256,13 +1466,40 @@
         padding:
             16px
             12px;
+
+        gap: 10px;
     }
 
 
     .synter-message {
-        max-width: 88%;
+        max-width: 90%;
+
+        padding:
+            10px
+            12px;
 
         font-size: 11.5px;
+    }
+
+
+    .synter-message-image {
+        max-width: 100%;
+        max-height: 240px;
+    }
+
+
+    .synter-message-file {
+        min-width: 0;
+    }
+
+
+    .synter-file-info strong {
+        max-width: 160px;
+    }
+
+
+    .synter-message-audio audio {
+        max-width: 100%;
     }
 
 
@@ -1280,12 +1517,17 @@
 
     .synter-chat-compose-row textarea {
         min-height: 44px;
+
         max-height: 96px;
 
         padding:
             11px
             12px;
 
+        /*
+            Evita zoom automático
+            no Safari/iPhone.
+        */
         font-size: 16px;
     }
 
@@ -1316,8 +1558,8 @@
     }
 
 
-    .synter-message-image {
-        max-width: 100%;
+    .synter-file-preview-info span {
+        max-width: 190px;
     }
 
 }
@@ -1347,6 +1589,8 @@
     .synter-assistant-button {
         width: 50px;
         height: 50px;
+
+        flex-basis: 50px;
 
         font-size: 12px;
     }
@@ -1404,6 +1648,25 @@
 
     .synter-audio-preview > span {
         display: none;
+    }
+
+
+    .synter-file-preview {
+        grid-template-columns:
+            38px
+            minmax(0, 1fr)
+            28px;
+    }
+
+
+    .synter-file-preview-icon {
+        width: 38px;
+        height: 38px;
+    }
+
+
+    .synter-file-preview-info span {
+        max-width: 135px;
     }
 
 }

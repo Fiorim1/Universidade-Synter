@@ -387,11 +387,16 @@ function Orcamentos() {
 
 
   // ========================================
-  // FUNIL DE PRODUTOS MECÂNICOS
+  // MODOS / FUNIS DE PRODUTOS
   // ========================================
 
   const [modoPesquisaProduto, setModoPesquisaProduto] =
     useState("geral");
+
+
+  // ========================================
+  // FUNIL DE PRODUTOS MECÂNICOS
+  // ========================================
 
   const [filtroMacaneta, setFiltroMacaneta] =
     useState("");
@@ -406,6 +411,20 @@ function Orcamentos() {
     useState("");
 
   const [filtroMaquina, setFiltroMaquina] =
+    useState("");
+
+
+  // ========================================
+  // FUNIL DE PRODUTOS DIGITAIS
+  // ========================================
+
+  const [filtroLinhaDigital, setFiltroLinhaDigital] =
+    useState("");
+
+  const [filtroModeloDigital, setFiltroModeloDigital] =
+    useState("");
+
+  const [filtroTipoPrecoDigital, setFiltroTipoPrecoDigital] =
     useState("");
 
 
@@ -2308,6 +2327,9 @@ function Orcamentos() {
     setFiltroFuncao("");
     setFiltroAcabamento("");
     setFiltroMaquina("");
+    setFiltroLinhaDigital("");
+    setFiltroModeloDigital("");
+    setFiltroTipoPrecoDigital("");
     setProdutoSelecionado(null);
     setQuantidadeProduto(1);
     setPrecoClienteProduto("");
@@ -2440,6 +2462,50 @@ function Orcamentos() {
         "fechaduras zamak"
       )
     );
+
+  }
+
+
+  function ehProdutoDigital(produto) {
+
+    const categoria =
+      normalizarTextoProduto(
+        produto?.categoria
+      );
+
+
+    return (
+      categoria === "digitais" ||
+      categoria.includes("digital")
+    );
+
+  }
+
+
+  function obterLinhaDigital(produto) {
+
+    return String(
+      produto?.linha || ""
+    ).trim();
+
+  }
+
+
+  function obterModeloDigital(produto) {
+
+    return String(
+      produto?.nome || ""
+    ).trim();
+
+  }
+
+
+  function obterTipoPrecoDigital(produto) {
+
+    return String(
+      produto?.tipo_preco ||
+      "Preço padrão"
+    ).trim();
 
   }
 
@@ -2873,6 +2939,119 @@ function Orcamentos() {
   }
 
 
+  const produtosDigitais = useMemo(() => {
+
+    return produtosCatalogo
+      .filter(ehProdutoDigital)
+      .map(
+        (produto) => ({
+          ...produto,
+
+          _funilDigital: {
+            linha:
+              obterLinhaDigital(
+                produto
+              ),
+
+            modelo:
+              obterModeloDigital(
+                produto
+              ),
+
+            tipoPreco:
+              obterTipoPrecoDigital(
+                produto
+              )
+          }
+        })
+      )
+      .filter(
+        (produto) =>
+          produto._funilDigital.linha &&
+          produto._funilDigital.modelo &&
+          produto._funilDigital.tipoPreco
+      );
+
+  }, [produtosCatalogo]);
+
+
+  const opcoesLinhaDigital = useMemo(() => {
+
+    return ordenarOpcoes(
+      produtosDigitais.map(
+        (produto) =>
+          produto._funilDigital.linha
+      )
+    );
+
+  }, [produtosDigitais]);
+
+
+  const opcoesModeloDigital = useMemo(() => {
+
+    return ordenarOpcoes(
+      produtosDigitais
+        .filter(
+          (produto) =>
+            !filtroLinhaDigital ||
+            produto._funilDigital.linha ===
+              filtroLinhaDigital
+        )
+        .map(
+          (produto) =>
+            produto._funilDigital.modelo
+        )
+    );
+
+  }, [
+    produtosDigitais,
+    filtroLinhaDigital
+  ]);
+
+
+  const opcoesTipoPrecoDigital = useMemo(() => {
+
+    return ordenarOpcoes(
+      produtosDigitais
+        .filter(
+          (produto) =>
+            (!filtroLinhaDigital ||
+              produto._funilDigital.linha ===
+                filtroLinhaDigital) &&
+            (!filtroModeloDigital ||
+              produto._funilDigital.modelo ===
+                filtroModeloDigital)
+        )
+        .map(
+          (produto) =>
+            produto._funilDigital.tipoPreco
+        )
+    );
+
+  }, [
+    produtosDigitais,
+    filtroLinhaDigital,
+    filtroModeloDigital
+  ]);
+
+
+  const etapasFunilDigitalPreenchidas = [
+    filtroLinhaDigital,
+    filtroModeloDigital,
+    filtroTipoPrecoDigital
+  ].filter(Boolean).length;
+
+
+  function limparFunilDigital() {
+
+    setFiltroLinhaDigital("");
+    setFiltroModeloDigital("");
+    setFiltroTipoPrecoDigital("");
+    setProdutoSelecionado(null);
+
+  }
+
+
   const categoriasProdutos = useMemo(() => {
 
     const categorias = produtosCatalogo
@@ -2939,6 +3118,41 @@ function Orcamentos() {
     }
 
 
+    if (
+      modoPesquisaProduto === "digital"
+    ) {
+
+      // Assim como no funil mecânico,
+      // os resultados só aparecem após
+      // o representante iniciar a seleção.
+      if (!filtroLinhaDigital) {
+        return [];
+      }
+
+
+      return produtosDigitais.filter(
+        (produto) => {
+
+          return (
+            (!filtroLinhaDigital ||
+              produto._funilDigital.linha ===
+                filtroLinhaDigital) &&
+
+            (!filtroModeloDigital ||
+              produto._funilDigital.modelo ===
+                filtroModeloDigital) &&
+
+            (!filtroTipoPrecoDigital ||
+              produto._funilDigital.tipoPreco ===
+                filtroTipoPrecoDigital)
+          );
+
+        }
+      );
+
+    }
+
+
     const termo =
       buscaProduto
         .trim()
@@ -2987,7 +3201,11 @@ function Orcamentos() {
     filtroRoseta,
     filtroFuncao,
     filtroAcabamento,
-    filtroMaquina
+    filtroMaquina,
+    produtosDigitais,
+    filtroLinhaDigital,
+    filtroModeloDigital,
+    filtroTipoPrecoDigital
   ]);
 
 
@@ -6605,6 +6823,35 @@ Synter`;
                   Funil mecânico
                 </button>
 
+
+                <button
+                  type="button"
+                  className={
+                    modoPesquisaProduto === "digital"
+                      ? "ativo"
+                      : ""
+                  }
+                  onClick={() => {
+
+                    setModoPesquisaProduto(
+                      "digital"
+                    );
+
+                    setBuscaProduto("");
+                    setCategoriaProduto(
+                      "todas"
+                    );
+
+                    setProdutoSelecionado(
+                      null
+                    );
+
+                  }}
+                  disabled={adicionandoProduto}
+                >
+                  Funil digital
+                </button>
+
               </div>
 
 
@@ -7150,6 +7397,322 @@ Synter`;
               )}
 
 
+              {modoPesquisaProduto === "digital" && (
+
+                <div className="orcamentos-funil-mecanico orcamentos-funil-digital">
+
+                  <div className="orcamentos-funil-topo">
+
+                    <div>
+
+                      <span>
+                        PESQUISA GUIADA
+                      </span>
+
+                      <strong>
+                        Encontre a fechadura digital correta
+                      </strong>
+
+                      <p>
+                        Selecione na ordem: linha, modelo e tipo de preço.
+                      </p>
+
+                    </div>
+
+
+                    <div className="orcamentos-funil-progresso">
+
+                      <strong>
+                        {etapasFunilDigitalPreenchidas}/3
+                      </strong>
+
+                      <span>
+                        etapas
+                      </span>
+
+                    </div>
+
+                  </div>
+
+
+                  <div className="orcamentos-funil-barra">
+
+                    <span
+                      style={{
+                        width:
+                          `${(etapasFunilDigitalPreenchidas / 3) * 100}%`
+                      }}
+                    ></span>
+
+                  </div>
+
+
+                  <div className="orcamentos-funil-grid">
+
+
+                    {/* 1. LINHA */}
+
+                    <div
+                      className={
+                        `orcamentos-funil-campo ${
+                          filtroLinhaDigital
+                            ? "preenchido"
+                            : "atual"
+                        }`
+                      }
+                    >
+
+                      <div className="orcamentos-funil-label">
+
+                        <span>
+                          1
+                        </span>
+
+                        <label htmlFor="funil_digital_linha">
+                          Linha
+                        </label>
+
+                      </div>
+
+                      <select
+                        id="funil_digital_linha"
+                        value={filtroLinhaDigital}
+                        onChange={
+                          (event) => {
+
+                            setFiltroLinhaDigital(
+                              event.target.value
+                            );
+
+                            setFiltroModeloDigital("");
+                            setFiltroTipoPrecoDigital("");
+                            setProdutoSelecionado(
+                              null
+                            );
+
+                          }
+                        }
+                        disabled={
+                          carregandoProdutos ||
+                          adicionandoProduto
+                        }
+                      >
+
+                        <option value="">
+                          Selecione a linha
+                        </option>
+
+                        {opcoesLinhaDigital.map(
+                          (opcao) => (
+
+                            <option
+                              key={opcao}
+                              value={opcao}
+                            >
+                              {opcao}
+                            </option>
+
+                          )
+                        )}
+
+                      </select>
+
+                    </div>
+
+
+                    {/* 2. MODELO */}
+
+                    <div
+                      className={
+                        `orcamentos-funil-campo ${
+                          filtroModeloDigital
+                            ? "preenchido"
+                            : filtroLinhaDigital
+                              ? "atual"
+                              : "bloqueado"
+                        }`
+                      }
+                    >
+
+                      <div className="orcamentos-funil-label">
+
+                        <span>
+                          2
+                        </span>
+
+                        <label htmlFor="funil_digital_modelo">
+                          Modelo
+                        </label>
+
+                      </div>
+
+                      <select
+                        id="funil_digital_modelo"
+                        value={filtroModeloDigital}
+                        onChange={
+                          (event) => {
+
+                            setFiltroModeloDigital(
+                              event.target.value
+                            );
+
+                            setFiltroTipoPrecoDigital("");
+                            setProdutoSelecionado(
+                              null
+                            );
+
+                          }
+                        }
+                        disabled={
+                          !filtroLinhaDigital ||
+                          carregandoProdutos ||
+                          adicionandoProduto
+                        }
+                      >
+
+                        <option value="">
+                          Selecione o modelo
+                        </option>
+
+                        {opcoesModeloDigital.map(
+                          (opcao) => (
+
+                            <option
+                              key={opcao}
+                              value={opcao}
+                            >
+                              {opcao}
+                            </option>
+
+                          )
+                        )}
+
+                      </select>
+
+                    </div>
+
+
+                    {/* 3. TIPO DE PREÇO */}
+
+                    <div
+                      className={
+                        `orcamentos-funil-campo ${
+                          filtroTipoPrecoDigital
+                            ? "preenchido"
+                            : filtroModeloDigital
+                              ? "atual"
+                              : "bloqueado"
+                        }`
+                      }
+                    >
+
+                      <div className="orcamentos-funil-label">
+
+                        <span>
+                          3
+                        </span>
+
+                        <label htmlFor="funil_digital_tipo_preco">
+                          Tipo de preço
+                        </label>
+
+                      </div>
+
+                      <select
+                        id="funil_digital_tipo_preco"
+                        value={filtroTipoPrecoDigital}
+                        onChange={
+                          (event) => {
+
+                            setFiltroTipoPrecoDigital(
+                              event.target.value
+                            );
+
+                            setProdutoSelecionado(
+                              null
+                            );
+
+                          }
+                        }
+                        disabled={
+                          !filtroModeloDigital ||
+                          carregandoProdutos ||
+                          adicionandoProduto
+                        }
+                      >
+
+                        <option value="">
+                          Selecione o tipo de preço
+                        </option>
+
+                        {opcoesTipoPrecoDigital.map(
+                          (opcao) => (
+
+                            <option
+                              key={opcao}
+                              value={opcao}
+                            >
+                              {opcao}
+                            </option>
+
+                          )
+                        )}
+
+                      </select>
+
+                    </div>
+
+                  </div>
+
+
+                  <div className="orcamentos-funil-resumo">
+
+                    <div>
+
+                      {filtroLinhaDigital ? (
+
+                        <>
+
+                          <strong>
+                            {produtosFiltrados.length}
+                          </strong>
+
+                          <span>
+                            opção(ões) compatível(is)
+                          </span>
+
+                        </>
+
+                      ) : (
+
+                        <span>
+                          Comece selecionando uma linha.
+                        </span>
+
+                      )}
+
+                    </div>
+
+
+                    {etapasFunilDigitalPreenchidas > 0 && (
+
+                      <button
+                        type="button"
+                        onClick={limparFunilDigital}
+                        disabled={adicionandoProduto}
+                      >
+                        Limpar funil
+                      </button>
+
+                    )}
+
+                  </div>
+
+                </div>
+
+              )}
+
+
               {carregandoProdutos && (
 
                 <div className="orcamentos-produtos-state">
@@ -7200,7 +7763,10 @@ Synter`;
                           {modoPesquisaProduto === "mecanica" &&
                           !filtroMacaneta
                             ? "Selecione a maçaneta para iniciar o funil mecânico."
-                            : "Nenhum produto encontrado com estes filtros."}
+                            : modoPesquisaProduto === "digital" &&
+                              !filtroLinhaDigital
+                              ? "Selecione a linha para iniciar o funil digital."
+                              : "Nenhum produto encontrado com estes filtros."}
 
                         </div>
 
@@ -7285,6 +7851,21 @@ Synter`;
 
                                       <span>
                                         {produto._funil.maquina}
+                                      </span>
+
+                                    </>
+
+                                  ) : modoPesquisaProduto === "digital" &&
+                                    produto._funilDigital ? (
+
+                                    <>
+
+                                      <span>
+                                        {produto._funilDigital.linha}
+                                      </span>
+
+                                      <span>
+                                        {produto._funilDigital.tipoPreco}
                                       </span>
 
                                     </>

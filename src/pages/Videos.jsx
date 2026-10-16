@@ -147,7 +147,7 @@ function Videos() {
           <div className="videos-section-bar"></div>
 
           <h4>
-            VÍDEOS DE INSTALAÇÃO
+            VÍDEOS EDUCATIVOS
           </h4>
 
         </div>

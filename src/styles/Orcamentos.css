@@ -10696,3 +10696,54 @@ input:focus {
   }
 
 }
+
+
+/* =========================================
+   FUNIL DIGITAL
+   ========================================= */
+
+/*
+  O funil digital reutiliza toda a identidade visual
+  do funil mecânico, mas possui apenas 3 etapas:
+  Linha -> Modelo -> Tipo de preço.
+*/
+.orcamentos-funil-digital .orcamentos-funil-grid {
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+}
+
+
+/* Mantém as 3 etapas bem distribuídas no desktop. */
+.orcamentos-funil-digital .orcamentos-funil-campo {
+  min-width: 0;
+}
+
+
+/* =========================================
+   RESPONSIVO - FUNIL DIGITAL
+   ========================================= */
+
+@media (max-width: 1050px) {
+
+  .orcamentos-funil-digital .orcamentos-funil-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .orcamentos-funil-digital .orcamentos-funil-grid {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+}
