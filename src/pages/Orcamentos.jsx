@@ -8,10 +8,288 @@ import Profile from "../components/Profile";
 
 import ImgIcon from "../assets/img-icon.png";
 
+import tabelaPrecosData from "../data/tabelaPrecosData";
+
 import { supabase } from "../services/supabaseClient";
 import { gerarOrcamentoPdf } from "../utils/gerarOrcamentoPdf";
 
 import "../styles/Orcamentos.css";
+
+
+// ========================================
+// IMAGENS / VISUALIZAÇÃO DOS PRODUTOS
+// ========================================
+
+const imagensProdutosOrcamento = import.meta.glob(
+  "../assets/produtos/*.{png,jpg,jpeg,webp}",
+  {
+    eager: true,
+    import: "default"
+  }
+);
+
+
+function normalizarChaveProduto(valor = "") {
+
+  return String(valor)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\.[^/.]+$/, "")
+    .replace(/[^a-z0-9]/g, "");
+
+}
+
+
+function encontrarLinhaTabelaPorProduto(produto) {
+
+  if (!produto) {
+    return null;
+  }
+
+  const codigo =
+    normalizarChaveProduto(
+      produto.codigo
+    );
+
+  const nome =
+    normalizarChaveProduto(
+      produto.nome
+    );
+
+  const linhaCatalogo =
+    normalizarChaveProduto(
+      produto.linha
+    );
+
+  let melhorCandidato = null;
+  let melhorPontuacao = -1;
+
+
+  for (const categoria of tabelaPrecosData.categorias) {
+
+    const categoriaNormalizada =
+      normalizarChaveProduto(
+        categoria.titulo
+      );
+
+
+    for (const linha of categoria.linhas) {
+
+      const valoresNormalizados =
+        linha
+          .map(normalizarChaveProduto)
+          .filter(Boolean);
+
+
+      // A referência/código é a forma mais segura
+      // de localizar exatamente o item na tabela.
+      if (codigo.length >= 4) {
+
+        const encontrouCodigo =
+          valoresNormalizados.some(
+            (valor) =>
+              valor === codigo ||
+              (
+                valor.length >= 4 &&
+                (
+                  valor.includes(codigo) ||
+                  codigo.includes(valor)
+                )
+              )
+          );
+
+        if (encontrouCodigo) {
+
+          return {
+            categoria,
+            linha
+          };
+
+        }
+
+      }
+
+
+      // Fallback para itens cujo código não esteja
+      // escrito exatamente da mesma forma na tabela.
+      let pontuacao = 0;
+
+      if (nome.length >= 4) {
+
+        const encontrouNome =
+          valoresNormalizados.some(
+            (valor) =>
+              valor.length >= 4 &&
+              (
+                valor.includes(nome) ||
+                nome.includes(valor)
+              )
+          );
+
+        if (encontrouNome) {
+          pontuacao += 4;
+        }
+
+      }
+
+
+      if (linhaCatalogo.length >= 3) {
+
+        const encontrouLinha =
+          valoresNormalizados.some(
+            (valor) =>
+              valor.length >= 3 &&
+              (
+                valor.includes(linhaCatalogo) ||
+                linhaCatalogo.includes(valor)
+              )
+          );
+
+        if (encontrouLinha) {
+          pontuacao += 2;
+        }
+
+      }
+
+
+      const categoriaProduto =
+        normalizarChaveProduto(
+          produto.categoria
+        );
+
+      if (
+        categoriaProduto &&
+        categoriaNormalizada &&
+        (
+          categoriaNormalizada.includes(
+            categoriaProduto
+          ) ||
+          categoriaProduto.includes(
+            categoriaNormalizada
+          )
+        )
+      ) {
+        pontuacao += 1;
+      }
+
+
+      if (
+        pontuacao > melhorPontuacao &&
+        pontuacao >= 4
+      ) {
+
+        melhorPontuacao = pontuacao;
+
+        melhorCandidato = {
+          categoria,
+          linha
+        };
+
+      }
+
+    }
+
+  }
+
+
+  return melhorCandidato;
+
+}
+
+
+function encontrarImagemProdutoOrcamento(
+  produto,
+  correspondenciaTabela
+) {
+
+  if (!produto) {
+    return null;
+  }
+
+  const valoresBase =
+    correspondenciaTabela?.linha || [
+      produto.codigo,
+      produto.nome,
+      produto.linha,
+      produto.descricao,
+      produto.variacao,
+      produto.categoria
+    ];
+
+  const valoresNormalizados =
+    valoresBase
+      .map(normalizarChaveProduto)
+      .filter(
+        (valor) =>
+          valor.length >= 3
+      );
+
+  const arquivos =
+    Object.entries(
+      imagensProdutosOrcamento
+    );
+
+
+  for (const [caminho, imagem] of arquivos) {
+
+    const nomeArquivo =
+      caminho.split("/").pop() || "";
+
+    const nomeNormalizado =
+      normalizarChaveProduto(
+        nomeArquivo
+      );
+
+    const encontrou =
+      valoresNormalizados.some(
+        (valor) =>
+          nomeNormalizado.includes(valor) ||
+          valor.includes(nomeNormalizado)
+      );
+
+    if (encontrou) {
+      return imagem;
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+function montarVisualizacaoProduto(produto) {
+
+  if (!produto) {
+    return null;
+  }
+
+  const correspondenciaTabela =
+    encontrarLinhaTabelaPorProduto(
+      produto
+    );
+
+  const imagem =
+    encontrarImagemProdutoOrcamento(
+      produto,
+      correspondenciaTabela
+    );
+
+  return {
+    imagem,
+    categoriaTabela:
+      correspondenciaTabela
+        ?.categoria
+        ?.titulo ||
+      produto.categoria ||
+      "",
+    encontradoNaTabela:
+      Boolean(correspondenciaTabela)
+  };
+
+}
 
 
 function Orcamentos() {
@@ -137,8 +415,71 @@ function Orcamentos() {
   const [quantidadeProduto, setQuantidadeProduto] =
     useState(1);
 
+  const [precoClienteProduto, setPrecoClienteProduto] =
+    useState("");
+
   const [adicionandoProduto, setAdicionandoProduto] =
     useState(false);
+
+
+  const visualizacaoProdutoSelecionado =
+    useMemo(
+      () =>
+        montarVisualizacaoProduto(
+          produtoSelecionado
+        ),
+      [produtoSelecionado]
+    );
+
+
+  const precoPedidoProduto =
+    Number(
+      produtoSelecionado?.preco || 0
+    );
+
+
+  const precoOrcadoProduto =
+    numeroPreco(
+      precoClienteProduto
+    );
+
+
+  const precoOrcadoProdutoValido =
+    produtoSelecionado &&
+    Number.isFinite(
+      precoOrcadoProduto
+    ) &&
+    precoOrcadoProduto >= 0 &&
+    precoOrcadoProduto <=
+      precoPedidoProduto;
+
+
+  const descontoProduto =
+    precoOrcadoProdutoValido
+      ? Math.max(
+          0,
+          precoPedidoProduto -
+            precoOrcadoProduto
+        )
+      : 0;
+
+
+  const descontoPercentualProduto =
+    precoPedidoProduto > 0
+      ? (
+          descontoProduto /
+          precoPedidoProduto
+        ) * 100
+      : 0;
+
+
+  const subtotalProdutoPrevio =
+    precoOrcadoProdutoValido
+      ? precoOrcadoProduto *
+        Number(
+          quantidadeProduto || 0
+        )
+      : 0;
 
 
   // ========================================
@@ -150,6 +491,9 @@ function Orcamentos() {
 
   const [quantidadeEdicao, setQuantidadeEdicao] =
     useState(1);
+
+  const [precoEdicao, setPrecoEdicao] =
+    useState("");
 
   const [processandoItemId, setProcessandoItemId] =
     useState(null);
@@ -777,6 +1121,7 @@ function Orcamentos() {
           nome_produto,
           variacao_produto,
           tipo_preco,
+          preco_pedido,
           preco_unitario,
           quantidade,
           subtotal,
@@ -1733,6 +2078,14 @@ function Orcamentos() {
     setItemEmEdicao(item.id);
     setQuantidadeEdicao(item.quantidade);
 
+    setPrecoEdicao(
+      String(
+        Number(
+          item.preco_unitario || 0
+        ).toFixed(2)
+      )
+    );
+
   }
 
 
@@ -1744,6 +2097,7 @@ function Orcamentos() {
 
     setItemEmEdicao(null);
     setQuantidadeEdicao(1);
+    setPrecoEdicao("");
     setErroAcaoItem("");
 
   }
@@ -1761,6 +2115,18 @@ function Orcamentos() {
     const quantidade =
       Number(quantidadeEdicao);
 
+    const precoPedido =
+      Number(
+        item.preco_pedido ??
+        item.preco_unitario ??
+        0
+      );
+
+    const precoOrcado =
+      numeroPreco(
+        precoEdicao
+      );
+
     if (
       !Number.isInteger(quantidade) ||
       quantidade < 1 ||
@@ -1775,6 +2141,32 @@ function Orcamentos() {
 
     }
 
+    if (
+      !Number.isFinite(precoOrcado) ||
+      precoOrcado < 0
+    ) {
+
+      setErroAcaoItem(
+        "Informe um preço válido para o cliente."
+      );
+
+      return;
+
+    }
+
+    if (
+      precoOrcado >
+      precoPedido
+    ) {
+
+      setErroAcaoItem(
+        "O preço orçado ao cliente não pode ser maior que o preço pedido."
+      );
+
+      return;
+
+    }
+
     try {
 
       setProcessandoItemId(item.id);
@@ -1783,10 +2175,12 @@ function Orcamentos() {
       const {
         error
       } = await supabase.rpc(
-        "atualizar_quantidade_item",
+        "atualizar_item_orcamento",
         {
           p_item_id: item.id,
-          p_quantidade: quantidade
+          p_quantidade: quantidade,
+          p_preco_unitario:
+            precoOrcado
         }
       );
 
@@ -1800,18 +2194,19 @@ function Orcamentos() {
 
       setItemEmEdicao(null);
       setQuantidadeEdicao(1);
+      setPrecoEdicao("");
 
     }
     catch (error) {
 
       console.error(
-        "Erro ao atualizar quantidade:",
+        "Erro ao atualizar item:",
         error
       );
 
       setErroAcaoItem(
         error?.message ||
-        "Não foi possível atualizar a quantidade."
+        "Não foi possível atualizar o item."
       );
 
     }
@@ -1915,6 +2310,7 @@ function Orcamentos() {
     setFiltroMaquina("");
     setProdutoSelecionado(null);
     setQuantidadeProduto(1);
+    setPrecoClienteProduto("");
     setErroProdutos("");
 
     if (produtosCatalogo.length > 0) {
@@ -1990,6 +2386,28 @@ function Orcamentos() {
     setModalProdutoOpen(false);
     setProdutoSelecionado(null);
     setQuantidadeProduto(1);
+    setPrecoClienteProduto("");
+    setErroProdutos("");
+
+  }
+
+
+  function selecionarProdutoParaOrcamento(produto) {
+
+    setProdutoSelecionado(
+      produto
+    );
+
+    setQuantidadeProduto(1);
+
+    setPrecoClienteProduto(
+      String(
+        Number(
+          produto?.preco || 0
+        ).toFixed(2)
+      )
+    );
+
     setErroProdutos("");
 
   }
@@ -2585,6 +3003,16 @@ function Orcamentos() {
     const quantidade =
       Number(quantidadeProduto);
 
+    const precoPedido =
+      Number(
+        produtoSelecionado.preco || 0
+      );
+
+    const precoOrcado =
+      numeroPreco(
+        precoClienteProduto
+      );
+
     if (
       !Number.isInteger(quantidade) ||
       quantidade < 1 ||
@@ -2599,15 +3027,37 @@ function Orcamentos() {
 
     }
 
+    if (
+      !Number.isFinite(precoOrcado) ||
+      precoOrcado < 0
+    ) {
+
+      setErroProdutos(
+        "Informe um preço válido para o cliente."
+      );
+
+      return;
+
+    }
+
+    if (
+      precoOrcado >
+      precoPedido
+    ) {
+
+      setErroProdutos(
+        "O preço orçado ao cliente não pode ser maior que o preço pedido."
+      );
+
+      return;
+
+    }
+
     try {
 
       setAdicionandoProduto(true);
       setErroProdutos("");
 
-      // Segurança:
-      // o frontend NÃO envia preço.
-      // O Supabase busca o valor oficial
-      // dentro da função adicionar_item_orcamento.
       const {
         error
       } = await supabase.rpc(
@@ -2628,6 +3078,71 @@ function Orcamentos() {
         throw error;
       }
 
+
+      const {
+        data: itemAdicionado,
+        error: itemAdicionadoError
+      } = await supabase
+        .from("orcamento_itens")
+        .select(`
+          id,
+          produto_id,
+          preco_pedido,
+          preco_unitario,
+          quantidade,
+          created_at
+        `)
+        .eq(
+          "orcamento_id",
+          orcamentoSelecionado.id
+        )
+        .eq(
+          "produto_id",
+          produtoSelecionado.id
+        )
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        )
+        .limit(1)
+        .single();
+
+
+      if (itemAdicionadoError) {
+        throw itemAdicionadoError;
+      }
+
+
+      if (!itemAdicionado) {
+
+        throw new Error(
+          "O produto foi incluído, mas não foi possível localizar o item para aplicar o preço orçado."
+        );
+
+      }
+
+
+      const {
+        error: precoError
+      } = await supabase.rpc(
+        "atualizar_preco_item_orcamento",
+        {
+          p_item_id:
+            itemAdicionado.id,
+
+          p_preco_unitario:
+            precoOrcado
+        }
+      );
+
+
+      if (precoError) {
+        throw precoError;
+      }
+
+
       await carregarItensDoOrcamento(
         orcamentoSelecionado.id
       );
@@ -2635,6 +3150,7 @@ function Orcamentos() {
       setModalProdutoOpen(false);
       setProdutoSelecionado(null);
       setQuantidadeProduto(1);
+      setPrecoClienteProduto("");
       setBuscaProduto("");
       setCategoriaProduto("todas");
 
@@ -2664,6 +3180,20 @@ function Orcamentos() {
   // ========================================
   // FORMATADORES
   // ========================================
+
+  function numeroPreco(valor) {
+
+    const texto =
+      String(
+        valor ?? ""
+      )
+        .trim()
+        .replace(",", ".");
+
+    return Number(texto);
+
+  }
+
 
   function formatarData(data) {
 
@@ -2963,6 +3493,7 @@ Synter`;
           nome_produto,
           variacao_produto,
           tipo_preco,
+          preco_pedido,
           preco_unitario,
           quantidade,
           subtotal,
@@ -3084,6 +3615,45 @@ Synter`;
     );
 
   }, [itensOrcamento]);
+
+
+  const totalPrecoPedido =
+    useMemo(() => {
+
+      return itensOrcamento.reduce(
+        (total, item) => {
+
+          const precoPedido =
+            Number(
+              item.preco_pedido ??
+              item.preco_unitario ??
+              0
+            );
+
+          const quantidade =
+            Number(
+              item.quantidade || 0
+            );
+
+          return total +
+            (
+              precoPedido *
+              quantidade
+            );
+
+        },
+        0
+      );
+
+    }, [itensOrcamento]);
+
+
+  const totalDescontoOrcamento =
+    Math.max(
+      0,
+      totalPrecoPedido -
+        totalOrcamento
+    );
 
 
   const freteOrcamento =
@@ -4693,7 +5263,37 @@ Synter`;
                     <div className="orcamentos-itens-lista">
 
                       {itensOrcamento.map(
-                        (item) => (
+                        (item) => {
+
+                          const precoPedidoItem =
+                            Number(
+                              item.preco_pedido ??
+                              item.preco_unitario ??
+                              0
+                            );
+
+                          const precoOrcadoItem =
+                            Number(
+                              item.preco_unitario || 0
+                            );
+
+                          const descontoItem =
+                            Math.max(
+                              0,
+                              precoPedidoItem -
+                                precoOrcadoItem
+                            );
+
+                          const percentualDescontoItem =
+                            precoPedidoItem > 0
+                              ? (
+                                  descontoItem /
+                                  precoPedidoItem
+                                ) * 100
+                              : 0;
+
+
+                          return (
 
                           <div
                             className="orcamentos-item"
@@ -4729,17 +5329,59 @@ Synter`;
                             </div>
 
 
-                            <div className="orcamentos-item-preco-unitario">
+                            <div className="orcamentos-item-precos">
 
-                              <span>
-                                VALOR UNITÁRIO
-                              </span>
+                              <div className="orcamentos-item-preco-pedido">
 
-                              <strong>
-                                {formatarMoeda(
-                                  item.preco_unitario
-                                )}
-                              </strong>
+                                <span>
+                                  PREÇO PEDIDO
+                                </span>
+
+                                <strong>
+                                  {formatarMoeda(
+                                    precoPedidoItem
+                                  )}
+                                </strong>
+
+                              </div>
+
+
+                              <div className="orcamentos-item-preco-unitario">
+
+                                <span>
+                                  PREÇO ORÇADO
+                                </span>
+
+                                <strong>
+                                  {formatarMoeda(
+                                    precoOrcadoItem
+                                  )}
+                                </strong>
+
+                              </div>
+
+
+                              {descontoItem > 0 && (
+
+                                <div className="orcamentos-item-desconto">
+
+                                  <span>
+                                    DESCONTO
+                                  </span>
+
+                                  <strong>
+                                    - {formatarMoeda(
+                                      descontoItem
+                                    )}
+                                  </strong>
+
+                                  <small>
+                                    {percentualDescontoItem.toFixed(1)}%
+                                  </small>
+
+                                </div>
+
+                              )}
 
                             </div>
 
@@ -4756,6 +5398,10 @@ Synter`;
                                 )}
                               </strong>
 
+                              <small>
+                                subtotal
+                              </small>
+
                             </div>
 
 
@@ -4768,31 +5414,98 @@ Synter`;
 
                                     <div className="orcamentos-item-edicao">
 
-                                      <label
-                                        htmlFor={`qtd-${item.id}`}
-                                      >
-                                        Quantidade
-                                      </label>
+                                      <div className="orcamentos-item-edicao-campos">
+
+                                        <label
+                                          htmlFor={`qtd-${item.id}`}
+                                        >
+                                          <span>Quantidade</span>
+
+                                          <input
+                                            id={`qtd-${item.id}`}
+                                            type="number"
+                                            min="1"
+                                            max="999999"
+                                            step="1"
+                                            value={quantidadeEdicao}
+                                            onChange={
+                                              (event) =>
+                                                setQuantidadeEdicao(
+                                                  event.target.value
+                                                )
+                                            }
+                                            disabled={
+                                              processandoItemId === item.id
+                                            }
+                                          />
+
+                                        </label>
+
+
+                                        <label
+                                          htmlFor={`preco-${item.id}`}
+                                        >
+                                          <span>Preço orçado</span>
+
+                                          <input
+                                            id={`preco-${item.id}`}
+                                            type="number"
+                                            min="0"
+                                            max={precoPedidoItem}
+                                            step="0.01"
+                                            value={precoEdicao}
+                                            onChange={
+                                              (event) =>
+                                                setPrecoEdicao(
+                                                  event.target.value
+                                                )
+                                            }
+                                            disabled={
+                                              processandoItemId === item.id
+                                            }
+                                          />
+
+                                        </label>
+
+                                      </div>
+
+
+                                      <div className="orcamentos-item-edicao-referencia">
+
+                                        <span>Preço pedido</span>
+
+                                        <strong>
+                                          {formatarMoeda(
+                                            precoPedidoItem
+                                          )}
+                                        </strong>
+
+                                        {Number.isFinite(
+                                          numeroPreco(precoEdicao)
+                                        ) &&
+                                        numeroPreco(precoEdicao) >= 0 &&
+                                        numeroPreco(precoEdicao) <=
+                                          precoPedidoItem && (
+
+                                          <small>
+                                            Desconto:{" "}
+                                            {formatarMoeda(
+                                              Math.max(
+                                                0,
+                                                precoPedidoItem -
+                                                  numeroPreco(
+                                                    precoEdicao
+                                                  )
+                                              )
+                                            )}
+                                          </small>
+
+                                        )}
+
+                                      </div>
+
 
                                       <div className="orcamentos-item-edicao-linha">
-
-                                        <input
-                                          id={`qtd-${item.id}`}
-                                          type="number"
-                                          min="1"
-                                          max="999999"
-                                          step="1"
-                                          value={quantidadeEdicao}
-                                          onChange={
-                                            (event) =>
-                                              setQuantidadeEdicao(
-                                                event.target.value
-                                              )
-                                          }
-                                          disabled={
-                                            processandoItemId === item.id
-                                          }
-                                        />
 
                                         <button
                                           type="button"
@@ -4806,7 +5519,7 @@ Synter`;
                                         >
                                           {processandoItemId === item.id
                                             ? "Salvando..."
-                                            : "Salvar"}
+                                            : "Salvar alterações"}
                                         </button>
 
                                         <button
@@ -4838,7 +5551,7 @@ Synter`;
                                           Boolean(processandoItemId)
                                         }
                                       >
-                                        Alterar quantidade
+                                        Alterar item
                                       </button>
 
 
@@ -4875,7 +5588,9 @@ Synter`;
 
                           </div>
 
-                        )
+                          );
+
+                        }
                       )}
 
                     </div>
@@ -4886,7 +5601,41 @@ Synter`;
                       <div>
 
                         <span>
-                          SUBTOTAL DOS PRODUTOS
+                          PREÇO PEDIDO
+                        </span>
+
+                        <strong>
+                          {formatarMoeda(
+                            totalPrecoPedido
+                          )}
+                        </strong>
+
+                      </div>
+
+
+                      {totalDescontoOrcamento > 0 && (
+
+                        <div className="orcamentos-resumo-desconto">
+
+                          <span>
+                            DESCONTO APLICADO
+                          </span>
+
+                          <strong>
+                            - {formatarMoeda(
+                              totalDescontoOrcamento
+                            )}
+                          </strong>
+
+                        </div>
+
+                      )}
+
+
+                      <div>
+
+                        <span>
+                          SUBTOTAL COM DESCONTO
                         </span>
 
                         <strong>
@@ -5781,7 +6530,7 @@ Synter`;
                 </h2>
 
                 <p>
-                  Pesquise um produto e escolha a quantidade.
+                  Pesquise um produto, confira o preço pedido e informe o preço orçado ao cliente como desconto.
                 </p>
 
               </div>
@@ -6478,7 +7227,7 @@ Synter`;
                                 }`
                               }
                               onClick={() =>
-                                setProdutoSelecionado(
+                                selecionarProdutoParaOrcamento(
                                   produto
                                 )
                               }
@@ -6585,70 +7334,230 @@ Synter`;
 
               {produtoSelecionado && (
 
-                <div className="orcamentos-produto-selecionado">
+                <section className="orcamentos-produto-visualizacao">
 
-                  <div>
+                  <div className="orcamentos-produto-visualizacao-imagem-area">
 
-                    <span>
-                      PRODUTO SELECIONADO
-                    </span>
+                    {visualizacaoProdutoSelecionado?.imagem ? (
 
-                    <strong>
-                      {produtoSelecionado.nome}
-                    </strong>
+                      <img
+                        src={
+                          visualizacaoProdutoSelecionado.imagem
+                        }
+                        alt={produtoSelecionado.nome}
+                        className="orcamentos-produto-visualizacao-imagem"
+                      />
 
-                    <small>
-                      {produtoSelecionado.codigo}
-                    </small>
+                    ) : (
 
-                  </div>
+                      <div className="orcamentos-produto-sem-imagem">
 
+                        <span>
+                          ◇
+                        </span>
 
-                  <div className="orcamentos-quantidade">
+                        <strong>
+                          Imagem não disponível
+                        </strong>
 
-                    <label htmlFor="quantidade_produto">
-                      Quantidade
-                    </label>
+                        <small>
+                          O item pode ser adicionado normalmente ao orçamento.
+                        </small>
 
-                    <input
-                      id="quantidade_produto"
-                      type="number"
-                      min="1"
-                      max="999999"
-                      step="1"
-                      value={quantidadeProduto}
-                      onChange={
-                        (event) =>
-                          setQuantidadeProduto(
-                            event.target.value
-                          )
-                      }
-                      disabled={adicionandoProduto}
-                    />
+                      </div>
+
+                    )}
 
                   </div>
 
 
-                  <div className="orcamentos-produto-total-previo">
+                  <div className="orcamentos-produto-visualizacao-conteudo">
 
-                    <span>
-                      SUBTOTAL
-                    </span>
+                    <div className="orcamentos-produto-visualizacao-topo">
 
-                    <strong>
-                      {formatarMoeda(
-                        Number(
-                          produtoSelecionado.preco
-                        ) *
-                        Number(
-                          quantidadeProduto || 0
-                        )
+                      <div className="orcamentos-produto-visualizacao-titulo">
+
+                        <span>
+                          VISUALIZAÇÃO DO ITEM
+                        </span>
+
+                        <h3>
+                          {produtoSelecionado.nome}
+                        </h3>
+
+                        <small>
+                          {produtoSelecionado.codigo}
+                        </small>
+
+                      </div>
+
+
+                      <div className="orcamentos-produto-visualizacao-preco">
+
+                        <span>
+                          PREÇO PEDIDO
+                        </span>
+
+                        <strong>
+                          {formatarMoeda(
+                            produtoSelecionado.preco
+                          )}
+                        </strong>
+
+                      </div>
+
+                    </div>
+
+
+                    <div className="orcamentos-produto-visualizacao-tags">
+
+                      {visualizacaoProdutoSelecionado?.categoriaTabela && (
+                        <span>
+                          {visualizacaoProdutoSelecionado.categoriaTabela}
+                        </span>
                       )}
-                    </strong>
+
+                      {produtoSelecionado.linha && (
+                        <span>
+                          {produtoSelecionado.linha}
+                        </span>
+                      )}
+
+                      {produtoSelecionado.variacao && (
+                        <span>
+                          {produtoSelecionado.variacao}
+                        </span>
+                      )}
+
+                      {produtoSelecionado.tipo_preco && (
+                        <span>
+                          {produtoSelecionado.tipo_preco}
+                        </span>
+                      )}
+
+                    </div>
+
+
+                    {produtoSelecionado.descricao && (
+
+                      <div className="orcamentos-produto-visualizacao-descricao">
+
+                        <span>
+                          DESCRIÇÃO
+                        </span>
+
+                        <p>
+                          {produtoSelecionado.descricao}
+                        </p>
+
+                      </div>
+
+                    )}
+
+
+                    <div className="orcamentos-produto-visualizacao-compra">
+
+                      <div className="orcamentos-quantidade">
+
+                        <label htmlFor="quantidade_produto">
+                          Quantidade
+                        </label>
+
+                        <input
+                          id="quantidade_produto"
+                          type="number"
+                          min="1"
+                          max="999999"
+                          step="1"
+                          value={quantidadeProduto}
+                          onChange={
+                            (event) =>
+                              setQuantidadeProduto(
+                                event.target.value
+                              )
+                          }
+                          disabled={adicionandoProduto}
+                        />
+
+                      </div>
+
+
+                      <div className="orcamentos-preco-cliente">
+
+                        <label htmlFor="preco_cliente_produto">
+                          Preço orçado ao cliente
+                        </label>
+
+                        <input
+                          id="preco_cliente_produto"
+                          type="number"
+                          min="0"
+                          max={precoPedidoProduto}
+                          step="0.01"
+                          value={precoClienteProduto}
+                          onChange={
+                            (event) =>
+                              setPrecoClienteProduto(
+                                event.target.value
+                              )
+                          }
+                          disabled={adicionandoProduto}
+                        />
+
+                        <small>
+                          Máximo:{" "}
+                          {formatarMoeda(
+                            precoPedidoProduto
+                          )}
+                        </small>
+
+                      </div>
+
+
+                      <div className="orcamentos-produto-desconto-previo">
+
+                        <span>
+                          DESCONTO
+                        </span>
+
+                        <strong>
+                          {precoOrcadoProdutoValido
+                            ? `- ${formatarMoeda(
+                                descontoProduto
+                              )}`
+                            : "-"}
+                        </strong>
+
+                        <small>
+                          {precoOrcadoProdutoValido
+                            ? `${descontoPercentualProduto.toFixed(1)}%`
+                            : "Informe um valor válido"}
+                        </small>
+
+                      </div>
+
+
+                      <div className="orcamentos-produto-total-previo">
+
+                        <span>
+                          SUBTOTAL COM DESCONTO
+                        </span>
+
+                        <strong>
+                          {precoOrcadoProdutoValido
+                            ? formatarMoeda(
+                                subtotalProdutoPrevio
+                              )
+                            : "-"}
+                        </strong>
+
+                      </div>
+
+                    </div>
 
                   </div>
 
-                </div>
+                </section>
 
               )}
 
@@ -6664,6 +7573,7 @@ Synter`;
 
                       setProdutoSelecionado(null);
                       setQuantidadeProduto(1);
+                      setPrecoClienteProduto("");
                       setErroProdutos("");
 
                       return;
@@ -6687,6 +7597,7 @@ Synter`;
                   onClick={adicionarProdutoAoOrcamento}
                   disabled={
                     !produtoSelecionado ||
+                    !precoOrcadoProdutoValido ||
                     adicionandoProduto
                   }
                 >

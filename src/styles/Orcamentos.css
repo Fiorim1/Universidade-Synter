@@ -9685,3 +9685,1014 @@
   }
 
 }
+/* ========================================
+   VISUALIZAÇÃO DO ITEM NO ORÇAMENTO
+   ======================================== */
+
+.orcamentos-produto-visualizacao {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  display: grid;
+  grid-template-columns:
+    minmax(230px, 0.8fr)
+    minmax(0, 1.45fr);
+
+  gap: 0;
+
+  margin-top: 20px;
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.13);
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.04),
+      rgba(255, 255, 255, 0.018)
+    );
+
+  box-sizing: border-box;
+}
+
+
+.orcamentos-produto-visualizacao-imagem-area {
+  width: 100%;
+  min-width: 0;
+  min-height: 285px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  border-right:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.012) 58%,
+      transparent 82%
+    );
+
+  box-sizing: border-box;
+}
+
+
+.orcamentos-produto-visualizacao-imagem {
+  display: block;
+
+  width: 100%;
+  max-width: 300px;
+  height: 245px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 18px 25px
+      rgba(0, 0, 0, 0.30)
+    );
+}
+
+
+.orcamentos-produto-sem-imagem {
+  width: 100%;
+  max-width: 240px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  text-align: center;
+}
+
+
+.orcamentos-produto-sem-imagem > span {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 4px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    rgba(255, 255, 255, 0.55);
+
+  font-size: 23px;
+}
+
+
+.orcamentos-produto-sem-imagem strong {
+  color:
+    rgba(255, 255, 255, 0.76);
+
+  font-size: 12px;
+}
+
+
+.orcamentos-produto-sem-imagem small {
+  color:
+    rgba(255, 255, 255, 0.38);
+
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+
+.orcamentos-produto-visualizacao-conteudo {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 24px;
+
+  box-sizing: border-box;
+}
+
+
+.orcamentos-produto-visualizacao-topo {
+  width: 100%;
+  min-width: 0;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+
+.orcamentos-produto-visualizacao-titulo {
+  min-width: 0;
+}
+
+
+.orcamentos-produto-visualizacao-titulo > span,
+.orcamentos-produto-visualizacao-preco > span,
+.orcamentos-produto-visualizacao-descricao > span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color:
+    rgba(255, 255, 255, 0.36);
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 1.1px;
+}
+
+
+.orcamentos-produto-visualizacao-titulo h3 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 20px;
+  font-weight: 650;
+  line-height: 1.25;
+
+  overflow-wrap: anywhere;
+}
+
+
+.orcamentos-produto-visualizacao-titulo small {
+  display: block;
+
+  margin-top: 7px;
+
+  color:
+    rgba(255, 255, 255, 0.46);
+
+  font-size: 10px;
+  font-weight: 600;
+
+  overflow-wrap: anywhere;
+}
+
+
+.orcamentos-produto-visualizacao-preco {
+  flex-shrink: 0;
+
+  text-align: right;
+}
+
+
+.orcamentos-produto-visualizacao-preco strong {
+  color: #ffffff;
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+
+.orcamentos-produto-visualizacao-tags {
+  width: 100%;
+  min-width: 0;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin-top: 16px;
+}
+
+
+.orcamentos-produto-visualizacao-tags span {
+  max-width: 100%;
+
+  padding:
+    5px
+    8px;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.09);
+
+  border-radius: 100px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    rgba(255, 255, 255, 0.58);
+
+  font-size: 8px;
+  font-weight: 650;
+
+  line-height: 1.3;
+
+  overflow-wrap: anywhere;
+}
+
+
+.orcamentos-produto-visualizacao-descricao {
+  margin-top: 18px;
+
+  padding-top: 16px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.orcamentos-produto-visualizacao-descricao p {
+  margin: 0;
+
+  color:
+    rgba(255, 255, 255, 0.55);
+
+  font-size: 11px;
+  line-height: 1.65;
+
+  overflow-wrap: anywhere;
+}
+
+
+.orcamentos-produto-visualizacao-compra {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns:
+    minmax(120px, 150px)
+    minmax(0, 1fr);
+
+  align-items: end;
+
+  gap: 18px;
+
+  margin-top: auto;
+  padding-top: 22px;
+}
+
+
+.orcamentos-produto-visualizacao-compra
+.orcamentos-produto-total-previo {
+  text-align: right;
+}
+
+
+/* ========================================
+   RESPONSIVO DA VISUALIZAÇÃO
+   ======================================== */
+
+@media (max-width: 780px) {
+
+  .orcamentos-produto-visualizacao {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+
+  .orcamentos-produto-visualizacao-imagem-area {
+    min-height: 260px;
+
+    border-right: none;
+
+    border-bottom:
+      1px solid rgba(255, 255, 255, 0.08);
+  }
+
+
+  .orcamentos-produto-visualizacao-imagem {
+    max-width: 320px;
+    height: 225px;
+  }
+
+}
+
+
+@media (max-width: 560px) {
+
+  .orcamentos-modal-produtos {
+    max-height:
+      calc(
+        100svh - 24px
+      );
+  }
+
+
+  .orcamentos-produtos-lista {
+    max-height: 270px;
+  }
+
+
+  .orcamentos-produto-visualizacao-imagem-area {
+    min-height: 220px;
+
+    padding: 18px;
+  }
+
+
+  .orcamentos-produto-visualizacao-imagem {
+    max-width: 100%;
+    height: 190px;
+  }
+
+
+  .orcamentos-produto-visualizacao-conteudo {
+    padding: 20px 16px;
+  }
+
+
+  .orcamentos-produto-visualizacao-topo {
+    flex-direction: column;
+
+    gap: 15px;
+  }
+
+
+  .orcamentos-produto-visualizacao-preco {
+    width: 100%;
+
+    text-align: left;
+  }
+
+
+  .orcamentos-produto-visualizacao-titulo h3 {
+    font-size: 18px;
+  }
+
+
+  .orcamentos-produto-visualizacao-compra {
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    gap: 14px;
+
+    padding-top: 18px;
+  }
+
+
+  .orcamentos-produto-visualizacao-compra
+  .orcamentos-produto-total-previo {
+    text-align: left;
+  }
+
+
+  .orcamentos-produtos-busca input,
+  .orcamentos-produtos-categoria select,
+  .orcamentos-quantidade input {
+    font-size: 16px;
+  }
+
+}
+/* ========================================
+   PREÇO PEDIDO / DESCONTO DO REPRESENTANTE
+   ======================================== */
+
+.orcamentos-item {
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(230px, 0.75fr)
+    120px
+    minmax(170px, auto);
+}
+
+
+/* ========================================
+   BLOCO DOS PREÇOS
+   ======================================== */
+
+.orcamentos-item-precos {
+  min-width: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 9px;
+}
+
+
+.orcamentos-item-preco-pedido,
+.orcamentos-item-preco-unitario,
+.orcamentos-item-desconto {
+  min-width: 0;
+
+  padding: 10px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 8px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+
+  text-align: left;
+}
+
+
+.orcamentos-item-preco-pedido span,
+.orcamentos-item-preco-unitario span,
+.orcamentos-item-desconto span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color:
+    rgba(255, 255, 255, 0.34);
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+}
+
+
+/* ========================================
+   PREÇO PEDIDO
+   ======================================== */
+
+.orcamentos-item-preco-pedido strong {
+  color:
+    rgba(255, 255, 255, 0.62);
+
+  font-size: 12px;
+}
+
+
+/* ========================================
+   PREÇO ORÇADO AO CLIENTE
+   ======================================== */
+
+.orcamentos-item-preco-unitario strong {
+  color: #ffffff;
+
+  font-size: 13px;
+}
+
+
+/* ========================================
+   DESCONTO
+   ======================================== */
+
+.orcamentos-item-desconto {
+  grid-column:
+    1 / -1;
+
+  display: grid;
+
+  grid-template-columns:
+    auto 1fr auto;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding:
+    7px 10px;
+
+  border-color:
+    rgba(120, 214, 150, 0.13);
+
+  background:
+    rgba(90, 190, 120, 0.045);
+}
+
+
+.orcamentos-item-desconto span {
+  margin: 0;
+}
+
+
+.orcamentos-item-desconto strong {
+  color: #b9f7ca;
+
+  font-size: 11px;
+
+  text-align: right;
+}
+
+
+.orcamentos-item-desconto small {
+  margin: 0;
+
+  color:
+    rgba(185, 247, 202, 0.72);
+
+  font-size: 9px;
+
+  font-weight: 700;
+}
+
+
+/* ========================================
+   SUBTOTAL
+   ======================================== */
+
+.orcamentos-item-valores small {
+  margin-top: 4px;
+
+  color:
+    rgba(255, 255, 255, 0.28);
+
+  font-size: 8px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.7px;
+}
+
+
+/* ========================================
+   EDIÇÃO DO ITEM
+   ======================================== */
+
+.orcamentos-item-edicao {
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+.orcamentos-item-edicao-campos {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(90px, 0.7fr)
+    minmax(140px, 1fr);
+
+  gap: 9px;
+}
+
+
+.orcamentos-item-edicao-campos label {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+
+.orcamentos-item-edicao-campos
+label > span {
+  color:
+    rgba(255, 255, 255, 0.42);
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+}
+
+
+.orcamentos-item-edicao-campos input {
+  width: 100%;
+
+  height: 36px;
+
+  box-sizing: border-box;
+
+  padding:
+    0 9px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.13);
+
+  border-radius: 7px;
+
+  outline: none;
+
+  background: #0d0d0d;
+
+  color: #ffffff;
+
+  font-size: 11px;
+}
+
+
+.orcamentos-item-edicao-campos
+input:focus {
+  border-color:
+    rgba(255, 255, 255, 0.34);
+}
+
+
+/* ========================================
+   REFERÊNCIA DE PREÇO NA EDIÇÃO
+   ======================================== */
+
+.orcamentos-item-edicao-referencia {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap:
+    6px 10px;
+
+  padding:
+    8px 10px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 7px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+}
+
+
+.orcamentos-item-edicao-referencia
+> span {
+  color:
+    rgba(255, 255, 255, 0.35);
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.7px;
+}
+
+
+.orcamentos-item-edicao-referencia
+> strong {
+  color:
+    rgba(255, 255, 255, 0.76);
+
+  font-size: 11px;
+}
+
+
+.orcamentos-item-edicao-referencia
+> small {
+  margin:
+    0 0 0 auto;
+
+  color: #b9f7ca;
+
+  font-size: 9px;
+}
+
+
+/* ========================================
+   DESCONTO NO RESUMO
+   ======================================== */
+
+.orcamentos-resumo-valores
+.orcamentos-resumo-desconto
+> strong {
+  color: #b9f7ca;
+}
+
+
+/* ========================================
+   VISUALIZAÇÃO AO ADICIONAR PRODUTO
+   ======================================== */
+
+.orcamentos-produto-visualizacao-compra {
+  grid-template-columns:
+    minmax(105px, 0.7fr)
+    minmax(150px, 1fr)
+    minmax(120px, 0.8fr)
+    minmax(150px, 1fr);
+}
+
+
+/* ========================================
+   PREÇO ORÇADO AO CLIENTE
+   ======================================== */
+
+.orcamentos-preco-cliente {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.orcamentos-preco-cliente label {
+  color:
+    rgba(255, 255, 255, 0.58);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.7px;
+}
+
+
+.orcamentos-preco-cliente input {
+  width: 100%;
+
+  height: 44px;
+
+  box-sizing: border-box;
+
+  padding:
+    0 13px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.14);
+
+  border-radius: 9px;
+
+  outline: none;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color: #ffffff;
+
+  font: inherit;
+
+  font-weight: 700;
+}
+
+
+.orcamentos-preco-cliente
+input:focus {
+  border-color:
+    rgba(255, 255, 255, 0.36);
+
+  background:
+    rgba(255, 255, 255, 0.055);
+}
+
+
+.orcamentos-preco-cliente small {
+  color:
+    rgba(255, 255, 255, 0.33);
+
+  font-size: 8px;
+}
+
+
+/* ========================================
+   DESCONTO E SUBTOTAL NA PRÉVIA
+   ======================================== */
+
+.orcamentos-produto-desconto-previo,
+.orcamentos-produto-total-previo {
+  min-width: 0;
+}
+
+
+.orcamentos-produto-desconto-previo {
+  text-align: right;
+}
+
+
+.orcamentos-produto-desconto-previo
+> span,
+.orcamentos-produto-total-previo
+> span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color:
+    rgba(255, 255, 255, 0.34);
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+}
+
+
+.orcamentos-produto-desconto-previo
+> strong {
+  display: block;
+
+  color: #b9f7ca;
+
+  font-size: 15px;
+}
+
+
+.orcamentos-produto-desconto-previo
+> small {
+  display: block;
+
+  margin-top: 4px;
+
+  color:
+    rgba(185, 247, 202, 0.66);
+
+  font-size: 8px;
+}
+
+
+/* ========================================
+   RESPONSIVO — NOTEBOOK / TABLET
+   ======================================== */
+
+@media (max-width: 1120px) {
+
+  .orcamentos-item {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(220px, 0.8fr)
+      110px;
+  }
+
+
+  .orcamentos-item-acoes {
+    grid-column:
+      1 / -1;
+
+    justify-content:
+      flex-start;
+
+    padding-top: 10px;
+
+    border-top:
+      1px solid
+      rgba(255, 255, 255, 0.06);
+  }
+
+
+  .orcamentos-produto-visualizacao-compra {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+}
+
+
+/* ========================================
+   RESPONSIVO — TABLET / MOBILE
+   ======================================== */
+
+@media (max-width: 760px) {
+
+  .orcamentos-item {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+
+  .orcamentos-item-precos {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+
+  .orcamentos-item-valores {
+    text-align: left;
+  }
+
+
+  .orcamentos-item-acoes {
+    grid-column: auto;
+  }
+
+
+  .orcamentos-item-edicao-campos {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+}
+
+
+/* ========================================
+   RESPONSIVO — CELULAR
+   ======================================== */
+
+@media (max-width: 560px) {
+
+  .orcamentos-item-precos,
+  .orcamentos-item-edicao-campos,
+  .orcamentos-produto-visualizacao-compra {
+    grid-template-columns:
+      minmax(0, 1fr);
+  }
+
+
+  .orcamentos-item-desconto {
+    grid-column: auto;
+  }
+
+
+  .orcamentos-item-edicao-referencia {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+
+  .orcamentos-item-edicao-referencia
+  > small {
+    margin-left: 0;
+  }
+
+
+  .orcamentos-produto-desconto-previo,
+  .orcamentos-produto-total-previo {
+    text-align: left;
+  }
+
+
+  .orcamentos-preco-cliente input,
+  .orcamentos-item-edicao-campos input {
+    font-size: 16px;
+  }
+
+}
