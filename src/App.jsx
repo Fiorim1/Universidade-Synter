@@ -1,4 +1,8 @@
 import {
+  useEffect
+} from "react";
+
+import {
   Routes,
   Route,
   useLocation
@@ -31,6 +35,26 @@ import SynterAssistant from "./components/SynterAssistant.jsx";
 function App() {
 
   const location = useLocation();
+
+
+  // ========================================
+  // VOLTAR AO TOPO AO TROCAR DE ROTA
+  // ========================================
+
+  useEffect(() => {
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "auto"
+    });
+
+
+    // Garantia extra para navegadores/mobile
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+  }, [location.pathname]);
 
 
   // ========================================
