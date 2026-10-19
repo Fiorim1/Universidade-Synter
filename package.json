@@ -13,6 +13,8 @@
     "@marsidev/react-turnstile": "^1.6.1",
     "@notionhq/client": "^5.26.0",
     "@supabase/supabase-js": "^2.115.0",
+    "@upstash/ratelimit": "^2.2.0",
+    "@upstash/redis": "^1.39.0",
     "cors": "^2.8.6",
     "dotenv": "^18.0.3",
     "express": "^5.2.1",

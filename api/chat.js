@@ -1,13 +1,36 @@
 import { createHash } from "node:crypto";
-import OpenAI, { toFile } from "openai";
+
+import OpenAI, {
+  toFile
+} from "openai";
+
+import {
+  aplicarRateLimit,
+  chatRateLimit,
+  globalRateLimit,
+  obterIp
+} from "./_lib/rateLimit.js";
 
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// ==========================================
+// OPENAI
+// ==========================================
+
+const openai =
+  new OpenAI({
+
+    apiKey:
+      process.env.OPENAI_API_KEY
+
+  });
 
 
-const MAX_TEXT_LENGTH = 6000;
+// ==========================================
+// LIMITES DE CONTEÚDO
+// ==========================================
+
+const MAX_TEXT_LENGTH =
+  6000;
 
 const MAX_IMAGE_BYTES =
   3 * 1024 * 1024;
@@ -19,24 +42,35 @@ const MAX_FILE_BYTES =
   3 * 1024 * 1024;
 
 
+// ==========================================
+// FORMATOS
+// ==========================================
+
 const IMAGE_DATA_URL =
   /^data:image\/(jpeg|png|webp);base64,([A-Za-z0-9+/=\r\n]+)$/i;
 
 
-const AUDIO_MIME_TYPES = new Set([
-  "audio/webm",
-  "audio/mp4",
-  "audio/mpeg",
-  "audio/mp3",
-  "audio/wav",
-  "audio/x-wav",
-  "audio/ogg",
-  "audio/m4a",
-  "audio/x-m4a",
-  "audio/flac",
-  "audio/x-flac",
-]);
+const AUDIO_MIME_TYPES =
+  new Set([
 
+    "audio/webm",
+    "audio/mp4",
+    "audio/mpeg",
+    "audio/mp3",
+    "audio/wav",
+    "audio/x-wav",
+    "audio/ogg",
+    "audio/m4a",
+    "audio/x-m4a",
+    "audio/flac",
+    "audio/x-flac"
+
+  ]);
+
+
+// ==========================================
+// INSTRUÇÕES DO ASSISTENTE
+// ==========================================
 
 const INSTRUCTIONS = `
 Você é o Assistente Synter, integrado à plataforma Universidade Synter.
@@ -99,10 +133,12 @@ Regras:
 
 
 // ==========================================
-// UTILITÁRIOS
+// TEXTO
 // ==========================================
 
-function normalizarTexto(valor) {
+function normalizarTexto(
+  valor
+) {
 
   return String(
     valor || ""
@@ -116,7 +152,13 @@ function normalizarTexto(valor) {
 }
 
 
-function tamanhoBase64EmBytes(base64) {
+// ==========================================
+// BASE64
+// ==========================================
+
+function tamanhoBase64EmBytes(
+  base64
+) {
 
   const limpo =
     String(
@@ -137,16 +179,23 @@ function tamanhoBase64EmBytes(base64) {
 
 
   return Math.max(
+
     0,
+
     Math.floor(
-      limpo.length * 0.75
-    ) - padding
+      limpo.length *
+      0.75
+    ) -
+    padding
+
   );
 
 }
 
 
-function base64Valido(valor) {
+function base64Valido(
+  valor
+) {
 
   return /^[A-Za-z0-9+/]*={0,2}$/.test(
     valor
@@ -159,10 +208,14 @@ function base64Valido(valor) {
 // IMAGEM DE ENTRADA
 // ==========================================
 
-function validarImagem(image) {
+function validarImagem(
+  image
+) {
 
   if (!image) {
+
     return null;
+
   }
 
 
@@ -305,12 +358,18 @@ function extensaoAudio(
 }
 
 
+// ==========================================
+// TRANSCRIÇÃO
+// ==========================================
+
 async function transcreverAudio(
   audio
 ) {
 
   if (!audio) {
+
     return "";
+
   }
 
 
@@ -332,7 +391,9 @@ async function transcreverAudio(
 
   if (
     !base64 ||
-    !base64Valido(base64) ||
+    !base64Valido(
+      base64
+    ) ||
     !mimeType ||
     !AUDIO_MIME_TYPES.has(
       mimeType
@@ -389,8 +450,10 @@ async function transcreverAudio(
       )}`,
 
       {
+
         type:
           mimeType
+
       }
 
     );
@@ -432,7 +495,8 @@ function limparNomeArquivo(
 
   const seguro =
     String(
-      nome || "arquivo"
+      nome ||
+      "arquivo"
     )
       .replace(
         /[\u0000-\u001F\u007F]/g,
@@ -449,8 +513,10 @@ function limparNomeArquivo(
       );
 
 
-  return seguro ||
-    "arquivo";
+  return (
+    seguro ||
+    "arquivo"
+  );
 
 }
 
@@ -475,7 +541,9 @@ function limparMimeArquivo(
     )
   ) {
 
-    return "application/octet-stream";
+    return (
+      "application/octet-stream"
+    );
 
   }
 
@@ -485,12 +553,18 @@ function limparMimeArquivo(
 }
 
 
+// ==========================================
+// PREPARAR ARQUIVO
+// ==========================================
+
 function prepararArquivoGenerico(
   arquivo
 ) {
 
   if (!arquivo) {
+
     return null;
+
   }
 
 
@@ -578,7 +652,7 @@ function prepararArquivoGenerico(
 
 
 // ==========================================
-// PREVIOUS RESPONSE ID
+// PREVIOUS RESPONSE
 // ==========================================
 
 function validarPreviousResponseId(
@@ -586,7 +660,9 @@ function validarPreviousResponseId(
 ) {
 
   if (!valor) {
+
     return null;
+
   }
 
 
@@ -648,7 +724,9 @@ async function validarUsuario(
 
 
   if (!token) {
+
     return null;
+
   }
 
 
@@ -703,8 +781,12 @@ async function validarUsuario(
       );
 
 
-    if (!resposta.ok) {
+    if (
+      !resposta.ok
+    ) {
+
       return null;
+
     }
 
 
@@ -712,12 +794,17 @@ async function validarUsuario(
       await resposta.json();
 
 
-    return usuario?.id
-      ? usuario
-      : null;
+    return (
+      usuario?.id
+        ? usuario
+        : null
+    );
 
   }
-  catch (error) {
+
+  catch (
+    error
+  ) {
 
     console.error(
       "Erro ao validar sessão no Supabase:",
@@ -733,7 +820,7 @@ async function validarUsuario(
 
 
 // ==========================================
-// DETECTAR PEDIDOS DE IMAGEM
+// INTENÇÃO DE IMAGEM
 // ==========================================
 
 function normalizarIntentImagem(
@@ -756,6 +843,10 @@ function normalizarIntentImagem(
 }
 
 
+// ==========================================
+// DETECTAR PEDIDO DE IMAGEM
+// ==========================================
+
 function deveForcarGeracaoImagem(
   texto,
   temImagem
@@ -768,7 +859,9 @@ function deveForcarGeracaoImagem(
 
 
   if (!valor) {
+
     return false;
+
   }
 
 
@@ -776,7 +869,9 @@ function deveForcarGeracaoImagem(
 
     /\b(crie|criar|gere|gerar|desenhe|desenhar|faca|produza|ilustre|renderize|renderizar|transforme|transformar)\b/.test(
       valor
-    ) &&
+    )
+
+    &&
 
     /\b(imagem|foto|arte|desenho|ilustracao|wallpaper|render|pixel|mockup|banner|capa|logo)\b/.test(
       valor
@@ -787,7 +882,9 @@ function deveForcarGeracaoImagem(
 
     Boolean(
       temImagem
-    ) &&
+    )
+
+    &&
 
     /\b(edite|editar|mude|troque|remova|retire|adicione|coloque|deixe|transforme|substitua|ajuste|altere)\b/.test(
       valor
@@ -803,7 +900,7 @@ function deveForcarGeracaoImagem(
 
 
 // ==========================================
-// IDENTIFICADOR DE SEGURANÇA
+// IDENTIFICADOR PRIVADO DO USUÁRIO
 // ==========================================
 
 function criarSafetyIdentifier(
@@ -819,7 +916,9 @@ function criarSafetyIdentifier(
 
 
   if (!id) {
+
     return undefined;
+
   }
 
 
@@ -876,6 +975,43 @@ export default async function handler(
 
 
     // ======================================
+    // RATE LIMIT GLOBAL POR IP
+    // 100 REQUISIÇÕES / 1 MINUTO
+    // ======================================
+
+    const ip =
+      obterIp(
+        req
+      );
+
+
+    const permitidoGlobal =
+      await aplicarRateLimit({
+
+        res,
+
+        limiter:
+          globalRateLimit,
+
+        identifier:
+          ip,
+
+        rota:
+          "chat-ip"
+
+      });
+
+
+    if (
+      !permitidoGlobal
+    ) {
+
+      return;
+
+    }
+
+
+    // ======================================
     // VALIDA USUÁRIO
     // ======================================
 
@@ -895,6 +1031,63 @@ export default async function handler(
             "Sessão inválida ou expirada."
 
         });
+
+    }
+
+
+    // ======================================
+    // IDENTIFICADOR PRIVADO
+    // ======================================
+
+    const identificadorUsuario =
+      criarSafetyIdentifier(
+        usuario
+      );
+
+
+    if (
+      !identificadorUsuario
+    ) {
+
+      return res
+        .status(401)
+        .json({
+
+          error:
+            "Não foi possível identificar o usuário."
+
+        });
+
+    }
+
+
+    // ======================================
+    // RATE LIMIT DO CHAT POR USUÁRIO
+    // 10 REQUISIÇÕES / 1 MINUTO
+    // ======================================
+
+    const permitidoChat =
+      await aplicarRateLimit({
+
+        res,
+
+        limiter:
+          chatRateLimit,
+
+        identifier:
+          identificadorUsuario,
+
+        rota:
+          "chat-user"
+
+      });
+
+
+    if (
+      !permitidoChat
+    ) {
+
+      return;
 
     }
 
@@ -920,17 +1113,29 @@ export default async function handler(
       );
 
 
+    // ======================================
+    // IMAGEM
+    // ======================================
+
     const image =
       validarImagem(
         corpo.image
       );
 
 
+    // ======================================
+    // ARQUIVO
+    // ======================================
+
     const inputFile =
       prepararArquivoGenerico(
         corpo.file
       );
 
+
+    // ======================================
+    // CONTEXTO
+    // ======================================
 
     const previousResponseId =
       validarPreviousResponseId(
@@ -953,6 +1158,7 @@ export default async function handler(
     ) {
 
       texto =
+
         texto
 
           ? `${texto}
@@ -1088,6 +1294,7 @@ ${transcription}`
           "input_text",
 
         text:
+
           texto ||
 
           (
@@ -1104,6 +1311,10 @@ ${transcription}`
 
       });
 
+
+      // ======================================
+      // IMAGEM ENVIADA PELO USUÁRIO
+      // ======================================
 
       if (
         image
@@ -1124,6 +1335,10 @@ ${transcription}`
 
       }
 
+
+      // ======================================
+      // ARQUIVO ENVIADO
+      // ======================================
 
       if (
         inputFile
@@ -1153,7 +1368,7 @@ ${transcription}`
 
 
     // ======================================
-    // RESPONSES API + GERAÇÃO DE IMAGEM
+    // RESPONSES API
     // ======================================
 
     const parametros = {
@@ -1177,6 +1392,10 @@ ${transcription}`
 
       input,
 
+
+      // ======================================
+      // GERAÇÃO / EDIÇÃO DE IMAGEM
+      // ======================================
 
       tools: [
 
@@ -1209,11 +1428,17 @@ ${transcription}`
       ],
 
 
-      safety_identifier:
-        criarSafetyIdentifier(
-          usuario
-        ),
+      // ======================================
+      // IDENTIFICADOR DE SEGURANÇA
+      // ======================================
 
+      safety_identifier:
+        identificadorUsuario,
+
+
+      // ======================================
+      // MANTER CONTEXTO
+      // ======================================
 
       store:
         true
@@ -1222,7 +1447,7 @@ ${transcription}`
 
 
     // ======================================
-    // MANTER CONTEXTO
+    // CONTINUA CONVERSA
     // ======================================
 
     if (
@@ -1236,7 +1461,7 @@ ${transcription}`
 
 
     // ======================================
-    // FORÇAR IMAGEM QUANDO FOR PEDIDO VISUAL
+    // FORÇA A GERAÇÃO QUANDO PEDIR IMAGEM
     // ======================================
 
     if (
@@ -1261,7 +1486,7 @@ ${transcription}`
 
 
     // ======================================
-    // ENVIA PARA OPENAI
+    // OPENAI
     // ======================================
 
     const response =
@@ -1272,7 +1497,7 @@ ${transcription}`
 
 
     // ======================================
-    // EXTRAI IMAGENS GERADAS
+    // IMAGENS GERADAS
     // ======================================
 
     const imagensGeradas =
@@ -1288,7 +1513,9 @@ ${transcription}`
           ) =>
 
             item?.type ===
-              "image_generation_call" &&
+              "image_generation_call"
+
+            &&
 
             item?.result
         )
@@ -1337,6 +1564,10 @@ ${transcription}`
       );
 
 
+    // ======================================
+    // SEM RESPOSTA
+    // ======================================
+
     if (
 
       !resposta &&
@@ -1359,7 +1590,7 @@ ${transcription}`
 
 
     // ======================================
-    // RETORNA AO FRONTEND
+    // SUCESSO
     // ======================================
 
     return res
@@ -1387,6 +1618,10 @@ ${transcription}`
     error
   ) {
 
+
+    // ======================================
+    // LOG DO SERVIDOR
+    // ======================================
 
     console.error(
       "Erro Assistente Synter:",
@@ -1420,7 +1655,35 @@ ${transcription}`
 
 
     // ======================================
-    // ERROS DE ARQUIVO / FORMATO
+    // RATE LIMIT UPSTASH / REDIS
+    // ======================================
+
+    if (
+
+      mensagemMinuscula.includes(
+        "upstash"
+      ) ||
+
+      mensagemMinuscula.includes(
+        "redis"
+      )
+
+    ) {
+
+      return res
+        .status(503)
+        .json({
+
+          error:
+            "O serviço de proteção contra excesso de requisições está temporariamente indisponível. Tente novamente em alguns instantes."
+
+        });
+
+    }
+
+
+    // ======================================
+    // ARQUIVO NÃO SUPORTADO
     // ======================================
 
     if (
@@ -1455,6 +1718,10 @@ ${transcription}`
 
     }
 
+
+    // ======================================
+    // ERROS DE CONTEÚDO
+    // ======================================
 
     if (
 
@@ -1518,6 +1785,30 @@ ${transcription}`
 
           error:
             "Não foi possível gerar a imagem no momento. Tente novamente em alguns instantes."
+
+        });
+
+    }
+
+
+    // ======================================
+    // RATE LIMIT OPENAI
+    // ======================================
+
+    if (
+      error?.status ===
+      429
+    ) {
+
+      return res
+        .status(429)
+        .json({
+
+          error:
+            "O limite temporário do serviço foi atingido. Aguarde alguns instantes e tente novamente.",
+
+          code:
+            "SERVICE_RATE_LIMIT"
 
         });
 
