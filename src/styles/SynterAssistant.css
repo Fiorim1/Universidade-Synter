@@ -1,706 +1,2840 @@
 /* ======================================== */
+
 /* ASSISTENTE SYNTER                        */
+
 /* ======================================== */
 
+
+
 .synter-assistant {
+
     position: fixed;
 
+
+
     right: 28px;
+
     bottom: 28px;
+
+
 
     z-index: 9999;
 
+
+
     font-family: inherit;
 
+
+
     pointer-events: none;
+
 }
 
 
+
+
+
 /* ======================================== */
+
 /* BOTÃO FLUTUANTE                          */
+
 /* ======================================== */
+
+
 
 .synter-assistant-button {
+
     width: 62px;
+
     height: 62px;
 
-    flex: 0 0 62px;
+
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
+
 
     padding: 0;
 
+
+
     border:
+
         1px solid
+
         rgba(255, 255, 255, 0.18);
+
+
 
     border-radius: 50%;
 
+
+
     background:
+
         linear-gradient(
+
             145deg,
+
             #ffffff,
+
             #d9d9d9
+
         );
+
+
 
     color: #080808;
 
+
+
     font-family: inherit;
 
+
+
     font-size: 15px;
+
     font-weight: 800;
+
+
 
     letter-spacing: 1px;
 
+
+
     cursor: pointer;
+
+
 
     pointer-events: auto;
 
+
+
     box-sizing: border-box;
 
+
+
     box-shadow:
+
         0 15px 45px
+
         rgba(0, 0, 0, 0.55);
 
+
+
     transition:
+
         transform 0.25s ease,
+
         box-shadow 0.25s ease;
+
 }
+
+
+
 
 
 .synter-assistant-button:hover {
+
     transform:
+
         translateY(-3px)
+
         scale(1.03);
 
+
+
     box-shadow:
+
         0 18px 50px
+
         rgba(0, 0, 0, 0.70);
+
 }
 
 
+
+
+
 /* ======================================== */
+
 /* CHAT                                     */
+
 /* ======================================== */
+
+
 
 .synter-chat {
+
     position: absolute;
 
+
+
     right: 0;
+
     bottom: 78px;
+
+
 
     width: 390px;
 
+
+
     max-width:
+
         calc(100vw - 32px);
+
+
 
     height: 570px;
 
+
+
     max-height:
+
         calc(100vh - 130px);
 
-    min-width: 0;
+
 
     display: flex;
+
     flex-direction: column;
+
+
 
     overflow: hidden;
 
+
+
     border:
+
         1px solid
+
         rgba(255, 255, 255, 0.12);
+
+
 
     border-radius: 18px;
 
+
+
     background: #0b0b0b;
+
+
 
     box-sizing: border-box;
 
+
+
     box-shadow:
+
         0 25px 80px
+
         rgba(0, 0, 0, 0.70);
 
+
+
     animation:
+
         synterChatOpen
+
         0.22s ease;
 
+
+
     pointer-events: auto;
+
 }
+
+
+
 
 
 @keyframes synterChatOpen {
 
+
+
     from {
+
         opacity: 0;
 
+
+
         transform:
+
             translateY(15px)
+
             scale(0.97);
+
     }
+
+
 
     to {
+
         opacity: 1;
 
+
+
         transform:
+
             translateY(0)
+
             scale(1);
+
     }
+
+
 
 }
 
 
-/* ======================================== */
-/* HEADER                                   */
+
+
+
 /* ======================================== */
 
+/* HEADER                                   */
+
+/* ======================================== */
+
+
+
 .synter-chat-header {
+
     width: 100%;
+
+
 
     min-height: 75px;
 
+
+
     padding:
+
         0
+
         18px;
 
+
+
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
+
+
     gap: 12px;
+
+
 
     flex-shrink: 0;
 
+
+
     border-bottom:
+
         1px solid
+
         rgba(255, 255, 255, 0.08);
 
+
+
     background:
+
         linear-gradient(
+
             135deg,
+
             #111111,
+
             #080808
+
         );
 
+
+
     box-sizing: border-box;
+
 }
 
 
+
+
+
 /* ======================================== */
-/* USUÁRIO                                  */
+
+/* IDENTIFICAÇÃO                            */
+
 /* ======================================== */
+
+
 
 .synter-chat-user {
+
     min-width: 0;
 
+
+
     display: flex;
+
     align-items: center;
 
+
+
     gap: 11px;
+
 }
+
+
+
 
 
 .synter-chat-avatar {
+
     width: 40px;
+
     height: 40px;
+
+
 
     flex: 0 0 40px;
 
+
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
+
 
     border-radius: 50%;
 
+
+
     background: #ffffff;
+
+
 
     color: #090909;
 
+
+
     font-size: 16px;
+
     font-weight: 800;
+
 }
+
+
+
 
 
 .synter-chat-user > div:last-child {
+
     min-width: 0;
 
+
+
     display: flex;
+
     flex-direction: column;
 
+
+
     gap: 4px;
+
 }
+
+
+
 
 
 .synter-chat-user strong {
+
     color: #ffffff;
 
+
+
     font-size: 13px;
+
     font-weight: 600;
+
+
 
     white-space: nowrap;
 
+
+
     overflow: hidden;
+
     text-overflow: ellipsis;
+
 }
+
+
+
 
 
 .synter-chat-user span {
+
     color: #686868;
+
+
 
     font-size: 9px;
 
+
+
     letter-spacing: 0.5px;
+
+
 
     white-space: nowrap;
 
+
+
     overflow: hidden;
+
     text-overflow: ellipsis;
+
 }
 
 
-/* ======================================== */
-/* FECHAR                                   */
+
+
+
 /* ======================================== */
 
+/* FECHAR                                   */
+
+/* ======================================== */
+
+
+
 .synter-chat-close {
+
     width: 34px;
+
     height: 34px;
+
+
 
     flex: 0 0 34px;
 
+
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
+
 
     padding: 0;
 
+
+
     border: none;
 
+
+
     border-radius: 50%;
+
+
 
     background: transparent;
 
+
+
     color: #777777;
+
+
 
     font-size: 24px;
 
+
+
     cursor: pointer;
 
+
+
     transition:
+
         color 0.2s ease,
+
         background 0.2s ease;
+
 }
+
+
+
 
 
 .synter-chat-close:hover {
+
     color: #ffffff;
 
+
+
     background:
+
         rgba(255, 255, 255, 0.07);
+
 }
 
 
-/* ======================================== */
-/* MENSAGENS                                */
+
+
+
 /* ======================================== */
 
+/* MENSAGENS                                */
+
+/* ======================================== */
+
+
+
 .synter-chat-messages {
+
     width: 100%;
+
+
 
     flex: 1;
 
+
+
     min-height: 0;
 
+
+
     padding:
+
         20px
+
         16px;
 
+
+
     display: flex;
+
     flex-direction: column;
+
+
 
     gap: 12px;
 
+
+
     overflow-y: auto;
+
     overflow-x: hidden;
 
-    overscroll-behavior: contain;
+
 
     background: #090909;
 
+
+
     box-sizing: border-box;
+
+
+
+    overscroll-behavior: contain;
+
+
 
     scrollbar-width: thin;
 
+
+
     scrollbar-color:
+
         #303030
+
         transparent;
+
 }
 
 
+
+
+
 /* ======================================== */
+
 /* BALÕES                                   */
+
 /* ======================================== */
+
+
 
 .synter-message {
-    max-width: 84%;
 
-    min-width: 0;
+    max-width: 82%;
+
+
 
     padding:
+
         11px
+
         13px;
+
+
 
     border-radius: 13px;
 
+
+
     font-size: 12px;
+
+
 
     line-height: 1.55;
 
+
+
     white-space: pre-wrap;
 
+
+
     word-break: break-word;
+
     overflow-wrap: anywhere;
 
+
+
     box-sizing: border-box;
+
 }
+
+
+
 
 
 .synter-message-assistant {
+
     align-self: flex-start;
 
+
+
     border:
+
         1px solid
+
         rgba(255, 255, 255, 0.08);
+
+
 
     border-bottom-left-radius: 4px;
 
+
+
     background: #121212;
 
+
+
     color: #d4d4d4;
+
 }
+
+
+
 
 
 .synter-message-user {
+
     align-self: flex-end;
+
+
 
     border-bottom-right-radius: 4px;
 
+
+
     background: #ffffff;
 
+
+
     color: #090909;
+
 }
+
+
+
 
 
 .synter-message-text {
+
     white-space: pre-wrap;
 
+
+
     word-break: break-word;
+
     overflow-wrap: anywhere;
+
 }
 
 
-/* ======================================== */
-/* IMAGEM NA MENSAGEM                       */
+
+
+
 /* ======================================== */
 
+/* IMAGEM ENVIADA                           */
+
+/* ======================================== */
+
+
+
 .synter-message-image {
+
     display: block;
+
+
 
     width: 100%;
 
+
+
     max-width: 260px;
+
     max-height: 280px;
 
+
+
     margin-bottom: 9px;
+
+
 
     object-fit: contain;
 
+
+
     border-radius: 9px;
+
+
 
     background: #eeeeee;
+
 }
+
+
+
 
 
 /* ======================================== */
-/* ARQUIVO NA MENSAGEM                      */
-/* ======================================== */
 
-.synter-message-file {
-    width: 100%;
-
-    min-width: 200px;
-
-    margin-bottom: 9px;
-
-    padding:
-        9px
-        10px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 9px;
-
-    border:
-        1px solid
-        rgba(0, 0, 0, 0.10);
-
-    border-radius: 9px;
-
-    background:
-        rgba(0, 0, 0, 0.045);
-
-    box-sizing: border-box;
-}
-
-
-.synter-file-icon {
-    width: 34px;
-    height: 34px;
-
-    flex: 0 0 34px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 8px;
-
-    background:
-        rgba(0, 0, 0, 0.08);
-
-    font-size: 17px;
-}
-
-
-.synter-file-info {
-    min-width: 0;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 2px;
-}
-
-
-.synter-file-info strong {
-    max-width: 190px;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
-
-    font-size: 10px;
-}
-
-
-.synter-file-info span {
-    font-size: 8px;
-
-    opacity: 0.55;
-}
-
+/* ÁUDIO ENVIADO                            */
 
 /* ======================================== */
-/* ÁUDIO NA MENSAGEM                        */
-/* ======================================== */
+
+
 
 .synter-message-audio {
+
     width: 100%;
 
-    min-width: 0;
+
 
     display: flex;
+
     flex-direction: column;
+
+
 
     gap: 5px;
 
+
+
     margin-bottom: 8px;
+
 }
+
+
+
 
 
 .synter-message-audio audio {
+
     width: 100%;
+
+
 
     max-width: 260px;
 
+
+
     height: 38px;
+
 }
+
+
+
 
 
 .synter-message-audio small {
+
     font-size: 8px;
 
+
+
     opacity: 0.55;
+
 }
 
 
-/* ======================================== */
-/* TRANSCRIÇÃO                              */
+
+
+
 /* ======================================== */
 
+/* TRANSCRIÇÃO                              */
+
+/* ======================================== */
+
+
+
 .synter-message-transcription {
+
     margin-top: 8px;
+
+
 
     padding-top: 8px;
 
+
+
     border-top:
+
         1px solid
+
         rgba(0, 0, 0, 0.10);
+
 }
+
+
+
 
 
 .synter-message-transcription span {
+
     display: block;
+
+
 
     margin-bottom: 4px;
 
+
+
     font-size: 8px;
+
     font-weight: 800;
+
+
 
     text-transform: uppercase;
 
+
+
     letter-spacing: 0.6px;
 
+
+
     opacity: 0.5;
+
 }
+
+
+
 
 
 .synter-message-transcription p {
+
     margin: 0;
+
+
 
     font-size: 10px;
 
+
+
     line-height: 1.45;
 
+
+
     opacity: 0.75;
+
 }
 
 
-/* ======================================== */
-/* DIGITANDO                                */
+
+
+
 /* ======================================== */
 
+/* DIGITANDO                                */
+
+/* ======================================== */
+
+
+
 .synter-typing {
+
     display: flex;
+
+
 
     align-items: center;
 
+
+
     gap: 5px;
 
+
+
     width: fit-content;
+
 }
+
+
+
 
 
 .synter-typing span {
+
     width: 6px;
+
     height: 6px;
+
+
 
     border-radius: 50%;
 
+
+
     background: #747474;
 
+
+
     animation:
+
         synterTyping
+
         1.1s infinite;
+
 }
+
+
+
 
 
 .synter-typing span:nth-child(2) {
+
     animation-delay: 0.15s;
+
 }
+
+
+
 
 
 .synter-typing span:nth-child(3) {
+
     animation-delay: 0.3s;
+
 }
+
+
+
 
 
 @keyframes synterTyping {
 
+
+
     0%,
+
     60%,
+
     100% {
+
         opacity: 0.35;
 
+
+
         transform:
+
             translateY(0);
+
     }
+
+
 
     30% {
+
         opacity: 1;
 
+
+
         transform:
+
             translateY(-3px);
+
     }
+
+
 
 }
 
 
-/* ======================================== */
-/* FORMULÁRIO                               */
+
+
+
 /* ======================================== */
 
+/* FORMULÁRIO                               */
+
+/* ======================================== */
+
+
+
 .synter-chat-form {
+
     width: 100%;
+
+
 
     flex-shrink: 0;
 
+
+
     display: flex;
+
     flex-direction: column;
+
+
 
     gap: 8px;
 
+
+
     padding:
+
         10px
+
         12px;
 
+
+
     border-top:
+
         1px solid
+
         rgba(255, 255, 255, 0.08);
+
+
 
     background: #0c0c0c;
 
+
+
     box-sizing: border-box;
+
 }
+
+
+
 
 
 .synter-file-input {
+
     display: none;
+
 }
 
 
-/* ======================================== */
-/* ÁREA DE ANEXOS                           */
+
+
+
 /* ======================================== */
 
-.synter-attachment-area {
+/* LINHA DO CAMPO                           */
+
+/* ======================================== */
+
+
+
+.synter-chat-compose-row {
+
     width: 100%;
+
+
+
+    display: flex;
+
+    align-items: flex-end;
+
+
+
+    gap: 7px;
+
+}
+
+
+
+
+
+/* ======================================== */
+
+/* TEXTAREA                                 */
+
+/* ======================================== */
+
+
+
+.synter-chat-compose-row textarea {
+
+    flex: 1;
+
+
 
     min-width: 0;
 
-    display: flex;
-    flex-direction: column;
 
-    gap: 7px;
+
+    min-height: 44px;
+
+    max-height: 100px;
+
+
+
+    padding:
+
+        12px
+
+        13px;
+
+
+
+    resize: none;
+
+
+
+    border:
+
+        1px solid
+
+        rgba(255, 255, 255, 0.10);
+
+
+
+    border-radius: 10px;
+
+
+
+    outline: none;
+
+
+
+    background: #121212;
+
+
+
+    color: #ffffff;
+
+
+
+    font-family: inherit;
+
+
+
+    font-size: 12px;
+
+
+
+    line-height: 1.4;
+
+
+
+    box-sizing: border-box;
+
 }
 
 
-/* ======================================== */
-/* PRÉVIAS                                  */
+
+
+
+.synter-chat-compose-row textarea::placeholder {
+
+    color: #555555;
+
+}
+
+
+
+
+
+.synter-chat-compose-row textarea:focus {
+
+    border-color:
+
+        rgba(255, 255, 255, 0.28);
+
+}
+
+
+
+
+
 /* ======================================== */
 
-.synter-image-preview,
-.synter-file-preview,
-.synter-audio-preview,
-.synter-recording-preview,
-.synter-attachment-processing {
+/* BOTÕES FOTO E MICROFONE                  */
+
+/* ======================================== */
+
+
+
+.synter-chat-tool-button {
+
+    width: 42px;
+
+    height: 44px;
+
+
+
+    flex: 0 0 42px;
+
+
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+
+
+    padding: 0;
+
+
+
+    border:
+
+        1px solid
+
+        rgba(255, 255, 255, 0.11);
+
+
+
+    border-radius: 10px;
+
+
+
+    background: #121212;
+
+
+
+    color: #b2b2b2;
+
+
+
+    font-family: inherit;
+
+
+
+    font-size: 21px;
+
+
+
+    cursor: pointer;
+
+
+
+    box-sizing: border-box;
+
+
+
+    transition:
+
+        background 0.2s ease,
+
+        border-color 0.2s ease,
+
+        color 0.2s ease;
+
+}
+
+
+
+
+
+.synter-chat-tool-button:hover:not(:disabled) {
+
+    background: #181818;
+
+
+
+    border-color:
+
+        rgba(255, 255, 255, 0.22);
+
+
+
+    color: #ffffff;
+
+}
+
+
+
+
+
+.synter-chat-mic-button svg {
+
+    width: 17px;
+
+    height: 17px;
+
+}
+
+
+
+
+
+.synter-chat-mic-button.gravando {
+
+    color: #ff8d8d;
+
+
+
+    border-color:
+
+        rgba(255, 90, 90, 0.26);
+
+
+
+    background:
+
+        rgba(255, 70, 70, 0.07);
+
+}
+
+
+
+
+
+.synter-stop-icon {
+
+    width: 10px;
+
+    height: 10px;
+
+
+
+    border-radius: 2px;
+
+
+
+    background: currentColor;
+
+}
+
+
+
+
+
+/* ======================================== */
+
+/* BOTÃO ENVIAR                             */
+
+/* ======================================== */
+
+
+
+.synter-chat-send-button {
+
+    width: 44px;
+
+    height: 44px;
+
+
+
+    flex: 0 0 44px;
+
+
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+
+
+    padding: 0;
+
+
+
+    border: none;
+
+
+
+    border-radius: 10px;
+
+
+
+    background: #ffffff;
+
+
+
+    color: #090909;
+
+
+
+    font-family: inherit;
+
+
+
+    font-size: 20px;
+
+
+
+    cursor: pointer;
+
+
+
+    box-sizing: border-box;
+
+
+
+    transition:
+
+        background 0.2s ease,
+
+        transform 0.2s ease;
+
+}
+
+
+
+
+
+.synter-chat-send-button:hover:not(:disabled) {
+
+    background: #dedede;
+
+
+
+    transform:
+
+        translateY(-1px);
+
+}
+
+
+
+
+
+.synter-chat-tool-button:disabled,
+
+.synter-chat-send-button:disabled {
+
+    opacity: 0.35;
+
+
+
+    cursor: not-allowed;
+
+}
+
+
+
+
+
+/* ======================================== */
+
+/* ÁREA DE ANEXOS                           */
+
+/* ======================================== */
+
+
+
+.synter-attachment-area {
+
     width: 100%;
 
+
+
+    display: flex;
+
+    flex-direction: column;
+
+
+
+    gap: 7px;
+
+}
+
+
+
+
+
+.synter-image-preview,
+
+.synter-audio-preview,
+
+.synter-recording-preview,
+
+.synter-attachment-processing {
+
+    width: 100%;
+
+
+
     padding: 8px;
+
+
+
+    border:
+
+        1px solid
+
+        rgba(255, 255, 255, 0.09);
+
+
+
+    border-radius: 10px;
+
+
+
+    background:
+
+        rgba(255, 255, 255, 0.025);
+
+
+
+    box-sizing: border-box;
+
+}
+
+
+
+
+
+/* ======================================== */
+
+/* PRÉVIA DA IMAGEM                         */
+
+/* ======================================== */
+
+
+
+.synter-image-preview {
+
+    display: grid;
+
+
+
+    grid-template-columns:
+
+        48px
+
+        minmax(0, 1fr)
+
+        28px;
+
+
+
+    align-items: center;
+
+
+
+    gap: 9px;
+
+}
+
+
+
+
+
+.synter-image-preview img {
+
+    width: 48px;
+
+    height: 48px;
+
+
+
+    object-fit: cover;
+
+
+
+    border-radius: 7px;
+
+}
+
+
+
+
+
+.synter-image-preview > div {
+
+    min-width: 0;
+
+
+
+    display: flex;
+
+    flex-direction: column;
+
+
+
+    gap: 3px;
+
+}
+
+
+
+
+
+.synter-image-preview strong {
+
+    color: #eeeeee;
+
+
+
+    font-size: 10px;
+
+}
+
+
+
+
+
+.synter-image-preview span {
+
+    color: #777777;
+
+
+
+    font-size: 8px;
+
+
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+
+
+
+/* ======================================== */
+
+/* REMOVER ANEXO                            */
+
+/* ======================================== */
+
+
+
+.synter-attachment-remove {
+
+    width: 28px;
+
+    height: 28px;
+
+
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+
+
+    padding: 0;
+
+
+
+    border:
+
+        1px solid
+
+        rgba(255, 255, 255, 0.08);
+
+
+
+    border-radius: 7px;
+
+
+
+    background:
+
+        rgba(255, 255, 255, 0.025);
+
+
+
+    color: #888888;
+
+
+
+    font-size: 17px;
+
+
+
+    cursor: pointer;
+
+}
+
+
+
+
+
+.synter-attachment-remove:hover:not(:disabled) {
+
+    color: #ffffff;
+
+
+
+    background:
+
+        rgba(255, 255, 255, 0.07);
+
+}
+
+
+
+
+
+/* ======================================== */
+
+/* PRÉVIA DO ÁUDIO                          */
+
+/* ======================================== */
+
+
+
+.synter-audio-preview {
+
+    display: grid;
+
+
+
+    grid-template-columns:
+
+        minmax(0, 1fr)
+
+        auto
+
+        28px;
+
+
+
+    align-items: center;
+
+
+
+    gap: 8px;
+
+}
+
+
+
+
+
+.synter-audio-preview audio {
+
+    width: 100%;
+
+
+
+    min-width: 0;
+
+
+
+    height: 36px;
+
+}
+
+
+
+
+
+.synter-audio-preview > span {
+
+    color: #777777;
+
+
+
+    font-size: 9px;
+
+}
+
+
+
+
+
+/* ======================================== */
+
+/* GRAVAÇÃO                                 */
+
+/* ======================================== */
+
+
+
+.synter-recording-preview {
+
+    display: flex;
+
+
+
+    align-items: center;
+
+    justify-content: space-between;
+
+
+
+    gap: 12px;
+
+}
+
+
+
+
+
+.synter-recording-status {
+
+    display: flex;
+
+    align-items: center;
+
+
+
+    gap: 7px;
+
+
+
+    color: #d6d6d6;
+
+}
+
+
+
+
+
+.synter-recording-dot {
+
+    width: 7px;
+
+    height: 7px;
+
+
+
+    border-radius: 50%;
+
+
+
+    background: #ff6565;
+
+
+
+    animation:
+
+        synterRecordingPulse
+
+        1.1s infinite;
+
+}
+
+
+
+
+
+@keyframes synterRecordingPulse {
+
+
+
+    0%,
+
+    100% {
+
+        opacity: 0.4;
+
+    }
+
+
+
+    50% {
+
+        opacity: 1;
+
+    }
+
+
+
+}
+
+
+
+
+
+.synter-recording-status strong {
+
+    font-size: 9px;
+
+
+
+    text-transform: uppercase;
+
+
+
+    letter-spacing: 0.6px;
+
+}
+
+
+
+
+
+.synter-recording-status time {
+
+    color: #777777;
+
+
+
+    font-size: 9px;
+
+}
+
+
+
+
+
+.synter-recording-actions {
+
+    display: flex;
+
+
+
+    gap: 6px;
+
+}
+
+
+
+
+
+.synter-recording-actions button {
+
+    min-height: 30px;
+
+
+
+    padding:
+
+        0
+
+        10px;
+
+
+
+    border:
+
+        1px solid
+
+        rgba(255, 255, 255, 0.10);
+
+
+
+    border-radius: 7px;
+
+
+
+    background:
+
+        rgba(255, 255, 255, 0.025);
+
+
+
+    color: #9a9a9a;
+
+
+
+    font-family: inherit;
+
+
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+
+
+    cursor: pointer;
+
+}
+
+
+
+
+
+.synter-recording-actions
+
+.synter-recording-stop {
+
+    color: #ffaaaa;
+
+
+
+    border-color:
+
+        rgba(255, 90, 90, 0.22);
+
+
+
+    background:
+
+        rgba(255, 70, 70, 0.06);
+
+}
+
+
+
+
+
+/* ======================================== */
+
+/* PROCESSANDO                              */
+
+/* ======================================== */
+
+
+
+.synter-attachment-processing {
+
+    color: #888888;
+
+
+
+    font-size: 9px;
+
+}
+
+
+
+
+
+/* ======================================== */
+
+/* ERRO                                     */
+
+/* ======================================== */
+
+
+
+.synter-media-error {
+
+    padding:
+
+        8px
+
+        10px;
+
+
+
+    border:
+
+        1px solid
+
+        rgba(255, 95, 95, 0.18);
+
+
+
+    border-radius: 8px;
+
+
+
+    background:
+
+        rgba(255, 80, 80, 0.05);
+
+
+
+    color: #d89595;
+
+
+
+    font-size: 9px;
+
+
+
+    line-height: 1.4;
+
+}
+
+
+
+
+
+/* ======================================== */
+
+/* FOOTER                                   */
+
+/* ======================================== */
+
+
+
+.synter-chat-footer {
+
+    width: 100%;
+
+
+
+    padding:
+
+        6px
+
+        15px
+
+        9px;
+
+
+
+    flex-shrink: 0;
+
+
+
+    background: #0c0c0c;
+
+
+
+    color: #444444;
+
+
+
+    font-size: 8px;
+
+
+
+    text-align: center;
+
+
+
+    letter-spacing: 0.5px;
+
+
+
+    box-sizing: border-box;
+
+}
+
+
+
+
+
+/* ======================================== */
+
+/* TABLET                                   */
+
+/* ======================================== */
+
+
+
+@media (max-width: 768px) {
+
+
+
+    .synter-assistant {
+
+        right:
+
+            max(
+
+                18px,
+
+                env(safe-area-inset-right)
+
+            );
+
+
+
+        bottom:
+
+            max(
+
+                18px,
+
+                env(safe-area-inset-bottom)
+
+            );
+
+    }
+
+
+
+
+
+    .synter-chat {
+
+        width:
+
+            min(
+
+                390px,
+
+                calc(100vw - 32px)
+
+            );
+
+    }
+
+
+
+}
+
+
+
+
+
+/* ======================================== */
+
+/* MOBILE                                   */
+
+/* ======================================== */
+
+
+
+@media (max-width: 500px) {
+
+
+
+    .synter-assistant {
+
+        right:
+
+            max(
+
+                14px,
+
+                env(safe-area-inset-right)
+
+            );
+
+
+
+        bottom:
+
+            max(
+
+                14px,
+
+                env(safe-area-inset-bottom)
+
+            );
+
+    }
+
+
+
+
+
+    .synter-assistant-button {
+
+        width: 54px;
+
+        height: 54px;
+
+
+
+        font-size: 13px;
+
+    }
+
+
+
+
+
+    .synter-chat {
+
+        position: fixed;
+
+
+
+        top:
+
+            max(
+
+                12px,
+
+                env(safe-area-inset-top)
+
+            );
+
+
+
+        right:
+
+            max(
+
+                10px,
+
+                env(safe-area-inset-right)
+
+            );
+
+
+
+        bottom:
+
+            max(
+
+                78px,
+
+                calc(
+
+                    env(safe-area-inset-bottom) + 68px
+
+                )
+
+            );
+
+
+
+        left:
+
+            max(
+
+                10px,
+
+                env(safe-area-inset-left)
+
+            );
+
+
+
+        width: auto;
+
+        height: auto;
+
+
+
+        max-width: none;
+
+        max-height: none;
+
+
+
+        border-radius: 16px;
+
+    }
+
+
+
+
+
+    .synter-chat-header {
+
+        min-height: 66px;
+
+
+
+        padding:
+
+            0
+
+            14px;
+
+    }
+
+
+
+
+
+    .synter-chat-avatar {
+
+        width: 36px;
+
+        height: 36px;
+
+
+
+        flex-basis: 36px;
+
+
+
+        font-size: 14px;
+
+    }
+
+
+
+
+
+    .synter-chat-user strong {
+
+        font-size: 12px;
+
+    }
+
+
+
+
+
+    .synter-chat-user span {
+
+        font-size: 8.5px;
+
+    }
+
+
+
+
+
+    .synter-chat-messages {
+
+        padding:
+
+            16px
+
+            12px;
+
+    }
+
+
+
+
+
+    .synter-message {
+
+        max-width: 88%;
+
+
+
+        font-size: 11.5px;
+
+    }
+
+
+
+
+
+    .synter-chat-form {
+
+        padding:
+
+            9px
+
+            10px;
+
+    }
+
+
+
+
+
+    .synter-chat-compose-row {
+
+        gap: 6px;
+
+    }
+
+
+
+
+
+    .synter-chat-compose-row textarea {
+
+        min-height: 44px;
+
+        max-height: 96px;
+
+
+
+        padding:
+
+            11px
+
+            12px;
+
+
+
+        font-size: 16px;
+
+    }
+
+
+
+
+
+    .synter-chat-tool-button {
+
+        width: 38px;
+
+
+
+        flex-basis: 38px;
+
+    }
+
+
+
+
+
+    .synter-chat-send-button {
+
+        width: 42px;
+
+
+
+        flex-basis: 42px;
+
+    }
+
+
+
+
+
+    .synter-recording-preview {
+
+        flex-direction: column;
+
+
+
+        align-items: stretch;
+
+    }
+
+
+
+
+
+    .synter-recording-actions {
+
+        justify-content: flex-end;
+
+    }
+
+
+
+
+
+    .synter-message-image {
+
+        max-width: 100%;
+
+    }
+
+
+
+}
+
+
+
+
+
+/* ======================================== */
+
+/* CELULAR PEQUENO                          */
+
+/* ======================================== */
+
+
+
+@media (max-width: 380px) {
+
+
+
+    .synter-assistant {
+
+        right:
+
+            max(
+
+                12px,
+
+                env(safe-area-inset-right)
+
+            );
+
+
+
+        bottom:
+
+            max(
+
+                12px,
+
+                env(safe-area-inset-bottom)
+
+            );
+
+    }
+
+
+
+
+
+    .synter-assistant-button {
+
+        width: 50px;
+
+        height: 50px;
+
+
+
+        font-size: 12px;
+
+    }
+
+
+
+
+
+    .synter-chat {
+
+        top:
+
+            max(
+
+                8px,
+
+                env(safe-area-inset-top)
+
+            );
+
+
+
+        right:
+
+            max(
+
+                8px,
+
+                env(safe-area-inset-right)
+
+            );
+
+
+
+        bottom:
+
+            max(
+
+                70px,
+
+                calc(
+
+                    env(safe-area-inset-bottom) + 60px
+
+                )
+
+            );
+
+
+
+        left:
+
+            max(
+
+                8px,
+
+                env(safe-area-inset-left)
+
+            );
+
+    }
+
+
+
+
+
+    .synter-chat-tool-button {
+
+        width: 34px;
+
+
+
+        flex-basis: 34px;
+
+    }
+
+
+
+
+
+    .synter-chat-send-button {
+
+        width: 38px;
+
+
+
+        flex-basis: 38px;
+
+    }
+
+
+
+
+
+    .synter-audio-preview {
+
+        grid-template-columns:
+
+            minmax(0, 1fr)
+
+            28px;
+
+    }
+
+
+
+
+
+    .synter-audio-preview > span {
+
+        display: none;
+
+    }
+
+
+
+}
+
+/* ======================================== */
+/* ARQUIVOS GENÉRICOS                       */
+/* ======================================== */
+
+.synter-file-preview {
+    width: 100%;
+    min-width: 0;
+
+    padding: 8px;
+
+    display: grid;
+    grid-template-columns:
+        42px
+        minmax(0, 1fr)
+        28px;
+
+    align-items: center;
+
+    gap: 9px;
 
     border:
         1px solid
@@ -715,85 +2849,11 @@
 }
 
 
-/* ======================================== */
-/* IMAGEM                                   */
-/* ======================================== */
-
-.synter-image-preview {
-    display: grid;
-
-    grid-template-columns:
-        48px
-        minmax(0, 1fr)
-        28px;
-
-    align-items: center;
-
-    gap: 9px;
-}
-
-
-.synter-image-preview img {
-    width: 48px;
-    height: 48px;
-
-    object-fit: cover;
-
-    border-radius: 7px;
-
-    background: #151515;
-}
-
-
-.synter-image-preview > div {
-    min-width: 0;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 3px;
-}
-
-
-.synter-image-preview strong {
-    color: #eeeeee;
-
-    font-size: 10px;
-}
-
-
-.synter-image-preview span {
-    color: #777777;
-
-    font-size: 8px;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-
-/* ======================================== */
-/* ARQUIVO                                  */
-/* ======================================== */
-
-.synter-file-preview {
-    display: grid;
-
-    grid-template-columns:
-        42px
-        minmax(0, 1fr)
-        28px;
-
-    align-items: center;
-
-    gap: 9px;
-}
-
-
-.synter-file-preview-icon {
+.synter-file-icon {
     width: 42px;
     height: 42px;
+
+    flex: 0 0 42px;
 
     display: flex;
     align-items: center;
@@ -801,13 +2861,20 @@
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.08);
+        rgba(255, 255, 255, 0.10);
 
     border-radius: 8px;
 
     background: #151515;
 
-    font-size: 18px;
+    color: #d4d4d4;
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: 0.7px;
+
+    box-sizing: border-box;
 }
 
 
@@ -822,9 +2889,12 @@
 
 
 .synter-file-preview-info strong {
+    min-width: 0;
+
     color: #eeeeee;
 
     font-size: 10px;
+    font-weight: 700;
 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -833,7 +2903,9 @@
 
 
 .synter-file-preview-info span {
-    color: #6f6f6f;
+    min-width: 0;
+
+    color: #777777;
 
     font-size: 8px;
 
@@ -844,812 +2916,122 @@
 
 
 /* ======================================== */
-/* REMOVER ANEXO                            */
+/* ARQUIVO DENTRO DA MENSAGEM               */
 /* ======================================== */
 
-.synter-attachment-remove {
-    width: 28px;
-    height: 28px;
+.synter-message-file {
+    width: 100%;
+    min-width: 0;
 
-    flex: 0 0 28px;
+    margin-bottom: 8px;
+    padding: 8px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.08);
-
-    border-radius: 7px;
-
-    background:
-        rgba(255, 255, 255, 0.025);
-
-    color: #888888;
-
-    font-size: 17px;
-
-    cursor: pointer;
-}
-
-
-.synter-attachment-remove:hover:not(:disabled) {
-    color: #ffffff;
-
-    background:
-        rgba(255, 255, 255, 0.07);
-}
-
-
-.synter-attachment-remove:disabled {
-    opacity: 0.35;
-
-    cursor: not-allowed;
-}
-
-
-/* ======================================== */
-/* ÁUDIO                                    */
-/* ======================================== */
-
-.synter-audio-preview {
     display: grid;
-
     grid-template-columns:
-        minmax(0, 1fr)
-        auto
-        28px;
+        38px
+        minmax(0, 1fr);
 
     align-items: center;
 
     gap: 8px;
-}
-
-
-.synter-audio-preview audio {
-    width: 100%;
-
-    min-width: 0;
-
-    height: 36px;
-}
-
-
-.synter-audio-preview > span {
-    color: #777777;
-
-    font-size: 9px;
-}
-
-
-/* ======================================== */
-/* GRAVAÇÃO                                 */
-/* ======================================== */
-
-.synter-recording-preview {
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 12px;
-}
-
-
-.synter-recording-status {
-    min-width: 0;
-
-    display: flex;
-    align-items: center;
-
-    gap: 7px;
-
-    color: #d6d6d6;
-}
-
-
-.synter-recording-dot {
-    width: 7px;
-    height: 7px;
-
-    flex: 0 0 7px;
-
-    border-radius: 50%;
-
-    background: #ff6565;
-
-    animation:
-        synterRecordingPulse
-        1.1s infinite;
-}
-
-
-@keyframes synterRecordingPulse {
-
-    0%,
-    100% {
-        opacity: 0.4;
-    }
-
-    50% {
-        opacity: 1;
-    }
-
-}
-
-
-.synter-recording-status strong {
-    font-size: 9px;
-
-    text-transform: uppercase;
-
-    letter-spacing: 0.6px;
-}
-
-
-.synter-recording-status time {
-    color: #777777;
-
-    font-size: 9px;
-}
-
-
-.synter-recording-actions {
-    display: flex;
-
-    gap: 6px;
-}
-
-
-.synter-recording-actions button {
-    min-height: 30px;
-
-    padding:
-        0
-        10px;
 
     border:
         1px solid
-        rgba(255, 255, 255, 0.10);
+        rgba(0, 0, 0, 0.10);
 
-    border-radius: 7px;
+    border-radius: 9px;
+
+    background:
+        rgba(0, 0, 0, 0.045);
+
+    color: inherit;
+
+    text-decoration: none;
+
+    box-sizing: border-box;
+}
+
+
+.synter-message-assistant
+.synter-message-file {
+    border-color:
+        rgba(255, 255, 255, 0.08);
 
     background:
         rgba(255, 255, 255, 0.025);
+}
 
-    color: #9a9a9a;
 
-    font-family: inherit;
+.synter-message-file
+.synter-file-icon {
+    width: 38px;
+    height: 38px;
 
-    font-size: 8px;
+    flex-basis: 38px;
+
+    background:
+        rgba(0, 0, 0, 0.08);
+
+    color: inherit;
+}
+
+
+.synter-message-assistant
+.synter-message-file
+.synter-file-icon {
+    background: #181818;
+}
+
+
+.synter-file-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.synter-file-info strong {
+    min-width: 0;
+
+    font-size: 10px;
     font-weight: 700;
 
-    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 
-.synter-recording-actions button:hover {
-    color: #ffffff;
-
-    background:
-        rgba(255, 255, 255, 0.06);
-}
-
-
-.synter-recording-actions
-.synter-recording-stop {
-    color: #ffaaaa;
-
-    border-color:
-        rgba(255, 90, 90, 0.22);
-
-    background:
-        rgba(255, 70, 70, 0.06);
-}
-
-
-/* ======================================== */
-/* PROCESSANDO                              */
-/* ======================================== */
-
-.synter-attachment-processing {
-    color: #888888;
-
-    font-size: 9px;
-}
-
-
-/* ======================================== */
-/* ERRO                                     */
-/* ======================================== */
-
-.synter-media-error {
-    padding:
-        8px
-        10px;
-
-    border:
-        1px solid
-        rgba(255, 95, 95, 0.18);
-
-    border-radius: 8px;
-
-    background:
-        rgba(255, 80, 80, 0.05);
-
-    color: #d89595;
-
-    font-size: 9px;
-
-    line-height: 1.4;
-}
-
-
-/* ======================================== */
-/* LINHA PRINCIPAL                          */
-/* ======================================== */
-
-.synter-chat-compose-row {
-    width: 100%;
-
+.synter-file-info small {
     min-width: 0;
-
-    display: flex;
-    align-items: flex-end;
-
-    gap: 7px;
-}
-
-
-/* ======================================== */
-/* TEXTAREA                                 */
-/* ======================================== */
-
-.synter-chat-compose-row textarea {
-    flex: 1 1 auto;
-
-    min-width: 0;
-
-    min-height: 44px;
-    max-height: 100px;
-
-    padding:
-        12px
-        13px;
-
-    resize: none;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.10);
-
-    border-radius: 10px;
-
-    outline: none;
-
-    background: #121212;
-
-    color: #ffffff;
-
-    font-family: inherit;
-
-    font-size: 12px;
-
-    line-height: 1.4;
-
-    box-sizing: border-box;
-}
-
-
-.synter-chat-compose-row textarea::placeholder {
-    color: #555555;
-}
-
-
-.synter-chat-compose-row textarea:focus {
-    border-color:
-        rgba(255, 255, 255, 0.28);
-}
-
-
-.synter-chat-compose-row textarea:disabled {
-    opacity: 0.55;
-}
-
-
-/* ======================================== */
-/* BOTÃO + E MICROFONE                      */
-/* ======================================== */
-
-.synter-chat-tool-button {
-    width: 42px;
-    height: 44px;
-
-    flex: 0 0 42px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.11);
-
-    border-radius: 10px;
-
-    background: #121212;
-
-    color: #b2b2b2;
-
-    font-family: inherit;
-
-    font-size: 21px;
-
-    cursor: pointer;
-
-    box-sizing: border-box;
-
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
-}
-
-
-.synter-chat-tool-button:hover:not(:disabled) {
-    background: #181818;
-
-    border-color:
-        rgba(255, 255, 255, 0.22);
-
-    color: #ffffff;
-
-    transform:
-        translateY(-1px);
-}
-
-
-.synter-chat-tool-button:disabled {
-    opacity: 0.35;
-
-    cursor: not-allowed;
-}
-
-
-.synter-chat-mic-button svg {
-    width: 17px;
-    height: 17px;
-}
-
-
-.synter-chat-mic-button.gravando {
-    color: #ff8d8d;
-
-    border-color:
-        rgba(255, 90, 90, 0.26);
-
-    background:
-        rgba(255, 70, 70, 0.07);
-}
-
-
-.synter-stop-icon {
-    width: 10px;
-    height: 10px;
-
-    border-radius: 2px;
-
-    background: currentColor;
-}
-
-
-/* ======================================== */
-/* ENVIAR                                   */
-/* ======================================== */
-
-.synter-chat-send-button {
-    width: 44px;
-    height: 44px;
-
-    flex: 0 0 44px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background: #ffffff;
-
-    color: #090909;
-
-    font-family: inherit;
-
-    font-size: 20px;
-
-    cursor: pointer;
-
-    box-sizing: border-box;
-
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-}
-
-
-.synter-chat-send-button:hover:not(:disabled) {
-    background: #dedede;
-
-    transform:
-        translateY(-1px);
-}
-
-
-.synter-chat-send-button:disabled {
-    opacity: 0.35;
-
-    cursor: not-allowed;
-}
-
-
-/* ======================================== */
-/* FOOTER                                   */
-/* ======================================== */
-
-.synter-chat-footer {
-    width: 100%;
-
-    padding:
-        6px
-        15px
-        9px;
-
-    flex-shrink: 0;
-
-    background: #0c0c0c;
-
-    color: #444444;
 
     font-size: 8px;
 
-    text-align: center;
+    opacity: 0.58;
 
-    letter-spacing: 0.5px;
-
-    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 
-/* ======================================== */
-/* TABLET                                   */
-/* ======================================== */
-
-@media (max-width: 768px) {
-
-    .synter-assistant {
-        right:
-            max(
-                18px,
-                env(safe-area-inset-right)
-            );
-
-        bottom:
-            max(
-                18px,
-                env(safe-area-inset-bottom)
-            );
-    }
-
-
-    .synter-chat {
-        width:
-            min(
-                390px,
-                calc(100vw - 32px)
-            );
-    }
-
+.synter-message-file:hover {
+    background:
+        rgba(0, 0, 0, 0.075);
 }
 
 
-/* ======================================== */
-/* MOBILE                                   */
-/* ======================================== */
+.synter-message-assistant
+.synter-message-file:hover {
+    background:
+        rgba(255, 255, 255, 0.045);
+}
+
 
 @media (max-width: 500px) {
-
-    .synter-assistant {
-        right:
-            max(
-                14px,
-                env(safe-area-inset-right)
-            );
-
-        bottom:
-            max(
-                14px,
-                env(safe-area-inset-bottom)
-            );
-    }
-
-
-    .synter-assistant-button {
-        width: 54px;
-        height: 54px;
-
-        flex-basis: 54px;
-
-        font-size: 13px;
-    }
-
-
-    .synter-chat {
-        position: fixed;
-
-        top:
-            max(
-                12px,
-                env(safe-area-inset-top)
-            );
-
-        right:
-            max(
-                10px,
-                env(safe-area-inset-right)
-            );
-
-        bottom:
-            max(
-                78px,
-                calc(
-                    env(safe-area-inset-bottom) + 68px
-                )
-            );
-
-        left:
-            max(
-                10px,
-                env(safe-area-inset-left)
-            );
-
-        width: auto;
-
-        height: auto;
-
-        max-width: none;
-        max-height: none;
-
-        border-radius: 16px;
-    }
-
-
-    .synter-chat-header {
-        min-height: 66px;
-
-        padding:
-            0
-            14px;
-    }
-
-
-    .synter-chat-avatar {
-        width: 36px;
-        height: 36px;
-
-        flex-basis: 36px;
-
-        font-size: 14px;
-    }
-
-
-    .synter-chat-user strong {
-        font-size: 12px;
-    }
-
-
-    .synter-chat-user span {
-        font-size: 8.5px;
-    }
-
-
-    .synter-chat-messages {
-        padding:
-            16px
-            12px;
-
-        gap: 10px;
-    }
-
-
-    .synter-message {
-        max-width: 90%;
-
-        padding:
-            10px
-            12px;
-
-        font-size: 11.5px;
-    }
-
-
-    .synter-message-image {
-        max-width: 100%;
-        max-height: 240px;
-    }
-
-
-    .synter-message-file {
-        min-width: 0;
-    }
-
-
-    .synter-file-info strong {
-        max-width: 160px;
-    }
-
-
-    .synter-message-audio audio {
-        max-width: 100%;
-    }
-
-
-    .synter-chat-form {
-        padding:
-            9px
-            10px;
-    }
-
-
-    .synter-chat-compose-row {
-        gap: 6px;
-    }
-
-
-    .synter-chat-compose-row textarea {
-        min-height: 44px;
-
-        max-height: 96px;
-
-        padding:
-            11px
-            12px;
-
-        /*
-            Evita zoom automático
-            no Safari/iPhone.
-        */
-        font-size: 16px;
-    }
-
-
-    .synter-chat-tool-button {
-        width: 38px;
-
-        flex-basis: 38px;
-    }
-
-
-    .synter-chat-send-button {
-        width: 42px;
-
-        flex-basis: 42px;
-    }
-
-
-    .synter-recording-preview {
-        flex-direction: column;
-
-        align-items: stretch;
-    }
-
-
-    .synter-recording-actions {
-        justify-content: flex-end;
-    }
-
-
-    .synter-file-preview-info span {
-        max-width: 190px;
-    }
-
-}
-
-
-/* ======================================== */
-/* CELULAR PEQUENO                          */
-/* ======================================== */
-
-@media (max-width: 380px) {
-
-    .synter-assistant {
-        right:
-            max(
-                12px,
-                env(safe-area-inset-right)
-            );
-
-        bottom:
-            max(
-                12px,
-                env(safe-area-inset-bottom)
-            );
-    }
-
-
-    .synter-assistant-button {
-        width: 50px;
-        height: 50px;
-
-        flex-basis: 50px;
-
-        font-size: 12px;
-    }
-
-
-    .synter-chat {
-        top:
-            max(
-                8px,
-                env(safe-area-inset-top)
-            );
-
-        right:
-            max(
-                8px,
-                env(safe-area-inset-right)
-            );
-
-        bottom:
-            max(
-                70px,
-                calc(
-                    env(safe-area-inset-bottom) + 60px
-                )
-            );
-
-        left:
-            max(
-                8px,
-                env(safe-area-inset-left)
-            );
-    }
-
-
-    .synter-chat-tool-button {
-        width: 34px;
-
-        flex-basis: 34px;
-    }
-
-
-    .synter-chat-send-button {
-        width: 38px;
-
-        flex-basis: 38px;
-    }
-
-
-    .synter-audio-preview {
-        grid-template-columns:
-            minmax(0, 1fr)
-            28px;
-    }
-
-
-    .synter-audio-preview > span {
-        display: none;
-    }
-
 
     .synter-file-preview {
         grid-template-columns:
@@ -1659,14 +3041,52 @@
     }
 
 
-    .synter-file-preview-icon {
+    .synter-file-icon {
         width: 38px;
         height: 38px;
+
+        flex-basis: 38px;
     }
 
+}
 
-    .synter-file-preview-info span {
-        max-width: 135px;
+/* ======================================== */
+/* IMAGEM GERADA PELA IA                    */
+/* ======================================== */
+
+.synter-message-generated {
+    width: min(92%, 340px);
+    max-width: 92%;
+    padding: 8px;
+}
+
+.synter-generated-images {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+}
+
+.synter-generated-image {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    background: #0c0c0c;
+    object-fit: contain;
+}
+
+.synter-message-generated .synter-message-text {
+    margin-top: 8px;
+    padding: 0 3px 2px;
+}
+
+@media (max-width: 500px) {
+    .synter-message-generated {
+        width: 94%;
+        max-width: 94%;
     }
-
 }
