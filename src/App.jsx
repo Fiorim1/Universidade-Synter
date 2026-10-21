@@ -13,6 +13,15 @@ import Register from "./components/Register.jsx";
 import ForgotPassword from "./components/ForgotPassword.jsx";
 import UpdatePassword from "./components/UpdatePassword.jsx";
 
+
+// ========================================
+// MFA / 2FA
+// ========================================
+
+import MFASetup from "./components/MFASetup.jsx";
+import MFAVerify from "./components/MFAVerify.jsx";
+
+
 import Manuals from "./routes/Manuals.jsx";
 
 import Dashboard from "./pages/Dashboard.jsx";
@@ -50,7 +59,6 @@ function App() {
     });
 
 
-    // Garantia extra para navegadores/mobile
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
 
@@ -66,7 +74,9 @@ function App() {
     "/login",
     "/register",
     "/forgot-password",
-    "/update-password"
+    "/update-password",
+    "/mfa/setup",
+    "/mfa/verify"
   ];
 
 
@@ -122,6 +132,34 @@ function App() {
             <PublicRoute>
               <Register />
             </PublicRoute>
+          }
+        />
+
+
+        {/* ======================================== */}
+        {/* CONFIGURAÇÃO DO 2FA                      */}
+        {/* ======================================== */}
+
+        <Route
+          path="/mfa/setup"
+          element={
+            <ProtectedRoute>
+              <MFASetup />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/* ======================================== */}
+        {/* VERIFICAÇÃO DO 2FA                       */}
+        {/* ======================================== */}
+
+        <Route
+          path="/mfa/verify"
+          element={
+            <ProtectedRoute>
+              <MFAVerify />
+            </ProtectedRoute>
           }
         />
 

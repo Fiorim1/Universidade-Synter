@@ -1,8 +1,19 @@
-import { useState, useRef } from "react"
-import { useNavigate } from "react-router-dom"
-import { Turnstile } from "@marsidev/react-turnstile"
+import {
+    useState,
+    useRef
+} from "react"
 
-import { supabase } from "../services/supabaseClient"
+import {
+    useNavigate
+} from "react-router-dom"
+
+import {
+    Turnstile
+} from "@marsidev/react-turnstile"
+
+import {
+    supabase
+} from "../services/supabaseClient"
 
 import {
     validateEmail,
@@ -12,23 +23,53 @@ import {
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 
-import LockImage from "../assets/login-back.png"
+import LockImage from "../assets/venuss3.png"
 
 import "../styles/Login.css"
 
 
 function Login() {
 
-    const navigate = useNavigate()
+    const navigate =
+        useNavigate()
 
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [captchaToken, setCaptchaToken] = useState("")
-    const [errorMsg, setErrorMsg] = useState("")
-    const [loading, setLoading] = useState(false)
 
-    const turnstileRef = useRef(null)
+    // ========================================
+    // CAMPOS
+    // ========================================
 
+    const [email, setEmail] =
+        useState("")
+
+    const [password, setPassword] =
+        useState("")
+
+    const [captchaToken, setCaptchaToken] =
+        useState("")
+
+
+    // ========================================
+    // ESTADOS
+    // ========================================
+
+    const [errorMsg, setErrorMsg] =
+        useState("")
+
+    const [loading, setLoading] =
+        useState(false)
+
+
+    // ========================================
+    // TURNSTILE
+    // ========================================
+
+    const turnstileRef =
+        useRef(null)
+
+
+    // ========================================
+    // LOGIN
+    // ========================================
 
     async function handleSubmit(e) {
 
@@ -36,74 +77,347 @@ function Login() {
 
         setErrorMsg("")
 
-        const cleanEmail = sanitizeEmail(email)
+
+        // ====================================
+        // E-MAIL
+        // ====================================
+
+        const cleanEmail =
+            sanitizeEmail(
+                email
+            )
 
 
-        if (!validateEmail(cleanEmail)) {
+        if (
+            !validateEmail(
+                cleanEmail
+            )
+        ) {
 
-            setErrorMsg("Digite um e-mail válido.")
+            setErrorMsg(
+                "Digite um e-mail válido."
+            )
 
             return
         }
 
 
-        if (!captchaToken) {
+        // ====================================
+        // SENHA
+        // ====================================
 
-            setErrorMsg("Confirme que você não é um robô.")
+        if (
+            !password
+        ) {
+
+            setErrorMsg(
+                "Digite sua senha."
+            )
 
             return
         }
 
+
+        // ====================================
+        // CAPTCHA
+        // ====================================
+
+        if (
+            !captchaToken
+        ) {
+
+            setErrorMsg(
+                "Confirme que você não é um robô."
+            )
+
+            return
+        }
+
+
+        // ====================================
+        // INICIAR LOGIN
+        // ====================================
 
         setLoading(true)
 
 
-        const { data, error } =
-            await supabase.auth.signInWithPassword({
+        try {
 
-                email: cleanEmail,
 
-                password: password,
+            // ==================================
+            // PRIMEIRO FATOR
+            //
+            // E-MAIL + SENHA
+            // ==================================
 
-                options: {
-                    captchaToken: captchaToken
+            const {
+                data,
+                error
+            } =
+                await supabase.auth
+                    .signInWithPassword({
+
+                        email:
+                            cleanEmail,
+
+                        password:
+                            password,
+
+                        options: {
+
+                            captchaToken:
+                                captchaToken
+
+                        }
+
+                    })
+
+
+            // ==================================
+            // ERRO DE LOGIN
+            // ==================================
+
+            if (error) {
+
+                if (
+                    import.meta.env.DEV
+                ) {
+
+                    console.error(
+                        "Erro no login:",
+                        error.message
+                    )
+
                 }
 
-            })
+
+                setErrorMsg(
+                    "E-mail ou senha inválidos."
+                )
+
+                return
+            }
 
 
-        setLoading(false)
+            // ==================================
+            // GARANTIA DE USUÁRIO
+            // ==================================
 
-        turnstileRef.current?.reset()
+            if (
+                !data?.user
+            ) {
 
-        setCaptchaToken("")
+                setErrorMsg(
+                    "Não foi possível autenticar sua conta."
+                )
+
+                return
+            }
 
 
-        if (error) {
+            // ==================================
+            // VERIFICAR MFA
+            // ==================================
 
-            console.error(
-                "Erro no login:",
-                error.message
-            )
+            const {
+                data: aalData,
+                error: aalError
+            } =
+                await supabase.auth.mfa
+                    .getAuthenticatorAssuranceLevel()
+
+
+            if (
+                aalError
+            ) {
+
+                throw aalError
+
+            }
+
+
+            // ==================================
+            // NÍVEL ATUAL
+            // ==================================
+
+            const currentLevel =
+                aalData?.currentLevel ||
+                "aal1"
+
+
+            // ==================================
+            // PRÓXIMO NÍVEL POSSÍVEL
+            // ==================================
+
+            const nextLevel =
+                aalData?.nextLevel ||
+                "aal1"
+
+
+            // ==================================
+            // CASO 1
+            //
+            // MFA JÁ CONFIRMADO NESTA SESSÃO
+            //
+            // aal2 -> aal2
+            // ==================================
+
+            if (
+                currentLevel === "aal2" &&
+                nextLevel === "aal2"
+            ) {
+
+                navigate(
+                    "/dashboard",
+                    {
+                        replace: true
+                    }
+                )
+
+                return
+            }
+
+
+            // ==================================
+            // CASO 2
+            //
+            // JÁ POSSUI GOOGLE AUTHENTICATOR
+            // MAS AINDA NÃO CONFIRMOU O CÓDIGO
+            //
+            // aal1 -> aal2
+            // ==================================
+
+            if (
+                currentLevel === "aal1" &&
+                nextLevel === "aal2"
+            ) {
+
+                navigate(
+                    "/mfa/verify",
+                    {
+                        replace: true
+                    }
+                )
+
+                return
+            }
+
+
+            // ==================================
+            // CASO 3
+            //
+            // AINDA NÃO POSSUI MFA
+            //
+            // aal1 -> aal1
+            // ==================================
+
+            if (
+                currentLevel === "aal1" &&
+                nextLevel === "aal1"
+            ) {
+
+                navigate(
+                    "/mfa/setup",
+                    {
+                        replace: true
+                    }
+                )
+
+                return
+            }
+
+
+            // ==================================
+            // SITUAÇÃO INESPERADA
+            // ==================================
+
+            await supabase.auth
+                .signOut()
+
 
             setErrorMsg(
-                "E-mail ou senha inválidos."
+                "Não foi possível validar a segurança da sua conta. Entre novamente."
             )
 
-            return
         }
 
+        catch (error) {
 
-        console.log(
-            "Usuário logado:",
-            data.user
-        )
+            if (
+                import.meta.env.DEV
+            ) {
+
+                console.error(
+                    "Erro ao verificar autenticação:",
+                    error
+                )
+
+            }
 
 
-        navigate(
-            "/dashboard",
-            { replace: true }
-        )
+            /*
+                Se não conseguirmos descobrir
+                corretamente o estado do MFA,
+                não deixamos a sessão aberta.
+
+                Isso evita liberar acesso em
+                uma condição de segurança
+                desconhecida.
+            */
+
+            try {
+
+                await supabase.auth
+                    .signOut()
+
+            }
+
+            catch (
+                signOutError
+            ) {
+
+                if (
+                    import.meta.env.DEV
+                ) {
+
+                    console.error(
+                        "Erro ao encerrar sessão:",
+                        signOutError
+                    )
+
+                }
+
+            }
+
+
+            setErrorMsg(
+                "Não foi possível concluir a autenticação. Tente novamente."
+            )
+
+        }
+
+        finally {
+
+
+            // ==================================
+            // FINALIZA CARREGAMENTO
+            // ==================================
+
+            setLoading(false)
+
+
+            // ==================================
+            // RESETAR CAPTCHA
+            // ==================================
+
+            turnstileRef.current
+                ?.reset()
+
+
+            setCaptchaToken("")
+
+        }
+
     }
 
 
@@ -149,9 +463,15 @@ function Login() {
 
                             <form
                                 className="login-form"
-                                onSubmit={handleSubmit}
+                                onSubmit={
+                                    handleSubmit
+                                }
                             >
 
+
+                                {/* ===================== */}
+                                {/* ERRO                  */}
+                                {/* ===================== */}
 
                                 {errorMsg && (
 
@@ -162,7 +482,9 @@ function Login() {
                                 )}
 
 
-                                {/* E-mail */}
+                                {/* ===================== */}
+                                {/* E-MAIL                */}
+                                {/* ===================== */}
 
                                 <div className="login-field">
 
@@ -173,21 +495,31 @@ function Login() {
                                     <input
                                         id="email"
                                         type="email"
-                                        value={email}
-                                        onChange={(e) =>
-                                            setEmail(
-                                                e.target.value
-                                            )
+
+                                        value={
+                                            email
                                         }
+
+                                        onChange={
+                                            (e) =>
+                                                setEmail(
+                                                    e.target.value
+                                                )
+                                        }
+
                                         placeholder="seuemail@empresa.com"
+
                                         autoComplete="email"
+
                                         required
                                     />
 
                                 </div>
 
 
-                                {/* Senha */}
+                                {/* ===================== */}
+                                {/* SENHA                 */}
+                                {/* ===================== */}
 
                                 <div className="login-field">
 
@@ -201,13 +533,17 @@ function Login() {
                                         <button
                                             className="forgot-password"
                                             type="button"
-                                            onClick={() =>
-                                                navigate(
-                                                    "/forgot-password"
-                                                )
+
+                                            onClick={
+                                                () =>
+                                                    navigate(
+                                                        "/forgot-password"
+                                                    )
                                             }
                                         >
+
                                             Esqueci minha senha
+
                                         </button>
 
                                     </div>
@@ -216,64 +552,95 @@ function Login() {
                                     <input
                                         id="password"
                                         type="password"
-                                        value={password}
-                                        onChange={(e) =>
-                                            setPassword(
-                                                e.target.value
-                                            )
+
+                                        value={
+                                            password
                                         }
+
+                                        onChange={
+                                            (e) =>
+                                                setPassword(
+                                                    e.target.value
+                                                )
+                                        }
+
                                         placeholder="Digite sua senha"
+
                                         autoComplete="current-password"
+
                                         required
                                     />
 
                                 </div>
 
 
-                                {/* CAPTCHA */}
+                                {/* ===================== */}
+                                {/* CAPTCHA               */}
+                                {/* ===================== */}
 
                                 <div className="captcha-container">
 
                                     <Turnstile
-                                        ref={turnstileRef}
+                                        ref={
+                                            turnstileRef
+                                        }
+
                                         siteKey={
                                             import.meta.env
                                                 .VITE_TURNSTILE_SITE_KEY
                                         }
-                                        onSuccess={setCaptchaToken}
-                                        onExpire={() =>
-                                            setCaptchaToken("")
+
+                                        onSuccess={
+                                            setCaptchaToken
+                                        }
+
+                                        onExpire={
+                                            () =>
+                                                setCaptchaToken("")
                                         }
                                     />
 
                                 </div>
 
 
-                                {/* Entrar */}
+                                {/* ===================== */}
+                                {/* ENTRAR                */}
+                                {/* ===================== */}
 
                                 <button
                                     className="login-submit"
                                     type="submit"
-                                    disabled={loading}
+
+                                    disabled={
+                                        loading
+                                    }
                                 >
 
                                     <span>
-                                        {loading
-                                            ? "Entrando..."
-                                            : "Entrar"
+
+                                        {
+                                            loading
+                                                ? "Verificando..."
+                                                : "Entrar"
                                         }
+
                                     </span>
 
+
                                     {!loading && (
+
                                         <span className="login-submit-arrow">
                                             →
                                         </span>
+
                                     )}
 
                                 </button>
 
 
-                                {/* Criar conta */}
+                                {/* ===================== */}
+                                {/* CRIAR CONTA           */}
+                                {/* ===================== */}
 
                                 <div className="create-account">
 
@@ -283,11 +650,17 @@ function Login() {
 
                                     <button
                                         type="button"
-                                        onClick={() =>
-                                            navigate("/register")
+
+                                        onClick={
+                                            () =>
+                                                navigate(
+                                                    "/register"
+                                                )
                                         }
                                     >
+
                                         Criar conta
+
                                     </button>
 
                                 </div>
@@ -297,7 +670,6 @@ function Login() {
                         </div>
 
                     </section>
-
 
 
                     {/* ========================= */}
@@ -327,9 +699,14 @@ function Login() {
 
                             </div>
 
-                              <img
-                                src={LockImage}
+
+                            <img
+                                src={
+                                    LockImage
+                                }
+
                                 alt="Fechadura digital Synter"
+
                                 className="login-lock-image"
                             />
 
