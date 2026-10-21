@@ -11,6 +11,11 @@ import {
     supabase
 } from "../services/supabaseClient"
 
+import Header from "./Header"
+import Footer from "./Footer"
+
+import "../styles/MFASetup.css"
+
 
 const MFA_FRIENDLY_NAME =
     "Universidade Synter"
@@ -23,7 +28,7 @@ function MFASetup() {
 
 
     // ========================================
-    // DADOS DO MFA
+    // MFA
     // ========================================
 
     const [
@@ -43,10 +48,6 @@ function MFASetup() {
         setFactorId
     ] = useState("")
 
-
-    // ========================================
-    // CÓDIGO DIGITADO
-    // ========================================
 
     const [
         codigo,
@@ -74,6 +75,12 @@ function MFASetup() {
         error,
         setError
     ] = useState("")
+
+
+    const [
+        copied,
+        setCopied
+    ] = useState(false)
 
 
     // ========================================
@@ -182,7 +189,7 @@ function MFASetup() {
 
 
                 // ==================================
-                // PROCURAR FATOR JÁ VERIFICADO
+                // FATOR JÁ VERIFICADO
                 // ==================================
 
                 const fatorVerificado =
@@ -194,10 +201,6 @@ function MFASetup() {
                             "verified"
                     )
 
-
-                // ==================================
-                // JÁ POSSUI GOOGLE AUTHENTICATOR
-                // ==================================
 
                 if (
                     fatorVerificado
@@ -216,21 +219,8 @@ function MFASetup() {
 
 
                 // ==================================
-                // REMOVER FATORES PENDENTES ANTIGOS
+                // REMOVER FATORES PENDENTES
                 // ==================================
-
-                /*
-                    O enroll cria inicialmente um
-                    fator "unverified".
-
-                    Se o usuário atualizar a página
-                    antes de terminar, aquele fator
-                    pode continuar pendente.
-
-                    Removemos somente fatores TOTP
-                    não verificados criados para
-                    Universidade Synter.
-                */
 
                 const fatoresPendentes =
                     fatoresTotp.filter(
@@ -286,7 +276,7 @@ function MFASetup() {
 
 
                 // ==================================
-                // CRIAR NOVO FATOR TOTP
+                // CRIAR NOVO TOTP
                 // ==================================
 
                 const {
@@ -323,10 +313,6 @@ function MFASetup() {
 
                 }
 
-
-                // ==================================
-                // VALIDAR RESPOSTA
-                // ==================================
 
                 if (
                     !data?.id ||
@@ -423,6 +409,63 @@ function MFASetup() {
 
 
     // ========================================
+    // COPIAR CHAVE
+    // ========================================
+
+    async function copiarSecret() {
+
+        if (
+            !secret
+        ) {
+
+            return
+
+        }
+
+
+        try {
+
+            await navigator.clipboard
+                .writeText(
+                    secret
+                )
+
+
+            setCopied(true)
+
+
+            setTimeout(
+                () => {
+
+                    setCopied(false)
+
+                },
+                1800
+            )
+
+        }
+
+        catch (
+            err
+        ) {
+
+            if (
+                import.meta.env.DEV
+            ) {
+
+                console.error(
+                    "Erro ao copiar chave:",
+                    err
+                )
+
+            }
+
+        }
+
+    }
+
+
+    // ========================================
     // CONFIRMAR CÓDIGO
     // ========================================
 
@@ -445,10 +488,6 @@ function MFASetup() {
         setError("")
 
 
-        // ======================================
-        // LIMPAR CÓDIGO
-        // ======================================
-
         const codigoLimpo =
             codigo
                 .replace(
@@ -460,10 +499,6 @@ function MFASetup() {
                     6
                 )
 
-
-        // ======================================
-        // VALIDAR CÓDIGO
-        // ======================================
 
         if (
             codigoLimpo.length !==
@@ -478,10 +513,6 @@ function MFASetup() {
 
         }
 
-
-        // ======================================
-        // VALIDAR FATOR
-        // ======================================
 
         if (
             !factorId
@@ -604,16 +635,8 @@ function MFASetup() {
             }
 
 
-            // ==================================
-            // LIMPAR CÓDIGO
-            // ==================================
-
             setCodigo("")
 
-
-            // ==================================
-            // LIBERAR SISTEMA
-            // ==================================
 
             navigate(
                 "/dashboard",
@@ -656,204 +679,413 @@ function MFASetup() {
 
 
     // ========================================
-    // CARREGANDO
-    // ========================================
-
-    if (
-        loading
-    ) {
-
-        return (
-
-            <div>
-
-                <h2>
-                    Preparando autenticação...
-                </h2>
-
-                <p>
-                    Aguarde alguns segundos.
-                </p>
-
-            </div>
-
-        )
-
-    }
-
-
-    // ========================================
     // TELA
     // ========================================
 
     return (
 
-        <div>
+        <div className="mfa-setup-page">
+
+            <Header />
 
 
-            <h1>
-                Configurar autenticação em dois fatores
-            </h1>
+            <main className="mfa-setup-main">
+
+                <div className="mfa-setup-wrapper">
 
 
-            <p>
-                Abra o Google Authenticator no seu celular.
-            </p>
+                    {/* ================================= */}
+                    {/* CABEÇALHO DA PÁGINA               */}
+                    {/* ================================= */}
+
+                    <section className="mfa-setup-heading">
+
+                        <div className="mfa-setup-eyebrow">
+
+                            <span className="mfa-setup-eyebrow-icon">
+                                ◇
+                            </span>
+
+                            <span>
+                                SEGURANÇA DA CONTA
+                            </span>
+
+                        </div>
 
 
-            <p>
-                Adicione uma nova conta e escaneie o QR Code abaixo.
-            </p>
+                        <h1>
+                            Autenticação em dois fatores
+                        </h1>
 
 
-            {/* ================================= */}
-            {/* ERRO                              */}
-            {/* ================================= */}
+                        <p>
 
-            {error && (
+                            Adicione uma camada extra de segurança
+                            à sua conta da Universidade Synter.
 
-                <p>
-                    {error}
-                </p>
+                        </p>
 
-            )}
+                    </section>
 
 
-            {/* ================================= */}
-            {/* QR CODE                           */}
-            {/* ================================= */}
+                    {/* ================================= */}
+                    {/* CARREGANDO                        */}
+                    {/* ================================= */}
 
-            {qrCode && (
+                    {loading && (
 
-                <div>
+                        <section className="mfa-setup-card mfa-setup-loading">
 
-                    <img
-                        src={
-                            qrCode
-                        }
+                            <div className="mfa-loading-icon">
+                                ↻
+                            </div>
 
-                        alt="QR Code para configurar autenticação em dois fatores"
-                    />
+                            <h2>
+                                Preparando autenticação
+                            </h2>
+
+                            <p>
+                                Aguarde enquanto configuramos
+                                seu acesso seguro.
+                            </p>
+
+                        </section>
+
+                    )}
+
+
+                    {/* ================================= */}
+                    {/* CONTEÚDO                          */}
+                    {/* ================================= */}
+
+                    {!loading && (
+
+                        <section className="mfa-setup-card">
+
+
+                            {/* ========================= */}
+                            {/* TOPO DO CARD              */}
+                            {/* ========================= */}
+
+                            <div className="mfa-card-header">
+
+                                <div>
+
+                                    <span className="mfa-card-step">
+                                        ETAPA OBRIGATÓRIA
+                                    </span>
+
+                                    <h2>
+                                        Configure o Google Authenticator
+                                    </h2>
+
+                                    <p>
+
+                                        Escaneie o QR Code usando
+                                        o aplicativo Google Authenticator
+                                        no seu celular.
+
+                                    </p>
+
+                                </div>
+
+
+                                <div className="mfa-security-badge">
+
+                                    <span className="mfa-security-icon">
+                                        ✓
+                                    </span>
+
+                                    <div>
+
+                                        <strong>
+                                            Acesso protegido
+                                        </strong>
+
+                                        <span>
+                                            Verificação em 2 etapas
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div className="mfa-divider" />
+
+
+                            {/* ========================= */}
+                            {/* CONTEÚDO PRINCIPAL        */}
+                            {/* ========================= */}
+
+                            <div className="mfa-content-grid">
+
+
+                                {/* ===================== */}
+                                {/* QR CODE               */}
+                                {/* ===================== */}
+
+                                <div className="mfa-qr-area">
+
+                                    <div className="mfa-section-number">
+                                        01
+                                    </div>
+
+
+                                    <div className="mfa-section-title">
+
+                                        <h3>
+                                            Escaneie o QR Code
+                                        </h3>
+
+                                        <p>
+                                            Abra o Google Authenticator
+                                            e toque em adicionar nova conta.
+                                        </p>
+
+                                    </div>
+
+
+                                    {qrCode && (
+
+                                        <div className="mfa-qr-box">
+
+                                            <img
+                                                src={
+                                                    qrCode
+                                                }
+
+                                                alt="QR Code para configurar autenticação em dois fatores"
+                                            />
+
+                                        </div>
+
+                                    )}
+
+
+                                    {secret && (
+
+                                        <div className="mfa-manual-code">
+
+                                            <span className="mfa-manual-label">
+                                                Não consegue escanear?
+                                            </span>
+
+
+                                            <p>
+                                                Digite manualmente esta chave
+                                                no Google Authenticator.
+                                            </p>
+
+
+                                            <div className="mfa-secret-box">
+
+                                                <code>
+                                                    {secret}
+                                                </code>
+
+
+                                                <button
+                                                    type="button"
+                                                    onClick={
+                                                        copiarSecret
+                                                    }
+                                                >
+
+                                                    {
+                                                        copied
+                                                            ? "Copiado"
+                                                            : "Copiar"
+                                                    }
+
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+                                    )}
+
+                                </div>
+
+
+                                {/* ===================== */}
+                                {/* CONFIRMAÇÃO           */}
+                                {/* ===================== */}
+
+                                <div className="mfa-confirm-area">
+
+                                    <div className="mfa-section-number">
+                                        02
+                                    </div>
+
+
+                                    <div className="mfa-section-title">
+
+                                        <h3>
+                                            Confirme o código
+                                        </h3>
+
+                                        <p>
+
+                                            Digite o código de 6 dígitos
+                                            exibido no aplicativo para
+                                            concluir a configuração.
+
+                                        </p>
+
+                                    </div>
+
+
+                                    {error && (
+
+                                        <div className="mfa-error">
+
+                                            <span>
+                                                !
+                                            </span>
+
+                                            <p>
+                                                {error}
+                                            </p>
+
+                                        </div>
+
+                                    )}
+
+
+                                    {factorId && (
+
+                                        <form
+                                            onSubmit={
+                                                confirmarCodigo
+                                            }
+                                            className="mfa-code-form"
+                                        >
+
+                                            <label htmlFor="mfa-code">
+
+                                                Código de verificação
+
+                                            </label>
+
+
+                                            <input
+                                                id="mfa-code"
+
+                                                type="text"
+
+                                                inputMode="numeric"
+
+                                                autoComplete="one-time-code"
+
+                                                maxLength={6}
+
+                                                placeholder="000000"
+
+                                                value={
+                                                    codigo
+                                                }
+
+                                                onChange={
+                                                    (
+                                                        event
+                                                    ) => {
+
+                                                        const valor =
+                                                            event.target.value
+                                                                .replace(
+                                                                    /\D/g,
+                                                                    ""
+                                                                )
+                                                                .slice(
+                                                                    0,
+                                                                    6
+                                                                )
+
+
+                                                        setCodigo(
+                                                            valor
+                                                        )
+
+
+                                                        setError("")
+
+                                                    }
+                                                }
+
+                                                autoFocus
+                                            />
+
+
+                                            <button
+                                                className="mfa-confirm-button"
+
+                                                type="submit"
+
+                                                disabled={
+                                                    verificando ||
+                                                    codigo.length !== 6
+                                                }
+                                            >
+
+                                                <span>
+
+                                                    {
+                                                        verificando
+                                                            ? "Verificando..."
+                                                            : "Confirmar autenticação"
+                                                    }
+
+                                                </span>
+
+
+                                                {!verificando && (
+                                                    <span className="mfa-button-arrow">
+                                                        →
+                                                    </span>
+                                                )}
+
+                                            </button>
+
+                                        </form>
+
+                                    )}
+
+
+                                    <div className="mfa-help-box">
+
+                                        <span className="mfa-help-icon">
+                                            i
+                                        </span>
+
+                                        <p>
+
+                                            O código muda automaticamente
+                                            a cada poucos segundos.
+                                            Utilize sempre o código atual
+                                            exibido no aplicativo.
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+                    )}
 
                 </div>
 
-            )}
+            </main>
 
 
-            {/* ================================= */}
-            {/* CÓDIGO MANUAL                     */}
-            {/* ================================= */}
-
-            {secret && (
-
-                <>
-
-                    <p>
-
-                        Caso não consiga escanear
-                        o QR Code, utilize o código
-                        abaixo:
-
-                    </p>
-
-
-                    <strong>
-
-                        {secret}
-
-                    </strong>
-
-                </>
-
-            )}
-
-
-            {/* ================================= */}
-            {/* CONFIRMAÇÃO                       */}
-            {/* ================================= */}
-
-            {factorId && (
-
-                <form
-                    onSubmit={
-                        confirmarCodigo
-                    }
-                >
-
-                    <p>
-
-                        Digite o código de 6 dígitos
-                        exibido no Google Authenticator.
-
-                    </p>
-
-
-                    <input
-                        type="text"
-
-                        inputMode="numeric"
-
-                        autoComplete="one-time-code"
-
-                        maxLength={6}
-
-                        placeholder="000000"
-
-                        value={
-                            codigo
-                        }
-
-                        onChange={
-                            (
-                                event
-                            ) => {
-
-                                const valor =
-                                    event.target.value
-                                        .replace(
-                                            /\D/g,
-                                            ""
-                                        )
-                                        .slice(
-                                            0,
-                                            6
-                                        )
-
-
-                                setCodigo(
-                                    valor
-                                )
-
-
-                                setError("")
-
-                            }
-                        }
-                    />
-
-
-                    <button
-                        type="submit"
-
-                        disabled={
-                            verificando ||
-                            codigo.length !== 6
-                        }
-                    >
-
-                        {
-                            verificando
-                                ? "Verificando..."
-                                : "Confirmar 2FA"
-                        }
-
-                    </button>
-
-
-                </form>
-
-            )}
-
+            <Footer />
 
         </div>
 
