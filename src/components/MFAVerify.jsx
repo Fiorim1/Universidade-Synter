@@ -14,6 +14,9 @@ import {
 import Header from "./Header"
 import Footer from "./Footer"
 
+import GoogleAuthenticatorLogo
+    from "../assets/google-authenticator.png"
+
 import "../styles/MFAVerify.css"
 
 
@@ -72,10 +75,6 @@ function MFAVerify() {
                 setError("")
 
 
-                // ==================================
-                // VERIFICAR NÍVEL ATUAL
-                // ==================================
-
                 const {
                     data: aalData,
                     error: aalError
@@ -102,10 +101,6 @@ function MFAVerify() {
                 }
 
 
-                // ==================================
-                // JÁ ESTÁ EM AAL2
-                // ==================================
-
                 if (
                     aalData?.currentLevel ===
                     "aal2"
@@ -122,10 +117,6 @@ function MFAVerify() {
 
                 }
 
-
-                // ==================================
-                // LISTAR FATORES
-                // ==================================
 
                 const {
                     data,
@@ -167,10 +158,6 @@ function MFAVerify() {
                             "verified"
                     )
 
-
-                // ==================================
-                // NÃO POSSUI MFA
-                // ==================================
 
                 if (
                     !fatorVerificado
@@ -321,10 +308,6 @@ function MFAVerify() {
             setError("")
 
 
-            // ==================================
-            // VALIDAR CÓDIGO
-            // ==================================
-
             const {
                 error
             } =
@@ -347,10 +330,6 @@ function MFAVerify() {
 
             }
 
-
-            // ==================================
-            // CONFIRMAR AAL2
-            // ==================================
 
             const {
                 data: aalData,
@@ -423,10 +402,6 @@ function MFAVerify() {
 
     }
 
-
-    // ========================================
-    // TELA
-    // ========================================
 
     return (
 
@@ -588,11 +563,31 @@ function MFAVerify() {
                         <div className="mfa-verify-form-area">
 
 
+                            {/* ========================= */}
+                            {/* GOOGLE AUTHENTICATOR     */}
+                            {/* ========================= */}
+
                             <div className="mfa-verify-badge">
 
                                 <span>
-                                    ✓
+
+                                    <img
+                                        src={
+                                            GoogleAuthenticatorLogo
+                                        }
+
+                                        alt="Google Authenticator"
+
+                                        style={{
+                                            width: "20px",
+                                            height: "20px",
+                                            objectFit: "contain",
+                                            display: "block"
+                                        }}
+                                    />
+
                                 </span>
+
 
                                 <div>
 
@@ -608,6 +603,10 @@ function MFAVerify() {
 
                             </div>
 
+
+                            {/* ========================= */}
+                            {/* TÍTULO                    */}
+                            {/* ========================= */}
 
                             <div className="mfa-verify-form-heading">
 
@@ -626,6 +625,10 @@ function MFAVerify() {
                             </div>
 
 
+                            {/* ========================= */}
+                            {/* CARREGANDO                */}
+                            {/* ========================= */}
+
                             {loading && (
 
                                 <div className="mfa-verify-loading">
@@ -642,6 +645,10 @@ function MFAVerify() {
 
                             )}
 
+
+                            {/* ========================= */}
+                            {/* FORMULÁRIO                */}
+                            {/* ========================= */}
 
                             {!loading && (
 
@@ -768,6 +775,10 @@ function MFAVerify() {
 
                             )}
 
+
+                            {/* ========================= */}
+                            {/* AJUDA                     */}
+                            {/* ========================= */}
 
                             <div className="mfa-verify-help">
 
