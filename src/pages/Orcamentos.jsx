@@ -5001,23 +5001,65 @@ Synter`;
               (event) =>
                 event.stopPropagation()
             }
+            style={{
+              width: "min(620px, calc(100vw - 32px))",
+              maxWidth: "620px",
+              borderRadius: "18px",
+              overflow: "hidden"
+            }}
           >
 
-            <div className="orcamentos-modal-header">
+            <div
+              className="orcamentos-modal-header"
+              style={{
+                padding: "28px 30px 22px",
+                gap: "24px",
+                alignItems: "flex-start"
+              }}
+            >
 
-              <div>
+              <div
+                style={{
+                  minWidth: 0,
+                  flex: 1
+                }}
+              >
 
-                <span>
+                <span
+                  style={{
+                    display: "block",
+                    marginBottom: "8px",
+                    color: "#8b8b8b",
+                    fontSize: "10px",
+                    fontWeight: "800",
+                    letterSpacing: "1.8px"
+                  }}
+                >
                   PDF DO ORÇAMENTO
                 </span>
 
-                <h2 id="titulo-compartilhar-pdf">
+                <h2
+                  id="titulo-compartilhar-pdf"
+                  style={{
+                    margin: "0 0 8px",
+                    fontSize: "24px",
+                    lineHeight: "1.15"
+                  }}
+                >
                   Arquivo pronto
                 </h2>
 
-                <p>
-                  O PDF foi gerado. Você pode compartilhar o
-                  arquivo pelo WhatsApp ou baixar uma cópia.
+                <p
+                  style={{
+                    margin: 0,
+                    maxWidth: "460px",
+                    color: "#8d8d8d",
+                    fontSize: "12px",
+                    lineHeight: "1.6"
+                  }}
+                >
+                  O PDF foi gerado com sucesso. Compartilhe o
+                  arquivo ou baixe uma cópia para salvar no dispositivo.
                 </p>
 
               </div>
@@ -5033,6 +5075,10 @@ Synter`;
                   compartilhandoPdf
                 }
                 aria-label="Fechar"
+                style={{
+                  flex: "0 0 auto",
+                  margin: 0
+                }}
               >
                 ×
               </button>
@@ -5040,63 +5086,110 @@ Synter`;
             </div>
 
 
-            <div className="orcamentos-modal-content">
+            <div
+              className="orcamentos-modal-content"
+              style={{
+                padding: "22px 30px 24px"
+              }}
+            >
 
               <div
                 style={{
-                  padding: "18px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "16px",
+                  padding: "18px 20px",
                   border: "1px solid rgba(255, 255, 255, 0.10)",
-                  borderRadius: "10px",
+                  borderRadius: "12px",
                   background: "rgba(255, 255, 255, 0.025)"
                 }}
               >
 
-                <span
+                <div
+                  aria-hidden="true"
                   style={{
-                    display: "block",
-                    marginBottom: "7px",
-                    color: "#777777",
-                    fontSize: "9px",
-                    fontWeight: "700",
-                    letterSpacing: "1.5px"
-                  }}
-                >
-                  ARQUIVO
-                </span>
-
-
-                <strong
-                  style={{
-                    display: "block",
+                    width: "42px",
+                    height: "42px",
+                    flex: "0 0 42px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    border: "1px solid rgba(255, 255, 255, 0.12)",
+                    borderRadius: "10px",
                     color: "#ffffff",
-                    fontSize: "13px",
-                    lineHeight: "1.5",
-                    wordBreak: "break-word"
+                    fontSize: "10px",
+                    fontWeight: "900",
+                    letterSpacing: "0.6px"
                   }}
                 >
-                  {arquivoPdfCompartilhar.name}
-                </strong>
+                  PDF
+                </div>
 
 
-                <p
+                <div
                   style={{
-                    margin: "8px 0 0",
-                    color: "#888888",
-                    fontSize: "11px",
-                    lineHeight: "1.5"
+                    minWidth: 0,
+                    flex: 1
                   }}
                 >
-                  Cliente:{" "}
-                  {orcamentoPdfCompartilhar.cliente_nome ||
-                    "Cliente"}
-                </p>
+
+                  <span
+                    style={{
+                      display: "block",
+                      marginBottom: "5px",
+                      color: "#777777",
+                      fontSize: "9px",
+                      fontWeight: "800",
+                      letterSpacing: "1.4px"
+                    }}
+                  >
+                    ARQUIVO
+                  </span>
+
+
+                  <strong
+                    style={{
+                      display: "block",
+                      color: "#ffffff",
+                      fontSize: "13px",
+                      lineHeight: "1.4",
+                      wordBreak: "break-word"
+                    }}
+                  >
+                    {arquivoPdfCompartilhar.name}
+                  </strong>
+
+
+                  <p
+                    style={{
+                      margin: "5px 0 0",
+                      color: "#888888",
+                      fontSize: "11px",
+                      lineHeight: "1.45"
+                    }}
+                  >
+                    Cliente:{" "}
+                    {orcamentoPdfCompartilhar.cliente_nome ||
+                      "Cliente"}
+                  </p>
+
+                </div>
 
               </div>
 
             </div>
 
 
-            <div className="orcamentos-modal-actions">
+            <div
+              className="orcamentos-modal-actions"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                gap: "12px",
+                padding: "18px 30px 24px"
+              }}
+            >
 
               <button
                 type="button"
@@ -5107,6 +5200,10 @@ Synter`;
                 disabled={
                   compartilhandoPdf
                 }
+                style={{
+                  minWidth: "118px",
+                  minHeight: "44px"
+                }}
               >
                 Baixar PDF
               </button>
@@ -5121,6 +5218,10 @@ Synter`;
                 disabled={
                   compartilhandoPdf
                 }
+                style={{
+                  minWidth: "146px",
+                  minHeight: "44px"
+                }}
               >
                 {compartilhandoPdf
                   ? "Compartilhando..."

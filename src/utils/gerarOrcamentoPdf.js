@@ -1,3562 +1,1607 @@
+
 import html2pdf from "html2pdf.js";
 import tabelaPrecosData from "../data/tabelaPrecosData";
 
-
-// =========================================================
+// =====================================================
 // GERADOR DE ORÇAMENTO SYNTER
-// =========================================================
-//
-// 1. Dados da empresa
-// 2. Dados de faturamento e cobrança
-// 3. Produtos com imagens
-// 4. Condições comerciais
-//
-// gerarOrcamentoPdf():
-// mantém o funcionamento atual de impressão.
-//
-// criarArquivoOrcamentoPdf():
-// cria um arquivo PDF real para compartilhamento.
-//
-// Nome do arquivo:
-// Orcamento-PrimeiroNome-NumeroOrcamento.pdf
-// =========================================================
+// Impressão + PDF para compartilhamento
+// =====================================================
 
+const EMPRESA = {
+  razaoSocial: "SYNTER INDUSTRIA E COMERCIO LTDA",
+  nomeFantasia: "SYNTER",
+  cnpj: "82.996.216/0001-13",
+  endereco: "Rod. Gabriel Arns, 5572",
+  bairro: "Saturno",
+  cidade: "Forquilhinha",
+  uf: "SC",
+  cep: "88850-000",
+  telefone: "(48) 3941-1192",
+  email: "contato@synter.com.br",
+  logo: "/logo-synter.png",
+};
 
-// =========================================================
-// IMAGENS DOS PRODUTOS
-// =========================================================
+const imagensProdutosPdf = import.meta.glob(
+  "../assets/produtos/*.{png,jpg,jpeg,webp}",
+  {
+    eager: true,
+    import: "default",
+  }
+);
 
-const imagensProdutosPdf =
-  import.meta.glob(
-    "../assets/produtos/*.{png,jpg,jpeg,webp}",
-    {
-      eager: true,
-      import: "default"
-    }
-  );
+// =====================================================
+// SEGURANÇA E FORMATAÇÃO
+// =====================================================
 
-
-// =========================================================
-// SEGURANÇA
-// =========================================================
-
-function escaparHtml(
-  valor = ""
-) {
-
-  return String(valor)
+function escaparHtml(valor = "") {
+  return String(valor ?? "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
-
 }
 
+function normalizar(valor = "") {
+  return String(valor ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\.[^/.]+$/, "")
+    .replace(/[^a-z0-9]/g, "");
+}
 
-// =========================================================
-// NORMALIZAÇÃO
-// =========================================================
+function moeda(valor) {
+  return new Intl.NumberFormat("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(Number(valor || 0));
+}
 
-function normalizarChaveProduto(
-  valor = ""
-) {
+function quantidade(valor) {
+  return new Intl.NumberFormat("pt-BR", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 3,
+  }).format(Number(valor || 0));
+}
 
+function dataBR(valor) {
+  if (!valor) return "-";
+
+  const texto = String(valor);
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(texto)) {
+    const [ano, mes, dia] = texto.split("-");
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  const data = new Date(valor);
+
+  if (Number.isNaN(data.getTime())) return "-";
+
+  return data.toLocaleDateString("pt-BR");
+}
+
+function dataHoraBR(valor) {
+  const data = new Date(valor);
+
+  if (Number.isNaN(data.getTime())) return "-";
+
+  return data.toLocaleString("pt-BR");
+}
+
+function nomeSeguro(valor = "") {
   return String(valor)
     .normalize("NFD")
-    .replace(
-      /[\u0300-\u036f]/g,
-      ""
-    )
-    .toLowerCase()
-    .replace(
-      /\.[^/.]+$/,
-      ""
-    )
-    .replace(
-      /[^a-z0-9]/g,
-      ""
-    );
-
-}
-
-
-// =========================================================
-// FORMATADORES
-// =========================================================
-
-function formatarNumeroMoeda(
-  valor
-) {
-
-  return new Intl.NumberFormat(
-    "pt-BR",
-    {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }
-  ).format(
-    Number(
-      valor || 0
-    )
-  );
-
-}
-
-
-function formatarQuantidade(
-  valor
-) {
-
-  return new Intl.NumberFormat(
-    "pt-BR",
-    {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 3
-    }
-  ).format(
-    Number(
-      valor || 0
-    )
-  );
-
-}
-
-
-function formatarData(
-  valor
-) {
-
-  if (!valor) {
-    return "-";
-  }
-
-
-  const data =
-    new Date(
-      valor
-    );
-
-
-  if (
-    Number.isNaN(
-      data.getTime()
-    )
-  ) {
-
-    return "-";
-
-  }
-
-
-  return new Intl.DateTimeFormat(
-    "pt-BR",
-    {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric"
-    }
-  ).format(
-    data
-  );
-
-}
-
-
-function formatarDataHora(
-  valor
-) {
-
-  if (!valor) {
-    return "-";
-  }
-
-
-  const data =
-    new Date(
-      valor
-    );
-
-
-  if (
-    Number.isNaN(
-      data.getTime()
-    )
-  ) {
-
-    return "-";
-
-  }
-
-
-  return new Intl.DateTimeFormat(
-    "pt-BR",
-    {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    }
-  ).format(
-    data
-  );
-
-}
-
-
-function formatarDataEntrega(
-  valor
-) {
-
-  if (!valor) {
-    return "-";
-  }
-
-
-  const texto =
-    String(
-      valor
-    );
-
-
-  if (
-    /^\d{4}-\d{2}-\d{2}$/.test(
-      texto
-    )
-  ) {
-
-    return new Intl.DateTimeFormat(
-      "pt-BR",
-      {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        timeZone: "UTC"
-      }
-    ).format(
-      new Date(
-        `${texto}T00:00:00Z`
-      )
-    );
-
-  }
-
-
-  return formatarData(
-    valor
-  );
-
-}
-
-
-// =========================================================
-// NOME DO ARQUIVO
-// =========================================================
-
-function limparNomeArquivo(
-  valor = ""
-) {
-
-  return String(
-    valor
-  )
-    .normalize("NFD")
-    .replace(
-      /[\u0300-\u036f]/g,
-      ""
-    )
-    .replace(
-      /[^a-zA-Z0-9-_ ]/g,
-      ""
-    )
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9-_ ]/g, "")
     .trim()
-    .replace(
-      /\s+/g,
-      "-"
-    )
-    .slice(
-      0,
-      70
-    );
-
+    .replace(/\s+/g, "-")
+    .slice(0, 70);
 }
 
-
-// =========================================================
-// PEGAR PRIMEIRO VALOR DISPONÍVEL
-// =========================================================
-
-function primeiroValor(
-  objeto,
-  chaves,
-  fallback = "-"
-) {
-
-  for (
-    const chave of
-    chaves
-  ) {
-
-    const valor =
-      objeto?.[chave];
-
+function primeiroValor(objeto, chaves, padrao = "-") {
+  for (const chave of chaves) {
+    const valor = objeto?.[chave];
 
     if (
-      valor !== null &&
       valor !== undefined &&
-      String(
-        valor
-      ).trim() !== ""
+      valor !== null &&
+      String(valor).trim() !== ""
     ) {
-
       return valor;
-
     }
-
   }
 
-
-  return fallback;
-
+  return padrao;
 }
 
+function valorNumerico(valor) {
+  const numero = Number(valor);
+  return Number.isFinite(numero) ? numero : 0;
+}
 
-// =========================================================
-// NÚMERO DO ORÇAMENTO
-// =========================================================
-
-function numeroOrcamento(
-  orcamento
-) {
-
-  const numeroInformado =
-    primeiroValor(
-      orcamento,
-      [
-        "numero",
-        "numero_orcamento",
-        "orcamento_numero"
-      ],
-      ""
-    );
-
-
-  if (
-    numeroInformado
-  ) {
-
-    return String(
-      numeroInformado
-    );
-
-  }
-
-
-  return (
-    String(
-      orcamento?.id ||
-      ""
-    )
-      .split("-")[0]
-      .toUpperCase() ||
-    "-"
+function numeroOrcamento(orcamento) {
+  const numero = primeiroValor(
+    orcamento,
+    ["numero", "numero_orcamento", "orcamento_numero"],
+    ""
   );
 
+  if (numero) return String(numero);
+
+  return (
+    String(orcamento?.id || "")
+      .split("-")[0]
+      .toUpperCase() || "-"
+  );
 }
 
+function prepararUrl(valor) {
+  const url = String(valor || "").trim();
 
-// =========================================================
-// ENCONTRAR PRODUTO NA TABELA
-// =========================================================
+  if (!url) return "";
 
-function encontrarLinhaTabelaPdf(
-  item
-) {
+  if (/^data:image\//i.test(url)) return url;
 
-  if (
-    !item
-  ) {
-
-    return null;
-
+  try {
+    return new URL(url, window.location.origin).href;
+  } catch {
+    return "";
   }
+}
 
+// =====================================================
+// IDENTIFICAÇÃO DE PRODUTOS
+// =====================================================
 
-  const categorias =
-    Array.isArray(
-      tabelaPrecosData?.categorias
-    )
-      ? tabelaPrecosData.categorias
+function encontrarLinhaTabela(item) {
+  if (!item) return null;
+
+  const categorias = Array.isArray(
+    tabelaPrecosData?.categorias
+  )
+    ? tabelaPrecosData.categorias
+    : [];
+
+  const codigo = normalizar(item.codigo_produto);
+  const nome = normalizar(item.nome_produto);
+  const variacao = normalizar(item.variacao_produto);
+
+  let melhor = null;
+  let pontuacaoMelhor = -1;
+
+  for (const categoria of categorias) {
+    const linhas = Array.isArray(categoria?.linhas)
+      ? categoria.linhas
       : [];
 
+    for (const linha of linhas) {
+      if (!Array.isArray(linha)) continue;
 
-  const codigo =
-    normalizarChaveProduto(
-      item.codigo_produto
-    );
+      const valores = linha
+        .map(normalizar)
+        .filter(Boolean);
 
+      if (codigo.length >= 4) {
+        const corresponde = valores.some(
+          (valor) =>
+            valor === codigo ||
+            (valor.length >= 4 &&
+              (valor.includes(codigo) ||
+                codigo.includes(valor)))
+        );
 
-  const nome =
-    normalizarChaveProduto(
-      item.nome_produto
-    );
+        if (corresponde) {
+          return { categoria, linha };
+        }
+      }
 
-
-  const variacao =
-    normalizarChaveProduto(
-      item.variacao_produto
-    );
-
-
-  let melhorCandidato =
-    null;
-
-
-  let melhorPontuacao =
-    -1;
-
-
-  for (
-    const categoria of
-    categorias
-  ) {
-
-    const linhas =
-      Array.isArray(
-        categoria?.linhas
-      )
-        ? categoria.linhas
-        : [];
-
-
-    for (
-      const linha of
-      linhas
-    ) {
+      let pontos = 0;
 
       if (
-        !Array.isArray(
-          linha
+        nome.length >= 4 &&
+        valores.some(
+          (valor) =>
+            valor.length >= 4 &&
+            (valor.includes(nome) || nome.includes(valor))
         )
       ) {
-
-        continue;
-
+        pontos += 4;
       }
-
-
-      const valores =
-        linha
-          .map(
-            normalizarChaveProduto
-          )
-          .filter(
-            Boolean
-          );
-
 
       if (
-        codigo.length >=
-        4
+        variacao.length >= 3 &&
+        valores.some(
+          (valor) =>
+            valor.length >= 3 &&
+            (valor.includes(variacao) ||
+              variacao.includes(valor))
+        )
       ) {
-
-        const encontrouCodigo =
-          valores.some(
-            (
-              valor
-            ) =>
-              valor === codigo ||
-              (
-                valor.length >=
-                4 &&
-                (
-                  valor.includes(
-                    codigo
-                  ) ||
-                  codigo.includes(
-                    valor
-                  )
-                )
-              )
-          );
-
-
-        if (
-          encontrouCodigo
-        ) {
-
-          return {
-            categoria,
-            linha
-          };
-
-        }
-
+        pontos += 2;
       }
 
-
-      let pontuacao =
-        0;
-
-
-      if (
-        nome.length >=
-        4
-      ) {
-
-        const encontrouNome =
-          valores.some(
-            (
-              valor
-            ) =>
-              valor.length >=
-              4 &&
-              (
-                valor.includes(
-                  nome
-                ) ||
-                nome.includes(
-                  valor
-                )
-              )
-          );
-
-
-        if (
-          encontrouNome
-        ) {
-
-          pontuacao +=
-            4;
-
-        }
-
+      if (pontos >= 4 && pontos > pontuacaoMelhor) {
+        pontuacaoMelhor = pontos;
+        melhor = { categoria, linha };
       }
-
-
-      if (
-        variacao.length >=
-        3
-      ) {
-
-        const encontrouVariacao =
-          valores.some(
-            (
-              valor
-            ) =>
-              valor.length >=
-              3 &&
-              (
-                valor.includes(
-                  variacao
-                ) ||
-                variacao.includes(
-                  valor
-                )
-              )
-          );
-
-
-        if (
-          encontrouVariacao
-        ) {
-
-          pontuacao +=
-            2;
-
-        }
-
-      }
-
-
-      if (
-        pontuacao >
-        melhorPontuacao &&
-        pontuacao >=
-        4
-      ) {
-
-        melhorPontuacao =
-          pontuacao;
-
-
-        melhorCandidato = {
-          categoria,
-          linha
-        };
-
-      }
-
     }
-
   }
 
-
-  return melhorCandidato;
-
+  return melhor;
 }
 
+function encontrarImagemProduto(item) {
+  if (!item) return "";
 
-// =========================================================
-// ENCONTRAR IMAGEM DO PRODUTO
-// =========================================================
-
-function encontrarImagemItemPdf(
-  item
-) {
-
-  if (
-    !item
-  ) {
-
-    return "";
-
-  }
-
-
-  const imagemDireta =
+  const direta =
     item.imagem_url ||
     item.image_url ||
     item.imagem ||
     item.foto_url;
 
+  if (direta) return prepararUrl(direta);
 
-  if (
-    imagemDireta
-  ) {
+  const correspondencia = encontrarLinhaTabela(item);
 
-    return String(
-      imagemDireta
-    );
-
-  }
-
-
-  const correspondencia =
-    encontrarLinhaTabelaPdf(
-      item
-    );
-
-
-  const codigo =
-    normalizarChaveProduto(
-      item.codigo_produto
-    );
-
+  const codigo = normalizar(item.codigo_produto);
 
   const valoresBase = [
-
     item.codigo_produto,
-
     item.nome_produto,
-
     item.variacao_produto,
-
     item.tipo_preco,
-
-    ...(
-      Array.isArray(
-        correspondencia?.linha
-      )
-        ? correspondencia.linha
-        : []
-    )
-
+    ...(correspondencia?.linha || []),
   ];
 
+  const valores = [
+    ...new Set(
+      valoresBase
+        .map(normalizar)
+        .filter((valor) => valor.length >= 3)
+    ),
+  ];
 
-  const valoresNormalizados =
-    [
-      ...new Set(
-        valoresBase
-          .map(
-            normalizarChaveProduto
-          )
-          .filter(
-            (
-              valor
-            ) =>
-              valor.length >=
-              3
-          )
-      )
-    ];
+  let melhorImagem = "";
+  let melhorPontuacao = 0;
 
+  for (const [caminho, imagem] of Object.entries(
+    imagensProdutosPdf
+  )) {
+    const arquivo = caminho.split("/").pop() || "";
+    const chave = normalizar(arquivo);
 
-  let melhorImagem =
-    "";
-
-
-  let melhorPontuacao =
-    -1;
-
-
-  for (
-    const [
-      caminho,
-      imagem
-    ] of
-    Object.entries(
-      imagensProdutosPdf
-    )
-  ) {
-
-    const nomeArquivo =
-      caminho
-        .split("/")
-        .pop() ||
-      "";
-
-
-    const nomeNormalizado =
-      normalizarChaveProduto(
-        nomeArquivo
-      );
-
+    if (!chave) continue;
 
     if (
-      !nomeNormalizado
+      codigo.length >= 4 &&
+      (chave === codigo ||
+        chave.includes(codigo) ||
+        codigo.includes(chave))
     ) {
-
-      continue;
-
+      return prepararUrl(imagem);
     }
 
+    let pontos = 0;
 
-    if (
-      codigo.length >=
-      4 &&
-      (
-        nomeNormalizado ===
-        codigo ||
-        nomeNormalizado.includes(
-          codigo
-        ) ||
-        codigo.includes(
-          nomeNormalizado
-        )
-      )
-    ) {
-
-      return imagem;
-
-    }
-
-
-    let pontuacao =
-      0;
-
-
-    for (
-      const valor of
-      valoresNormalizados
-    ) {
-
-      if (
-        nomeNormalizado ===
-        valor
-      ) {
-
-        pontuacao =
-          Math.max(
-            pontuacao,
-            1000 +
-            valor.length
-          );
-
+    for (const valor of valores) {
+      if (chave === valor) {
+        pontos = Math.max(pontos, 1000 + valor.length);
+      } else if (chave.includes(valor)) {
+        pontos = Math.max(pontos, 100 + valor.length);
+      } else if (valor.includes(chave)) {
+        pontos = Math.max(pontos, 50 + chave.length);
       }
-      else if (
-        nomeNormalizado.includes(
-          valor
-        )
-      ) {
-
-        pontuacao =
-          Math.max(
-            pontuacao,
-            100 +
-            valor.length
-          );
-
-      }
-      else if (
-        valor.includes(
-          nomeNormalizado
-        )
-      ) {
-
-        pontuacao =
-          Math.max(
-            pontuacao,
-            50 +
-            nomeNormalizado.length
-          );
-
-      }
-
     }
 
-
-    if (
-      pontuacao >
-      melhorPontuacao
-    ) {
-
-      melhorPontuacao =
-        pontuacao;
-
-
-      melhorImagem =
-        imagem;
-
+    if (pontos > melhorPontuacao) {
+      melhorPontuacao = pontos;
+      melhorImagem = imagem;
     }
-
   }
 
-
-  return melhorPontuacao > 0
-    ? melhorImagem
-    : "";
-
+  return prepararUrl(melhorImagem);
 }
 
+// =====================================================
+// COMPONENTES HTML
+// =====================================================
 
-// =========================================================
-// PREPARAR URL DA IMAGEM
-// =========================================================
-
-function prepararUrlImagemPdf(
-  valor
-) {
-
-  const url =
-    String(
-      valor ||
-      ""
-    ).trim();
-
-
-  if (
-    !url
-  ) {
-
-    return "";
-
-  }
-
-
-  if (
-    /^data:image\//i.test(
-      url
-    )
-  ) {
-
-    return url;
-
-  }
-
-
-  if (
-    /^https?:\/\//i.test(
-      url
-    )
-  ) {
-
-    return url;
-
-  }
-
-
-  try {
-
-    return new URL(
-      url,
-      window.location.origin
-    ).href;
-
-  }
-  catch {
-
-    return "";
-
-  }
-
+function campo(titulo, valor) {
+  return `
+    <div class="data-line">
+      <strong>${escaparHtml(titulo)}</strong>
+      <span>${escaparHtml(valor ?? "-")}</span>
+    </div>
+  `;
 }
 
+function campoComercial(titulo, valor) {
+  return `
+    <div class="commercial-line">
+      <strong>${escaparHtml(titulo)}</strong>
+      <span>${escaparHtml(valor ?? "-")}</span>
+    </div>
+  `;
+}
 
-// =========================================================
-// VALIDAR ORÇAMENTO
-// =========================================================
+function linhaTotal(titulo, valor, destaque = false) {
+  return `
+    <div class="total-line ${destaque ? "grand" : ""}">
+      <span>${escaparHtml(titulo)}</span>
+      <span>${moeda(valor)}</span>
+    </div>
+  `;
+}
 
-function validarDados({
-  orcamento,
-  itens
-}) {
+// =====================================================
+// ESTILOS DO DOCUMENTO
+// =====================================================
 
-  if (
-    !orcamento
-  ) {
-
-    throw new Error(
-      "Orçamento não informado."
-    );
-
+const ESTILOS = `
+  * {
+    box-sizing: border-box;
   }
 
+  .sheet {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 12mm 13mm;
+    background: #ffffff;
+    color: #111111;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8px;
+    line-height: 1.35;
+    box-sizing: border-box;
+  }
 
-  if (
-    !Array.isArray(
-      itens
-    ) ||
-    itens.length ===
-    0
-  ) {
+  .sheet * {
+    box-sizing: border-box;
+  }
 
+  .company-header {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr) 135px;
+    gap: 14px;
+    align-items: start;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #222222;
+  }
+
+  .brand-box {
+    min-height: 55px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .brand-logo {
+    display: block;
+    width: 115px;
+    max-height: 65px;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .brand-fallback {
+    display: none;
+  }
+
+  .brand-box.no-logo .brand-logo {
+    display: none;
+  }
+
+  .brand-box.no-logo .brand-fallback {
+    display: block;
+  }
+
+  .brand {
+    font-size: 21px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    color: #111111;
+  }
+
+  .brand-subtitle {
+    margin-top: 3px;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: #555555;
+  }
+
+  .company-data,
+  .document-data {
+    min-width: 0;
+  }
+
+  .company-name {
+    margin: 0 0 5px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.25;
+  }
+
+  .company-line {
+    margin: 2px 0;
+    color: #252525;
+    font-size: 7.5px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .company-line strong {
+    font-weight: 800;
+  }
+
+  .company-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 10px;
+    margin-top: 5px;
+  }
+
+  .company-contact-grid .full {
+    grid-column: 1 / -1;
+  }
+
+  .document-title {
+    margin: 0 0 8px;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .document-row {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 6px;
+    margin: 4px 0;
+    font-size: 7.5px;
+  }
+
+  .document-row span:first-child {
+    font-weight: 800;
+  }
+
+  .document-row span:last-child {
+    text-align: right;
+    font-weight: 600;
+  }
+
+  .section {
+    margin-top: 13px;
+  }
+
+  .section-title {
+    margin: 0 0 7px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #555555;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .billing-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 4px 22px;
+  }
+
+  .billing-column {
+    min-width: 0;
+  }
+
+  .data-line {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 8px;
+    min-height: 14px;
+    align-items: start;
+    font-size: 7.5px;
+    line-height: 1.4;
+  }
+
+  .data-line strong {
+    font-weight: 800;
+  }
+
+  .data-line span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .products-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  .products-table thead {
+    border-bottom: 1px solid #555555;
+  }
+
+  .products-table th {
+    padding: 5px 4px;
+    font-size: 7px;
+    font-weight: 800;
+    text-align: left;
+  }
+
+  .products-table td {
+    padding: 7px 4px;
+    border-bottom: 1px solid #d2d2d2;
+    color: #202020;
+    font-size: 7.3px;
+    line-height: 1.4;
+    vertical-align: middle;
+  }
+
+  .products-table tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .products-table th:nth-child(1),
+  .products-table td:nth-child(1) {
+    width: 13%;
+  }
+
+  .products-table th:nth-child(2),
+  .products-table td:nth-child(2) {
+    width: 15%;
+  }
+
+  .products-table th:nth-child(3),
+  .products-table td:nth-child(3) {
+    width: 40%;
+  }
+
+  .products-table th:nth-child(4),
+  .products-table td:nth-child(4) {
+    width: 9%;
+  }
+
+  .products-table th:nth-child(5),
+  .products-table td:nth-child(5) {
+    width: 11%;
+  }
+
+  .products-table th:nth-child(6),
+  .products-table td:nth-child(6) {
+    width: 12%;
+  }
+
+  .product-image-cell {
+    text-align: center;
+  }
+
+  .product-image-wrapper,
+  .product-image-placeholder {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    background: #ffffff;
+  }
+
+  .product-image {
+    display: block;
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .product-image-placeholder {
+    border: 1px solid #dddddd;
+    color: #999999;
+    font-size: 6px;
+    text-align: center;
+  }
+
+  .product-code {
+    color: #363636;
+    font-family: "Courier New", monospace;
+    font-size: 6.8px;
+    overflow-wrap: anywhere;
+  }
+
+  .product-description strong {
+    font-size: 7.5px;
+    font-weight: 800;
+  }
+
+  .product-detail {
+    margin-top: 3px;
+    color: #696969;
+    font-size: 6.5px;
+  }
+
+  .number-cell {
+    text-align: right !important;
+    white-space: nowrap;
+  }
+
+  .product-total {
+    font-weight: 800;
+  }
+
+  .products-summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 245px;
+    gap: 16px;
+    margin-top: 10px;
+    break-inside: avoid;
+  }
+
+  .products-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 18px;
+    padding-top: 5px;
+    font-size: 7px;
+  }
+
+  .products-meta strong {
+    font-weight: 800;
+  }
+
+  .totals {
+    width: 100%;
+  }
+
+  .total-line {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 75px;
+    gap: 10px;
+    padding: 4px 0;
+    font-size: 7.5px;
+  }
+
+  .total-line span:first-child {
+    text-align: right;
+  }
+
+  .total-line span:last-child {
+    text-align: right;
+    font-weight: 700;
+  }
+
+  .total-line.grand {
+    margin-top: 4px;
+    padding-top: 7px;
+    border-top: 1.5px solid #333333;
+    font-size: 8px;
+    font-weight: 900;
+  }
+
+  .commercial-lines {
+    width: 100%;
+  }
+
+  .commercial-line {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 8px;
+    min-height: 16px;
+    padding: 2px 0;
+    font-size: 7.5px;
+    line-height: 1.4;
+    break-inside: avoid;
+  }
+
+  .commercial-line strong {
+    font-weight: 800;
+  }
+
+  .commercial-observation {
+    margin-top: 7px;
+    padding-top: 7px;
+    border-top: 1px solid #d2d2d2;
+    break-inside: avoid;
+  }
+
+  .commercial-observation strong {
+    font-size: 9px;
+    font-weight: 800;
+  }
+
+  .commercial-observation p {
+    margin: 4px 0 0;
+    color: #272727;
+    font-size: 7.5px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .document-footer {
+    margin-top: 18px;
+    padding-top: 10px;
+    border-top: 1px solid #bbbbbb;
+    text-align: center;
+    color: #363636;
+    font-size: 6.8px;
+    font-weight: 700;
+    line-height: 1.6;
+    text-transform: uppercase;
+  }
+
+  .document-footer .print-date {
+    margin-top: 3px;
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  @media print {
+    .sheet {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0;
+      box-shadow: none;
+    }
+  }
+`;
+
+// =====================================================
+// MONTAR DOCUMENTO HTML
+// =====================================================
+
+function montarDocumentoOrcamento({ orcamento, itens }) {
+  if (!orcamento) {
+    throw new Error("Orçamento não informado.");
+  }
+
+  if (!Array.isArray(itens) || itens.length === 0) {
     throw new Error(
       "O orçamento precisa ter pelo menos um produto."
     );
-
   }
 
-}
+  const numero = numeroOrcamento(orcamento);
 
+  const primeiroNome = String(
+    orcamento.cliente_nome || "Cliente"
+  )
+    .trim()
+    .split(/\s+/)[0];
 
-// =========================================================
-// MONTAR DOCUMENTO
-// =========================================================
+  const nomeArquivo = `Orcamento-${nomeSeguro(
+    primeiroNome
+  )}-${nomeSeguro(numero)}`;
 
-function montarDocumentoOrcamento({
-  orcamento,
-  itens
-}) {
+  const subtotalProdutos = itens.reduce((total, item) => {
+    const subtotal =
+      item.subtotal !== null &&
+      item.subtotal !== undefined
+        ? valorNumerico(item.subtotal)
+        : valorNumerico(item.preco_unitario) *
+          valorNumerico(item.quantidade);
 
-  validarDados({
+    return total + subtotal;
+  }, 0);
+
+  const frete = valorNumerico(orcamento.frete);
+  const totalGeral = subtotalProdutos + frete;
+
+  const quantidadeTotal = itens.reduce(
+    (total, item) =>
+      total + valorNumerico(item.quantidade),
+    0
+  );
+
+  const representante = primeiroValor(orcamento, [
+    "representante_nome",
+    "nome_representante",
+    "created_by_name",
+  ]);
+
+  const validade = primeiroValor(
     orcamento,
-    itens
-  });
+    ["validade", "data_validade", "validade_orcamento"],
+    ""
+  );
 
+  const clienteContato = primeiroValor(orcamento, [
+    "cliente_contato",
+    "contato",
+  ]);
 
-  // =====================================================
-  // TOTAIS
-  // =====================================================
+  const clienteCidade = primeiroValor(orcamento, [
+    "cliente_cidade",
+    "cidade",
+  ]);
 
-  const subtotalProdutos =
-    itens.reduce(
-      (
-        total,
-        item
-      ) =>
-        total +
-        Number(
-          item.subtotal ||
-          (
-            Number(
-              item.preco_unitario ||
-              0
-            ) *
-            Number(
-              item.quantidade ||
-              0
-            )
-          )
-        ),
-      0
-    );
+  const clienteEndereco = primeiroValor(orcamento, [
+    "cliente_endereco",
+    "endereco",
+  ]);
 
+  const clienteBairro = primeiroValor(orcamento, [
+    "cliente_bairro",
+    "bairro",
+  ]);
 
-  const frete =
-    Number(
-      orcamento.frete ||
-      0
-    );
+  const clienteCep = primeiroValor(orcamento, [
+    "cliente_cep",
+    "cep",
+  ]);
 
+  const clienteUf = primeiroValor(orcamento, [
+    "cliente_uf",
+    "uf",
+  ]);
 
-  const totalGeral =
-    subtotalProdutos +
-    frete;
+  const clienteInscricao = primeiroValor(orcamento, [
+    "cliente_inscricao_estadual",
+    "inscricao_estadual",
+    "cliente_ie",
+    "ie",
+  ]);
 
+  const linhasProdutos = itens
+    .map((item) => {
+      const imagem = encontrarImagemProduto(item);
 
-  const quantidadeTotal =
-    itens.reduce(
-      (
-        total,
-        item
-      ) =>
-        total +
-        Number(
-          item.quantidade ||
-          0
-        ),
-      0
-    );
-
-
-  // =====================================================
-  // IDENTIFICAÇÃO
-  // =====================================================
-
-  const numero =
-    numeroOrcamento(
-      orcamento
-    );
-
-
-  // =====================================================
-  // PRIMEIRO NOME DO CLIENTE
-  // =====================================================
-
-  const primeiroNomeCliente =
-    String(
-      orcamento.cliente_nome ||
-      "Cliente"
-    )
-      .trim()
-      .split(
-        /\s+/
-      )[0];
-
-
-  // =====================================================
-  // NOME FINAL DO PDF
-  // =====================================================
-  //
-  // Exemplo:
-  //
-  // Gabriel Esteves
-  // Orçamento 002066
-  //
-  // Resultado:
-  // Orcamento-Gabriel-002066.pdf
-  //
-  // =====================================================
-
-  const nomeArquivo =
-    `Orcamento-${
-      limparNomeArquivo(
-        primeiroNomeCliente
-      )
-    }-${
-      limparNomeArquivo(
-        numero
-      )
-    }`;
-
-
-  // =====================================================
-  // CLIENTE
-  // =====================================================
-
-  const clienteContato =
-    primeiroValor(
-      orcamento,
-      [
-        "cliente_contato",
-        "contato"
+      const complemento = [
+        item.variacao_produto,
+        item.tipo_preco,
       ]
-    );
+        .filter(Boolean)
+        .map(escaparHtml)
+        .join(" • ");
 
+      const totalItem =
+        item.subtotal !== null &&
+        item.subtotal !== undefined
+          ? valorNumerico(item.subtotal)
+          : valorNumerico(item.preco_unitario) *
+            valorNumerico(item.quantidade);
 
-  const clienteCidade =
-    primeiroValor(
-      orcamento,
-      [
-        "cliente_cidade",
-        "cidade"
-      ]
-    );
+      return `
+        <tr>
+          <td class="product-image-cell">
+            ${
+              imagem
+                ? `
+                  <div class="product-image-wrapper">
+                    <img
+                      class="product-image"
+                      src="${escaparHtml(imagem)}"
+                      alt="${escaparHtml(
+                        item.nome_produto || "Produto"
+                      )}"
+                    />
+                  </div>
+                `
+                : `
+                  <div class="product-image-placeholder">
+                    Sem imagem
+                  </div>
+                `
+            }
+          </td>
 
+          <td class="product-code">
+            ${escaparHtml(item.codigo_produto || "-")}
+          </td>
 
-  const clienteEndereco =
-    primeiroValor(
-      orcamento,
-      [
-        "cliente_endereco",
-        "endereco"
-      ]
-    );
+          <td class="product-description">
+            <strong>
+              ${escaparHtml(item.nome_produto || "-")}
+            </strong>
 
+            ${
+              complemento
+                ? `
+                  <div class="product-detail">
+                    ${complemento}
+                  </div>
+                `
+                : ""
+            }
+          </td>
 
-  const clienteBairro =
-    primeiroValor(
-      orcamento,
-      [
-        "cliente_bairro",
-        "bairro"
-      ]
-    );
+          <td class="number-cell">
+            ${quantidade(item.quantidade)}
+          </td>
 
+          <td class="number-cell">
+            ${moeda(item.preco_unitario)}
+          </td>
 
-  const clienteCep =
-    primeiroValor(
-      orcamento,
-      [
-        "cliente_cep",
-        "cep"
-      ]
-    );
+          <td class="number-cell product-total">
+            ${moeda(totalItem)}
+          </td>
+        </tr>
+      `;
+    })
+    .join("");
 
+  const conteudo = `
+    <main class="sheet">
 
-  const clienteUf =
-    primeiroValor(
-      orcamento,
-      [
-        "cliente_uf",
-        "uf"
-      ]
-    );
+      <header class="company-header">
 
+        <div class="brand-box">
+          <img
+            class="brand-logo"
+            src="${escaparHtml(EMPRESA.logo)}"
+            alt="Logo Synter"
+            onerror="this.parentElement.classList.add('no-logo')"
+          />
 
-  const clienteInscricao =
-    primeiroValor(
-      orcamento,
-      [
-        "cliente_inscricao_estadual",
-        "inscricao_estadual",
-        "cliente_ie",
-        "ie"
-      ]
-    );
+          <div class="brand-fallback">
+            <div class="brand">SYNTER</div>
+            <div class="brand-subtitle">
+              SOLUÇÕES EM ACESSO
+            </div>
+          </div>
+        </div>
 
+        <div class="company-data">
 
-  const representante =
-    primeiroValor(
-      orcamento,
-      [
-        "representante_nome",
-        "nome_representante",
-        "created_by_name"
-      ]
-    );
+          <h1 class="company-name">
+            ${escaparHtml(EMPRESA.razaoSocial)}
+          </h1>
 
+          <div class="company-line">
+            ${escaparHtml(EMPRESA.endereco)} -
+            ${escaparHtml(EMPRESA.bairro)} -
+            ${escaparHtml(EMPRESA.cidade)}
+            (${escaparHtml(EMPRESA.uf)})
+          </div>
 
-  const validade =
-    primeiroValor(
-      orcamento,
-      [
-        "validade",
-        "data_validade",
-        "validade_orcamento"
-      ],
-      ""
-    );
+          <div class="company-line">
+            <strong>CEP:</strong>
+            ${escaparHtml(EMPRESA.cep)}
+          </div>
 
+          <div class="company-contact-grid">
 
-  // =====================================================
-  // PRODUTOS
-  // =====================================================
+            <div class="company-line">
+              <strong>CNPJ:</strong>
+              ${escaparHtml(EMPRESA.cnpj)}
+            </div>
 
-  const linhasProdutos =
-    itens
-      .map(
-        (
-          item
-        ) => {
+            <div class="company-line">
+              <strong>FONE:</strong>
+              ${escaparHtml(EMPRESA.telefone)}
+            </div>
 
-          const imagem =
-            prepararUrlImagemPdf(
-              encontrarImagemItemPdf(
-                item
-              )
-            );
+            <div class="company-line full">
+              <strong>E-mail:</strong>
+              ${escaparHtml(EMPRESA.email)}
+            </div>
 
+          </div>
 
-          const complemento =
-            [
-              item.variacao_produto,
-              item.tipo_preco
-            ]
-              .filter(
-                Boolean
-              )
-              .map(
-                escaparHtml
-              )
-              .join(
-                " • "
-              );
+        </div>
 
+        <div class="document-data">
 
-          const subtotalItem =
-            Number(
-              item.subtotal ||
-              (
-                Number(
-                  item.preco_unitario ||
-                  0
-                ) *
-                Number(
-                  item.quantidade ||
-                  0
-                )
-              )
-            );
+          <div class="document-title">
+            Orçamento: ${escaparHtml(numero)}
+          </div>
 
+          <div class="document-row">
+            <span>Emissão:</span>
+            <span>${dataBR(orcamento.created_at)}</span>
+          </div>
 
-          return `
+          <div class="document-row">
+            <span>Validade:</span>
+            <span>${validade ? dataBR(validade) : "-"}</span>
+          </div>
+
+        </div>
+
+      </header>
+
+      <section class="section">
+
+        <h2 class="section-title">
+          Dados de Faturamento e Cobrança
+        </h2>
+
+        <div class="billing-grid">
+
+          <div class="billing-column">
+
+            ${campo(
+              "Cliente",
+              orcamento.cliente_nome || "-"
+            )}
+
+            ${campo("Contato", clienteContato)}
+
+            ${campo("Cidade", clienteCidade)}
+
+            ${campo("Endereço", clienteEndereco)}
+
+            ${campo("Bairro", clienteBairro)}
+
+            ${campo(
+              "E-mail",
+              orcamento.cliente_email || "-"
+            )}
+
+          </div>
+
+          <div class="billing-column">
+
+            ${campo(
+              "Fone",
+              orcamento.cliente_telefone || "-"
+            )}
+
+            ${campo("CEP", clienteCep)}
+
+            ${campo("UF", clienteUf)}
+
+            ${campo(
+              "CPF/CNPJ",
+              orcamento.cliente_documento || "-"
+            )}
+
+            ${campo("Insc. Est.", clienteInscricao)}
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="section">
+
+        <h2 class="section-title">
+          Produtos
+        </h2>
+
+        <table class="products-table">
+
+          <thead>
             <tr>
-
-              <td class="product-image-cell">
-
-                ${
-                  imagem
-                    ? `
-
-                      <div class="product-image-wrapper">
-
-                        <img
-                          class="product-image"
-                          src="${escaparHtml(
-                            imagem
-                          )}"
-                          alt="${escaparHtml(
-                            item.nome_produto ||
-                            "Produto"
-                          )}"
-                        />
-
-                      </div>
-
-                    `
-                    : `
-
-                      <div class="product-image-placeholder">
-
-                        Sem imagem
-
-                      </div>
-
-                    `
-                }
-
-              </td>
-
-
-              <td class="product-code">
-
-                ${escaparHtml(
-                  item.codigo_produto ||
-                  "-"
-                )}
-
-              </td>
-
-
-              <td class="product-description">
-
-                <strong>
-
-                  ${escaparHtml(
-                    item.nome_produto ||
-                    "-"
-                  )}
-
-                </strong>
-
-
-                ${
-                  complemento
-                    ? `
-
-                      <div class="product-detail">
-
-                        ${complemento}
-
-                      </div>
-
-                    `
-                    : ""
-                }
-
-              </td>
-
-
-              <td class="number-cell">
-
-                ${escaparHtml(
-                  formatarQuantidade(
-                    item.quantidade
-                  )
-                )}
-
-              </td>
-
-
-              <td class="number-cell">
-
-                ${escaparHtml(
-                  formatarNumeroMoeda(
-                    item.preco_unitario
-                  )
-                )}
-
-              </td>
-
-
-              <td class="number-cell product-total">
-
-                ${escaparHtml(
-                  formatarNumeroMoeda(
-                    subtotalItem
-                  )
-                )}
-
-              </td>
-
+              <th>Imagem</th>
+              <th>Cod.</th>
+              <th>Descrição</th>
+              <th class="number-cell">Qtde.</th>
+              <th class="number-cell">Unit.</th>
+              <th class="number-cell">Total</th>
             </tr>
-          `;
+          </thead>
 
-        }
-      )
-      .join(
-        ""
-      );
+          <tbody>
+            ${linhasProdutos}
+          </tbody>
 
+        </table>
 
-  // =====================================================
-  // HTML DO DOCUMENTO
-  // =====================================================
+        <div class="products-summary">
 
-  const html = `
-    <!DOCTYPE html>
+          <div class="products-meta">
+            <span>
+              <strong>Itens:</strong>
+              ${itens.length}
+            </span>
 
-    <html lang="pt-BR">
+            <span>
+              <strong>Quantidade Total:</strong>
+              ${quantidade(quantidadeTotal)}
+            </span>
+          </div>
 
-      <head>
+          <div class="totals">
 
-        <meta charset="UTF-8" />
+            ${linhaTotal(
+              "Total dos Produtos (R$)",
+              subtotalProdutos
+            )}
 
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0"
-        />
+            ${linhaTotal(
+              "Valor do Frete (R$)",
+              frete
+            )}
 
+            ${linhaTotal(
+              "Total do Pedido (R$)",
+              totalGeral,
+              true
+            )}
 
-        <title>
+          </div>
 
-          ${escaparHtml(
-            nomeArquivo
+        </div>
+
+      </section>
+
+      <section class="section">
+
+        <h2 class="section-title">
+          Condições Comerciais
+        </h2>
+
+        <div class="commercial-lines">
+
+          ${campoComercial(
+            "Cond. Pagto:",
+            orcamento.condicao_pagamento || "-"
           )}
 
-        </title>
-
-
-        <style>
-
-          * {
-            box-sizing: border-box;
-          }
-
-
-          html,
-          body {
-
-            margin: 0;
-
-            padding: 0;
-
-            background:
-              #ffffff;
-
-            color:
-              #111111;
-
-            font-family:
-              Arial,
-              Helvetica,
-              sans-serif;
-
-          }
-
-
-          body {
-            padding: 0;
-          }
-
-
-          .sheet {
-
-            width:
-              210mm;
-
-            min-height:
-              297mm;
-
-            margin:
-              0 auto;
-
-            padding:
-              12mm
-              13mm;
-
-            background:
-              #ffffff;
-
-          }
-
-
-
-          /* ======================================== */
-          /* EMPRESA                                  */
-          /* ======================================== */
-
-          .company-header {
-
-            display:
-              grid;
-
-            grid-template-columns:
-              100px
-              minmax(0, 1fr)
-              175px;
-
-            gap:
-              14px;
-
-            align-items:
-              start;
-
-            padding-bottom:
-              10px;
-
-            border-bottom:
-              1.5px solid
-              #454545;
-
-          }
-
-
-          .brand-box {
-            padding-top: 2px;
-          }
-
-
-          .brand {
-
-            color:
-              #111111;
-
-            font-size:
-              20px;
-
-            font-weight:
-              900;
-
-            letter-spacing:
-              1.5px;
-
-          }
-
-
-          .brand-subtitle {
-
-            margin-top:
-              3px;
-
-            color:
-              #555555;
-
-            font-size:
-              7px;
-
-            font-weight:
-              700;
-
-            letter-spacing:
-              0.6px;
-
-          }
-
-
-          .company-data,
-          .document-data {
-            min-width: 0;
-          }
-
-
-          .company-name {
-
-            margin:
-              0
-              0
-              4px;
-
-            font-size:
-              11px;
-
-            font-weight:
-              800;
-
-            text-transform:
-              uppercase;
-
-          }
-
-
-          .company-line {
-
-            margin:
-              1px
-              0;
-
-            color:
-              #252525;
-
-            font-size:
-              7.5px;
-
-            line-height:
-              1.3;
-
-          }
-
-
-          .company-contact-grid {
-
-            display:
-              grid;
-
-            grid-template-columns:
-              1.15fr
-              0.85fr;
-
-            gap:
-              2px
-              14px;
-
-            margin-top:
-              4px;
-
-          }
-
-
-          .document-title {
-
-            margin:
-              0
-              0
-              7px;
-
-            font-size:
-              10px;
-
-            font-weight:
-              800;
-
-          }
-
-
-          .document-row {
-
-            display:
-              grid;
-
-            grid-template-columns:
-              54px
-              minmax(0, 1fr);
-
-            gap:
-              6px;
-
-            margin:
-              3px
-              0;
-
-            font-size:
-              7.5px;
-
-          }
-
-
-          .document-row span:first-child {
-            font-weight: 700;
-          }
-
-
-          .document-row span:last-child {
-
-            text-align:
-              right;
-
-            font-weight:
-              600;
-
-          }
-
-
-
-          /* ======================================== */
-          /* SEÇÕES                                   */
-          /* ======================================== */
-
-          .section {
-            margin-top: 10px;
-          }
-
-
-          .section-title {
-
-            margin:
-              0
-              0
-              5px;
-
-            padding-bottom:
-              3px;
-
-            border-bottom:
-              1px solid
-              #555555;
-
-            font-size:
-              10px;
-
-            font-weight:
-              900;
-
-            text-transform:
-              uppercase;
-
-          }
-
-
-
-          /* ======================================== */
-          /* FATURAMENTO                              */
-          /* ======================================== */
-
-          .billing-grid {
-
-            display:
-              grid;
-
-            grid-template-columns:
-              minmax(0, 1fr)
-              minmax(0, 1fr);
-
-            gap:
-              4px
-              22px;
-
-          }
-
-
-          .billing-column {
-            min-width: 0;
-          }
-
-
-          .data-line {
-
-            display:
-              grid;
-
-            grid-template-columns:
-              72px
-              minmax(0, 1fr);
-
-            gap:
-              8px;
-
-            min-height:
-              14px;
-
-            align-items:
-              start;
-
-            font-size:
-              7.5px;
-
-            line-height:
-              1.35;
-
-          }
-
-
-          .data-label {
-            font-weight: 800;
-          }
-
-
-          .data-value {
-
-            min-width:
-              0;
-
-            word-break:
-              break-word;
-
-          }
-
-
-
-          /* ======================================== */
-          /* PRODUTOS                                 */
-          /* ======================================== */
-
-          .products-table {
-
-            width:
-              100%;
-
-            border-collapse:
-              collapse;
-
-            table-layout:
-              fixed;
-
-          }
-
-
-          .products-table thead {
-
-            border-bottom:
-              1px solid
-              #555555;
-
-          }
-
-
-          .products-table th {
-
-            padding:
-              4px;
-
-            color:
-              #222222;
-
-            font-size:
-              6.8px;
-
-            font-weight:
-              800;
-
-            text-align:
-              left;
-
-            vertical-align:
-              middle;
-
-          }
-
-
-          .products-table td {
-
-            padding:
-              6px
-              4px;
-
-            border-bottom:
-              1px solid
-              #d2d2d2;
-
-            color:
-              #202020;
-
-            font-size:
-              7.2px;
-
-            line-height:
-              1.25;
-
-            vertical-align:
-              middle;
-
-          }
-
-
-          .products-table tr {
-
-            break-inside:
-              avoid;
-
-            page-break-inside:
-              avoid;
-
-          }
-
-
-          .products-table th:nth-child(1),
-          .products-table td:nth-child(1) {
-            width: 13%;
-          }
-
-
-          .products-table th:nth-child(2),
-          .products-table td:nth-child(2) {
-            width: 15%;
-          }
-
-
-          .products-table th:nth-child(3),
-          .products-table td:nth-child(3) {
-            width: 40%;
-          }
-
-
-          .products-table th:nth-child(4),
-          .products-table td:nth-child(4) {
-            width: 9%;
-          }
-
-
-          .products-table th:nth-child(5),
-          .products-table td:nth-child(5) {
-            width: 11%;
-          }
-
-
-          .products-table th:nth-child(6),
-          .products-table td:nth-child(6) {
-            width: 12%;
-          }
-
-
-          .product-image-cell {
-            text-align: center;
-          }
-
-
-          .product-image-wrapper,
-          .product-image-placeholder {
-
-            width:
-              48px;
-
-            height:
-              48px;
-
-            display:
-              flex;
-
-            justify-content:
-              center;
-
-            align-items:
-              center;
-
-            margin:
-              0 auto;
-
-            background:
-              #ffffff;
-
-          }
-
-
-          .product-image {
-
-            display:
-              block;
-
-            width:
-              48px;
-
-            height:
-              48px;
-
-            max-width:
-              48px;
-
-            max-height:
-              48px;
-
-            object-fit:
-              contain;
-
-            object-position:
-              center;
-
-          }
-
-
-          .product-image-placeholder {
-
-            border:
-              1px solid
-              #dddddd;
-
-            color:
-              #9a9a9a;
-
-            font-size:
-              6px;
-
-            text-align:
-              center;
-
-          }
-
-
-          .product-code {
-
-            color:
-              #363636;
-
-            font-family:
-              "Courier New",
-              monospace;
-
-            font-size:
-              6.8px;
-
-            word-break:
-              break-word;
-
-          }
-
-
-          .product-description strong {
-
-            font-size:
-              7.3px;
-
-            font-weight:
-              700;
-
-          }
-
-
-          .product-detail {
-
-            margin-top:
-              2px;
-
-            color:
-              #696969;
-
-            font-size:
-              6.5px;
-
-          }
-
-
-          .number-cell {
-
-            text-align:
-              right;
-
-            white-space:
-              nowrap;
-
-          }
-
-
-          .product-total {
-            font-weight: 800;
-          }
-
-
-
-          /* ======================================== */
-          /* TOTAIS                                   */
-          /* ======================================== */
-
-          .products-summary {
-
-            display:
-              grid;
-
-            grid-template-columns:
-              minmax(0, 1fr)
-              275px;
-
-            gap:
-              16px;
-
-            margin-top:
-              6px;
-
-          }
-
-
-          .products-meta {
-
-            display:
-              flex;
-
-            align-items:
-              flex-start;
-
-            gap:
-              26px;
-
-            padding-top:
-              4px;
-
-            color:
-              #303030;
-
-            font-size:
-              7px;
-
-          }
-
-
-          .products-meta strong {
-            font-weight: 800;
-          }
-
-
-          .totals {
-            width: 100%;
-          }
-
-
-          .total-line {
-
-            display:
-              grid;
-
-            grid-template-columns:
-              minmax(0, 1fr)
-              85px;
-
-            gap:
-              10px;
-
-            padding:
-              3px
-              0;
-
-            font-size:
-              7.3px;
-
-          }
-
-
-          .total-line span:first-child {
-            text-align: right;
-          }
-
-
-          .total-line span:last-child {
-
-            text-align:
-              right;
-
-            font-weight:
-              700;
-
-          }
-
-
-          .total-line.grand {
-
-            margin-top:
-              2px;
-
-            padding-top:
-              5px;
-
-            border-top:
-              1px solid
-              #555555;
-
-            font-size:
-              7.7px;
-
-            font-weight:
-              900;
-
-          }
-
-
-
-          /* ======================================== */
-          /* CONDIÇÕES COMERCIAIS                     */
-          /* ======================================== */
-
-          .commercial-lines {
-            width: 100%;
-          }
-
-
-          .commercial-line {
-
-            display:
-              grid;
-
-            grid-template-columns:
-              120px
-              minmax(0, 1fr);
-
-            gap:
-              8px;
-
-            min-height:
-              15px;
-
-            padding:
-              1px
-              0;
-
-            font-size:
-              7.5px;
-
-            line-height:
-              1.35;
-
-          }
-
-
-          .commercial-line strong {
-            font-weight: 800;
-          }
-
-
-          .commercial-observation {
-
-            margin-top:
-              4px;
-
-            padding-top:
-              4px;
-
-            border-top:
-              1px solid
-              #d2d2d2;
-
-          }
-
-
-          .commercial-observation p {
-
-            margin:
-              2px
-              0
-              0;
-
-            color:
-              #272727;
-
-            font-size:
-              7.2px;
-
-            line-height:
-              1.4;
-
-            white-space:
-              pre-wrap;
-
-          }
-
-
-
-          /* ======================================== */
-          /* RODAPÉ                                   */
-          /* ======================================== */
-
-          .document-footer {
-
-            margin-top:
-              16px;
-
-            padding-top:
-              9px;
-
-            border-top:
-              1px solid
-              #bbbbbb;
-
-            text-align:
-              center;
-
-            color:
-              #363636;
-
-            font-size:
-              6.8px;
-
-            font-weight:
-              700;
-
-            line-height:
-              1.45;
-
-            text-transform:
-              uppercase;
-
-          }
-
-
-          .document-footer .print-date {
-            margin-top: 2px;
-          }
-
-
-          @page {
-
-            size:
-              A4;
-
-            margin:
-              0;
-
-          }
-
-
-          @media print {
-
-            html,
-            body {
-              background: #ffffff;
-            }
-
-
-            .sheet {
-
-              width:
-                210mm;
-
-              min-height:
-                297mm;
-
-              margin:
-                0;
-
-              box-shadow:
-                none;
-
-            }
-
-          }
-
-        </style>
-
-      </head>
-
-
-      <body>
-
-
-        <main class="sheet">
-
-
-          <!-- EMPRESA -->
-
-          <header class="company-header">
-
-
-            <div class="brand-box">
-
-              <div class="brand">
-                SYNTER
-              </div>
-
-              <div class="brand-subtitle">
-                SOLUÇÕES EM ACESSO
-              </div>
-
-            </div>
-
-
-            <div class="company-data">
-
-
-              <h1 class="company-name">
-
-                LA ROSS FECHADURAS E FERRAGENS LTDA.
-
-              </h1>
-
-
-              <div class="company-line">
-
-                Rod. Gabriel Arns, 5572 - Centro - Forquilhinha (SC)
-
-              </div>
-
-
-              <div class="company-line">
-
-                CEP: 88850-000
-
-              </div>
-
-
-              <div class="company-contact-grid">
-
-
-                <div class="company-line">
-
-                  <strong>
-                    CNPJ:
-                  </strong>
-
-                  15.442.567/0001-95
-
+          ${campoComercial(
+            "Representante Comercial:",
+            representante
+          )}
+
+          ${campoComercial(
+            "Local de Entrega:",
+            orcamento.local_entrega || "-"
+          )}
+
+          ${campoComercial(
+            "Data de Entrega:",
+            dataBR(orcamento.data_entrega)
+          )}
+
+          <div class="commercial-observation">
+
+            <strong>Observações:</strong>
+
+            <p>${escaparHtml(
+              orcamento.observacoes_venda ||
+                orcamento.observacoes ||
+                "-"
+            )}</p>
+
+          </div>
+
+          ${
+            orcamento.observacoes_venda &&
+            orcamento.observacoes
+              ? `
+                <div class="commercial-observation">
+                  <strong>Observação Padrão:</strong>
+                  <p>${escaparHtml(
+                    orcamento.observacoes
+                  )}</p>
                 </div>
+              `
+              : ""
+          }
 
+        </div>
 
-                <div class="company-line">
+      </section>
 
-                  <strong>
-                    FONE:
-                  </strong>
+      <footer class="document-footer">
 
-                  (48) 3941-1100
+        <div>
+          ESTE DOCUMENTO NÃO É UM PEDIDO DE VENDA
+          E SIM UMA SIMULAÇÃO DE CONDIÇÕES COMERCIAIS
+          VIGENTES NESTA DATA
+        </div>
 
-                </div>
+        <div class="print-date">
+          DATA E HORA DA IMPRESSÃO DO ORÇAMENTO:
+          ${dataHoraBR(new Date())}
+        </div>
 
+      </footer>
 
-                <div class="company-line">
-
-                  <strong>
-                    E-mail:
-                  </strong>
-
-                  atendimento@synter.com.br
-
-                </div>
-
-
-                <div class="company-line">
-
-                  <strong>
-                    I.E.:
-                  </strong>
-
-                  256705895
-
-                </div>
-
-
-                <div class="company-line">
-
-                  <strong>
-                    WhatsApp:
-                  </strong>
-
-                  (48) 9932-0492
-
-                </div>
-
-
-              </div>
-
-
-            </div>
-
-
-            <div class="document-data">
-
-
-              <div class="document-title">
-
-                Orçamento:
-
-                ${escaparHtml(
-                  numero
-                )}
-
-              </div>
-
-
-              <div class="document-row">
-
-                <span>
-                  Emissão:
-                </span>
-
-                <span>
-
-                  ${escaparHtml(
-                    formatarData(
-                      orcamento.created_at
-                    )
-                  )}
-
-                </span>
-
-              </div>
-
-
-              <div class="document-row">
-
-                <span>
-                  Validade:
-                </span>
-
-                <span>
-
-                  ${escaparHtml(
-                    validade
-                      ? formatarDataEntrega(
-                          validade
-                        )
-                      : "-"
-                  )}
-
-                </span>
-
-              </div>
-
-
-            </div>
-
-
-          </header>
-
-
-
-          <!-- FATURAMENTO -->
-
-          <section class="section">
-
-
-            <h2 class="section-title">
-
-              Dados de Faturamento e Cobrança
-
-            </h2>
-
-
-            <div class="billing-grid">
-
-
-              <div class="billing-column">
-
-
-                <div class="data-line">
-
-                  <span class="data-label">
-                    Cliente
-                  </span>
-
-                  <span class="data-value">
-
-                    ${escaparHtml(
-                      orcamento.cliente_nome ||
-                      "-"
-                    )}
-
-                  </span>
-
-                </div>
-
-
-                <div class="data-line">
-
-                  <span class="data-label">
-                    Contato
-                  </span>
-
-                  <span class="data-value">
-
-                    ${escaparHtml(
-                      clienteContato
-                    )}
-
-                  </span>
-
-                </div>
-
-
-                <div class="data-line">
-
-                  <span class="data-label">
-                    Cidade
-                  </span>
-
-                  <span class="data-value">
-
-                    ${escaparHtml(
-                      clienteCidade
-                    )}
-
-                  </span>
-
-                </div>
-
-
-                <div class="data-line">
-
-                  <span class="data-label">
-                    Endereço
-                  </span>
-
-                  <span class="data-value">
-
-                    ${escaparHtml(
-                      clienteEndereco
-                    )}
-
-                  </span>
-
-                </div>
-
-
-                <div class="data-line">
-
-                  <span class="data-label">
-                    Bairro
-                  </span>
-
-                  <span class="data-value">
-
-                    ${escaparHtml(
-                      clienteBairro
-                    )}
-
-                  </span>
-
-                </div>
-
-
-                <div class="data-line">
-
-                  <span class="data-label">
-                    E-mail
-                  </span>
-
-                  <span class="data-value">
-
-                    ${escaparHtml(
-                      orcamento.cliente_email ||
-                      "-"
-                    )}
-
-                  </span>
-
-                </div>
-
-
-              </div>
-
-
-              <div class="billing-column">
-
-
-                <div class="data-line">
-
-                  <span class="data-label">
-                    Fone
-                  </span>
-
-                  <span class="data-value">
-
-                    ${escaparHtml(
-                      orcamento.cliente_telefone ||
-                      "-"
-                    )}
-
-                  </span>
-
-                </div>
-
-
-                <div class="data-line">
-
-                  <span class="data-label">
-                    CEP
-                  </span>
-
-                  <span class="data-value">
-
-                    ${escaparHtml(
-                      clienteCep
-                    )}
-
-                  </span>
-
-                </div>
-
-
-                <div class="data-line">
-
-                  <span class="data-label">
-                    UF
-                  </span>
-
-                  <span class="data-value">
-
-                    ${escaparHtml(
-                      clienteUf
-                    )}
-
-                  </span>
-
-                </div>
-
-
-                <div class="data-line">
-
-                  <span class="data-label">
-                    CPF/CNPJ
-                  </span>
-
-                  <span class="data-value">
-
-                    ${escaparHtml(
-                      orcamento.cliente_documento ||
-                      "-"
-                    )}
-
-                  </span>
-
-                </div>
-
-
-                <div class="data-line">
-
-                  <span class="data-label">
-                    Insc. Est.
-                  </span>
-
-                  <span class="data-value">
-
-                    ${escaparHtml(
-                      clienteInscricao
-                    )}
-
-                  </span>
-
-                </div>
-
-
-              </div>
-
-
-            </div>
-
-
-          </section>
-
-
-
-          <!-- PRODUTOS -->
-
-          <section class="section">
-
-
-            <h2 class="section-title">
-              Produtos
-            </h2>
-
-
-            <table class="products-table">
-
-
-              <thead>
-
-                <tr>
-
-                  <th>
-                    Imagem
-                  </th>
-
-                  <th>
-                    Cod.
-                  </th>
-
-                  <th>
-                    Descrição
-                  </th>
-
-                  <th class="number-cell">
-                    Qtde.
-                  </th>
-
-                  <th class="number-cell">
-                    Unit.
-                  </th>
-
-                  <th class="number-cell">
-                    Total
-                  </th>
-
-                </tr>
-
-              </thead>
-
-
-              <tbody>
-
-                ${linhasProdutos}
-
-              </tbody>
-
-
-            </table>
-
-
-            <div class="products-summary">
-
-
-              <div class="products-meta">
-
-
-                <span>
-
-                  <strong>
-                    Itens:
-                  </strong>
-
-                  ${escaparHtml(
-                    itens.length
-                  )}
-
-                </span>
-
-
-                <span>
-
-                  <strong>
-                    Quantidade Total:
-                  </strong>
-
-                  ${escaparHtml(
-                    formatarQuantidade(
-                      quantidadeTotal
-                    )
-                  )}
-
-                </span>
-
-
-              </div>
-
-
-              <div class="totals">
-
-
-                <div class="total-line">
-
-                  <span>
-                    Total dos Produtos (R$)
-                  </span>
-
-                  <span>
-
-                    ${escaparHtml(
-                      formatarNumeroMoeda(
-                        subtotalProdutos
-                      )
-                    )}
-
-                  </span>
-
-                </div>
-
-
-                <div class="total-line">
-
-                  <span>
-                    Valor do Frete (R$)
-                  </span>
-
-                  <span>
-
-                    ${escaparHtml(
-                      formatarNumeroMoeda(
-                        frete
-                      )
-                    )}
-
-                  </span>
-
-                </div>
-
-
-                <div class="total-line grand">
-
-                  <span>
-                    Total do Pedido (R$)
-                  </span>
-
-                  <span>
-
-                    ${escaparHtml(
-                      formatarNumeroMoeda(
-                        totalGeral
-                      )
-                    )}
-
-                  </span>
-
-                </div>
-
-
-              </div>
-
-
-            </div>
-
-
-          </section>
-
-
-
-          <!-- CONDIÇÕES -->
-
-          <section class="section">
-
-
-            <h2 class="section-title">
-
-              Condições Comerciais
-
-            </h2>
-
-
-            <div class="commercial-lines">
-
-
-              <div class="commercial-line">
-
-                <strong>
-                  Cond. Pagto:
-                </strong>
-
-                <span>
-
-                  ${escaparHtml(
-                    orcamento.condicao_pagamento ||
-                    "-"
-                  )}
-
-                </span>
-
-              </div>
-
-
-              <div class="commercial-line">
-
-                <strong>
-                  Representante Comercial:
-                </strong>
-
-                <span>
-
-                  ${escaparHtml(
-                    representante
-                  )}
-
-                </span>
-
-              </div>
-
-
-              <div class="commercial-line">
-
-                <strong>
-                  Local de Entrega:
-                </strong>
-
-                <span>
-
-                  ${escaparHtml(
-                    orcamento.local_entrega ||
-                    "-"
-                  )}
-
-                </span>
-
-              </div>
-
-
-              <div class="commercial-line">
-
-                <strong>
-                  Data de Entrega:
-                </strong>
-
-                <span>
-
-                  ${escaparHtml(
-                    formatarDataEntrega(
-                      orcamento.data_entrega
-                    )
-                  )}
-
-                </span>
-
-              </div>
-
-
-              <div class="commercial-observation">
-
-                <strong>
-                  Observações:
-                </strong>
-
-                <p>${escaparHtml(
-                  orcamento.observacoes_venda ||
-                  orcamento.observacoes ||
-                  "-"
-                )}</p>
-
-              </div>
-
-
-              ${
-                orcamento.observacoes_venda &&
-                orcamento.observacoes
-                  ? `
-
-                    <div class="commercial-observation">
-
-                      <strong>
-                        Observação Padrão:
-                      </strong>
-
-                      <p>${escaparHtml(
-                        orcamento.observacoes
-                      )}</p>
-
-                    </div>
-
-                  `
-                  : ""
-              }
-
-
-            </div>
-
-
-          </section>
-
-
-
-          <!-- RODAPÉ -->
-
-          <footer class="document-footer">
-
-
-            <div>
-
-              ESTE DOCUMENTO NÃO É UM PEDIDO DE VENDA E SIM UMA SIMULAÇÃO
-              DE CONDIÇÕES COMERCIAIS VIGENTES NESTA DATA
-
-            </div>
-
-
-            <div class="print-date">
-
-              DATA E HORA DA IMPRESSÃO DO ORÇAMENTO:
-
-              ${escaparHtml(
-                formatarDataHora(
-                  new Date()
-                )
-              )}
-
-            </div>
-
-
-          </footer>
-
-
-        </main>
-
-
-      </body>
-
-
-    </html>
+    </main>
   `;
 
-
   return {
-    html,
-    nomeArquivo
+    conteudo,
+    nomeArquivo,
   };
-
 }
 
+// =====================================================
+// AGUARDAR RENDERIZAÇÃO
+// =====================================================
 
-// =========================================================
-// CRIAR IFRAME TEMPORÁRIO
-// =========================================================
-
-function criarIframeDocumento(
-  html
-) {
-
-  const iframe =
-    document.createElement(
-      "iframe"
-    );
-
-
-  iframe.setAttribute(
-    "title",
-    "Orçamento Synter"
+async function aguardarImagens(container, limiteMs = 8000) {
+  const imagens = Array.from(
+    container.querySelectorAll("img")
   );
 
+  const tarefas = imagens.map(
+    (imagem) =>
+      new Promise((resolve) => {
+        if (imagem.complete) {
+          resolve();
+          return;
+        }
 
-  iframe.setAttribute(
-    "aria-hidden",
-    "true"
+        imagem.addEventListener("load", resolve, {
+          once: true,
+        });
+
+        imagem.addEventListener("error", resolve, {
+          once: true,
+        });
+      })
   );
 
+  // Impede travamento caso uma imagem não responda.
+  await Promise.race([
+    Promise.all(tarefas),
+    new Promise((resolve) =>
+      window.setTimeout(resolve, limiteMs)
+    ),
+  ]);
 
-  iframe.style.position =
-    "fixed";
-
-
-  iframe.style.left =
-    "-10000px";
-
-
-  iframe.style.top =
-    "0";
-
-
-  iframe.style.width =
-    "210mm";
-
-
-  iframe.style.height =
-    "297mm";
-
-
-  iframe.style.border =
-    "0";
-
-
-  iframe.style.opacity =
-    "0";
-
-
-  iframe.style.pointerEvents =
-    "none";
-
-
-  iframe.style.zIndex =
-    "-1";
-
-
-  document.body.appendChild(
-    iframe
-  );
-
-
-  const documento =
-    iframe.contentWindow
-      ?.document;
-
-
-  if (
-    !documento
-  ) {
-
-    iframe.remove();
-
-
-    throw new Error(
-      "Não foi possível preparar o orçamento."
-    );
-
+  try {
+    await document.fonts?.ready;
+  } catch {
+    // Continua com as fontes disponíveis.
   }
 
+  // Garante que o navegador tenha realizado o layout.
+  await new Promise((resolve) => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(resolve);
+    });
+  });
+}
 
-  documento.open();
+// =====================================================
+// PREPARAR IMAGENS
+// =====================================================
 
+async function imagemParaDataUrl(src) {
+  if (!src) return "";
 
-  documento.write(
-    html
+  if (/^data:image\//i.test(src)) {
+    return src;
+  }
+
+  try {
+    const resposta = await fetch(src, {
+      mode: "cors",
+      credentials: "same-origin",
+    });
+
+    if (!resposta.ok) {
+      throw new Error("Falha ao carregar imagem.");
+    }
+
+    const blob = await resposta.blob();
+
+    return await new Promise((resolve, reject) => {
+      const leitor = new FileReader();
+
+      leitor.onload = () => resolve(leitor.result);
+      leitor.onerror = reject;
+      leitor.readAsDataURL(blob);
+    });
+  } catch {
+    // Se o servidor externo não permitir CORS,
+    // a imagem original ainda poderá ser utilizada.
+    return src;
+  }
+}
+
+async function incorporarImagens(container) {
+  const imagens = Array.from(
+    container.querySelectorAll("img")
   );
 
+  await Promise.all(
+    imagens.map(async (imagem) => {
+      const src = imagem.getAttribute("src");
 
-  documento.close();
+      if (!src) return;
 
+      const url = prepararUrl(src);
+      const dataUrl = await imagemParaDataUrl(url);
+
+      if (dataUrl) {
+        imagem.src = dataUrl;
+      }
+    })
+  );
+}
+
+// =====================================================
+// CRIAR CONTAINER TEMPORÁRIO PARA PDF
+// =====================================================
+
+function criarContainerPdf(conteudo) {
+  const container = document.createElement("div");
+
+  container.id = "synter-pdf-stage";
+
+  // IMPORTANTE:
+  // O documento fica montado no DOM principal.
+  // Não utilizamos iframe invisível, opacity: 0
+  // ou posição negativa para realizar a captura.
+
+  Object.assign(container.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "210mm",
+    margin: "0",
+    padding: "0",
+    background: "#ffffff",
+    opacity: "1",
+    visibility: "visible",
+    zIndex: "2147483647",
+    pointerEvents: "none",
+    overflow: "visible",
+  });
+
+  const estilos = document.createElement("style");
+  estilos.textContent = ESTILOS;
+
+  container.appendChild(estilos);
+
+  const area = document.createElement("div");
+  area.innerHTML = conteudo;
+
+  container.appendChild(area);
+
+  document.body.appendChild(container);
+
+  const folha = container.querySelector(".sheet");
+
+  if (!folha) {
+    container.remove();
+    throw new Error(
+      "Não foi possível montar a folha do orçamento."
+    );
+  }
 
   return {
-    iframe,
-    documento
+    container,
+    folha,
   };
-
 }
 
-
-// =========================================================
-// AGUARDAR DOCUMENTO E IMAGENS
-// =========================================================
-
-function aguardarCarregamentoDocumento(
-  documento,
-  limiteMs = 4000
-) {
-
-  return new Promise(
-    (
-      resolve
-    ) => {
-
-      let finalizado =
-        false;
-
-
-      const concluir =
-        () => {
-
-          if (
-            finalizado
-          ) {
-
-            return;
-
-          }
-
-
-          finalizado =
-            true;
-
-
-          resolve();
-
-        };
-
-
-      const verificar =
-        async () => {
-
-          try {
-
-            if (
-              documento.fonts
-                ?.ready
-            ) {
-
-              await documento
-                .fonts
-                .ready;
-
-            }
-
-          }
-          catch {
-
-            // Mantém fonte padrão.
-
-          }
-
-
-          const imagens =
-            Array.from(
-              documento.images ||
-              []
-            );
-
-
-          if (
-            imagens.length ===
-            0
-          ) {
-
-            concluir();
-
-            return;
-
-          }
-
-
-          const pendentes =
-            imagens.filter(
-              (
-                imagem
-              ) =>
-                !imagem.complete
-            );
-
-
-          if (
-            pendentes.length ===
-            0
-          ) {
-
-            concluir();
-
-            return;
-
-          }
-
-
-          let restantes =
-            pendentes.length;
-
-
-          const finalizarImagem =
-            () => {
-
-              restantes -=
-                1;
-
-
-              if (
-                restantes <=
-                0
-              ) {
-
-                concluir();
-
-              }
-
-            };
-
-
-          pendentes.forEach(
-            (
-              imagem
-            ) => {
-
-              imagem.addEventListener(
-                "load",
-                finalizarImagem,
-                {
-                  once: true
-                }
-              );
-
-
-              imagem.addEventListener(
-                "error",
-                finalizarImagem,
-                {
-                  once: true
-                }
-              );
-
-            }
-          );
-
-        };
-
-
-      window.setTimeout(
-        concluir,
-        limiteMs
-      );
-
-
-      window.setTimeout(
-        verificar,
-        100
-      );
-
-    }
-  );
-
-}
-
-
-// =========================================================
-// CRIAR ARQUIVO PDF REAL
-// =========================================================
+// =====================================================
+// GERAR ARQUIVO PDF REAL
+// =====================================================
 
 export async function criarArquivoOrcamentoPdf({
   orcamento,
-  itens
+  itens,
 }) {
-
-  const {
-    html,
-    nomeArquivo
-  } =
+  const { conteudo, nomeArquivo } =
     montarDocumentoOrcamento({
       orcamento,
-      itens
+      itens,
     });
 
-
-  const {
-    iframe,
-    documento
-  } =
-    criarIframeDocumento(
-      html
-    );
-
+  const { container, folha } =
+    criarContainerPdf(conteudo);
 
   try {
+    // Converte as imagens em dados incorporados.
+    await incorporarImagens(folha);
 
-    await aguardarCarregamentoDocumento(
-      documento,
-      5000
+    // Aguarda o carregamento das imagens e do layout.
+    await aguardarImagens(folha);
+
+    // Evita páginas extras causadas exclusivamente
+    // pela altura mínima de uma folha A4.
+    folha.style.minHeight = "0";
+
+    const largura = Math.ceil(
+      folha.getBoundingClientRect().width
     );
 
-
-    const elemento =
-      documento.querySelector(
-        ".sheet"
-      );
-
-
-    if (
-      !elemento
-    ) {
-
+    if (largura <= 0) {
       throw new Error(
-        "Não foi possível localizar o conteúdo do orçamento."
+        "O conteúdo do orçamento não possui largura válida."
       );
-
     }
 
-
     const opcoes = {
+      margin: 0,
 
-      margin:
-        0,
-
-
-      filename:
-        `${nomeArquivo}.pdf`,
-
+      filename: `${nomeArquivo}.pdf`,
 
       image: {
-
-        type:
-          "jpeg",
-
-        quality:
-          0.98
-
+        type: "jpeg",
+        quality: 0.98,
       },
-
 
       html2canvas: {
-
-        scale:
-          2,
-
-        useCORS:
-          true,
-
-        allowTaint:
-          false,
-
-        logging:
-          false,
-
-        backgroundColor:
-          "#ffffff",
-
-        scrollX:
-          0,
-
-        scrollY:
-          0
-
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        logging: false,
+        backgroundColor: "#ffffff",
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: Math.max(
+          document.documentElement.clientWidth,
+          largura
+        ),
       },
-
 
       jsPDF: {
-
-        unit:
-          "mm",
-
-        format:
-          "a4",
-
-        orientation:
-          "portrait"
-
+        unit: "mm",
+        format: "a4",
+        orientation: "portrait",
       },
 
-
       pagebreak: {
-
-        mode: [
-          "css",
-          "legacy"
-        ],
-
+        mode: ["css", "legacy"],
         avoid: [
           "tr",
           ".products-summary",
           ".commercial-line",
-          ".commercial-observation"
-        ]
-
-      }
-
+          ".commercial-observation",
+        ],
+      },
     };
 
+    const worker = html2pdf()
+      .set(opcoes)
+      .from(folha)
+      .toPdf();
 
-    const worker =
-      html2pdf()
-        .set(
-          opcoes
-        )
-        .from(
-          elemento
-        )
-        .toPdf();
+    const pdf = await worker.get("pdf");
 
+    const quantidadePaginas =
+      pdf.internal.getNumberOfPages();
 
-    const pdf =
-      await worker.get(
-        "pdf"
-      );
-
-
-    const blob =
-      pdf.output(
-        "blob"
-      );
-
-
-    if (
-      !(
-        blob instanceof
-        Blob
-      )
-    ) {
-
+    if (!quantidadePaginas || quantidadePaginas < 1) {
       throw new Error(
-        "Não foi possível gerar o arquivo PDF."
+        "O documento PDF não possui páginas válidas."
       );
-
     }
 
+    const blob = pdf.output("blob");
 
-    const arquivo =
-      new File(
-        [
-          blob
-        ],
-        `${nomeArquivo}.pdf`,
-        {
-          type:
-            "application/pdf",
-
-          lastModified:
-            Date.now()
-        }
+    if (
+      !(blob instanceof Blob) ||
+      blob.size < 1000
+    ) {
+      throw new Error(
+        "O arquivo PDF gerado está vazio ou inválido."
       );
+    }
 
+    return new File(
+      [blob],
+      `${nomeArquivo}.pdf`,
+      {
+        type: "application/pdf",
+        lastModified: Date.now(),
+      }
+    );
+  } catch (error) {
+    console.error(
+      "[Synter] Erro ao gerar arquivo PDF:",
+      error
+    );
 
-    return arquivo;
-
+    throw error;
+  } finally {
+    // Remove o documento temporário em qualquer
+    // situação, inclusive quando ocorrer um erro.
+    container.remove();
   }
-  finally {
-
-    iframe.remove();
-
-  }
-
 }
 
-
-// =========================================================
-// IMPRESSÃO DO PDF
-// =========================================================
+// =====================================================
+// IMPRESSÃO DO ORÇAMENTO
+// =====================================================
 
 export function gerarOrcamentoPdf({
   orcamento,
-  itens
+  itens,
 }) {
+  const { conteudo } = montarDocumentoOrcamento({
+    orcamento,
+    itens,
+  });
 
-  const {
-    html
-  } =
-    montarDocumentoOrcamento({
-      orcamento,
-      itens
-    });
+  // A impressão continua utilizando iframe.
+  // Diferentemente do html2canvas, o navegador
+  // consegue imprimir esse documento diretamente.
 
+  const iframe = document.createElement("iframe");
 
-  const {
-    iframe,
-    documento
-  } =
-    criarIframeDocumento(
-      html
+  iframe.setAttribute(
+    "title",
+    "Impressão do Orçamento Synter"
+  );
+
+  Object.assign(iframe.style, {
+    position: "fixed",
+    top: "0",
+    left: "-10000px",
+    width: "210mm",
+    height: "297mm",
+    border: "0",
+  });
+
+  document.body.appendChild(iframe);
+
+  const documento = iframe.contentWindow?.document;
+
+  if (!documento) {
+    iframe.remove();
+    throw new Error(
+      "Não foi possível preparar a impressão."
     );
+  }
 
+  const html = `
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+      <head>
+        <meta charset="UTF-8" />
+        <title>Orçamento Synter</title>
+        <style>
+          html,
+          body {
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+          }
 
-  let impressaoIniciada =
-    false;
+          ${ESTILOS}
+        </style>
+      </head>
+      <body>
+        ${conteudo}
+      </body>
+    </html>
+  `;
 
+  documento.open();
+  documento.write(html);
+  documento.close();
 
-  const imprimir =
-    () => {
+  let iniciouImpressao = false;
 
-      if (
-        impressaoIniciada
-      ) {
+  const imprimir = async () => {
+    if (iniciouImpressao) return;
 
-        return;
+    iniciouImpressao = true;
 
-      }
+    try {
+      await aguardarImagens(documento.body, 5000);
 
+      const janela = iframe.contentWindow;
 
-      impressaoIniciada =
-        true;
-
-
-      try {
-
-        const janelaImpressao =
-          iframe.contentWindow;
-
-
-        if (
-          !janelaImpressao
-        ) {
-
-          throw new Error(
-            "Janela de impressão indisponível."
-          );
-
-        }
-
-
-        janelaImpressao.focus();
-
-
-        janelaImpressao.print();
-
-
-        window.setTimeout(
-          () => {
-
-            iframe.remove();
-
-          },
-          1500
+      if (!janela) {
+        throw new Error(
+          "Janela de impressão indisponível."
         );
-
       }
-      catch (
-        error
-      ) {
 
+      janela.focus();
+      janela.print();
+
+      window.setTimeout(() => {
         iframe.remove();
+      }, 1500);
+    } catch (error) {
+      iframe.remove();
 
+      console.error(
+        "[Synter] Erro na impressão:",
+        error
+      );
+    }
+  };
 
-        console.error(
-          "Erro ao abrir impressão:",
-          error
-        );
-
-      }
-
-    };
-
-
-  aguardarCarregamentoDocumento(
-    documento,
-    2500
-  )
-    .then(
-      () => {
-
-        window.setTimeout(
-          imprimir,
-          200
-        );
-
-      }
-    )
-    .catch(
-      () => {
-
-        imprimir();
-
-      }
-    );
-
+  imprimir();
 }
