@@ -3,11 +3,10 @@ import html2pdf from "html2pdf.js";
 import { encontrarImagemSynter } from "./imagensProdutosSynter";
 
 // ======================================================
-// GERADOR DE ORÇAMENTO SYNTER
-// Impressão e compartilhamento de PDF
+// GERADOR DE ORÇAMENTOS — SYNTER
+// Cabeçalho reorganizado e imagens integradas
 // ======================================================
 
-// Busca a logo oficial na pasta assets.
 const logos = import.meta.glob(
   "../assets/logo-synter-pdf.{png,jpg,jpeg,webp,svg}",
   {
@@ -18,10 +17,6 @@ const logos = import.meta.glob(
 );
 
 const logoSynterPdf = Object.values(logos)[0] || "";
-
-// ======================================================
-// DADOS OFICIAIS DA SYNTER
-// ======================================================
 
 const EMPRESA = {
   razaoSocial: "SYNTER INDUSTRIA E COMERCIO LTDA",
@@ -49,15 +44,6 @@ function escaparHtml(valor = "") {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
-}
-
-function normalizar(valor = "") {
-  return String(valor ?? "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/\.[^/.]+$/, "")
-    .replace(/[^a-z0-9]/g, "");
 }
 
 function numero(valor) {
@@ -91,7 +77,9 @@ function dataBR(valor) {
 
   const data = new Date(valor);
 
-  if (Number.isNaN(data.getTime())) return "-";
+  if (Number.isNaN(data.getTime())) {
+    return "-";
+  }
 
   return data.toLocaleDateString("pt-BR");
 }
@@ -99,7 +87,9 @@ function dataBR(valor) {
 function dataHoraBR(valor) {
   const data = new Date(valor);
 
-  if (Number.isNaN(data.getTime())) return "-";
+  if (Number.isNaN(data.getTime())) {
+    return "-";
+  }
 
   return data.toLocaleString("pt-BR");
 }
@@ -137,7 +127,9 @@ function numeroOrcamento(orcamento) {
     ""
   );
 
-  if (informado) return String(informado);
+  if (informado) {
+    return String(informado);
+  }
 
   return (
     String(orcamento?.id || "")
@@ -151,7 +143,9 @@ function prepararUrl(valor) {
 
   if (!url) return "";
 
-  if (/^data:image\//i.test(url)) return url;
+  if (/^data:image\//i.test(url)) {
+    return url;
+  }
 
   try {
     return new URL(url, window.location.origin).href;
@@ -161,40 +155,28 @@ function prepararUrl(valor) {
 }
 
 // ======================================================
-// LOCALIZAR PRODUTO NA TABELA
-// ======================================================
-
-function encontrarLinhaTabela(item) {
-      return null;
-    }
-
-// ======================================================
-// LOCALIZAR IMAGEM DO PRODUTO
+// IMAGENS DOS PRODUTOS
+// Mantém a integração com as imagens da tabela.
 // ======================================================
 
 function encontrarImagemProduto(item) {
-      if (!item) {
-        return "";
-      }
+  if (!item) return "";
 
-      const imagemDireta =
-        item.imagem_url ||
-        item.image_url ||
-        item.imagem ||
-        item.foto_url;
+  const imagemDireta =
+    item.imagem_url ||
+    item.image_url ||
+    item.imagem ||
+    item.foto_url;
 
-      if (imagemDireta) {
-        return prepararUrl(imagemDireta);
-      }
+  if (imagemDireta) {
+    return prepararUrl(imagemDireta);
+  }
 
-      const imagemSynter =
-        encontrarImagemSynter(item);
-
-      return prepararUrl(imagemSynter);
-    }
+  return prepararUrl(encontrarImagemSynter(item));
+}
 
 // ======================================================
-// COMPONENTES DO DOCUMENTO
+// COMPONENTES HTML
 // ======================================================
 
 function campo(titulo, valor) {
@@ -224,6 +206,15 @@ function linhaTotal(titulo, valor, destaque = false) {
   `;
 }
 
+function informacaoEmpresa(titulo, valor) {
+  return `
+    <div class="company-info-item">
+      <strong>${escaparHtml(titulo)}</strong>
+      <span>${escaparHtml(valor)}</span>
+    </div>
+  `;
+}
+
 // ======================================================
 // ESTILOS DO PDF
 // ======================================================
@@ -243,19 +234,22 @@ const ESTILOS = `
     font-family: Arial, Helvetica, sans-serif;
     font-size: 8px;
     line-height: 1.35;
-    box-sizing: border-box;
   }
 
   .sheet * {
     box-sizing: border-box;
   }
 
+  /* ===========================================
+     CABEÇALHO SYNTER
+  =========================================== */
+
   .company-header {
     display: grid;
-    grid-template-columns: 120px minmax(0, 1fr) 135px;
+    grid-template-columns: 120px minmax(0, 1fr) 140px;
     gap: 14px;
     align-items: start;
-    padding-bottom: 12px;
+    padding-bottom: 14px;
     border-bottom: 2px solid #222222;
   }
 
@@ -289,14 +283,12 @@ const ESTILOS = `
     font-size: 21px;
     font-weight: 900;
     letter-spacing: 1.5px;
-    color: #111111;
   }
 
   .brand-subtitle {
     margin-top: 3px;
     font-size: 7px;
     font-weight: 700;
-    letter-spacing: 0.4px;
     color: #555555;
   }
 
@@ -306,41 +298,46 @@ const ESTILOS = `
   }
 
   .company-name {
-    margin: 0 0 5px;
-    font-size: 11px;
+    margin: 0 0 7px;
+    font-size: 10.5px;
     font-weight: 800;
     text-transform: uppercase;
     line-height: 1.25;
   }
 
-  .company-line {
-    margin: 2px 0;
-    color: #252525;
-    font-size: 7.5px;
+  .company-info-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
+    gap: 6px 12px;
+  }
+
+  .company-info-item {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .company-info-item strong {
+    color: #555555;
+    font-size: 6.6px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .company-info-item span {
+    color: #222222;
+    font-size: 7.1px;
     line-height: 1.4;
     overflow-wrap: anywhere;
   }
 
-  .company-line strong {
-    font-weight: 800;
-  }
-
-  .company-contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3px 10px;
-    margin-top: 5px;
-  }
-
-  .company-contact-grid .full {
-    grid-column: 1 / -1;
-  }
-
   .document-title {
-    margin: 0 0 8px;
-    font-size: 10px;
-    font-weight: 800;
-    line-height: 1.35;
+    margin: 0 0 10px;
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1.3;
+    text-align: right;
     overflow-wrap: anywhere;
   }
 
@@ -360,6 +357,10 @@ const ESTILOS = `
     text-align: right;
     font-weight: 600;
   }
+
+  /* ===========================================
+     SEÇÕES
+  =========================================== */
 
   .section {
     margin-top: 13px;
@@ -402,6 +403,10 @@ const ESTILOS = `
     min-width: 0;
     overflow-wrap: anywhere;
   }
+
+  /* ===========================================
+     TABELA DE PRODUTOS
+  =========================================== */
 
   .products-table {
     width: 100%;
@@ -521,6 +526,10 @@ const ESTILOS = `
     font-weight: 800;
   }
 
+  /* ===========================================
+     RESUMO DOS VALORES
+  =========================================== */
+
   .products-summary {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 245px;
@@ -571,6 +580,10 @@ const ESTILOS = `
     font-weight: 900;
   }
 
+  /* ===========================================
+     CONDIÇÕES COMERCIAIS
+  =========================================== */
+
   .commercial-lines {
     width: 100%;
   }
@@ -610,6 +623,10 @@ const ESTILOS = `
     white-space: pre-wrap;
     overflow-wrap: anywhere;
   }
+
+  /* ===========================================
+     RODAPÉ
+  =========================================== */
 
   .document-footer {
     margin-top: 18px;
@@ -665,7 +682,7 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
     .trim()
     .split(/\s+/)[0];
 
-  const nomeArquivo = `Orcamento-${nomeArquivoSeguro(
+  const nomeArquivo = `Synter-${nomeArquivoSeguro(
     primeiroNome
   )}-${nomeArquivoSeguro(numeroPedido)}`;
 
@@ -819,15 +836,19 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
     .join("");
 
   // ====================================================
-  // CONTEÚDO COMPLETO DO PDF
+  // DOCUMENTO HTML COMPLETO
   // ====================================================
 
   const conteudo = `
     <main class="sheet">
 
-      <!-- CABEÇALHO -->
+      <!-- =========================================
+           CABEÇALHO SYNTER ATUALIZADO
+      ========================================== -->
 
       <header class="company-header">
+
+        <!-- LOGO -->
 
         <div class="brand-box">
 
@@ -856,7 +877,7 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
         </div>
 
-        <!-- DADOS SYNTER -->
+        <!-- DADOS DA EMPRESA -->
 
         <div class="company-data">
 
@@ -864,50 +885,54 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
             ${escaparHtml(EMPRESA.razaoSocial)}
           </h1>
 
-          <div class="company-line">
-            ${escaparHtml(EMPRESA.endereco)} -
-            ${escaparHtml(EMPRESA.bairro)} -
-            ${escaparHtml(EMPRESA.cidade)}
-            (${escaparHtml(EMPRESA.uf)})
-          </div>
+          <div class="company-info-grid">
 
-          <div class="company-line">
-            <strong>CEP:</strong>
-            ${escaparHtml(EMPRESA.cep)}
-          </div>
+            <!-- ENDEREÇO / CEP -->
 
-          <div class="company-contact-grid">
+            ${informacaoEmpresa(
+              "Endereço",
+              `${EMPRESA.endereco} - ${EMPRESA.bairro}, ${EMPRESA.cidade}/${EMPRESA.uf}`
+            )}
 
-            <div class="company-line">
-              <strong>CNPJ:</strong>
-              ${escaparHtml(EMPRESA.cnpj)}
-            </div>
+            ${informacaoEmpresa(
+              "CEP",
+              EMPRESA.cep
+            )}
 
-            <div class="company-line">
-              <strong>FONE:</strong>
-              ${escaparHtml(EMPRESA.telefone)}
-            </div>
+            <!-- CNPJ / INSCRIÇÃO ESTADUAL -->
 
-            <div class="company-line">
-              <strong>INSCRIÇÃO ESTADUAL:</strong>
-              ${escaparHtml(EMPRESA.inscricaoEstadual)}
-            </div>
+            ${informacaoEmpresa(
+              "CNPJ",
+              EMPRESA.cnpj
+            )}
 
-            <div class="company-line full">
-              <strong>E-mail:</strong>
-              ${escaparHtml(EMPRESA.email)}
-            </div>
+            ${informacaoEmpresa(
+              "Inscrição Estadual",
+              EMPRESA.inscricaoEstadual
+            )}
+
+            <!-- E-MAIL / TELEFONE -->
+
+            ${informacaoEmpresa(
+              "E-mail",
+              EMPRESA.email
+            )}
+
+            ${informacaoEmpresa(
+              "Telefone",
+              EMPRESA.telefone
+            )}
 
           </div>
 
         </div>
 
-        <!-- IDENTIFICAÇÃO -->
+        <!-- IDENTIFICAÇÃO DO ORÇAMENTO -->
 
         <div class="document-data">
 
           <div class="document-title">
-            Orçamento: ${escaparHtml(numeroPedido)}
+            SYNTER Nº ${escaparHtml(numeroPedido)}
           </div>
 
           <div class="document-row">
@@ -924,7 +949,9 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
       </header>
 
-      <!-- FATURAMENTO -->
+      <!-- =========================================
+           FATURAMENTO
+      ========================================== -->
 
       <section class="section">
 
@@ -959,7 +986,9 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
       </section>
 
-      <!-- PRODUTOS -->
+      <!-- =========================================
+           PRODUTOS
+      ========================================== -->
 
       <section class="section">
 
@@ -1026,7 +1055,9 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
       </section>
 
-      <!-- CONDIÇÕES COMERCIAIS -->
+      <!-- =========================================
+           CONDIÇÕES COMERCIAIS
+      ========================================== -->
 
       <section class="section">
 
@@ -1073,11 +1104,13 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
             orcamento.observacoes
               ? `
                 <div class="commercial-observation">
+
                   <strong>Observação Padrão:</strong>
 
                   <p>${escaparHtml(
                     orcamento.observacoes
                   )}</p>
+
                 </div>
               `
               : ""
@@ -1087,7 +1120,9 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
       </section>
 
-      <!-- RODAPÉ -->
+      <!-- =========================================
+           RODAPÉ
+      ========================================== -->
 
       <footer class="document-footer">
 
@@ -1228,17 +1263,6 @@ function criarContainerPdf(conteudo) {
   const container = document.createElement("div");
 
   container.id = "synter-pdf-stage";
-
-  // IMPORTANTE:
-  // O elemento precisa ter layout real para que
-  // html2canvas e html2pdf consigam renderizá-lo.
-  //
-  // Não usamos display:none, visibility:hidden
-  // nem opacity:0.
-  //
-  // O z-index negativo mantém a área de captura
-  // atrás da interface do sistema, sem exibi-la
-  // por cima dos botões e modais.
 
   Object.assign(container.style, {
     position: "fixed",
@@ -1400,7 +1424,6 @@ export async function criarArquivoOrcamentoPdf({
 
     throw error;
   } finally {
-    // Remove o elemento temporário ao concluir.
     container.remove();
   }
 }
