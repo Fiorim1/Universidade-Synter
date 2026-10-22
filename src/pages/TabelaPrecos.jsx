@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+
+import { useEffect, useMemo, useState } from "react";
 
 import Header from "../components/Header";
 import Hero from "../components/Hero";
@@ -7,283 +8,269 @@ import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 
 import tabelaPrecosData from "../data/tabelaPrecosData";
+import synterImagensMap from "../data/synterImagensMap.json";
 
 import "../styles/TabelaPrecos.css";
 
+// =====================================================
+// UNIVERSIDADE SYNTER — TABELA DE PREÇOS
+// =====================================================
+
+// As imagens ficam em public/synter-produtos.
+// O mapeamento é feito por categoria e posição
+// original da linha no banco de dados local.
+//
+// Isso evita conflitos quando diferentes modelos
+// possuem referências iguais ou parecidas.
 
 // =====================================================
-// CARREGA AUTOMATICAMENTE AS IMAGENS DOS PRODUTOS
+// FUNÇÕES AUXILIARES
 // =====================================================
 
-const imagensProdutos = import.meta.glob(
-  "../assets/produtos/*.{png,jpg,jpeg,webp}",
-  {
-    eager: true,
-    import: "default",
+function normalizarTexto(valor = "") {
+  return String(valor ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function encontrarImagemProduto(categoriaId, indice) {
+  const chave = `${categoriaId}:${indice}`;
+
+  const arquivo = synterImagensMap[chave];
+
+  if (!arquivo) return null;
+
+  return `/synter-produtos/${encodeURIComponent(arquivo)}`;
+}
+
+function obterColunaClasse(coluna) {
+  return normalizarTexto(coluna) === "linha"
+    ? "coluna-linha-mobile"
+    : "";
+}
+
+// =====================================================
+// MINIATURA DO PRODUTO
+// =====================================================
+
+function ImagemProduto({ imagem, alt, ampliada = false }) {
+  const [falhou, setFalhou] = useState(false);
+
+  useEffect(() => {
+    setFalhou(false);
+  }, [imagem]);
+
+  if (!imagem || falhou) {
+    return ampliada ? (
+      <div className="produto-sem-imagem">
+        <span>◇</span>
+        <p>Imagem não disponível</p>
+      </div>
+    ) : (
+      <span
+        title="Imagem não disponível"
+        style={{
+          color: "#999",
+          fontSize: 11,
+        }}
+      >
+        —
+      </span>
+    );
   }
-);
 
+  return (
+    <img
+      src={imagem}
+      alt={alt}
+      loading={ampliada ? "eager" : "lazy"}
+      onError={() => setFalhou(true)}
+      className={
+        ampliada
+          ? "produto-modal-imagem"
+          : "tabela-precos-produto-imagem"
+      }
+      style={
+        ampliada
+          ? undefined
+          : {
+              width: 66,
+              height: 56,
+              objectFit: "contain",
+              display: "block",
+              margin: "auto",
+            }
+      }
+    />
+  );
+}
+
+// =====================================================
+// COMPONENTE PRINCIPAL
+// =====================================================
 
 function TabelaPrecos() {
-
-  const [profileOpen, setProfileOpen] = useState(false);
+  const [profileOpen, setProfileOpen] =
+    useState(false);
 
   const [pesquisa, setPesquisa] = useState("");
 
-  const [categoriaSelecionada, setCategoriaSelecionada] =
-    useState("todos");
+  const [
+    categoriaSelecionada,
+    setCategoriaSelecionada,
+  ] = useState("todos");
 
+  const [
+    produtoSelecionado,
+    setProdutoSelecionado,
+  ] = useState(null);
 
-  // =====================================================
-  // MODAL DO PRODUTO
-  // =====================================================
-
-  const [produtoSelecionado, setProdutoSelecionado] =
-    useState(null);
-
-
-  // =====================================================
-  // NORMALIZA TEXTO
-  // =====================================================
-
-  function normalizarTexto(texto = "") {
-
-    return String(texto)
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .trim();
-  }
-
-
-  // =====================================================
-  // NORMALIZA PARA COMPARAR IMAGEM
-  // =====================================================
-
-  function normalizarArquivo(texto = "") {
-
-    return normalizarTexto(texto)
-      .replace(/\.[^/.]+$/, "")
-      .replace(/[^a-z0-9]/g, "");
-  }
-
-
-  // =====================================================
-  // PROCURA IMAGEM DO PRODUTO
-  // =====================================================
-
-  function encontrarImagemProduto(linha) {
-
-    const valoresLinha = linha.map((valor) =>
-      normalizarArquivo(valor)
-    );
-
-    const arquivos = Object.entries(imagensProdutos);
-
-    for (const [caminho, imagem] of arquivos) {
-
-      const nomeArquivo =
-        caminho.split("/").pop() || "";
-
-      const nomeNormalizado =
-        normalizarArquivo(nomeArquivo);
-
-
-      const encontrou = valoresLinha.some((valor) => {
-
-        if (!valor || valor.length < 3) {
-          return false;
-        }
-
-        return (
-          nomeNormalizado.includes(valor) ||
-          valor.includes(nomeNormalizado)
-        );
-      });
-
-
-      if (encontrou) {
-        return imagem;
-      }
-    }
-
-    return null;
-  }
-
-
-  // =====================================================
-  // ABRIR PRODUTO
-  // =====================================================
-
-  function abrirProduto(categoria, linha) {
-
-    const imagem =
-      encontrarImagemProduto(linha);
-
-    setProdutoSelecionado({
-      categoria,
-      linha,
-      imagem,
-    });
-  }
-
-
-  // =====================================================
-  // FECHAR PRODUTO
-  // =====================================================
-
-  function fecharProduto() {
-
-    setProdutoSelecionado(null);
-  }
-
-
-  // =====================================================
-  // FILTRA CATEGORIAS E PRODUTOS
-  // =====================================================
+  // ===================================================
+  // FILTRAR PRODUTOS
+  // ===================================================
 
   const categoriasFiltradas = useMemo(() => {
-
-    const textoPesquisa =
-      normalizarTexto(pesquisa);
-
+    const busca = normalizarTexto(pesquisa);
 
     return tabelaPrecosData.categorias
-
       .filter((categoria) => {
-
-        if (
-          categoriaSelecionada !== "todos" &&
-          categoria.id !== categoriaSelecionada
-        ) {
-
-          return false;
-        }
-
-        return true;
+        return (
+          categoriaSelecionada === "todos" ||
+          categoria.id === categoriaSelecionada
+        );
       })
-
       .map((categoria) => {
+        // Preserva o índice original antes do filtro.
+        const produtos = categoria.linhas
+          .map((linha, indiceOriginal) => ({
+            linha,
+            indiceOriginal,
 
-        const linhasFiltradas =
-          categoria.linhas.filter((linha) => {
+            imagem: encontrarImagemProduto(
+              categoria.id,
+              indiceOriginal
+            ),
+          }))
+          .filter((produto) => {
+            if (!busca) return true;
 
-            if (!textoPesquisa) {
-              return true;
-            }
+            const textoLinha = normalizarTexto(
+              produto.linha.join(" ")
+            );
 
-
-            const conteudoLinha =
-              normalizarTexto(
-                linha.join(" ")
-              );
-
-
-            const tituloCategoria =
-              normalizarTexto(
-                categoria.titulo
-              );
-
+            const tituloCategoria = normalizarTexto(
+              categoria.titulo
+            );
 
             return (
-              conteudoLinha.includes(
-                textoPesquisa
-              ) ||
-              tituloCategoria.includes(
-                textoPesquisa
-              )
+              textoLinha.includes(busca) ||
+              tituloCategoria.includes(busca)
             );
           });
 
-
         return {
           ...categoria,
-          linhas: linhasFiltradas,
+          produtos,
         };
       })
-
       .filter((categoria) => {
-        return categoria.linhas.length > 0;
+        return categoria.produtos.length > 0;
       });
-
   }, [pesquisa, categoriaSelecionada]);
 
-
-  // =====================================================
-  // TOTAL DE PRODUTOS
-  // =====================================================
+  // ===================================================
+  // QUANTIDADE DE RESULTADOS
+  // ===================================================
 
   const totalResultados = useMemo(() => {
-
     return categoriasFiltradas.reduce(
-      (total, categoria) => {
-
-        return (
-          total +
-          categoria.linhas.length
-        );
-      },
+      (total, categoria) =>
+        total + categoria.produtos.length,
       0
     );
-
   }, [categoriasFiltradas]);
 
+  // ===================================================
+  // CATEGORIA SELECIONADA
+  // ===================================================
 
-  // =====================================================
-  // NOME DA CATEGORIA
-  // =====================================================
+  const nomeCategoriaSelecionada = useMemo(() => {
+    if (categoriaSelecionada === "todos") {
+      return "Todos";
+    }
 
-  const nomeCategoriaSelecionada =
-    useMemo(() => {
+    const categoria =
+      tabelaPrecosData.categorias.find(
+        (item) =>
+          item.id === categoriaSelecionada
+      );
 
-      if (
-        categoriaSelecionada === "todos"
-      ) {
+    return categoria?.titulo || "";
+  }, [categoriaSelecionada]);
 
-        return "Todos";
-      }
-
-
-      const categoria =
-        tabelaPrecosData.categorias.find(
-          (item) =>
-            item.id ===
-            categoriaSelecionada
-        );
-
-
-      return categoria?.titulo || "";
-
-    }, [categoriaSelecionada]);
-
-
-  // =====================================================
-  // LIMPAR FILTROS
-  // =====================================================
+  // ===================================================
+  // AÇÕES
+  // ===================================================
 
   function limparFiltros() {
-
     setPesquisa("");
-
     setCategoriaSelecionada("todos");
   }
 
+  function abrirProduto(categoria, produto) {
+    setProdutoSelecionado({
+      categoria,
+      linha: produto.linha,
+      imagem: produto.imagem,
+      indiceOriginal: produto.indiceOriginal,
+    });
+  }
+
+  function fecharProduto() {
+    setProdutoSelecionado(null);
+  }
+
+  // Fecha modal com ESC.
+  useEffect(() => {
+    if (!produtoSelecionado) return;
+
+    function aoPressionarTecla(evento) {
+      if (evento.key === "Escape") {
+        fecharProduto();
+      }
+    }
+
+    window.addEventListener(
+      "keydown",
+      aoPressionarTecla
+    );
+
+    return () => {
+      window.removeEventListener(
+        "keydown",
+        aoPressionarTecla
+      );
+    };
+  }, [produtoSelecionado]);
+
+  // ===================================================
+  // INTERFACE
+  // ===================================================
 
   return (
-
     <div className="tabela-precos-page">
 
-
-      {/* =====================================
+      {/* =======================================
           HEADER
-      ====================================== */}
+      ======================================== */}
 
       <Header />
 
-
-      {/* =====================================
+      {/* =======================================
           HERO
-      ====================================== */}
+      ======================================== */}
 
       <section className="tabela-precos-hero-area">
 
@@ -296,7 +283,6 @@ function TabelaPrecos() {
           />
 
         </div>
-
 
         <div className="tabela-precos-hero-content">
 
@@ -311,17 +297,13 @@ function TabelaPrecos() {
 
       </section>
 
-
-      {/* =====================================
+      {/* =======================================
           CONTEÚDO
-      ====================================== */}
+      ======================================== */}
 
       <main className="tabela-precos-content">
 
-
-        {/* ===================================
-            CABEÇALHO
-        ==================================== */}
+        {/* CABEÇALHO */}
 
         <section className="tabela-precos-topo">
 
@@ -329,14 +311,13 @@ function TabelaPrecos() {
 
             <div className="tabela-precos-section-title">
 
-              <div className="tabela-precos-section-bar"></div>
+              <div className="tabela-precos-section-bar" />
 
               <h4>
                 TABELA DE PREÇOS
               </h4>
 
             </div>
-
 
             <div className="tabela-precos-info">
 
@@ -353,21 +334,15 @@ function TabelaPrecos() {
 
           </div>
 
-
           <div className="tabela-precos-total">
 
-            <span>
-              {totalResultados}
-            </span>
+            <span>{totalResultados}</span>
 
-            <small>
-              resultados
-            </small>
+            <small>resultados</small>
 
           </div>
 
         </section>
-
 
         {/* ===================================
             PESQUISA
@@ -381,38 +356,29 @@ function TabelaPrecos() {
               ⌕
             </span>
 
-
             <input
               type="text"
               placeholder="Pesquisar produto, modelo ou referência..."
               value={pesquisa}
               onChange={(evento) =>
-                setPesquisa(
-                  evento.target.value
-                )
+                setPesquisa(evento.target.value)
               }
             />
 
-
             {pesquisa && (
-
               <button
                 type="button"
                 className="tabela-precos-limpar-pesquisa"
-                onClick={() =>
-                  setPesquisa("")
-                }
+                onClick={() => setPesquisa("")}
                 aria-label="Limpar pesquisa"
               >
                 ×
               </button>
-
             )}
 
           </div>
 
         </section>
-
 
         {/* ===================================
             CATEGORIAS
@@ -422,42 +388,30 @@ function TabelaPrecos() {
 
           <button
             type="button"
-
             className={
-              categoriaSelecionada ===
-              "todos"
-
+              categoriaSelecionada === "todos"
                 ? "categoria-button categoria-button-active"
-
                 : "categoria-button"
             }
-
             onClick={() =>
-              setCategoriaSelecionada(
-                "todos"
-              )
+              setCategoriaSelecionada("todos")
             }
           >
             Todos
           </button>
 
-
           {tabelaPrecosData.categorias.map(
             (categoria) => (
 
               <button
-                key={categoria.id}
                 type="button"
-
+                key={categoria.id}
                 className={
                   categoriaSelecionada ===
                   categoria.id
-
                     ? "categoria-button categoria-button-active"
-
                     : "categoria-button"
                 }
-
                 onClick={() =>
                   setCategoriaSelecionada(
                     categoria.id
@@ -471,7 +425,6 @@ function TabelaPrecos() {
           )}
 
         </section>
-
 
         {/* ===================================
             IDENTIFICAÇÃO
@@ -487,7 +440,7 @@ function TabelaPrecos() {
 
                 <div className="tabela-precos-categoria-titulo">
 
-                  <div className="tabela-precos-section-bar"></div>
+                  <div className="tabela-precos-section-bar" />
 
                   <h2>
                     {nomeCategoriaSelecionada}
@@ -495,17 +448,11 @@ function TabelaPrecos() {
 
                 </div>
 
-
                 <p>
-
                   {totalResultados}{" "}
-
                   {totalResultados === 1
-
                     ? "item encontrado"
-
                     : "itens encontrados"}
-
                 </p>
 
               </div>
@@ -516,13 +463,11 @@ function TabelaPrecos() {
 
         )}
 
-
         {/* ===================================
             RESULTADOS
         ==================================== */}
 
         <section className="tabela-precos-resultados">
-
 
           {categoriasFiltradas.length > 0 ? (
 
@@ -534,130 +479,125 @@ function TabelaPrecos() {
                   className="tabela-precos-categoria"
                 >
 
-
-                  {/* =============================
-                      TABELA
-                  ============================== */}
+                  {/* TABELA */}
 
                   <div className="tabela-precos-table-wrapper">
 
                     <table className="tabela-precos-table">
 
-
                       <thead>
-
                         <tr>
 
+                          {/* NOVA COLUNA */}
+
+                          <th
+                            className="tabela-coluna-imagem"
+                            style={{
+                              minWidth: 90,
+                              textAlign: "center",
+                            }}
+                          >
+                            Imagem
+                          </th>
+
                           {categoria.colunas.map(
-                            (coluna, index) => {
+                            (coluna, indice) => (
 
-                              const ehColunaLinha =
-                                String(coluna)
-                                  .trim()
-                                  .toLowerCase() ===
-                                "linha";
+                              <th
+                                key={`${categoria.id}-coluna-${indice}`}
+                                className={obterColunaClasse(
+                                  coluna
+                                )}
+                              >
+                                {coluna}
+                              </th>
 
-
-                              return (
-
-                                <th
-                                  key={`${categoria.id}-coluna-${index}`}
-
-                                  className={
-                                    ehColunaLinha
-                                      ? "coluna-linha-mobile"
-                                      : ""
-                                  }
-                                >
-
-                                  {coluna}
-
-                                </th>
-
-                              );
-                            }
+                            )
                           )}
 
                         </tr>
-
                       </thead>
-
 
                       <tbody>
 
-                        {categoria.linhas.map(
-                          (linha, linhaIndex) => (
+                        {categoria.produtos.map(
+                          (produto) => (
 
                             <tr
-                              key={`${categoria.id}-linha-${linhaIndex}`}
-
+                              key={`${categoria.id}-${produto.indiceOriginal}`}
                               className="tabela-precos-produto-linha"
-
                               onClick={() =>
                                 abrirProduto(
                                   categoria,
-                                  linha
+                                  produto
                                 )
                               }
-
                               title="Clique para visualizar o produto"
+                              style={{
+                                cursor: "pointer",
+                              }}
                             >
 
-                              {linha.map(
-                                (
-                                  valor,
-                                  colunaIndex
-                                ) => {
+                              {/* IMAGEM DO PRODUTO */}
+
+                              <td
+                                className="tabela-coluna-imagem"
+                                style={{
+                                  textAlign: "center",
+                                  verticalAlign: "middle",
+                                }}
+                              >
+
+                                <ImagemProduto
+                                  imagem={produto.imagem}
+                                  alt={
+                                    produto.linha[1] ||
+                                    produto.linha[0] ||
+                                    "Produto Synter"
+                                  }
+                                />
+
+                              </td>
+
+                              {/* INFORMAÇÕES ORIGINAIS */}
+
+                              {produto.linha.map(
+                                (valor, indice) => {
 
                                   const nomeColuna =
-                                    categoria
-                                      .colunas[
-                                        colunaIndex
-                                      ];
-
-
-                                  const ehColunaLinha =
-                                    String(
-                                      nomeColuna
-                                    )
-                                      .trim()
-                                      .toLowerCase() ===
-                                    "linha";
-
+                                    categoria.colunas[
+                                      indice
+                                    ];
 
                                   const ehValor =
-                                    valor
-                                      .toString()
+                                    String(valor ?? "")
                                       .trim()
-                                      .startsWith(
-                                        "R$"
-                                      );
+                                      .startsWith("R$");
 
+                                  const ehColunaLinha =
+                                    normalizarTexto(
+                                      nomeColuna
+                                    ) === "linha";
+
+                                  const classe = [
+                                    ehValor
+                                      ? "tabela-precos-valor"
+                                      : "",
+
+                                    ehColunaLinha
+                                      ? "coluna-linha-mobile"
+                                      : "",
+                                  ]
+                                    .filter(Boolean)
+                                    .join(" ");
 
                                   return (
 
                                     <td
-                                      key={`${categoria.id}-${linhaIndex}-${colunaIndex}`}
-
-                                      className={[
-
-                                        ehValor
-                                          ? "tabela-precos-valor"
-                                          : "",
-
-                                        ehColunaLinha
-                                          ? "coluna-linha-mobile"
-                                          : "",
-
-                                      ]
-                                        .filter(
-                                          Boolean
-                                        )
-                                        .join(" ")}
+                                      key={`${categoria.id}-${produto.indiceOriginal}-${indice}`}
+                                      className={classe}
                                     >
-
                                       {valor}
-
                                     </td>
 
                                   );
@@ -675,52 +615,41 @@ function TabelaPrecos() {
 
                   </div>
 
+                  {/* OBSERVAÇÕES */}
 
-                  {/* =============================
-                      OBSERVAÇÕES
-                  ============================== */}
+                  {categoria.observacoes?.length > 0 && (
 
-                  {categoria.observacoes &&
-                    categoria.observacoes.length >
-                      0 && (
+                    <div className="tabela-precos-observacoes">
 
-                      <div className="tabela-precos-observacoes">
+                      <div className="tabela-precos-observacoes-title">
 
-                        <div className="tabela-precos-observacoes-title">
+                        <span>!</span>
 
-                          <span>
-                            !
-                          </span>
-
-                          <h4>
-                            Informações importantes
-                          </h4>
-
-                        </div>
-
-
-                        <ul>
-
-                          {categoria.observacoes.map(
-                            (
-                              observacao,
-                              index
-                            ) => (
-
-                              <li
-                                key={`${categoria.id}-obs-${index}`}
-                              >
-                                {observacao}
-                              </li>
-
-                            )
-                          )}
-
-                        </ul>
+                        <h4>
+                          Informações importantes
+                        </h4>
 
                       </div>
 
-                    )}
+                      <ul>
+
+                        {categoria.observacoes.map(
+                          (observacao, indice) => (
+
+                            <li
+                              key={`${categoria.id}-obs-${indice}`}
+                            >
+                              {observacao}
+                            </li>
+
+                          )
+                        )}
+
+                      </ul>
+
+                    </div>
+
+                  )}
 
                 </section>
 
@@ -735,16 +664,13 @@ function TabelaPrecos() {
                 ⌕
               </div>
 
-
               <h3>
                 Nenhum produto encontrado
               </h3>
 
-
               <p>
                 Não encontramos produtos correspondentes à sua pesquisa.
               </p>
-
 
               <button
                 type="button"
@@ -761,25 +687,27 @@ function TabelaPrecos() {
 
       </main>
 
-
-      {/* =====================================
-          MODAL DO PRODUTO
-      ====================================== */}
+      {/* =======================================
+          MODAL DE VISUALIZAÇÃO
+      ======================================== */}
 
       {produtoSelecionado && (
 
         <div
           className="produto-modal-fundo"
           onClick={fecharProduto}
+          role="presentation"
         >
 
           <div
             className="produto-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Visualização do produto Synter"
             onClick={(evento) =>
               evento.stopPropagation()
             }
           >
-
 
             {/* FECHAR */}
 
@@ -792,77 +720,45 @@ function TabelaPrecos() {
               ×
             </button>
 
-
-            {/* IMAGEM */}
+            {/* IMAGEM AMPLIADA */}
 
             <div className="produto-modal-imagem-area">
 
-              {produtoSelecionado.imagem ? (
-
-                <img
-                  src={
-                    produtoSelecionado.imagem
-                  }
-                  alt="Produto"
-                  className="produto-modal-imagem"
-                />
-
-              ) : (
-
-                <div className="produto-sem-imagem">
-
-                  <span>
-                    ◇
-                  </span>
-
-                  <p>
-                    Imagem não disponível
-                  </p>
-
-                </div>
-
-              )}
+              <ImagemProduto
+                imagem={produtoSelecionado.imagem}
+                alt={`Produto ${produtoSelecionado.linha[1] || produtoSelecionado.linha[0]}`}
+                ampliada
+              />
 
             </div>
 
-
-            {/* INFORMAÇÕES */}
+            {/* DADOS DO PRODUTO */}
 
             <div className="produto-modal-conteudo">
 
               <span className="produto-modal-categoria">
-
-                {
-                  produtoSelecionado
-                    .categoria.titulo
-                }
-
+                {produtoSelecionado.categoria.titulo}
               </span>
-
 
               <h2>
                 Visualização do Produto
               </h2>
 
-
               <div className="produto-modal-dados">
 
                 {produtoSelecionado.linha.map(
-                  (valor, index) => (
+                  (valor, indice) => (
 
                     <div
                       className="produto-modal-dado"
-                      key={index}
+                      key={indice}
                     >
 
                       <span>
-
                         {
-                          produtoSelecionado
-                            .categoria
-                            .colunas[index]
+                          produtoSelecionado.categoria
+                            .colunas[indice]
                         }
-
                       </span>
 
                       <strong>
@@ -884,31 +780,26 @@ function TabelaPrecos() {
 
       )}
 
-
-      {/* =====================================
+      {/* =======================================
           FOOTER
-      ====================================== */}
+      ======================================== */}
 
       <Footer />
 
-
-      {/* =====================================
+      {/* =======================================
           PERFIL
-      ====================================== */}
+      ======================================== */}
 
       {profileOpen && (
-
         <Profile
           onClose={() =>
             setProfileOpen(false)
           }
         />
-
       )}
 
     </div>
   );
 }
-
 
 export default TabelaPrecos;

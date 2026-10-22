@@ -2,15 +2,13 @@
 import html2pdf from "html2pdf.js";
 import tabelaPrecosData from "../data/tabelaPrecosData";
 
-// =====================================================
+// ======================================================
 // GERADOR DE ORÇAMENTO SYNTER
-// Impressão + PDF para compartilhamento
-// =====================================================
+// Impressão e compartilhamento de PDF
+// ======================================================
 
-// Busca a logo oficial dentro de src/assets.
-// Aceita PNG, JPG, JPEG, WEBP ou SVG.
-
-const arquivosLogoSynter = import.meta.glob(
+// Busca a logo oficial na pasta assets.
+const logos = import.meta.glob(
   "../assets/logo-synter-pdf.{png,jpg,jpeg,webp,svg}",
   {
     eager: true,
@@ -19,17 +17,26 @@ const arquivosLogoSynter = import.meta.glob(
   }
 );
 
-const logoSynterPdf =
-  Object.values(arquivosLogoSynter)[0] || "";
+const logoSynterPdf = Object.values(logos)[0] || "";
 
-// =====================================================
-// DADOS DA EMPRESA
-// =====================================================
+// Imagens dos produtos.
+const imagensProdutos = import.meta.glob(
+  "../assets/produtos/*.{png,jpg,jpeg,webp}",
+  {
+    eager: true,
+    import: "default",
+  }
+);
+
+// ======================================================
+// DADOS OFICIAIS DA SYNTER
+// ======================================================
 
 const EMPRESA = {
   razaoSocial: "SYNTER INDUSTRIA E COMERCIO LTDA",
   nomeFantasia: "SYNTER",
   cnpj: "82.996.216/0001-13",
+  inscricaoEstadual: "252221273",
   endereco: "Rod. Gabriel Arns, 5572",
   bairro: "Saturno",
   cidade: "Forquilhinha",
@@ -40,21 +47,9 @@ const EMPRESA = {
   logo: logoSynterPdf,
 };
 
-// =====================================================
-// IMAGENS DOS PRODUTOS
-// =====================================================
-
-const imagensProdutosPdf = import.meta.glob(
-  "../assets/produtos/*.{png,jpg,jpeg,webp}",
-  {
-    eager: true,
-    import: "default",
-  }
-);
-
-// =====================================================
-// SEGURANÇA E FORMATAÇÃO
-// =====================================================
+// ======================================================
+// UTILITÁRIOS
+// ======================================================
 
 function escaparHtml(valor = "") {
   return String(valor ?? "")
@@ -74,18 +69,23 @@ function normalizar(valor = "") {
     .replace(/[^a-z0-9]/g, "");
 }
 
+function numero(valor) {
+  const resultado = Number(valor);
+  return Number.isFinite(resultado) ? resultado : 0;
+}
+
 function moeda(valor) {
   return new Intl.NumberFormat("pt-BR", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(Number(valor || 0));
+  }).format(numero(valor));
 }
 
 function quantidade(valor) {
   return new Intl.NumberFormat("pt-BR", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 3,
-  }).format(Number(valor || 0));
+  }).format(numero(valor));
 }
 
 function dataBR(valor) {
@@ -113,7 +113,7 @@ function dataHoraBR(valor) {
   return data.toLocaleString("pt-BR");
 }
 
-function nomeSeguro(valor = "") {
+function nomeArquivoSeguro(valor = "") {
   return String(valor)
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -139,19 +139,14 @@ function primeiroValor(objeto, chaves, padrao = "-") {
   return padrao;
 }
 
-function valorNumerico(valor) {
-  const numero = Number(valor);
-  return Number.isFinite(numero) ? numero : 0;
-}
-
 function numeroOrcamento(orcamento) {
-  const numero = primeiroValor(
+  const informado = primeiroValor(
     orcamento,
     ["numero", "numero_orcamento", "orcamento_numero"],
     ""
   );
 
-  if (numero) return String(numero);
+  if (informado) return String(informado);
 
   return (
     String(orcamento?.id || "")
@@ -174,9 +169,9 @@ function prepararUrl(valor) {
   }
 }
 
-// =====================================================
-// IDENTIFICAÇÃO DE PRODUTOS
-// =====================================================
+// ======================================================
+// LOCALIZAR PRODUTO NA TABELA
+// ======================================================
 
 function encontrarLinhaTabela(item) {
   if (!item) return null;
@@ -192,7 +187,7 @@ function encontrarLinhaTabela(item) {
   const variacao = normalizar(item.variacao_produto);
 
   let melhor = null;
-  let pontuacaoMelhor = -1;
+  let melhorPontuacao = -1;
 
   for (const categoria of categorias) {
     const linhas = Array.isArray(categoria?.linhas)
@@ -245,8 +240,8 @@ function encontrarLinhaTabela(item) {
         pontos += 2;
       }
 
-      if (pontos >= 4 && pontos > pontuacaoMelhor) {
-        pontuacaoMelhor = pontos;
+      if (pontos >= 4 && pontos > melhorPontuacao) {
+        melhorPontuacao = pontos;
         melhor = { categoria, linha };
       }
     }
@@ -255,9 +250,9 @@ function encontrarLinhaTabela(item) {
   return melhor;
 }
 
-// =====================================================
-// IMAGENS DOS PRODUTOS
-// =====================================================
+// ======================================================
+// LOCALIZAR IMAGEM DO PRODUTO
+// ======================================================
 
 function encontrarImagemProduto(item) {
   if (!item) return "";
@@ -271,7 +266,6 @@ function encontrarImagemProduto(item) {
   if (direta) return prepararUrl(direta);
 
   const correspondencia = encontrarLinhaTabela(item);
-
   const codigo = normalizar(item.codigo_produto);
 
   const valoresBase = [
@@ -294,7 +288,7 @@ function encontrarImagemProduto(item) {
   let melhorPontuacao = 0;
 
   for (const [caminho, imagem] of Object.entries(
-    imagensProdutosPdf
+    imagensProdutos
   )) {
     const arquivo = caminho.split("/").pop() || "";
     const chave = normalizar(arquivo);
@@ -331,9 +325,9 @@ function encontrarImagemProduto(item) {
   return prepararUrl(melhorImagem);
 }
 
-// =====================================================
-// COMPONENTES HTML
-// =====================================================
+// ======================================================
+// COMPONENTES DO DOCUMENTO
+// ======================================================
 
 function campo(titulo, valor) {
   return `
@@ -362,9 +356,9 @@ function linhaTotal(titulo, valor, destaque = false) {
   `;
 }
 
-// =====================================================
-// ESTILOS DO DOCUMENTO
-// =====================================================
+// ======================================================
+// ESTILOS DO PDF
+// ======================================================
 
 const ESTILOS = `
   * {
@@ -780,9 +774,9 @@ const ESTILOS = `
   }
 `;
 
-// =====================================================
-// MONTAR DOCUMENTO HTML
-// =====================================================
+// ======================================================
+// MONTAR DOCUMENTO
+// ======================================================
 
 function montarDocumentoOrcamento({ orcamento, itens }) {
   if (!orcamento) {
@@ -795,7 +789,7 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
     );
   }
 
-  const numero = numeroOrcamento(orcamento);
+  const numeroPedido = numeroOrcamento(orcamento);
 
   const primeiroNome = String(
     orcamento.cliente_nome || "Cliente"
@@ -803,27 +797,26 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
     .trim()
     .split(/\s+/)[0];
 
-  const nomeArquivo = `Orcamento-${nomeSeguro(
+  const nomeArquivo = `Orcamento-${nomeArquivoSeguro(
     primeiroNome
-  )}-${nomeSeguro(numero)}`;
+  )}-${nomeArquivoSeguro(numeroPedido)}`;
 
   const subtotalProdutos = itens.reduce((total, item) => {
     const subtotal =
       item.subtotal !== null &&
       item.subtotal !== undefined
-        ? valorNumerico(item.subtotal)
-        : valorNumerico(item.preco_unitario) *
-          valorNumerico(item.quantidade);
+        ? numero(item.subtotal)
+        : numero(item.preco_unitario) *
+          numero(item.quantidade);
 
     return total + subtotal;
   }, 0);
 
-  const frete = valorNumerico(orcamento.frete);
+  const frete = numero(orcamento.frete);
   const totalGeral = subtotalProdutos + frete;
 
   const quantidadeTotal = itens.reduce(
-    (total, item) =>
-      total + valorNumerico(item.quantidade),
+    (total, item) => total + numero(item.quantidade),
     0
   );
 
@@ -876,9 +869,9 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
     "ie",
   ]);
 
-  // ===================================================
+  // ====================================================
   // PRODUTOS
-  // ===================================================
+  // ====================================================
 
   const linhasProdutos = itens
     .map((item) => {
@@ -895,9 +888,9 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
       const totalItem =
         item.subtotal !== null &&
         item.subtotal !== undefined
-          ? valorNumerico(item.subtotal)
-          : valorNumerico(item.preco_unitario) *
-            valorNumerico(item.quantidade);
+          ? numero(item.subtotal)
+          : numero(item.preco_unitario) *
+            numero(item.quantidade);
 
       return `
         <tr>
@@ -909,9 +902,7 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
                     <img
                       class="product-image"
                       src="${escaparHtml(imagem)}"
-                      alt="${escaparHtml(
-                        item.nome_produto || "Produto"
-                      )}"
+                      alt="${escaparHtml(item.nome_produto || "Produto")}"
                     />
                   </div>
                 `
@@ -959,18 +950,19 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
     })
     .join("");
 
-  // ===================================================
-  // DOCUMENTO COMPLETO
-  // ===================================================
+  // ====================================================
+  // CONTEÚDO COMPLETO DO PDF
+  // ====================================================
 
   const conteudo = `
     <main class="sheet">
 
-      <!-- CABEÇALHO SYNTER -->
+      <!-- CABEÇALHO -->
 
       <header class="company-header">
 
         <div class="brand-box">
+
           ${
             EMPRESA.logo
               ? `
@@ -985,21 +977,18 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
           }
 
           <div
-            class="brand-fallback ${
-              EMPRESA.logo ? "" : "logo-indisponivel"
-            }"
-            style="${
-              EMPRESA.logo ? "" : "display:block;"
-            }"
+            class="brand-fallback"
+            style="${EMPRESA.logo ? "" : "display:block;"}"
           >
             <div class="brand">SYNTER</div>
             <div class="brand-subtitle">
               SOLUÇÕES EM ACESSO
             </div>
           </div>
+
         </div>
 
-        <!-- DADOS DA EMPRESA -->
+        <!-- DADOS SYNTER -->
 
         <div class="company-data">
 
@@ -1031,6 +1020,11 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
               ${escaparHtml(EMPRESA.telefone)}
             </div>
 
+            <div class="company-line">
+              <strong>INSCRIÇÃO ESTADUAL:</strong>
+              ${escaparHtml(EMPRESA.inscricaoEstadual)}
+            </div>
+
             <div class="company-line full">
               <strong>E-mail:</strong>
               ${escaparHtml(EMPRESA.email)}
@@ -1040,12 +1034,12 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
         </div>
 
-        <!-- IDENTIFICAÇÃO DO ORÇAMENTO -->
+        <!-- IDENTIFICAÇÃO -->
 
         <div class="document-data">
 
           <div class="document-title">
-            Orçamento: ${escaparHtml(numero)}
+            Orçamento: ${escaparHtml(numeroPedido)}
           </div>
 
           <div class="document-row">
@@ -1062,7 +1056,7 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
       </header>
 
-      <!-- DADOS DE FATURAMENTO -->
+      <!-- FATURAMENTO -->
 
       <section class="section">
 
@@ -1074,42 +1068,21 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
           <div class="billing-column">
 
-            ${campo(
-              "Cliente",
-              orcamento.cliente_nome || "-"
-            )}
-
+            ${campo("Cliente", orcamento.cliente_nome || "-")}
             ${campo("Contato", clienteContato)}
-
             ${campo("Cidade", clienteCidade)}
-
             ${campo("Endereço", clienteEndereco)}
-
             ${campo("Bairro", clienteBairro)}
-
-            ${campo(
-              "E-mail",
-              orcamento.cliente_email || "-"
-            )}
+            ${campo("E-mail", orcamento.cliente_email || "-")}
 
           </div>
 
           <div class="billing-column">
 
-            ${campo(
-              "Fone",
-              orcamento.cliente_telefone || "-"
-            )}
-
+            ${campo("Fone", orcamento.cliente_telefone || "-")}
             ${campo("CEP", clienteCep)}
-
             ${campo("UF", clienteUf)}
-
-            ${campo(
-              "CPF/CNPJ",
-              orcamento.cliente_documento || "-"
-            )}
-
+            ${campo("CPF/CNPJ", orcamento.cliente_documento || "-")}
             ${campo("Insc. Est.", clienteInscricao)}
 
           </div>
@@ -1145,11 +1118,10 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
         </table>
 
-        <!-- TOTAIS -->
-
         <div class="products-summary">
 
           <div class="products-meta">
+
             <span>
               <strong>Itens:</strong>
               ${itens.length}
@@ -1159,6 +1131,7 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
               <strong>Quantidade Total:</strong>
               ${quantidade(quantidadeTotal)}
             </span>
+
           </div>
 
           <div class="totals">
@@ -1215,8 +1188,6 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
             dataBR(orcamento.data_entrega)
           )}
 
-          <!-- OBSERVAÇÕES -->
-
           <div class="commercial-observation">
 
             <strong>Observações:</strong>
@@ -1235,6 +1206,7 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
               ? `
                 <div class="commercial-observation">
                   <strong>Observação Padrão:</strong>
+
                   <p>${escaparHtml(
                     orcamento.observacoes
                   )}</p>
@@ -1273,9 +1245,9 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
   };
 }
 
-// =====================================================
-// AGUARDAR RENDERIZAÇÃO
-// =====================================================
+// ======================================================
+// AGUARDAR IMAGENS E RENDERIZAÇÃO
+// ======================================================
 
 async function aguardarImagens(container, limiteMs = 8000) {
   const imagens = Array.from(
@@ -1308,9 +1280,9 @@ async function aguardarImagens(container, limiteMs = 8000) {
   ]);
 
   try {
-    await document.fonts?.ready;
+    await container.ownerDocument.fonts?.ready;
   } catch {
-    // Utiliza as fontes disponíveis.
+    // Mantém as fontes disponíveis.
   }
 
   await new Promise((resolve) => {
@@ -1320,9 +1292,9 @@ async function aguardarImagens(container, limiteMs = 8000) {
   });
 }
 
-// =====================================================
+// ======================================================
 // CONVERTER IMAGEM PARA DATA URL
-// =====================================================
+// ======================================================
 
 async function imagemParaDataUrl(src) {
   if (!src) return "";
@@ -1355,9 +1327,9 @@ async function imagemParaDataUrl(src) {
   }
 }
 
-// =====================================================
-// INCORPORAR IMAGENS
-// =====================================================
+// ======================================================
+// INCORPORAR IMAGENS AO PDF
+// ======================================================
 
 async function incorporarImagens(container) {
   const imagens = Array.from(
@@ -1380,14 +1352,25 @@ async function incorporarImagens(container) {
   );
 }
 
-// =====================================================
-// CRIAR CONTAINER TEMPORÁRIO PARA PDF
-// =====================================================
+// ======================================================
+// CONTAINER INVISÍVEL PARA O USUÁRIO
+// ======================================================
 
 function criarContainerPdf(conteudo) {
   const container = document.createElement("div");
 
   container.id = "synter-pdf-stage";
+
+  // IMPORTANTE:
+  // O elemento precisa ter layout real para que
+  // html2canvas e html2pdf consigam renderizá-lo.
+  //
+  // Não usamos display:none, visibility:hidden
+  // nem opacity:0.
+  //
+  // O z-index negativo mantém a área de captura
+  // atrás da interface do sistema, sem exibi-la
+  // por cima dos botões e modais.
 
   Object.assign(container.style, {
     position: "fixed",
@@ -1399,7 +1382,7 @@ function criarContainerPdf(conteudo) {
     background: "#ffffff",
     opacity: "1",
     visibility: "visible",
-    zIndex: "2147483647",
+    zIndex: "-1",
     pointerEvents: "none",
     overflow: "visible",
   });
@@ -1432,9 +1415,9 @@ function criarContainerPdf(conteudo) {
   };
 }
 
-// =====================================================
+// ======================================================
 // GERAR PDF PARA COMPARTILHAMENTO
-// =====================================================
+// ======================================================
 
 export async function criarArquivoOrcamentoPdf({
   orcamento,
@@ -1450,13 +1433,9 @@ export async function criarArquivoOrcamentoPdf({
     criarContainerPdf(conteudo);
 
   try {
-    // Incorporar logo e imagens dos produtos.
     await incorporarImagens(folha);
-
-    // Aguardar carregamento e renderização.
     await aguardarImagens(folha);
 
-    // Evitar altura mínima desnecessária.
     folha.style.minHeight = "0";
 
     const largura = Math.ceil(
@@ -1547,19 +1526,20 @@ export async function criarArquivoOrcamentoPdf({
     );
   } catch (error) {
     console.error(
-      "[Synter] Erro ao gerar arquivo PDF:",
+      "[Synter] Erro ao gerar PDF:",
       error
     );
 
     throw error;
   } finally {
+    // Remove o elemento temporário ao concluir.
     container.remove();
   }
 }
 
-// =====================================================
+// ======================================================
 // IMPRESSÃO DO ORÇAMENTO
-// =====================================================
+// ======================================================
 
 export function gerarOrcamentoPdf({
   orcamento,
@@ -1601,6 +1581,7 @@ export function gerarOrcamentoPdf({
   const html = `
     <!DOCTYPE html>
     <html lang="pt-BR">
+
       <head>
         <meta charset="UTF-8" />
 
@@ -1621,6 +1602,7 @@ export function gerarOrcamentoPdf({
       <body>
         ${conteudo}
       </body>
+
     </html>
   `;
 
