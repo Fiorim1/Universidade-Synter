@@ -1,6 +1,6 @@
 
 import html2pdf from "html2pdf.js";
-import tabelaPrecosData from "../data/tabelaPrecosData";
+import { encontrarImagemSynter } from "./imagensProdutosSynter";
 
 // ======================================================
 // GERADOR DE ORÇAMENTO SYNTER
@@ -18,15 +18,6 @@ const logos = import.meta.glob(
 );
 
 const logoSynterPdf = Object.values(logos)[0] || "";
-
-// Imagens dos produtos.
-const imagensProdutos = import.meta.glob(
-  "../assets/produtos/*.{png,jpg,jpeg,webp}",
-  {
-    eager: true,
-    import: "default",
-  }
-);
 
 // ======================================================
 // DADOS OFICIAIS DA SYNTER
@@ -174,156 +165,33 @@ function prepararUrl(valor) {
 // ======================================================
 
 function encontrarLinhaTabela(item) {
-  if (!item) return null;
-
-  const categorias = Array.isArray(
-    tabelaPrecosData?.categorias
-  )
-    ? tabelaPrecosData.categorias
-    : [];
-
-  const codigo = normalizar(item.codigo_produto);
-  const nome = normalizar(item.nome_produto);
-  const variacao = normalizar(item.variacao_produto);
-
-  let melhor = null;
-  let melhorPontuacao = -1;
-
-  for (const categoria of categorias) {
-    const linhas = Array.isArray(categoria?.linhas)
-      ? categoria.linhas
-      : [];
-
-    for (const linha of linhas) {
-      if (!Array.isArray(linha)) continue;
-
-      const valores = linha
-        .map(normalizar)
-        .filter(Boolean);
-
-      if (codigo.length >= 4) {
-        const corresponde = valores.some(
-          (valor) =>
-            valor === codigo ||
-            (valor.length >= 4 &&
-              (valor.includes(codigo) ||
-                codigo.includes(valor)))
-        );
-
-        if (corresponde) {
-          return { categoria, linha };
-        }
-      }
-
-      let pontos = 0;
-
-      if (
-        nome.length >= 4 &&
-        valores.some(
-          (valor) =>
-            valor.length >= 4 &&
-            (valor.includes(nome) || nome.includes(valor))
-        )
-      ) {
-        pontos += 4;
-      }
-
-      if (
-        variacao.length >= 3 &&
-        valores.some(
-          (valor) =>
-            valor.length >= 3 &&
-            (valor.includes(variacao) ||
-              variacao.includes(valor))
-        )
-      ) {
-        pontos += 2;
-      }
-
-      if (pontos >= 4 && pontos > melhorPontuacao) {
-        melhorPontuacao = pontos;
-        melhor = { categoria, linha };
-      }
+      return null;
     }
-  }
-
-  return melhor;
-}
 
 // ======================================================
 // LOCALIZAR IMAGEM DO PRODUTO
 // ======================================================
 
 function encontrarImagemProduto(item) {
-  if (!item) return "";
-
-  const direta =
-    item.imagem_url ||
-    item.image_url ||
-    item.imagem ||
-    item.foto_url;
-
-  if (direta) return prepararUrl(direta);
-
-  const correspondencia = encontrarLinhaTabela(item);
-  const codigo = normalizar(item.codigo_produto);
-
-  const valoresBase = [
-    item.codigo_produto,
-    item.nome_produto,
-    item.variacao_produto,
-    item.tipo_preco,
-    ...(correspondencia?.linha || []),
-  ];
-
-  const valores = [
-    ...new Set(
-      valoresBase
-        .map(normalizar)
-        .filter((valor) => valor.length >= 3)
-    ),
-  ];
-
-  let melhorImagem = "";
-  let melhorPontuacao = 0;
-
-  for (const [caminho, imagem] of Object.entries(
-    imagensProdutos
-  )) {
-    const arquivo = caminho.split("/").pop() || "";
-    const chave = normalizar(arquivo);
-
-    if (!chave) continue;
-
-    if (
-      codigo.length >= 4 &&
-      (chave === codigo ||
-        chave.includes(codigo) ||
-        codigo.includes(chave))
-    ) {
-      return prepararUrl(imagem);
-    }
-
-    let pontos = 0;
-
-    for (const valor of valores) {
-      if (chave === valor) {
-        pontos = Math.max(pontos, 1000 + valor.length);
-      } else if (chave.includes(valor)) {
-        pontos = Math.max(pontos, 100 + valor.length);
-      } else if (valor.includes(chave)) {
-        pontos = Math.max(pontos, 50 + chave.length);
+      if (!item) {
+        return "";
       }
-    }
 
-    if (pontos > melhorPontuacao) {
-      melhorPontuacao = pontos;
-      melhorImagem = imagem;
-    }
-  }
+      const imagemDireta =
+        item.imagem_url ||
+        item.image_url ||
+        item.imagem ||
+        item.foto_url;
 
-  return prepararUrl(melhorImagem);
-}
+      if (imagemDireta) {
+        return prepararUrl(imagemDireta);
+      }
+
+      const imagemSynter =
+        encontrarImagemSynter(item);
+
+      return prepararUrl(imagemSynter);
+    }
 
 // ======================================================
 // COMPONENTES DO DOCUMENTO
