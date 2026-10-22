@@ -7,6 +7,25 @@ import tabelaPrecosData from "../data/tabelaPrecosData";
 // Impressão + PDF para compartilhamento
 // =====================================================
 
+// Busca a logo oficial dentro de src/assets.
+// Aceita PNG, JPG, JPEG, WEBP ou SVG.
+
+const arquivosLogoSynter = import.meta.glob(
+  "../assets/logo-synter-pdf.{png,jpg,jpeg,webp,svg}",
+  {
+    eager: true,
+    import: "default",
+    query: "?url",
+  }
+);
+
+const logoSynterPdf =
+  Object.values(arquivosLogoSynter)[0] || "";
+
+// =====================================================
+// DADOS DA EMPRESA
+// =====================================================
+
 const EMPRESA = {
   razaoSocial: "SYNTER INDUSTRIA E COMERCIO LTDA",
   nomeFantasia: "SYNTER",
@@ -18,8 +37,12 @@ const EMPRESA = {
   cep: "88850-000",
   telefone: "(48) 3941-1192",
   email: "contato@synter.com.br",
-  logo: "/logo-synter.png",
+  logo: logoSynterPdf,
 };
+
+// =====================================================
+// IMAGENS DOS PRODUTOS
+// =====================================================
 
 const imagensProdutosPdf = import.meta.glob(
   "../assets/produtos/*.{png,jpg,jpeg,webp}",
@@ -231,6 +254,10 @@ function encontrarLinhaTabela(item) {
 
   return melhor;
 }
+
+// =====================================================
+// IMAGENS DOS PRODUTOS
+// =====================================================
 
 function encontrarImagemProduto(item) {
   if (!item) return "";
@@ -849,6 +876,10 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
     "ie",
   ]);
 
+  // ===================================================
+  // PRODUTOS
+  // ===================================================
+
   const linhasProdutos = itens
     .map((item) => {
       const imagem = encontrarImagemProduto(item);
@@ -928,26 +959,47 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
     })
     .join("");
 
+  // ===================================================
+  // DOCUMENTO COMPLETO
+  // ===================================================
+
   const conteudo = `
     <main class="sheet">
+
+      <!-- CABEÇALHO SYNTER -->
 
       <header class="company-header">
 
         <div class="brand-box">
-          <img
-            class="brand-logo"
-            src="${escaparHtml(EMPRESA.logo)}"
-            alt="Logo Synter"
-            onerror="this.parentElement.classList.add('no-logo')"
-          />
+          ${
+            EMPRESA.logo
+              ? `
+                <img
+                  class="brand-logo"
+                  src="${escaparHtml(EMPRESA.logo)}"
+                  alt="Logo oficial Synter"
+                  onerror="this.parentElement.classList.add('no-logo')"
+                />
+              `
+              : ""
+          }
 
-          <div class="brand-fallback">
+          <div
+            class="brand-fallback ${
+              EMPRESA.logo ? "" : "logo-indisponivel"
+            }"
+            style="${
+              EMPRESA.logo ? "" : "display:block;"
+            }"
+          >
             <div class="brand">SYNTER</div>
             <div class="brand-subtitle">
               SOLUÇÕES EM ACESSO
             </div>
           </div>
         </div>
+
+        <!-- DADOS DA EMPRESA -->
 
         <div class="company-data">
 
@@ -988,6 +1040,8 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
         </div>
 
+        <!-- IDENTIFICAÇÃO DO ORÇAMENTO -->
+
         <div class="document-data">
 
           <div class="document-title">
@@ -1007,6 +1061,8 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
         </div>
 
       </header>
+
+      <!-- DADOS DE FATURAMENTO -->
 
       <section class="section">
 
@@ -1062,6 +1118,8 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
       </section>
 
+      <!-- PRODUTOS -->
+
       <section class="section">
 
         <h2 class="section-title">
@@ -1086,6 +1144,8 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
           </tbody>
 
         </table>
+
+        <!-- TOTAIS -->
 
         <div class="products-summary">
 
@@ -1125,6 +1185,8 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
       </section>
 
+      <!-- CONDIÇÕES COMERCIAIS -->
+
       <section class="section">
 
         <h2 class="section-title">
@@ -1152,6 +1214,8 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
             "Data de Entrega:",
             dataBR(orcamento.data_entrega)
           )}
+
+          <!-- OBSERVAÇÕES -->
 
           <div class="commercial-observation">
 
@@ -1182,6 +1246,8 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
         </div>
 
       </section>
+
+      <!-- RODAPÉ -->
 
       <footer class="document-footer">
 
@@ -1234,7 +1300,6 @@ async function aguardarImagens(container, limiteMs = 8000) {
       })
   );
 
-  // Impede travamento caso uma imagem não responda.
   await Promise.race([
     Promise.all(tarefas),
     new Promise((resolve) =>
@@ -1245,10 +1310,9 @@ async function aguardarImagens(container, limiteMs = 8000) {
   try {
     await document.fonts?.ready;
   } catch {
-    // Continua com as fontes disponíveis.
+    // Utiliza as fontes disponíveis.
   }
 
-  // Garante que o navegador tenha realizado o layout.
   await new Promise((resolve) => {
     requestAnimationFrame(() => {
       requestAnimationFrame(resolve);
@@ -1257,7 +1321,7 @@ async function aguardarImagens(container, limiteMs = 8000) {
 }
 
 // =====================================================
-// PREPARAR IMAGENS
+// CONVERTER IMAGEM PARA DATA URL
 // =====================================================
 
 async function imagemParaDataUrl(src) {
@@ -1287,11 +1351,13 @@ async function imagemParaDataUrl(src) {
       leitor.readAsDataURL(blob);
     });
   } catch {
-    // Se o servidor externo não permitir CORS,
-    // a imagem original ainda poderá ser utilizada.
     return src;
   }
 }
+
+// =====================================================
+// INCORPORAR IMAGENS
+// =====================================================
 
 async function incorporarImagens(container) {
   const imagens = Array.from(
@@ -1322,11 +1388,6 @@ function criarContainerPdf(conteudo) {
   const container = document.createElement("div");
 
   container.id = "synter-pdf-stage";
-
-  // IMPORTANTE:
-  // O documento fica montado no DOM principal.
-  // Não utilizamos iframe invisível, opacity: 0
-  // ou posição negativa para realizar a captura.
 
   Object.assign(container.style, {
     position: "fixed",
@@ -1359,6 +1420,7 @@ function criarContainerPdf(conteudo) {
 
   if (!folha) {
     container.remove();
+
     throw new Error(
       "Não foi possível montar a folha do orçamento."
     );
@@ -1371,7 +1433,7 @@ function criarContainerPdf(conteudo) {
 }
 
 // =====================================================
-// GERAR ARQUIVO PDF REAL
+// GERAR PDF PARA COMPARTILHAMENTO
 // =====================================================
 
 export async function criarArquivoOrcamentoPdf({
@@ -1388,14 +1450,13 @@ export async function criarArquivoOrcamentoPdf({
     criarContainerPdf(conteudo);
 
   try {
-    // Converte as imagens em dados incorporados.
+    // Incorporar logo e imagens dos produtos.
     await incorporarImagens(folha);
 
-    // Aguarda o carregamento das imagens e do layout.
+    // Aguardar carregamento e renderização.
     await aguardarImagens(folha);
 
-    // Evita páginas extras causadas exclusivamente
-    // pela altura mínima de uma folha A4.
+    // Evitar altura mínima desnecessária.
     folha.style.minHeight = "0";
 
     const largura = Math.ceil(
@@ -1492,8 +1553,6 @@ export async function criarArquivoOrcamentoPdf({
 
     throw error;
   } finally {
-    // Remove o documento temporário em qualquer
-    // situação, inclusive quando ocorrer um erro.
     container.remove();
   }
 }
@@ -1510,10 +1569,6 @@ export function gerarOrcamentoPdf({
     orcamento,
     itens,
   });
-
-  // A impressão continua utilizando iframe.
-  // Diferentemente do html2canvas, o navegador
-  // consegue imprimir esse documento diretamente.
 
   const iframe = document.createElement("iframe");
 
@@ -1537,6 +1592,7 @@ export function gerarOrcamentoPdf({
 
   if (!documento) {
     iframe.remove();
+
     throw new Error(
       "Não foi possível preparar a impressão."
     );
@@ -1547,7 +1603,9 @@ export function gerarOrcamentoPdf({
     <html lang="pt-BR">
       <head>
         <meta charset="UTF-8" />
+
         <title>Orçamento Synter</title>
+
         <style>
           html,
           body {
@@ -1559,6 +1617,7 @@ export function gerarOrcamentoPdf({
           ${ESTILOS}
         </style>
       </head>
+
       <body>
         ${conteudo}
       </body>
