@@ -179,9 +179,7 @@ function MFAVerify() {
                     fatorVerificado.id
                 )
 
-            }
-
-            catch (
+            } catch (
                 err
             ) {
 
@@ -210,9 +208,7 @@ function MFAVerify() {
                     "Não foi possível carregar a autenticação em dois fatores."
                 )
 
-            }
-
-            finally {
+            } finally {
 
                 if (
                     ativo
@@ -370,9 +366,7 @@ function MFAVerify() {
                 }
             )
 
-        }
-
-        catch (
+        } catch (
             err
         ) {
 
@@ -392,9 +386,7 @@ function MFAVerify() {
                 "Código inválido ou expirado. Confira o Google Authenticator e tente novamente."
             )
 
-        }
-
-        finally {
+        } finally {
 
             setVerificando(false)
 
@@ -424,7 +416,27 @@ function MFAVerify() {
                         <div className="mfa-verify-eyebrow">
 
                             <span className="mfa-verify-eyebrow-icon">
-                                ◇
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <rect
+                                        x="5"
+                                        y="11"
+                                        width="14"
+                                        height="10"
+                                        rx="2"
+                                        ry="2"
+                                    />
+                                    <path d="M8 11V8a4 4 0 1 1 8 0v3" />
+                                </svg>
                             </span>
 
                             <span>
@@ -440,12 +452,10 @@ function MFAVerify() {
 
 
                         <p>
-
                             Utilize o código temporário
                             do Google Authenticator para
                             concluir seu acesso à
                             Universidade Synter.
-
                         </p>
 
                     </section>
@@ -464,7 +474,6 @@ function MFAVerify() {
 
                         <div className="mfa-verify-info">
 
-
                             <span className="mfa-verify-step">
                                 AUTENTICAÇÃO EM DUAS ETAPAS
                             </span>
@@ -476,17 +485,14 @@ function MFAVerify() {
 
 
                             <p>
-
                                 Sua senha já foi confirmada.
                                 Agora precisamos validar o
                                 segundo fator de autenticação
                                 antes de liberar o acesso.
-
                             </p>
 
 
                             <div className="mfa-verify-security-list">
-
 
                                 <div className="mfa-verify-security-item">
 
@@ -550,7 +556,6 @@ function MFAVerify() {
 
                                 </div>
 
-
                             </div>
 
                         </div>
@@ -562,22 +567,14 @@ function MFAVerify() {
 
                         <div className="mfa-verify-form-area">
 
-
-                            {/* ========================= */}
-                            {/* GOOGLE AUTHENTICATOR     */}
-                            {/* ========================= */}
-
                             <div className="mfa-verify-badge">
 
                                 <span>
-
                                     <img
                                         src={
                                             GoogleAuthenticatorLogo
                                         }
-
                                         alt="Google Authenticator"
-
                                         style={{
                                             width: "20px",
                                             height: "20px",
@@ -585,7 +582,6 @@ function MFAVerify() {
                                             display: "block"
                                         }}
                                     />
-
                                 </span>
 
 
@@ -604,10 +600,6 @@ function MFAVerify() {
                             </div>
 
 
-                            {/* ========================= */}
-                            {/* TÍTULO                    */}
-                            {/* ========================= */}
-
                             <div className="mfa-verify-form-heading">
 
                                 <h3>
@@ -615,19 +607,13 @@ function MFAVerify() {
                                 </h3>
 
                                 <p>
-
                                     Digite os 6 números
                                     exibidos atualmente
                                     no seu autenticador.
-
                                 </p>
 
                             </div>
 
-
-                            {/* ========================= */}
-                            {/* CARREGANDO                */}
-                            {/* ========================= */}
 
                             {loading && (
 
@@ -646,10 +632,6 @@ function MFAVerify() {
                             )}
 
 
-                            {/* ========================= */}
-                            {/* FORMULÁRIO                */}
-                            {/* ========================= */}
-
                             {!loading && (
 
                                 <form
@@ -658,7 +640,6 @@ function MFAVerify() {
                                     }
                                     className="mfa-verify-form"
                                 >
-
 
                                     {error && (
 
@@ -678,29 +659,20 @@ function MFAVerify() {
 
 
                                     <label htmlFor="mfa-code">
-
                                         Código do Google Authenticator
-
                                     </label>
 
 
                                     <input
                                         id="mfa-code"
-
                                         type="text"
-
                                         inputMode="numeric"
-
                                         autoComplete="one-time-code"
-
                                         maxLength={6}
-
                                         placeholder="000000"
-
                                         value={
                                             codigo
                                         }
-
                                         onChange={
                                             (
                                                 event
@@ -722,14 +694,11 @@ function MFAVerify() {
                                                     valor
                                                 )
 
-
                                                 setError("")
 
                                             }
                                         }
-
                                         autoFocus
-
                                         disabled={
                                             verificando ||
                                             !factorId
@@ -739,9 +708,7 @@ function MFAVerify() {
 
                                     <button
                                         type="submit"
-
                                         className="mfa-verify-button"
-
                                         disabled={
                                             verificando ||
                                             !factorId ||
@@ -750,13 +717,11 @@ function MFAVerify() {
                                     >
 
                                         <span>
-
                                             {
                                                 verificando
                                                     ? "Verificando..."
                                                     : "Confirmar acesso"
                                             }
-
                                         </span>
 
 
@@ -770,15 +735,10 @@ function MFAVerify() {
 
                                     </button>
 
-
                                 </form>
 
                             )}
 
-
-                            {/* ========================= */}
-                            {/* AJUDA                     */}
-                            {/* ========================= */}
 
                             <div className="mfa-verify-help">
 
@@ -787,17 +747,14 @@ function MFAVerify() {
                                 </span>
 
                                 <p>
-
                                     O código é renovado
                                     automaticamente pelo
                                     Google Authenticator.
                                     Caso ele expire, utilize
                                     o próximo código exibido.
-
                                 </p>
 
                             </div>
-
 
                         </div>
 

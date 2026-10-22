@@ -11,7 +11,10 @@ import ImgIcon from "../assets/img-icon.png";
 import tabelaPrecosData from "../data/tabelaPrecosData";
 
 import { supabase } from "../services/supabaseClient";
-import { gerarOrcamentoPdf } from "../utils/gerarOrcamentoPdf";
+import {
+  gerarOrcamentoPdf,
+  criarArquivoOrcamentoPdf
+} from "../utils/gerarOrcamentoPdf";
 
 import "../styles/Orcamentos.css";
 
@@ -542,6 +545,20 @@ function Orcamentos() {
 
   const [baixandoPdfCardId, setBaixandoPdfCardId] =
     useState(null);
+
+
+  // ========================================
+  // COMPARTILHAMENTO DO PDF
+  // ========================================
+
+  const [arquivoPdfCompartilhar, setArquivoPdfCompartilhar] =
+    useState(null);
+
+  const [orcamentoPdfCompartilhar, setOrcamentoPdfCompartilhar] =
+    useState(null);
+
+  const [compartilhandoPdf, setCompartilhandoPdf] =
+    useState(false);
 
 
   // ========================================
@@ -3674,7 +3691,7 @@ Synter`;
   }
 
 
-  async function baixarPdfDoCard(
+  async function prepararPdfDoCard(
     event,
     orcamento
   ) {
@@ -3695,6 +3712,16 @@ Synter`;
 
       setBaixandoPdfCardId(
         orcamento.id
+      );
+
+
+      setArquivoPdfCompartilhar(
+        null
+      );
+
+
+      setOrcamentoPdfCompartilhar(
+        null
       );
 
 
@@ -3750,22 +3777,42 @@ Synter`;
       }
 
 
-      gerarOrcamentoPdf({
-        orcamento,
-        itens
-      });
+      const arquivo =
+        await criarArquivoOrcamentoPdf({
+          orcamento,
+          itens
+        });
+
+
+      if (!arquivo) {
+
+        throw new Error(
+          "Não foi possível criar o arquivo PDF."
+        );
+
+      }
+
+
+      setArquivoPdfCompartilhar(
+        arquivo
+      );
+
+
+      setOrcamentoPdfCompartilhar(
+        orcamento
+      );
 
     }
     catch (error) {
 
       console.error(
-        "Erro ao gerar PDF pelo card:",
+        "Erro ao preparar PDF pelo card:",
         error
       );
 
 
       mostrarAlertaSistema(
-        "Não foi possível gerar o PDF",
+        "Não foi possível preparar o PDF",
         error?.message ||
           "Tente novamente em alguns instantes.",
         "erro"
@@ -3776,6 +3823,230 @@ Synter`;
 
       setBaixandoPdfCardId(
         null
+      );
+
+    }
+
+  }
+
+
+  function fecharCompartilhamentoPdf() {
+
+    if (compartilhandoPdf) {
+      return;
+    }
+
+
+    setArquivoPdfCompartilhar(
+      null
+    );
+
+
+    setOrcamentoPdfCompartilhar(
+      null
+    );
+
+  }
+
+
+  function salvarArquivoPdfPreparado() {
+
+    if (
+      !arquivoPdfCompartilhar
+    ) {
+      return false;
+    }
+
+
+    const urlArquivo =
+      URL.createObjectURL(
+        arquivoPdfCompartilhar
+      );
+
+
+    const link =
+      document.createElement(
+        "a"
+      );
+
+
+    link.href =
+      urlArquivo;
+
+
+    link.download =
+      arquivoPdfCompartilhar.name;
+
+
+    document.body.appendChild(
+      link
+    );
+
+
+    link.click();
+
+
+    link.remove();
+
+
+    window.setTimeout(
+      () => {
+
+        URL.revokeObjectURL(
+          urlArquivo
+        );
+
+      },
+      1000
+    );
+
+
+    return true;
+
+  }
+
+
+  function baixarArquivoPdfPreparado() {
+
+    const baixou =
+      salvarArquivoPdfPreparado();
+
+
+    if (!baixou) {
+      return;
+    }
+
+
+    mostrarAlertaSistema(
+      "PDF baixado",
+      `O arquivo ${arquivoPdfCompartilhar.name} foi baixado com sucesso.`
+    );
+
+  }
+
+
+  async function compartilharArquivoPdfPreparado() {
+
+    if (
+      !arquivoPdfCompartilhar ||
+      !orcamentoPdfCompartilhar ||
+      compartilhandoPdf
+    ) {
+      return;
+    }
+
+
+    const numero =
+      numeroCurtoOrcamento(
+        orcamentoPdfCompartilhar
+      );
+
+
+    const dadosCompartilhamento = {
+
+      title:
+        `Orçamento Synter ${numero}`,
+
+      text:
+        `Segue o orçamento Synter ${numero}.`,
+
+      files: [
+        arquivoPdfCompartilhar
+      ]
+
+    };
+
+
+    try {
+
+      const suportaCompartilhamento =
+        typeof navigator.share ===
+          "function";
+
+
+      const suportaArquivo =
+        typeof navigator.canShare ===
+          "function" &&
+        navigator.canShare({
+          files: [
+            arquivoPdfCompartilhar
+          ]
+        });
+
+
+      if (
+        !suportaCompartilhamento ||
+        !suportaArquivo
+      ) {
+
+        salvarArquivoPdfPreparado();
+
+
+        mostrarAlertaSistema(
+          "PDF baixado",
+          "Seu navegador não permite compartilhar arquivos diretamente. O PDF foi baixado para você anexar no WhatsApp ou em outro aplicativo."
+        );
+
+
+        return;
+
+      }
+
+
+      setCompartilhandoPdf(
+        true
+      );
+
+
+      await navigator.share(
+        dadosCompartilhamento
+      );
+
+
+      setArquivoPdfCompartilhar(
+        null
+      );
+
+
+      setOrcamentoPdfCompartilhar(
+        null
+      );
+
+
+      mostrarAlertaSistema(
+        "PDF compartilhado",
+        "O arquivo do orçamento foi enviado para o compartilhamento do dispositivo."
+      );
+
+    }
+    catch (error) {
+
+      if (
+        error?.name ===
+        "AbortError"
+      ) {
+        return;
+      }
+
+
+      console.error(
+        "Erro ao compartilhar PDF:",
+        error
+      );
+
+
+      mostrarAlertaSistema(
+        "Não foi possível compartilhar",
+        error?.message ||
+          "O navegador não conseguiu compartilhar o arquivo PDF.",
+        "erro"
+      );
+
+    }
+    finally {
+
+      setCompartilhandoPdf(
+        false
       );
 
     }
@@ -4617,7 +4888,7 @@ Synter`;
                                 className="orcamentos-card-acao pdf"
                                 onClick={
                                   (event) =>
-                                    baixarPdfDoCard(
+                                    prepararPdfDoCard(
                                       event,
                                       orcamento
                                     )
@@ -4626,11 +4897,14 @@ Synter`;
                                   baixandoPdfCardId ===
                                   orcamento.id
                                 }
-                                title="Baixar orçamento em PDF"
-                                aria-label="Baixar orçamento em PDF"
+                                title="Compartilhar ou baixar orçamento em PDF"
+                                aria-label="Compartilhar ou baixar orçamento em PDF"
                               >
                                 <span>
-                                  PDF
+                                  {baixandoPdfCardId ===
+                                  orcamento.id
+                                    ? "..."
+                                    : "PDF"}
                                 </span>
                               </button>
 
@@ -4702,6 +4976,164 @@ Synter`;
         )}
 
       </main>
+
+
+      {/* ================================= */}
+      {/* COMPARTILHAMENTO DO PDF           */}
+      {/* ================================= */}
+
+      {arquivoPdfCompartilhar &&
+        orcamentoPdfCompartilhar && (
+
+        <div
+          className="orcamentos-modal-overlay"
+          onMouseDown={
+            fecharCompartilhamentoPdf
+          }
+        >
+
+          <div
+            className="orcamentos-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="titulo-compartilhar-pdf"
+            onMouseDown={
+              (event) =>
+                event.stopPropagation()
+            }
+          >
+
+            <div className="orcamentos-modal-header">
+
+              <div>
+
+                <span>
+                  PDF DO ORÇAMENTO
+                </span>
+
+                <h2 id="titulo-compartilhar-pdf">
+                  Arquivo pronto
+                </h2>
+
+                <p>
+                  O PDF foi gerado. Você pode compartilhar o
+                  arquivo pelo WhatsApp ou baixar uma cópia.
+                </p>
+
+              </div>
+
+
+              <button
+                type="button"
+                className="orcamentos-modal-close"
+                onClick={
+                  fecharCompartilhamentoPdf
+                }
+                disabled={
+                  compartilhandoPdf
+                }
+                aria-label="Fechar"
+              >
+                ×
+              </button>
+
+            </div>
+
+
+            <div className="orcamentos-modal-content">
+
+              <div
+                style={{
+                  padding: "18px",
+                  border: "1px solid rgba(255, 255, 255, 0.10)",
+                  borderRadius: "10px",
+                  background: "rgba(255, 255, 255, 0.025)"
+                }}
+              >
+
+                <span
+                  style={{
+                    display: "block",
+                    marginBottom: "7px",
+                    color: "#777777",
+                    fontSize: "9px",
+                    fontWeight: "700",
+                    letterSpacing: "1.5px"
+                  }}
+                >
+                  ARQUIVO
+                </span>
+
+
+                <strong
+                  style={{
+                    display: "block",
+                    color: "#ffffff",
+                    fontSize: "13px",
+                    lineHeight: "1.5",
+                    wordBreak: "break-word"
+                  }}
+                >
+                  {arquivoPdfCompartilhar.name}
+                </strong>
+
+
+                <p
+                  style={{
+                    margin: "8px 0 0",
+                    color: "#888888",
+                    fontSize: "11px",
+                    lineHeight: "1.5"
+                  }}
+                >
+                  Cliente:{" "}
+                  {orcamentoPdfCompartilhar.cliente_nome ||
+                    "Cliente"}
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div className="orcamentos-modal-actions">
+
+              <button
+                type="button"
+                className="orcamentos-secondary-button"
+                onClick={
+                  baixarArquivoPdfPreparado
+                }
+                disabled={
+                  compartilhandoPdf
+                }
+              >
+                Baixar PDF
+              </button>
+
+
+              <button
+                type="button"
+                className="orcamentos-primary-button"
+                onClick={
+                  compartilharArquivoPdfPreparado
+                }
+                disabled={
+                  compartilhandoPdf
+                }
+              >
+                {compartilhandoPdf
+                  ? "Compartilhando..."
+                  : "Compartilhar PDF"}
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
 
 
       {/* ================================= */}
