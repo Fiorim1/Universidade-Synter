@@ -39,6 +39,7 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PublicRoute from "./components/PublicRoute.jsx";
 
 import SynterAssistant from "./components/SynterAssistant.jsx";
+import FichaTec from "./pages/FichaTec.jsx";
 
 
 function App() {
@@ -325,6 +326,19 @@ function App() {
           element={
             <ProtectedRoute>
               <DigMarketing />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ======================================== */}
+        {/* FICHA TÉCNICA                       */}
+        {/* ======================================== */}
+
+        <Route
+          path="/ficha-tecnica"
+          element={
+            <ProtectedRoute>
+              <FichaTec />
             </ProtectedRoute>
           }
         />
