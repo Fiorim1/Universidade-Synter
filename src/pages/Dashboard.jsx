@@ -207,7 +207,7 @@ function Dashboard() {
             image={TcIcon}
             title="Treinamento Comercial"
             desc="Acesse nossos treinamentos comerciais"
-            enabled={false}
+            route={"/imagem-para-pdf"}
           />
 
 
