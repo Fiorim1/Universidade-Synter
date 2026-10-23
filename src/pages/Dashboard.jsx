@@ -123,7 +123,7 @@ function Dashboard() {
             image={FtIcon}
             title="Fichas Técnicas"
             desc="Acesse as fichas técnicas dos nossos produtos"
-            enabled={false}
+            route="/fichas-tecnicas"
           />
 
 
