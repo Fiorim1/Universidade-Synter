@@ -16,6 +16,8 @@ import {
   criarArquivoOrcamentoPdf
 } from "../utils/gerarOrcamentoPdf";
 
+import { CONDICOES_PAGAMENTO_SYNTER, textoCondicaoPagamento } from "../data/condicoesPagamentoSynter";
+
 import "../styles/Orcamentos.css";
 
 
@@ -5239,16 +5241,31 @@ Synter`;
                   Condição de Pagamento
                 </label>
 
-                <input
+                <select
                   id="condicao_pagamento"
                   name="condicao_pagamento"
-                  type="text"
                   value={formulario.condicao_pagamento}
                   onChange={alterarCampo}
-                  placeholder="Ex.: 30/60/90 dias"
-                  maxLength={200}
                   disabled={salvando}
-                />
+                >
+                  <option value="">Selecione a condição de pagamento</option>
+                  {formulario.condicao_pagamento && !CONDICOES_PAGAMENTO_SYNTER.some(
+                    ([codigo, descricao]) =>
+                      textoCondicaoPagamento(codigo, descricao) === formulario.condicao_pagamento
+                  ) && (
+                    <option value={formulario.condicao_pagamento}>
+                      {`${formulario.condicao_pagamento.replace(/^(?:[A-Z]{2,3}|\d{1,3})\s*-\s*/, "")} (condição anterior)`}
+                    </option>
+                  )}
+                  {CONDICOES_PAGAMENTO_SYNTER.map(([codigo, descricao, tipo]) => (
+                    <option
+                      key={codigo}
+                      value={textoCondicaoPagamento(codigo, descricao)}
+                    >
+                      {descricao}
+                    </option>
+                  ))}
+                </select>
 
               </div>
 
@@ -6870,16 +6887,31 @@ Synter`;
                   Condição de Pagamento
                 </label>
 
-                <input
+                <select
                   id="edit_condicao_pagamento"
                   name="condicao_pagamento"
-                  type="text"
                   value={formularioEdicao.condicao_pagamento}
                   onChange={alterarCampoEdicao}
-                  placeholder="Ex.: 30/60/90 dias"
-                  maxLength={200}
                   disabled={salvandoEdicao}
-                />
+                >
+                  <option value="">Selecione a condição de pagamento</option>
+                  {formularioEdicao.condicao_pagamento && !CONDICOES_PAGAMENTO_SYNTER.some(
+                    ([codigo, descricao]) =>
+                      textoCondicaoPagamento(codigo, descricao) === formularioEdicao.condicao_pagamento
+                  ) && (
+                    <option value={formularioEdicao.condicao_pagamento}>
+                      {`${formularioEdicao.condicao_pagamento.replace(/^(?:[A-Z]{2,3}|\d{1,3})\s*-\s*/, "")} (condição anterior)`}
+                    </option>
+                  )}
+                  {CONDICOES_PAGAMENTO_SYNTER.map(([codigo, descricao, tipo]) => (
+                    <option
+                      key={codigo}
+                      value={textoCondicaoPagamento(codigo, descricao)}
+                    >
+                      {descricao}
+                    </option>
+                  ))}
+                </select>
 
               </div>
 
