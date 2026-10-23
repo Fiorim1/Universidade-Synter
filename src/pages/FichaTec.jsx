@@ -9,6 +9,21 @@ import Footer from "../components/Footer"
 
 import "../styles/Manuals.css"
 
+import navisPdf0155 from "../assets/fichas-tecnicas/navis/FT_Navis_Roseta_01_55mm.pdf";
+import navisPdf0440 from "../assets/fichas-tecnicas/navis/FT_Navis_Roseta_04_40mm.pdf";
+import navisPdf0455 from "../assets/fichas-tecnicas/navis/FT_Navis_Roseta_04_55mm.pdf";
+import navisPdf0740 from "../assets/fichas-tecnicas/navis/FT_Navis_Roseta_07_40mm.pdf";
+import navisPdf0755 from "../assets/fichas-tecnicas/navis/FT_Navis_Roseta_07_55mm.pdf";
+import navisPdf0955 from "../assets/fichas-tecnicas/navis/FT_Navis_Roseta_09_55mm.pdf";
+
+const FICHAS_NAVIS = {
+  "01": { "55": navisPdf0155 },
+  "04": { "40": navisPdf0440, "55": navisPdf0455 },
+  "07": { "40": navisPdf0740, "55": navisPdf0755 },
+  "09": { "55": navisPdf0955 },
+};
+
+
 // Importando imagens de produtos digitais
 import VENUSS2 from "../assets/venuss2pro.png"
 import VENUS3 from "../assets/venuss3.png"
@@ -110,6 +125,23 @@ function FichaTec() {
 
     // Controla a abertura do modal de perfil
     const [profileOpen, setProfileOpen] = useState(false)
+    const [navisModalOpen, setNavisModalOpen] = useState(false)
+    const [navisRoseta, setNavisRoseta] = useState("")
+    const [navisMaquina, setNavisMaquina] = useState("")
+
+    const navisPdfSelecionado = FICHAS_NAVIS[navisRoseta]?.[navisMaquina] || null
+
+    function abrirFichasNavis() {
+        setNavisRoseta("")
+        setNavisMaquina("")
+        setNavisModalOpen(true)
+    }
+
+    function fecharFichasNavis() {
+        setNavisModalOpen(false)
+        setNavisRoseta("")
+        setNavisMaquina("")
+    }
 
     return (
 
@@ -400,12 +432,30 @@ function FichaTec() {
                                     pdf={MECPDF}
                                 />
 
-                                <CardsDashboard
-                                    image={NAVIS}
-                                    title="Navis"
-                                    desc="Clique aqui para baixar o manual!"
-                                    pdf={MECPDF}
-                                />
+                                {/* Navis: abre a seleção da ficha técnica antes do PDF */}
+                                <div
+                                    role="button"
+                                    tabIndex={0}
+                                    aria-label="Selecionar ficha técnica Navis"
+                                    onClickCapture={(event) => {
+                                        event.preventDefault()
+                                        event.stopPropagation()
+                                        abrirFichasNavis()
+                                    }}
+                                    onKeyDown={(event) => {
+                                        if (event.key === "Enter" || event.key === " ") {
+                                            event.preventDefault()
+                                            abrirFichasNavis()
+                                        }
+                                    }}
+                                    style={{ cursor: "pointer" }}
+                                >
+                                    <CardsDashboard
+                                        image={NAVIS}
+                                        title="Navis"
+                                        desc="Selecione roseta e máquina para acessar a ficha técnica"
+                                    />
+                                </div>
 
                                 <CardsDashboard
                                     image={MARINEII}
@@ -757,6 +807,90 @@ function FichaTec() {
 
             <Footer />
 
+
+            {/* Seletor das fichas técnicas da fechadura Navis */}
+            {navisModalOpen && (
+                <div
+                    role="presentation"
+                    onClick={fecharFichasNavis}
+                    style={{
+                        position: "fixed", inset: 0, zIndex: 9999,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        background: "rgba(0, 0, 0, 0.65)", padding: 20
+                    }}
+                >
+                    <section
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label="Selecionar ficha técnica da Navis"
+                        onClick={(event) => event.stopPropagation()}
+                        style={{
+                            width: "100%", maxWidth: 480, padding: 26,
+                            borderRadius: 16, background: "#fff", color: "#1b1b1b",
+                            boxShadow: "0 15px 60px rgba(0,0,0,.25)"
+                        }}
+                    >
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                            <h2 style={{ margin: 0, fontSize: 21 }}>Ficha técnica — Navis</h2>
+                            <button type="button" onClick={fecharFichasNavis} aria-label="Fechar"
+                                style={{ border: 0, background: "transparent", cursor: "pointer", fontSize: 26 }}>×</button>
+                        </div>
+                        <p style={{ color: "#666", margin: "10px 0 22px" }}>
+                            Escolha a roseta e a máquina. O documento correspondente será disponibilizado abaixo.
+                        </p>
+
+                        <label htmlFor="navis-roseta" style={{ display: "block", fontWeight: 700, marginBottom: 7 }}>
+                            1. Tipo de roseta
+                        </label>
+                        <select
+                            id="navis-roseta"
+                            value={navisRoseta}
+                            onChange={(event) => { setNavisRoseta(event.target.value); setNavisMaquina("") }}
+                            style={{ width: "100%", padding: 12, border: "1px solid #bbb", borderRadius: 8, marginBottom: 20 }}
+                        >
+                            <option value="">Selecione a roseta</option>
+                            {Object.keys(FICHAS_NAVIS).map((roseta) => (
+                                <option key={roseta} value={roseta}>Roseta {roseta}</option>
+                            ))}
+                        </select>
+
+                        <label htmlFor="navis-maquina" style={{ display: "block", fontWeight: 700, marginBottom: 7 }}>
+                            2. Tamanho da máquina
+                        </label>
+                        <select
+                            id="navis-maquina"
+                            value={navisMaquina}
+                            disabled={!navisRoseta}
+                            onChange={(event) => setNavisMaquina(event.target.value)}
+                            style={{ width: "100%", padding: 12, border: "1px solid #bbb", borderRadius: 8, marginBottom: 20 }}
+                        >
+                            <option value="">Selecione o tamanho</option>
+                            {Object.keys(FICHAS_NAVIS[navisRoseta] || {}).map((mm) => (
+                                <option key={mm} value={mm}>{mm} mm</option>
+                            ))}
+                        </select>
+
+                        {navisPdfSelecionado ? (
+                            <a
+                                href={navisPdfSelecionado}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    display: "block", textAlign: "center", padding: 13,
+                                    background: "#161616", borderRadius: 8,
+                                    color: "#fff", textDecoration: "none", fontWeight: 700
+                                }}
+                            >
+                                Visualizar ficha técnica — Roseta {navisRoseta}, {navisMaquina} mm
+                            </a>
+                        ) : (
+                            <p style={{ color: "#666", fontSize: 13, marginBottom: 0 }}>
+                                Selecione as duas opções para liberar a ficha técnica.
+                            </p>
+                        )}
+                    </section>
+                </div>
+            )}
 
             {/* Modal do perfil */}
 
