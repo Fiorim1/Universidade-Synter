@@ -1,0 +1,35 @@
+/* FICHAS TÉCNICAS — visual no mesmo padrão da página de Manuais */
+.fichas-page { min-height: 100vh; width:100%; overflow-x:hidden; background:#080808; color:#fff; }
+.fichas-page, .fichas-page * { box-sizing:border-box; }
+.fichas-page .fichas-hero { position:relative; min-height:385px; width:100%; background:linear-gradient(100deg,#060606,#0a0a0a); border-bottom:1px solid #1c1c1c; }
+.fichas-page .fichas-perfil { position:absolute; right:max(30px,calc((100vw - 1280px)/2)); top:24px; z-index:5; }
+.fichas-page .fichas-hero-conteudo { max-width:1280px; margin:0 auto; padding:67px 30px 75px; position:relative; z-index:2; }
+.fichas-container { max-width:1280px; margin:0 auto; padding:32px 30px 90px; }
+.fichas-grupo { margin:0 0 68px; }
+.fichas-titulo-grupo { border-left:3px solid #fff; padding-left:13px; margin:0 0 17px; font-size:12px; font-weight:700; line-height:20px; letter-spacing:2.7px; text-transform:uppercase; }
+.fichas-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
+.fichas-card { width:100%; min-width:0; height:106px; padding:15px 14px; border:1px solid #292929; border-radius:12px; background:#101010; display:flex; align-items:center; gap:14px; color:#fff; text-align:left; font:inherit; transition:background .2s,border-color .2s,transform .2s; }
+.fichas-card.disponivel { cursor:pointer; }
+.fichas-card.disponivel:hover { background:#161616; border-color:#666; transform:translateY(-2px); }
+.fichas-card-foto { flex:0 0 70px; height:70px; border-radius:10px; border:1px solid #393939; display:flex; justify-content:center; align-items:center; background:linear-gradient(135deg,#1b1b1b,#111); overflow:hidden; }
+.fichas-card-foto img { width:100%; height:100%; object-fit:contain; padding:7px; }
+.fichas-card-foto span { font-size:10px; color:#888; text-align:center; }
+.fichas-card-info { min-width:0; flex:1; }
+.fichas-card-info h3 { margin:0 0 5px; color:#fff; font-size:13px; font-weight:700; line-height:1.3; }
+.fichas-card-info p { margin:0; font-size:11px; color:#939393; line-height:1.4; }
+.fichas-card-seta { display:flex; flex:0 0 23px; color:#888; }
+.fichas-card-seta.ativa { color:#fff; }
+.fichas-modal-fundo { position:fixed; inset:0; z-index:9999; padding:20px; background:rgba(0,0,0,.76); backdrop-filter:blur(7px); display:flex; align-items:center; justify-content:center; }
+.fichas-modal { max-width:460px; width:100%; padding:30px; background:#111; color:#fff; border:1px solid #333; border-radius:16px; box-shadow:0 25px 80px #0009; }
+.fichas-modal-topo { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.fichas-modal-topo h2 { margin:0; font-size:22px; }
+.fichas-fechar { border:1px solid #444; background:#202020; border-radius:8px; color:#fff; font-size:22px; width:36px; height:36px; cursor:pointer; }
+.fichas-modal-descricao { color:#aaa; font-size:13px; line-height:1.6; margin:13px 0 22px; }
+.fichas-modal label { display:block; margin:14px 0 7px; font-size:12px; font-weight:700; }
+.fichas-modal select { width:100%; padding:13px; border-radius:8px; border:1px solid #4b4b4b; background:#1a1a1a; color:#fff; font-size:14px; }
+.fichas-modal select:disabled { opacity:.5; cursor:not-allowed; }
+.fichas-botao-pdf { display:block; text-align:center; margin-top:24px; padding:13px 15px; background:#fff; color:#111; text-decoration:none; font-size:13px; font-weight:700; border-radius:8px; }
+.fichas-botao-pdf:hover { background:#ddd; }
+.fichas-modal-ajuda { margin:21px 0 0; color:#aaa; font-size:12px; }
+@media(max-width:1100px){ .fichas-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
+@media(max-width:700px){ .fichas-page .fichas-hero{min-height:320px;} .fichas-page .fichas-perfil{right:18px;top:16px;} .fichas-page .fichas-hero-conteudo{padding:85px 18px 46px;} .fichas-container{padding:30px 18px 65px;} .fichas-grid{grid-template-columns:1fr;gap:12px;} .fichas-grupo{margin-bottom:46px;} .fichas-card{height:98px;} .fichas-card-foto{flex-basis:64px;height:64px;} .fichas-modal{padding:22px;} }
