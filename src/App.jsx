@@ -1,6 +1,5 @@
-import {
-  useEffect
-} from "react";
+
+import { useEffect } from "react";
 
 import {
   Routes,
@@ -8,11 +7,14 @@ import {
   useLocation
 } from "react-router-dom";
 
+// ========================================
+// AUTENTICAÇÃO
+// ========================================
+
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
 import ForgotPassword from "./components/ForgotPassword.jsx";
 import UpdatePassword from "./components/UpdatePassword.jsx";
-
 
 // ========================================
 // MFA / 2FA
@@ -21,6 +23,9 @@ import UpdatePassword from "./components/UpdatePassword.jsx";
 import MFASetup from "./components/MFASetup.jsx";
 import MFAVerify from "./components/MFAVerify.jsx";
 
+// ========================================
+// PÁGINAS
+// ========================================
 
 import Manuals from "./routes/Manuals.jsx";
 
@@ -33,38 +38,39 @@ import TreinamentoComercial from "./pages/TreinamentoComercial.jsx";
 import Marketing from "./pages/Marketing.jsx";
 import DigMarketing from "./pages/DigMarketing.jsx";
 import Orcamentos from "./pages/Orcamentos.jsx";
+import FichaTec from "./pages/FichaTec.jsx";
 import NotFound from "./pages/NotFound.jsx";
+
+// ========================================
+// CONTROLE DE ACESSO
+// ========================================
 
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PublicRoute from "./components/PublicRoute.jsx";
 
-import SynterAssistant from "./components/SynterAssistant.jsx";
-import FichaTec from "./pages/FichaTec.jsx";
+// ========================================
+// ASSISTENTE SYNTER
+// ========================================
 
+import SynterAssistant from "./components/SynterAssistant.jsx";
 
 function App() {
-
   const location = useLocation();
-
 
   // ========================================
   // VOLTAR AO TOPO AO TROCAR DE ROTA
   // ========================================
 
   useEffect(() => {
-
     window.scrollTo({
       top: 0,
       left: 0,
       behavior: "auto"
     });
 
-
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
-
   }, [location.pathname]);
-
 
   // ========================================
   // PÁGINAS ONDE O ASSISTENTE NÃO APARECE
@@ -80,24 +86,16 @@ function App() {
     "/mfa/verify"
   ];
 
-
   const mostrarAssistente =
-    !paginasPublicas.includes(
-      location.pathname
-    );
-
+    !paginasPublicas.includes(location.pathname);
 
   return (
-
     <>
-
-
       {/* ======================================== */}
       {/* ROTAS                                    */}
       {/* ======================================== */}
 
       <Routes>
-
 
         {/* ======================================== */}
         {/* LOGIN                                    */}
@@ -112,7 +110,6 @@ function App() {
           }
         />
 
-
         <Route
           path="/login"
           element={
@@ -121,7 +118,6 @@ function App() {
             </PublicRoute>
           }
         />
-
 
         {/* ======================================== */}
         {/* CADASTRO                                 */}
@@ -136,7 +132,6 @@ function App() {
           }
         />
 
-
         {/* ======================================== */}
         {/* CONFIGURAÇÃO DO 2FA                      */}
         {/* ======================================== */}
@@ -149,7 +144,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
 
         {/* ======================================== */}
         {/* VERIFICAÇÃO DO 2FA                       */}
@@ -164,7 +158,6 @@ function App() {
           }
         />
 
-
         {/* ======================================== */}
         {/* RECUPERAÇÃO DE SENHA                     */}
         {/* ======================================== */}
@@ -178,9 +171,8 @@ function App() {
           }
         />
 
-
         {/* ======================================== */}
-        {/* NOVA SENHA                               */}
+        {/* ATUALIZAÇÃO DE SENHA                     */}
         {/* ======================================== */}
 
         <Route
@@ -189,7 +181,6 @@ function App() {
             <UpdatePassword />
           }
         />
-
 
         {/* ======================================== */}
         {/* DASHBOARD                                */}
@@ -204,9 +195,8 @@ function App() {
           }
         />
 
-
         {/* ======================================== */}
-        {/* MANUAIS                                  */}
+        {/* MANUAIS DE PRODUTOS                      */}
         {/* ======================================== */}
 
         <Route
@@ -218,6 +208,29 @@ function App() {
           }
         />
 
+        {/* ======================================== */}
+        {/* FICHAS TÉCNICAS                          */}
+        {/* ======================================== */}
+
+        <Route
+          path="/fichas-tecnicas"
+          element={
+            <ProtectedRoute>
+              <FichaTec />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* COMPATIBILIDADE COM ROTA ANTIGA */}
+
+        <Route
+          path="/ficha-tecnica"
+          element={
+            <ProtectedRoute>
+              <FichaTec />
+            </ProtectedRoute>
+          }
+        />
 
         {/* ======================================== */}
         {/* VÍDEOS                                   */}
@@ -232,7 +245,6 @@ function App() {
           }
         />
 
-
         {/* ======================================== */}
         {/* TABELA DE PREÇOS                         */}
         {/* ======================================== */}
@@ -245,7 +257,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
 
         {/* ======================================== */}
         {/* ORÇAMENTOS                               */}
@@ -260,7 +271,6 @@ function App() {
           }
         />
 
-
         {/* ======================================== */}
         {/* ASSISTÊNCIA TÉCNICA                      */}
         {/* ======================================== */}
@@ -273,7 +283,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
 
         {/* ======================================== */}
         {/* CONVERSOR IMAGEM PARA PDF                */}
@@ -288,7 +297,6 @@ function App() {
           }
         />
 
-
         {/* ======================================== */}
         {/* TREINAMENTO COMERCIAL                    */}
         {/* ======================================== */}
@@ -302,7 +310,6 @@ function App() {
           }
         />
 
-
         {/* ======================================== */}
         {/* MARKETING                                */}
         {/* ======================================== */}
@@ -315,7 +322,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
 
         {/* ======================================== */}
         {/* MARKETING DIGITAL                        */}
@@ -331,33 +337,15 @@ function App() {
         />
 
         {/* ======================================== */}
-        {/* FICHA TÉCNICA                       */}
-        {/* ======================================== */}
-
-        <Route
-          path="/ficha-tecnica"
-          element={
-            <ProtectedRoute>
-              <FichaTec />
-            </ProtectedRoute>
-          }
-        />
-
-
-        {/* ======================================== */}
         {/* PÁGINA NÃO ENCONTRADA                    */}
         {/* ======================================== */}
 
         <Route
           path="*"
-          element={
-            <NotFound />
-          }
+          element={<NotFound />}
         />
 
-
       </Routes>
-
 
       {/* ======================================== */}
       {/* ASSISTENTE SYNTER                        */}
@@ -366,13 +354,8 @@ function App() {
       {mostrarAssistente && (
         <SynterAssistant />
       )}
-
-
     </>
-
   );
-
 }
-
 
 export default App;
