@@ -1,5 +1,5 @@
 import html2pdf from "html2pdf.js";
-import logoSynterPreta from "../assets/logo-synter-preta.png";
+import logoSynterPreta from "../assets/logo-synter-pdf.png";
 
 // Documento gerado a partir de uma visita finalizada.
 
