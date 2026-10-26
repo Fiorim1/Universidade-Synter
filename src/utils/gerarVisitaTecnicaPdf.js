@@ -1,5 +1,5 @@
-
 import html2pdf from "html2pdf.js";
+import logoSynterPreta from "../assets/logo-synter-preta.png";
 
 // Documento gerado a partir de uma visita finalizada.
 
@@ -29,9 +29,7 @@ function linha(rotulo, valor) {
 }
 
 function assinatura(src, titulo, nome) {
-  if (
-    !/^data:image\/(png|jpeg|webp);base64,/i.test(src || "")
-  ) {
+  if (!/^data:image\/(png|jpeg|webp);base64,/i.test(src || "")) {
     throw new Error(
       `A assinatura ${titulo.toLowerCase()} não está disponível.`
     );
@@ -71,6 +69,8 @@ export async function baixarVisitaTecnicaPdf(visita) {
     left: 0;
     top: 0;
     width: 210mm;
+    margin: 0;
+    padding: 0;
     background: #ffffff;
     z-index: -100;
     pointer-events: none;
@@ -78,13 +78,17 @@ export async function baixarVisitaTecnicaPdf(visita) {
 
   raiz.innerHTML = `
     <style>
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
       .vt-impressao {
         width: 210mm;
-        min-height: 297mm;
-        padding: 14mm 14mm 15mm;
+        padding: 12mm 14mm 12mm;
         color: #151515;
         background: #ffffff;
-        font: 11px/1.5 Arial, Helvetica, sans-serif;
+        font: 11px/1.45 Arial, Helvetica, sans-serif;
         box-sizing: border-box;
       }
 
@@ -97,15 +101,21 @@ export async function baixarVisitaTecnicaPdf(visita) {
         justify-content: space-between;
         align-items: center;
         border-bottom: 2px solid #222222;
-        padding-bottom: 12px;
-        margin-bottom: 16px;
+        padding-bottom: 10px;
+        margin-bottom: 12px;
         gap: 20px;
       }
 
-      .vt-impressao .logo {
-        font-size: 32px;
-        letter-spacing: -1px;
-        font-weight: 900;
+      .vt-impressao .logo-box {
+        display: flex;
+        align-items: center;
+      }
+
+      .vt-impressao .logo-img {
+        width: 135px;
+        height: auto;
+        display: block;
+        object-fit: contain;
       }
 
       .vt-impressao .titulo {
@@ -115,7 +125,7 @@ export async function baixarVisitaTecnicaPdf(visita) {
       .vt-impressao .titulo h1 {
         font-size: 18px;
         line-height: 1.2;
-        margin: 0 0 5px;
+        margin: 0 0 3px;
       }
 
       .vt-impressao .titulo p {
@@ -125,17 +135,17 @@ export async function baixarVisitaTecnicaPdf(visita) {
       }
 
       .vt-impressao .numero {
-        margin: 10px 0 15px;
-        padding: 10px 12px;
-        border: 1px solid #555555;
+        margin: 10px 0 14px;
+        padding: 9px 12px;
+        border: 1px solid #777777;
         font-size: 12px;
         font-weight: 800;
       }
 
       .vt-impressao h2 {
         font-size: 12px;
-        margin: 18px 0 8px;
-        padding: 7px 9px;
+        margin: 14px 0 7px;
+        padding: 6px 9px;
         background: #e8e8e8;
         text-transform: uppercase;
         break-after: avoid;
@@ -169,16 +179,17 @@ export async function baixarVisitaTecnicaPdf(visita) {
         padding: 12px;
         white-space: pre-wrap;
         overflow-wrap: anywhere;
-        min-height: 95px;
+        min-height: 80px;
         font-size: 11px;
       }
 
       .vt-impressao .assinaturas {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        margin-top: 12px;
+        gap: 16px;
+        margin-top: 10px;
         break-inside: avoid;
+        page-break-inside: avoid;
       }
 
       .vt-impressao .assinatura {
@@ -186,11 +197,13 @@ export async function baixarVisitaTecnicaPdf(visita) {
         text-align: center;
         border: 1px solid #dddddd;
         padding: 10px;
+        break-inside: avoid;
+        page-break-inside: avoid;
       }
 
       .vt-impressao .assinatura img {
         width: 100%;
-        height: 90px;
+        height: 82px;
         object-fit: contain;
         display: block;
       }
@@ -207,7 +220,7 @@ export async function baixarVisitaTecnicaPdf(visita) {
       }
 
       .vt-impressao .rodape {
-        margin-top: 24px;
+        margin-top: 18px;
         border-top: 1px solid #aaaaaa;
         padding-top: 7px;
         color: #555555;
@@ -217,13 +230,20 @@ export async function baixarVisitaTecnicaPdf(visita) {
 
       .vt-impressao .grupo {
         break-inside: avoid;
+        page-break-inside: avoid;
       }
     </style>
 
     <main class="vt-impressao">
 
       <header class="topo">
-        <div class="logo">synter</div>
+        <div class="logo-box">
+          <img
+            src="${logoSynterPreta}"
+            alt="Logo Synter"
+            class="logo-img"
+          />
+        </div>
 
         <div class="titulo">
           <h1>Formulário de Visita Técnica</h1>
@@ -237,7 +257,6 @@ export async function baixarVisitaTecnicaPdf(visita) {
       </div>
 
       <!-- EMPRESA -->
-
       <section class="grupo">
         <h2>1. Identificação da Empresa</h2>
 
@@ -272,7 +291,6 @@ export async function baixarVisitaTecnicaPdf(visita) {
       </section>
 
       <!-- CLIENTE -->
-
       <section class="grupo">
         <h2>2. Identificação do Cliente</h2>
 
@@ -307,7 +325,6 @@ export async function baixarVisitaTecnicaPdf(visita) {
       </section>
 
       <!-- VISITA -->
-
       <section class="grupo">
         <h2>3. Dados da Visita</h2>
 
@@ -329,14 +346,13 @@ export async function baixarVisitaTecnicaPdf(visita) {
 
           ${linha(
             "Término:",
-            visita.termino
+            visita.termino || "-"
           )}
         </div>
       </section>
 
       <!-- RELATÓRIO -->
-
-      <section>
+      <section class="grupo">
         <h2>4. Relatório Técnico</h2>
 
         <div class="relato">
@@ -345,7 +361,6 @@ export async function baixarVisitaTecnicaPdf(visita) {
       </section>
 
       <!-- ASSINATURAS -->
-
       <section class="grupo">
         <h2>5. Assinaturas</h2>
 
@@ -366,8 +381,7 @@ export async function baixarVisitaTecnicaPdf(visita) {
 
       <footer class="rodape">
         Documento gerado pela Universidade Synter a partir
-        do atendimento registrado em sistema.
-        Referência:
+        do atendimento registrado em sistema. Referência:
         ${limpar(visita.numero_atendimento)}.
       </footer>
 
@@ -404,36 +418,27 @@ export async function baixarVisitaTecnicaPdf(visita) {
     await html2pdf()
       .set({
         margin: 0,
-
-        filename:
-          `Visita-Tecnica-${nomeSeguro}.pdf`,
-
+        filename: `Visita-Tecnica-${nomeSeguro}.pdf`,
         image: {
           type: "jpeg",
           quality: 0.98,
         },
-
         html2canvas: {
           scale: 2,
           useCORS: true,
+          allowTaint: true,
           backgroundColor: "#ffffff",
           scrollX: 0,
           scrollY: 0,
         },
-
         jsPDF: {
           unit: "mm",
           format: "a4",
           orientation: "portrait",
         },
-
         pagebreak: {
           mode: ["css", "legacy"],
-          avoid: [
-            ".grupo",
-            ".assinaturas",
-            ".assinatura",
-          ],
+          avoid: [".grupo", ".assinaturas", ".assinatura"],
         },
       })
       .from(raiz.querySelector(".vt-impressao"))
