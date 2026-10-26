@@ -1,5 +1,10 @@
 
-import { useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -30,11 +35,12 @@ const EMPRESA = {
 function dataAtualLocal() {
   const agora = new Date();
 
-  const data = new Date(
-    agora.getTime() - agora.getTimezoneOffset() * 60000
+  const local = new Date(
+    agora.getTime() -
+      agora.getTimezoneOffset() * 60000
   );
 
-  return data.toISOString().slice(0, 10);
+  return local.toISOString().slice(0, 10);
 }
 
 function formularioVazio() {
@@ -65,12 +71,17 @@ function formatarData(data) {
   return String(data);
 }
 
+// ========================================
+// CAMPOS DO FORMULÁRIO
+// ========================================
+
 const CAMPOS = [
   {
     name: "numero_atendimento",
     label: "Nº do atendimento",
     type: "text",
     required: true,
+    readOnly: true,
   },
   {
     name: "data_visita",
@@ -162,7 +173,9 @@ function CampoAssinatura({
 
   function obterPonto(event) {
     const canvas = canvasRef.current;
-    const retangulo = canvas.getBoundingClientRect();
+
+    const retangulo =
+      canvas.getBoundingClientRect();
 
     return {
       x:
@@ -178,14 +191,19 @@ function CampoAssinatura({
   }
 
   function iniciarDesenho(event) {
-    if (event.pointerType === "mouse" && event.button !== 0) {
+    if (
+      event.pointerType === "mouse" &&
+      event.button !== 0
+    ) {
       return;
     }
 
     event.preventDefault();
 
     const canvas = canvasRef.current;
+
     const contexto = canvas.getContext("2d");
+
     const ponto = obterPonto(event);
 
     canvas.setPointerCapture(event.pointerId);
@@ -200,7 +218,10 @@ function CampoAssinatura({
 
     contexto.beginPath();
     contexto.moveTo(ponto.x, ponto.y);
-    contexto.lineTo(ponto.x + 0.1, ponto.y + 0.1);
+    contexto.lineTo(
+      ponto.x + 0.1,
+      ponto.y + 0.1
+    );
     contexto.stroke();
   }
 
@@ -215,7 +236,9 @@ function CampoAssinatura({
     event.preventDefault();
 
     const ponto = obterPonto(event);
-    const contexto = canvasRef.current.getContext("2d");
+
+    const contexto =
+      canvasRef.current.getContext("2d");
 
     contexto.lineTo(ponto.x, ponto.y);
     contexto.stroke();
@@ -236,16 +259,20 @@ function CampoAssinatura({
 
     onChange(canvas.toDataURL("image/png"));
 
-    if (canvas.hasPointerCapture(event.pointerId)) {
+    if (
+      canvas.hasPointerCapture(event.pointerId)
+    ) {
       canvas.releasePointerCapture(event.pointerId);
     }
   }
 
   function limparAssinatura() {
     const canvas = canvasRef.current;
+
     const contexto = canvas.getContext("2d");
 
     contexto.fillStyle = "#ffffff";
+
     contexto.fillRect(
       0,
       0,
@@ -264,8 +291,10 @@ function CampoAssinatura({
       <div className="vt-assinatura-header">
         <div>
           <h3>{titulo}</h3>
+
           <p>
-            Assine utilizando o dedo, mouse ou caneta digital.
+            Assine utilizando o dedo, mouse ou caneta
+            digital.
           </p>
         </div>
 
@@ -311,14 +340,21 @@ function CampoFormulario({
   valor,
   onChange,
 }) {
+  const automatico = Boolean(campo.readOnly);
+
   return (
     <label
-      className={`vt-campo ${campo.wide ? "vt-wide" : ""}`}
+      className={`vt-campo ${
+        campo.wide ? "vt-wide" : ""
+      }`}
     >
       <span>
         {campo.label}
+
         {campo.required && (
-          <span className="vt-obrigatorio"> *</span>
+          <span className="vt-obrigatorio">
+            {" "}*
+          </span>
         )}
       </span>
 
@@ -328,8 +364,27 @@ function CampoFormulario({
         value={valor || ""}
         onChange={onChange}
         required={Boolean(campo.required)}
+        readOnly={automatico}
+        placeholder={
+          automatico
+            ? "Gerando número automaticamente..."
+            : ""
+        }
         autoComplete="off"
       />
+
+      {automatico && (
+        <small
+          style={{
+            color: "#999999",
+            fontSize: 11,
+            lineHeight: 1.5,
+          }}
+        >
+          Referência gerada automaticamente pelo
+          Supabase. Não pode ser alterada.
+        </small>
+      )}
     </label>
   );
 }
@@ -339,11 +394,11 @@ function CampoFormulario({
 // ========================================
 
 export default function VisitasTecnicas() {
-  const [perfilOpen, setPerfilOpen] = useState(false);
+  const [perfilOpen, setPerfilOpen] =
+    useState(false);
 
-  const [formulario, setFormulario] = useState(
-    formularioVazio
-  );
+  const [formulario, setFormulario] =
+    useState(formularioVazio);
 
   const [assinaturaCliente, setAssinaturaCliente] =
     useState("");
@@ -358,50 +413,145 @@ export default function VisitasTecnicas() {
     useState(0);
 
   const [visitas, setVisitas] = useState([]);
+
   const [visitaSelecionada, setVisitaSelecionada] =
     useState(null);
 
   const [salvando, setSalvando] = useState(false);
-  const [carregando, setCarregando] = useState(true);
+
+  const [carregando, setCarregando] =
+    useState(true);
+
+  const [gerandoNumero, setGerandoNumero] =
+    useState(true);
+
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
 
+  // Impede que solicitações antigas substituam
+  // a numeração de uma visita mais recente.
+  const geracaoNumeroRef = useRef(0);
+
   // ========================================
-  // CARREGAR VISITAS
+  // GERAR NÚMERO AUTOMÁTICO
   // ========================================
 
-  async function carregarVisitas() {
-    try {
-      setCarregando(true);
+  const gerarNumeroAtendimento =
+    useCallback(async () => {
+      const geracaoAtual =
+        ++geracaoNumeroRef.current;
 
-      const { data, error } = await supabase
-        .from("visitas_tecnicas")
-        .select("*")
-        .order("criado_em", {
-          ascending: false,
-        });
+      setGerandoNumero(true);
 
-      if (error) throw error;
+      try {
+        const { data, error } =
+          await supabase.rpc(
+            "proximo_numero_visita"
+          );
 
-      setVisitas(data || []);
-    } catch (error) {
-      console.error(
-        "Erro ao carregar visitas:",
-        error
-      );
+        if (error) {
+          throw error;
+        }
 
-      setErro(
-        error.message ||
-          "Não foi possível carregar as visitas."
-      );
-    } finally {
-      setCarregando(false);
-    }
-  }
+        if (!data) {
+          throw new Error(
+            "O Supabase não retornou um número de atendimento."
+          );
+        }
+
+        if (
+          geracaoAtual === geracaoNumeroRef.current
+        ) {
+          setFormulario((anterior) => ({
+            ...anterior,
+            numero_atendimento: String(data),
+          }));
+
+          setErro("");
+        }
+
+        return String(data);
+      } catch (error) {
+        if (
+          geracaoAtual === geracaoNumeroRef.current
+        ) {
+          setFormulario((anterior) => ({
+            ...anterior,
+            numero_atendimento: "",
+          }));
+
+          setErro(
+            error.message ||
+              "Não foi possível gerar o número do atendimento."
+          );
+        }
+
+        throw error;
+      } finally {
+        if (
+          geracaoAtual === geracaoNumeroRef.current
+        ) {
+          setGerandoNumero(false);
+        }
+      }
+    }, []);
+
+  // ========================================
+  // CARREGAR HISTÓRICO
+  // ========================================
+
+  const carregarVisitas =
+    useCallback(async () => {
+      try {
+        setCarregando(true);
+
+        const { data, error } =
+          await supabase
+            .from("visitas_tecnicas")
+            .select("*")
+            .order("criado_em", {
+              ascending: false,
+            });
+
+        if (error) {
+          throw error;
+        }
+
+        setVisitas(data || []);
+      } catch (error) {
+        console.error(
+          "Erro ao carregar visitas:",
+          error
+        );
+
+        setErro(
+          error.message ||
+            "Não foi possível carregar as visitas."
+        );
+      } finally {
+        setCarregando(false);
+      }
+    }, []);
+
+  // ========================================
+  // CARREGAMENTO INICIAL
+  // ========================================
 
   useEffect(() => {
     carregarVisitas();
-  }, []);
+
+    gerarNumeroAtendimento().catch(
+      (error) => {
+        console.error(
+          "Erro ao obter número da visita:",
+          error
+        );
+      }
+    );
+  }, [
+    carregarVisitas,
+    gerarNumeroAtendimento,
+  ]);
 
   // ========================================
   // ALTERAR CAMPOS
@@ -409,6 +559,10 @@ export default function VisitasTecnicas() {
 
   function alterarCampo(event) {
     const { name, value } = event.target;
+
+    if (name === "numero_atendimento") {
+      return;
+    }
 
     setFormulario((anterior) => ({
       ...anterior,
@@ -420,37 +574,69 @@ export default function VisitasTecnicas() {
   // NOVA VISITA
   // ========================================
 
-  function novaVisita() {
+  async function novaVisita() {
+    if (salvando) {
+      return;
+    }
+
     setFormulario(formularioVazio());
 
     setAssinaturaCliente("");
     setAssinaturaTecnico("");
     setConfirmadoCliente(false);
 
-    setResetAssinaturas((anterior) => anterior + 1);
+    setResetAssinaturas(
+      (anterior) => anterior + 1
+    );
 
     setVisitaSelecionada(null);
+
     setErro("");
     setSucesso("");
+
+    try {
+      await gerarNumeroAtendimento();
+    } catch (error) {
+      console.error(
+        "Erro ao criar nova visita:",
+        error
+      );
+    }
   }
 
   // ========================================
-  // SALVAR NO SUPABASE
+  // SALVAR VISITA NO SUPABASE
   // ========================================
 
   async function salvarVisita(event) {
     event.preventDefault();
 
+    if (salvando) return;
+
     setErro("");
     setSucesso("");
 
+    if (
+      gerandoNumero ||
+      !formulario.numero_atendimento
+    ) {
+      setErro(
+        "A referência do atendimento ainda não está disponível."
+      );
+      return;
+    }
+
     if (!assinaturaCliente) {
-      setErro("Solicite a assinatura do cliente.");
+      setErro(
+        "Solicite a assinatura do cliente."
+      );
       return;
     }
 
     if (!assinaturaTecnico) {
-      setErro("O técnico responsável precisa assinar.");
+      setErro(
+        "O técnico responsável precisa assinar."
+      );
       return;
     }
 
@@ -487,12 +673,19 @@ export default function VisitasTecnicas() {
       }
 
       const dadosVisita = {
-        ...formulario,
-
         tecnico_id: user.id,
 
         numero_atendimento:
           formulario.numero_atendimento.trim(),
+
+        data_visita:
+          formulario.data_visita,
+
+        inicio:
+          formulario.inicio,
+
+        termino:
+          formulario.termino || null,
 
         tecnico_nome:
           formulario.tecnico_nome.trim(),
@@ -500,25 +693,30 @@ export default function VisitasTecnicas() {
         cliente_nome:
           formulario.cliente_nome.trim(),
 
+        cliente_documento:
+          formulario.cliente_documento.trim() ||
+          null,
+
+        cliente_telefone:
+          formulario.cliente_telefone.trim() ||
+          null,
+
+        cliente_email:
+          formulario.cliente_email.trim() ||
+          null,
+
+        cliente_endereco:
+          formulario.cliente_endereco.trim() ||
+          null,
+
         relato_tecnico:
           formulario.relato_tecnico.trim(),
 
-        termino: formulario.termino || null,
+        assinatura_cliente:
+          assinaturaCliente,
 
-        cliente_documento:
-          formulario.cliente_documento.trim() || null,
-
-        cliente_telefone:
-          formulario.cliente_telefone.trim() || null,
-
-        cliente_email:
-          formulario.cliente_email.trim() || null,
-
-        cliente_endereco:
-          formulario.cliente_endereco.trim() || null,
-
-        assinatura_cliente: assinaturaCliente,
-        assinatura_tecnico: assinaturaTecnico,
+        assinatura_tecnico:
+          assinaturaTecnico,
 
         confirmado_cliente: true,
       };
@@ -527,15 +725,42 @@ export default function VisitasTecnicas() {
         .from("visitas_tecnicas")
         .insert(dadosVisita);
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
-      novaVisita();
+      setFormulario(formularioVazio());
 
-      await carregarVisitas();
+      setAssinaturaCliente("");
+      setAssinaturaTecnico("");
+      setConfirmadoCliente(false);
+
+      setResetAssinaturas(
+        (anterior) => anterior + 1
+      );
+
+      setVisitaSelecionada(null);
 
       setSucesso(
-        "Visita técnica finalizada e salva com sucesso."
+        `Visita ${dadosVisita.numero_atendimento} finalizada e salva com sucesso.`
       );
+
+      // Gerar a próxima referência e atualizar
+      // o histórico após salvar.
+      const resultados =
+        await Promise.allSettled([
+          gerarNumeroAtendimento(),
+          carregarVisitas(),
+        ]);
+
+      for (const resultado of resultados) {
+        if (resultado.status === "rejected") {
+          console.error(
+            "Erro ao atualizar após salvar:",
+            resultado.reason
+          );
+        }
+      }
     } catch (error) {
       console.error(
         "Erro ao salvar visita técnica:",
@@ -557,38 +782,52 @@ export default function VisitasTecnicas() {
 
   function visualizarVisita(visita) {
     setVisitaSelecionada(visita);
+
     setErro("");
     setSucesso("");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }
+
+  // ========================================
+  // INTERFACE
+  // ========================================
 
   return (
     <div className="visitas-page">
       <Header />
 
       <main className="visitas-main">
+
         {/* ========================================
-            CABEÇALHO DA PÁGINA
+            CABEÇALHO
         ======================================== */}
 
         <section className="visitas-hero">
           <div className="visitas-hero-top">
             <div>
               <span className="vt-eyebrow">
-                UNIVERSIDADE SYNTER / ASSISTÊNCIA TÉCNICA
+                UNIVERSIDADE SYNTER /
+                ASSISTÊNCIA TÉCNICA
               </span>
 
               <h1>Visitas Técnicas</h1>
 
               <p>
-                Registre atendimentos, documente
-                procedimentos e colete assinaturas
+                Registre atendimentos,
+                documente procedimentos
+                e colete assinaturas
                 diretamente na plataforma.
               </p>
             </div>
 
             <UserProfileButton
-              onClick={() => setPerfilOpen(true)}
+              onClick={() =>
+                setPerfilOpen(true)
+              }
             />
           </div>
 
@@ -597,16 +836,22 @@ export default function VisitasTecnicas() {
               type="button"
               className="vt-btn vt-btn-primary"
               onClick={novaVisita}
+              disabled={salvando || gerandoNumero}
             >
               + Nova visita técnica
             </button>
           </div>
         </section>
 
-        {/* MENSAGENS */}
+        {/* ========================================
+            MENSAGENS
+        ======================================== */}
 
         {erro && (
-          <div className="vt-alert vt-alert-error" role="alert">
+          <div
+            className="vt-alert vt-alert-error"
+            role="alert"
+          >
             {erro}
           </div>
         )}
@@ -621,7 +866,7 @@ export default function VisitasTecnicas() {
         )}
 
         {/* ========================================
-            VISITA SALVA
+            VISUALIZAÇÃO DA VISITA SALVA
         ======================================== */}
 
         {visitaSelecionada ? (
@@ -634,7 +879,10 @@ export default function VisitasTecnicas() {
 
                 <h2>
                   Atendimento{" "}
-                  {visitaSelecionada.numero_atendimento}
+                  {
+                    visitaSelecionada
+                      .numero_atendimento
+                  }
                 </h2>
               </div>
 
@@ -645,6 +893,10 @@ export default function VisitasTecnicas() {
 
             <div className="vt-detalhes-grid">
               {[
+                [
+                  "Nº Atendimento",
+                  visitaSelecionada.numero_atendimento,
+                ],
                 [
                   "Data da visita",
                   formatarData(
@@ -669,19 +921,23 @@ export default function VisitasTecnicas() {
                 ],
                 [
                   "CPF/CNPJ",
-                  visitaSelecionada.cliente_documento || "-",
+                  visitaSelecionada.cliente_documento ||
+                    "-",
                 ],
                 [
                   "Telefone",
-                  visitaSelecionada.cliente_telefone || "-",
+                  visitaSelecionada.cliente_telefone ||
+                    "-",
                 ],
                 [
                   "E-mail",
-                  visitaSelecionada.cliente_email || "-",
+                  visitaSelecionada.cliente_email ||
+                    "-",
                 ],
                 [
                   "Endereço",
-                  visitaSelecionada.cliente_endereco || "-",
+                  visitaSelecionada.cliente_endereco ||
+                    "-",
                 ],
               ].map(([titulo, valor]) => (
                 <div
@@ -689,6 +945,7 @@ export default function VisitasTecnicas() {
                   key={titulo}
                 >
                   <span>{titulo}</span>
+
                   <strong>{valor}</strong>
                 </div>
               ))}
@@ -698,7 +955,10 @@ export default function VisitasTecnicas() {
               <h3>Relatório técnico</h3>
 
               <p>
-                {visitaSelecionada.relato_tecnico}
+                {
+                  visitaSelecionada
+                    .relato_tecnico
+                }
               </p>
             </div>
 
@@ -708,20 +968,30 @@ export default function VisitasTecnicas() {
 
             <div className="vt-assinaturas-grid">
               <div>
-                <p>Assinatura do cliente</p>
+                <p>
+                  Assinatura do cliente
+                </p>
 
                 <img
-                  src={visitaSelecionada.assinatura_cliente}
+                  src={
+                    visitaSelecionada
+                      .assinatura_cliente
+                  }
                   alt="Assinatura registrada do cliente"
                   className="vt-assinatura-imagem"
                 />
               </div>
 
               <div>
-                <p>Assinatura do técnico</p>
+                <p>
+                  Assinatura do técnico
+                </p>
 
                 <img
-                  src={visitaSelecionada.assinatura_tecnico}
+                  src={
+                    visitaSelecionada
+                      .assinatura_tecnico
+                  }
                   alt="Assinatura registrada do técnico"
                   className="vt-assinatura-imagem"
                 />
@@ -736,17 +1006,21 @@ export default function VisitasTecnicas() {
                   setVisitaSelecionada(null)
                 }
               >
-                Voltar
+                Voltar ao formulário
               </button>
             </div>
           </section>
         ) : (
+
           /* ========================================
               FORMULÁRIO
           ======================================== */
 
           <form onSubmit={salvarVisita}>
-            {/* EMPRESA */}
+
+            {/* ====================================
+                SEÇÃO 01 — EMPRESA
+            ==================================== */}
 
             <section className="vt-card">
               <div className="vt-section-heading">
@@ -755,39 +1029,53 @@ export default function VisitasTecnicas() {
                     SEÇÃO 01
                   </span>
 
-                  <h2>Identificação da Empresa</h2>
+                  <h2>
+                    Identificação da Empresa
+                  </h2>
                 </div>
               </div>
 
               <div className="vt-empresa-grid">
                 <div>
                   <span>Razão social</span>
-                  <strong>{EMPRESA.razao}</strong>
+                  <strong>
+                    {EMPRESA.razao}
+                  </strong>
                 </div>
 
                 <div>
                   <span>CNPJ</span>
-                  <strong>{EMPRESA.cnpj}</strong>
+                  <strong>
+                    {EMPRESA.cnpj}
+                  </strong>
                 </div>
 
                 <div>
                   <span>Telefone</span>
-                  <strong>{EMPRESA.telefone}</strong>
+                  <strong>
+                    {EMPRESA.telefone}
+                  </strong>
                 </div>
 
                 <div>
                   <span>E-mail</span>
-                  <strong>{EMPRESA.email}</strong>
+                  <strong>
+                    {EMPRESA.email}
+                  </strong>
                 </div>
 
                 <div className="vt-wide">
                   <span>Endereço</span>
-                  <strong>{EMPRESA.endereco}</strong>
+                  <strong>
+                    {EMPRESA.endereco}
+                  </strong>
                 </div>
               </div>
             </section>
 
-            {/* ATENDIMENTO */}
+            {/* ====================================
+                SEÇÃO 02 — ATENDIMENTO
+            ==================================== */}
 
             <section className="vt-card">
               <div className="vt-section-heading">
@@ -801,25 +1089,39 @@ export default function VisitasTecnicas() {
                   </h2>
 
                   <p>
-                    Informe o número do atendimento,
-                    a data e o técnico responsável.
+                    A referência é gerada
+                    automaticamente. Informe
+                    a data, os horários e o
+                    técnico responsável.
                   </p>
                 </div>
+
+                <span className="vt-tag">
+                  {gerandoNumero
+                    ? "Gerando referência..."
+                    : "Referência automática"}
+                </span>
               </div>
 
               <div className="vt-form-grid">
-                {CAMPOS.slice(0, 5).map((campo) => (
-                  <CampoFormulario
-                    key={campo.name}
-                    campo={campo}
-                    valor={formulario[campo.name]}
-                    onChange={alterarCampo}
-                  />
-                ))}
+                {CAMPOS.slice(0, 5).map(
+                  (campo) => (
+                    <CampoFormulario
+                      key={campo.name}
+                      campo={campo}
+                      valor={
+                        formulario[campo.name]
+                      }
+                      onChange={alterarCampo}
+                    />
+                  )
+                )}
               </div>
             </section>
 
-            {/* CLIENTE */}
+            {/* ====================================
+                SEÇÃO 03 — CLIENTE
+            ==================================== */}
 
             <section className="vt-card">
               <div className="vt-section-heading">
@@ -828,28 +1130,37 @@ export default function VisitasTecnicas() {
                     SEÇÃO 03
                   </span>
 
-                  <h2>Identificação do Cliente</h2>
+                  <h2>
+                    Identificação do Cliente
+                  </h2>
 
                   <p>
-                    Preencha as informações do cliente
-                    atendido durante a visita.
+                    Preencha as informações
+                    do cliente atendido
+                    durante a visita.
                   </p>
                 </div>
               </div>
 
               <div className="vt-form-grid">
-                {CAMPOS.slice(5).map((campo) => (
-                  <CampoFormulario
-                    key={campo.name}
-                    campo={campo}
-                    valor={formulario[campo.name]}
-                    onChange={alterarCampo}
-                  />
-                ))}
+                {CAMPOS.slice(5).map(
+                  (campo) => (
+                    <CampoFormulario
+                      key={campo.name}
+                      campo={campo}
+                      valor={
+                        formulario[campo.name]
+                      }
+                      onChange={alterarCampo}
+                    />
+                  )
+                )}
               </div>
             </section>
 
-            {/* RELATO */}
+            {/* ====================================
+                SEÇÃO 04 — RELATÓRIO
+            ==================================== */}
 
             <section className="vt-card">
               <div className="vt-section-heading">
@@ -861,8 +1172,10 @@ export default function VisitasTecnicas() {
                   <h2>Dados da Visita</h2>
 
                   <p>
-                    Registre os problemas identificados,
-                    os testes realizados e a solução aplicada.
+                    Registre os problemas
+                    identificados, os testes
+                    realizados e a solução
+                    aplicada.
                   </p>
                 </div>
               </div>
@@ -870,12 +1183,16 @@ export default function VisitasTecnicas() {
               <label className="vt-campo">
                 <span>
                   Relatório técnico
-                  <span className="vt-obrigatorio"> *</span>
+                  <span className="vt-obrigatorio">
+                    {" "}*
+                  </span>
                 </span>
 
                 <textarea
                   name="relato_tecnico"
-                  value={formulario.relato_tecnico}
+                  value={
+                    formulario.relato_tecnico
+                  }
                   onChange={alterarCampo}
                   required
                   rows={9}
@@ -884,7 +1201,9 @@ export default function VisitasTecnicas() {
               </label>
             </section>
 
-            {/* ASSINATURAS */}
+            {/* ====================================
+                SEÇÃO 05 — ASSINATURAS
+            ==================================== */}
 
             <section className="vt-card">
               <div className="vt-section-heading">
@@ -896,8 +1215,9 @@ export default function VisitasTecnicas() {
                   <h2>Assinaturas</h2>
 
                   <p>
-                    As duas assinaturas são obrigatórias
-                    para finalizar o atendimento.
+                    As duas assinaturas são
+                    obrigatórias para finalizar
+                    o atendimento.
                   </p>
                 </div>
               </div>
@@ -930,9 +1250,10 @@ export default function VisitasTecnicas() {
                 />
 
                 <span>
-                  O cliente declara que teve acesso
-                  às informações deste atendimento
-                  e confirma sua assinatura.
+                  O cliente declara que teve
+                  acesso às informações deste
+                  atendimento e confirma
+                  sua assinatura.
                 </span>
               </label>
 
@@ -940,7 +1261,11 @@ export default function VisitasTecnicas() {
                 <button
                   type="submit"
                   className="vt-btn vt-btn-primary"
-                  disabled={salvando}
+                  disabled={
+                    salvando ||
+                    gerandoNumero ||
+                    !formulario.numero_atendimento
+                  }
                 >
                   {salvando
                     ? "Salvando atendimento..."
@@ -951,7 +1276,10 @@ export default function VisitasTecnicas() {
                   type="button"
                   className="vt-btn vt-btn-secondary"
                   onClick={novaVisita}
-                  disabled={salvando}
+                  disabled={
+                    salvando ||
+                    gerandoNumero
+                  }
                 >
                   Limpar formulário
                 </button>
@@ -971,11 +1299,13 @@ export default function VisitasTecnicas() {
                 REGISTROS SALVOS
               </span>
 
-              <h2>Histórico de Visitas Técnicas</h2>
+              <h2>
+                Histórico de Visitas Técnicas
+              </h2>
 
               <p>
-                Consulte os atendimentos já registrados
-                na Universidade Synter.
+                Consulte os atendimentos
+                registrados na Universidade Synter.
               </p>
             </div>
 
@@ -1007,47 +1337,51 @@ export default function VisitasTecnicas() {
                 </thead>
 
                 <tbody>
-                  {visitas.map((visita) => (
-                    <tr key={visita.id}>
-                      <td>
-                        <strong>
-                          {visita.numero_atendimento}
-                        </strong>
-                      </td>
+                  {visitas.map(
+                    (visita) => (
+                      <tr key={visita.id}>
+                        <td>
+                          <strong>
+                            {
+                              visita.numero_atendimento
+                            }
+                          </strong>
+                        </td>
 
-                      <td>
-                        {formatarData(
-                          visita.data_visita
-                        )}
-                      </td>
+                        <td>
+                          {formatarData(
+                            visita.data_visita
+                          )}
+                        </td>
 
-                      <td>
-                        {visita.cliente_nome}
-                      </td>
+                        <td>
+                          {visita.cliente_nome}
+                        </td>
 
-                      <td>
-                        {visita.tecnico_nome}
-                      </td>
+                        <td>
+                          {visita.tecnico_nome}
+                        </td>
 
-                      <td>
-                        <span className="vt-tag">
-                          Finalizado
-                        </span>
-                      </td>
+                        <td>
+                          <span className="vt-tag">
+                            Finalizado
+                          </span>
+                        </td>
 
-                      <td>
-                        <button
-                          type="button"
-                          className="vt-btn vt-btn-small"
-                          onClick={() =>
-                            visualizarVisita(visita)
-                          }
-                        >
-                          Visualizar
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                        <td>
+                          <button
+                            type="button"
+                            className="vt-btn vt-btn-small"
+                            onClick={() =>
+                              visualizarVisita(visita)
+                            }
+                          >
+                            Visualizar
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  )}
                 </tbody>
               </table>
             </div>
@@ -1059,7 +1393,9 @@ export default function VisitasTecnicas() {
 
       {perfilOpen && (
         <Profile
-          onClose={() => setPerfilOpen(false)}
+          onClose={() =>
+            setPerfilOpen(false)
+          }
         />
       )}
     </div>
