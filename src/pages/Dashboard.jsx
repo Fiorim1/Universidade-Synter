@@ -121,9 +121,9 @@ function Dashboard() {
 
           <CardsDashboard
             image={FtIcon}
-            title="Fichas Técnicas"
-            desc="Acesse as fichas técnicas dos nossos produtos"
-            route="/fichas-tecnicas"
+            title="Assistência / Suporte Técnico"
+            desc="Acesse nosso SAC"
+            route="/dashsac"
           />
 
 

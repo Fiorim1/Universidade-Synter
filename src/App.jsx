@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import {
   Routes,
   Route,
-  useLocation
+  useLocation,
+  Navigate
 } from "react-router-dom";
 
 // ========================================
@@ -39,6 +40,17 @@ import Marketing from "./pages/Marketing.jsx";
 import DigMarketing from "./pages/DigMarketing.jsx";
 import Orcamentos from "./pages/Orcamentos.jsx";
 import FichaTec from "./pages/FichaTec.jsx";
+
+// ========================================
+// NOVO MÓDULO — VISITAS TÉCNICAS
+// ========================================
+
+import VisitasTecnicas from "./pages/VisitasTecnicas.jsx";
+
+// ========================================
+// PÁGINA NÃO ENCONTRADA
+// ========================================
+
 import NotFound from "./pages/NotFound.jsx";
 
 // ========================================
@@ -53,6 +65,11 @@ import PublicRoute from "./components/PublicRoute.jsx";
 // ========================================
 
 import SynterAssistant from "./components/SynterAssistant.jsx";
+import DashboardSAC from "./pages/DashboardSAC.jsx";
+
+// ========================================
+// COMPONENTE PRINCIPAL
+// ========================================
 
 function App() {
   const location = useLocation();
@@ -221,14 +238,17 @@ function App() {
           }
         />
 
-        {/* COMPATIBILIDADE COM ROTA ANTIGA */}
+        {/* ======================================== */}
+        {/* REDIRECIONAMENTO DA ROTA ANTIGA          */}
+        {/* ======================================== */}
 
         <Route
           path="/ficha-tecnica"
           element={
-            <ProtectedRoute>
-              <FichaTec />
-            </ProtectedRoute>
+            <Navigate
+              to="/fichas-tecnicas"
+              replace
+            />
           }
         />
 
@@ -285,6 +305,19 @@ function App() {
         />
 
         {/* ======================================== */}
+        {/* VISITAS TÉCNICAS — NOVO MÓDULO           */}
+        {/* ======================================== */}
+
+        <Route
+          path="/visitas-tecnicas"
+          element={
+            <ProtectedRoute>
+              <VisitasTecnicas />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ======================================== */}
         {/* CONVERSOR IMAGEM PARA PDF                */}
         {/* ======================================== */}
 
@@ -336,19 +369,30 @@ function App() {
           }
         />
 
+        <Route
+          path="/dashsac"
+          element={
+            <ProtectedRoute>
+              <DashboardSAC />
+            </ProtectedRoute>
+          }
+        />
+
         {/* ======================================== */}
         {/* PÁGINA NÃO ENCONTRADA                    */}
         {/* ======================================== */}
 
         <Route
           path="*"
-          element={<NotFound />}
+          element={
+            <NotFound />
+          }
         />
 
       </Routes>
 
       {/* ======================================== */}
-      {/* ASSISTENTE SYNTER                        */}
+      {/* ASSISTENTE SYNTER                         */}
       {/* ======================================== */}
 
       {mostrarAssistente && (
