@@ -107,11 +107,11 @@ function Dashboard() {
           {/* ASSISTÊNCIA TÉCNICA               */}
           {/* ================================= */}
 
-          <CardsDashboard
-            image={AstIcon}
-            title="Assistência Técnica"
-            desc="Consulte e baixe seus chamados de assistência técnica"
-            route="/assistencia-tecnica"
+           <CardsDashboard
+            image={FtIcon}
+            title="Assistência / Suporte Técnico"
+            desc="Acesse nosso SAC"
+            route="/dashsac"
           />
 
 
@@ -121,9 +121,9 @@ function Dashboard() {
 
           <CardsDashboard
             image={FtIcon}
-            title="Assistência / Suporte Técnico"
-            desc="Acesse nosso SAC"
-            route="/dashsac"
+            title="Fichas Técnicas"
+            desc="Acesse as fichas técnicas dos nossos produtos"
+            route="/fichas-tecnicas"
           />
 
 
