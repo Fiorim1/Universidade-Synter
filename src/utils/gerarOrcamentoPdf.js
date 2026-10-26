@@ -4,7 +4,7 @@ import { encontrarImagemSynter } from "./imagensProdutosSynter";
 
 // ======================================================
 // GERADOR DE ORÇAMENTOS — SYNTER
-// Cabeçalho reorganizado e imagens integradas
+// Versão com fontes maiores para impressão em A4
 // ======================================================
 
 const logos = import.meta.glob(
@@ -34,7 +34,7 @@ const EMPRESA = {
 };
 
 // ======================================================
-// UTILITÁRIOS
+// FUNÇÕES AUXILIARES
 // ======================================================
 
 function escaparHtml(valor = "") {
@@ -77,9 +77,7 @@ function dataBR(valor) {
 
   const data = new Date(valor);
 
-  if (Number.isNaN(data.getTime())) {
-    return "-";
-  }
+  if (Number.isNaN(data.getTime())) return "-";
 
   return data.toLocaleDateString("pt-BR");
 }
@@ -87,9 +85,7 @@ function dataBR(valor) {
 function dataHoraBR(valor) {
   const data = new Date(valor);
 
-  if (Number.isNaN(data.getTime())) {
-    return "-";
-  }
+  if (Number.isNaN(data.getTime())) return "-";
 
   return data.toLocaleString("pt-BR");
 }
@@ -127,9 +123,7 @@ function numeroOrcamento(orcamento) {
     ""
   );
 
-  if (informado) {
-    return String(informado);
-  }
+  if (informado) return String(informado);
 
   return (
     String(orcamento?.id || "")
@@ -143,9 +137,7 @@ function prepararUrl(valor) {
 
   if (!url) return "";
 
-  if (/^data:image\//i.test(url)) {
-    return url;
-  }
+  if (/^data:image\//i.test(url)) return url;
 
   try {
     return new URL(url, window.location.origin).href;
@@ -155,8 +147,7 @@ function prepararUrl(valor) {
 }
 
 // ======================================================
-// IMAGENS DOS PRODUTOS
-// Mantém a integração com as imagens da tabela.
+// IMAGENS DOS PRODUTOS SYNTER
 // ======================================================
 
 function encontrarImagemProduto(item) {
@@ -216,7 +207,7 @@ function informacaoEmpresa(titulo, valor) {
 }
 
 // ======================================================
-// ESTILOS DO PDF
+// ESTILOS DE IMPRESSÃO
 // ======================================================
 
 const ESTILOS = `
@@ -228,12 +219,12 @@ const ESTILOS = `
     width: 210mm;
     min-height: 297mm;
     margin: 0 auto;
-    padding: 12mm 13mm;
+    padding: 11mm 11mm;
     background: #ffffff;
     color: #111111;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 8px;
-    line-height: 1.35;
+    font-size: 10px;
+    line-height: 1.42;
   }
 
   .sheet * {
@@ -241,15 +232,15 @@ const ESTILOS = `
   }
 
   /* ===========================================
-     CABEÇALHO SYNTER
+     CABEÇALHO
   =========================================== */
 
   .company-header {
     display: grid;
-    grid-template-columns: 120px minmax(0, 1fr) 140px;
-    gap: 14px;
+    grid-template-columns: 105px minmax(0, 1fr) 124px;
+    gap: 9px;
     align-items: start;
-    padding-bottom: 14px;
+    padding-bottom: 12px;
     border-bottom: 2px solid #222222;
   }
 
@@ -261,7 +252,7 @@ const ESTILOS = `
 
   .brand-logo {
     display: block;
-    width: 115px;
+    width: 102px;
     max-height: 65px;
     object-fit: contain;
     object-position: left center;
@@ -299,7 +290,7 @@ const ESTILOS = `
 
   .company-name {
     margin: 0 0 7px;
-    font-size: 10.5px;
+    font-size: 12px;
     font-weight: 800;
     text-transform: uppercase;
     line-height: 1.25;
@@ -307,8 +298,9 @@ const ESTILOS = `
 
   .company-info-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
-    gap: 6px 12px;
+    grid-template-columns:
+      minmax(0, 1.8fr) minmax(0, 1fr);
+    gap: 7px 9px;
   }
 
   .company-info-item {
@@ -320,21 +312,21 @@ const ESTILOS = `
 
   .company-info-item strong {
     color: #555555;
-    font-size: 6.6px;
+    font-size: 8px;
     text-transform: uppercase;
     letter-spacing: 0.3px;
   }
 
   .company-info-item span {
     color: #222222;
-    font-size: 7.1px;
+    font-size: 9px;
     line-height: 1.4;
     overflow-wrap: anywhere;
   }
 
   .document-title {
     margin: 0 0 10px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 900;
     line-height: 1.3;
     text-align: right;
@@ -343,10 +335,10 @@ const ESTILOS = `
 
   .document-row {
     display: grid;
-    grid-template-columns: 48px minmax(0, 1fr);
-    gap: 6px;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 3px;
     margin: 4px 0;
-    font-size: 7.5px;
+    font-size: 9px;
   }
 
   .document-row span:first-child {
@@ -363,22 +355,27 @@ const ESTILOS = `
   =========================================== */
 
   .section {
-    margin-top: 13px;
+    margin-top: 14px;
   }
 
   .section-title {
     margin: 0 0 7px;
     padding-bottom: 4px;
     border-bottom: 1px solid #555555;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 900;
     text-transform: uppercase;
   }
 
+  /* ===========================================
+     DADOS DO CLIENTE
+  =========================================== */
+
   .billing-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 4px 22px;
+    grid-template-columns:
+      minmax(0, 1fr) minmax(0, 1fr);
+    gap: 7px 18px;
   }
 
   .billing-column {
@@ -387,11 +384,11 @@ const ESTILOS = `
 
   .data-line {
     display: grid;
-    grid-template-columns: 72px minmax(0, 1fr);
+    grid-template-columns: 82px minmax(0, 1fr);
     gap: 8px;
-    min-height: 14px;
+    min-height: 18px;
     align-items: start;
-    font-size: 7.5px;
+    font-size: 10px;
     line-height: 1.4;
   }
 
@@ -419,18 +416,18 @@ const ESTILOS = `
   }
 
   .products-table th {
-    padding: 5px 4px;
-    font-size: 7px;
+    padding: 7px 3px;
+    font-size: 9.5px;
     font-weight: 800;
     text-align: left;
   }
 
   .products-table td {
-    padding: 7px 4px;
+    padding: 8px 3px;
     border-bottom: 1px solid #d2d2d2;
     color: #202020;
-    font-size: 7.3px;
-    line-height: 1.4;
+    font-size: 9.5px;
+    line-height: 1.45;
     vertical-align: middle;
   }
 
@@ -441,17 +438,17 @@ const ESTILOS = `
 
   .products-table th:nth-child(1),
   .products-table td:nth-child(1) {
-    width: 13%;
+    width: 12%;
   }
 
   .products-table th:nth-child(2),
   .products-table td:nth-child(2) {
-    width: 15%;
+    width: 18%;
   }
 
   .products-table th:nth-child(3),
   .products-table td:nth-child(3) {
-    width: 40%;
+    width: 34%;
   }
 
   .products-table th:nth-child(4),
@@ -461,12 +458,12 @@ const ESTILOS = `
 
   .products-table th:nth-child(5),
   .products-table td:nth-child(5) {
-    width: 11%;
+    width: 13%;
   }
 
   .products-table th:nth-child(6),
   .products-table td:nth-child(6) {
-    width: 12%;
+    width: 14%;
   }
 
   .product-image-cell {
@@ -495,26 +492,26 @@ const ESTILOS = `
   .product-image-placeholder {
     border: 1px solid #dddddd;
     color: #999999;
-    font-size: 6px;
+    font-size: 7px;
     text-align: center;
   }
 
   .product-code {
     color: #363636;
     font-family: "Courier New", monospace;
-    font-size: 6.8px;
+    font-size: 9px;
     overflow-wrap: anywhere;
   }
 
   .product-description strong {
-    font-size: 7.5px;
+    font-size: 10px;
     font-weight: 800;
   }
 
   .product-detail {
     margin-top: 3px;
     color: #696969;
-    font-size: 6.5px;
+    font-size: 9px;
   }
 
   .number-cell {
@@ -544,7 +541,7 @@ const ESTILOS = `
     align-items: flex-start;
     gap: 18px;
     padding-top: 5px;
-    font-size: 7px;
+    font-size: 9px;
   }
 
   .products-meta strong {
@@ -557,10 +554,10 @@ const ESTILOS = `
 
   .total-line {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 75px;
+    grid-template-columns: minmax(0, 1fr) 85px;
     gap: 10px;
-    padding: 4px 0;
-    font-size: 7.5px;
+    padding: 5px 0;
+    font-size: 10px;
   }
 
   .total-line span:first-child {
@@ -574,9 +571,9 @@ const ESTILOS = `
 
   .total-line.grand {
     margin-top: 4px;
-    padding-top: 7px;
+    padding-top: 8px;
     border-top: 1.5px solid #333333;
-    font-size: 8px;
+    font-size: 12px;
     font-weight: 900;
   }
 
@@ -590,11 +587,11 @@ const ESTILOS = `
 
   .commercial-line {
     display: grid;
-    grid-template-columns: 120px minmax(0, 1fr);
+    grid-template-columns: 140px minmax(0, 1fr);
     gap: 8px;
-    min-height: 16px;
-    padding: 2px 0;
-    font-size: 7.5px;
+    min-height: 19px;
+    padding: 3px 0;
+    font-size: 10px;
     line-height: 1.4;
     break-inside: avoid;
   }
@@ -604,21 +601,21 @@ const ESTILOS = `
   }
 
   .commercial-observation {
-    margin-top: 7px;
-    padding-top: 7px;
+    margin-top: 9px;
+    padding-top: 9px;
     border-top: 1px solid #d2d2d2;
     break-inside: avoid;
   }
 
   .commercial-observation strong {
-    font-size: 9px;
+    font-size: 10px;
     font-weight: 800;
   }
 
   .commercial-observation p {
     margin: 4px 0 0;
     color: #272727;
-    font-size: 7.5px;
+    font-size: 10px;
     line-height: 1.5;
     white-space: pre-wrap;
     overflow-wrap: anywhere;
@@ -634,7 +631,7 @@ const ESTILOS = `
     border-top: 1px solid #bbbbbb;
     text-align: center;
     color: #363636;
-    font-size: 6.8px;
+    font-size: 9px;
     font-weight: 700;
     line-height: 1.6;
     text-transform: uppercase;
@@ -643,6 +640,10 @@ const ESTILOS = `
   .document-footer .print-date {
     margin-top: 3px;
   }
+
+  /* ===========================================
+     IMPRESSÃO A4
+  =========================================== */
 
   @page {
     size: A4;
@@ -660,7 +661,7 @@ const ESTILOS = `
 `;
 
 // ======================================================
-// MONTAR DOCUMENTO
+// MONTAGEM DO DOCUMENTO
 // ======================================================
 
 function montarDocumentoOrcamento({ orcamento, itens }) {
@@ -686,6 +687,10 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
     primeiroNome
   )}-${nomeArquivoSeguro(numeroPedido)}`;
 
+  // ===========================================
+  // CÁLCULOS
+  // ===========================================
+
   const subtotalProdutos = itens.reduce((total, item) => {
     const subtotal =
       item.subtotal !== null &&
@@ -704,6 +709,10 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
     (total, item) => total + numero(item.quantidade),
     0
   );
+
+  // ===========================================
+  // DADOS COMERCIAIS
+  // ===========================================
 
   const representante = primeiroValor(orcamento, [
     "representante_nome",
@@ -754,9 +763,9 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
     "ie",
   ]);
 
-  // ====================================================
-  // PRODUTOS
-  // ====================================================
+  // ===========================================
+  // LINHAS DOS PRODUTOS
+  // ===========================================
 
   const linhasProdutos = itens
     .map((item) => {
@@ -787,7 +796,9 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
                     <img
                       class="product-image"
                       src="${escaparHtml(imagem)}"
-                      alt="${escaparHtml(item.nome_produto || "Produto")}"
+                      alt="${escaparHtml(
+                        item.nome_produto || "Produto"
+                      )}"
                     />
                   </div>
                 `
@@ -835,23 +846,18 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
     })
     .join("");
 
-  // ====================================================
-  // DOCUMENTO HTML COMPLETO
-  // ====================================================
+  // ===========================================
+  // HTML COMPLETO DO ORÇAMENTO
+  // ===========================================
 
   const conteudo = `
     <main class="sheet">
 
-      <!-- =========================================
-           CABEÇALHO SYNTER ATUALIZADO
-      ========================================== -->
+      <!-- CABEÇALHO -->
 
       <header class="company-header">
 
-        <!-- LOGO -->
-
         <div class="brand-box">
-
           ${
             EMPRESA.logo
               ? `
@@ -867,14 +873,15 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
           <div
             class="brand-fallback"
-            style="${EMPRESA.logo ? "" : "display:block;"}"
+            style="${
+              EMPRESA.logo ? "" : "display:block;"
+            }"
           >
             <div class="brand">SYNTER</div>
             <div class="brand-subtitle">
               SOLUÇÕES EM ACESSO
             </div>
           </div>
-
         </div>
 
         <!-- DADOS DA EMPRESA -->
@@ -887,8 +894,6 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
           <div class="company-info-grid">
 
-            <!-- ENDEREÇO / CEP -->
-
             ${informacaoEmpresa(
               "Endereço",
               `${EMPRESA.endereco} - ${EMPRESA.bairro}, ${EMPRESA.cidade}/${EMPRESA.uf}`
@@ -899,8 +904,6 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
               EMPRESA.cep
             )}
 
-            <!-- CNPJ / INSCRIÇÃO ESTADUAL -->
-
             ${informacaoEmpresa(
               "CNPJ",
               EMPRESA.cnpj
@@ -910,8 +913,6 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
               "Inscrição Estadual",
               EMPRESA.inscricaoEstadual
             )}
-
-            <!-- E-MAIL / TELEFONE -->
 
             ${informacaoEmpresa(
               "E-mail",
@@ -924,10 +925,9 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
             )}
 
           </div>
-
         </div>
 
-        <!-- IDENTIFICAÇÃO DO ORÇAMENTO -->
+        <!-- NÚMERO DO ORÇAMENTO -->
 
         <div class="document-data">
 
@@ -937,21 +937,25 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
           <div class="document-row">
             <span>Emissão:</span>
-            <span>${dataBR(orcamento.created_at)}</span>
+            <span>
+              ${dataBR(orcamento.created_at)}
+            </span>
           </div>
 
           <div class="document-row">
             <span>Validade:</span>
-            <span>${validade ? dataBR(validade) : "-"}</span>
+            <span>
+              ${validade ? dataBR(validade) : "-"}
+            </span>
           </div>
 
         </div>
 
       </header>
 
-      <!-- =========================================
-           FATURAMENTO
-      ========================================== -->
+      <!-- =======================================
+           DADOS DE FATURAMENTO
+      ======================================== -->
 
       <section class="section">
 
@@ -963,22 +967,64 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
           <div class="billing-column">
 
-            ${campo("Cliente", orcamento.cliente_nome || "-")}
-            ${campo("Contato", clienteContato)}
-            ${campo("Cidade", clienteCidade)}
-            ${campo("Endereço", clienteEndereco)}
-            ${campo("Bairro", clienteBairro)}
-            ${campo("E-mail", orcamento.cliente_email || "-")}
+            ${campo(
+              "Cliente",
+              orcamento.cliente_nome || "-"
+            )}
+
+            ${campo(
+              "Contato",
+              clienteContato
+            )}
+
+            ${campo(
+              "Cidade",
+              clienteCidade
+            )}
+
+            ${campo(
+              "Endereço",
+              clienteEndereco
+            )}
+
+            ${campo(
+              "Bairro",
+              clienteBairro
+            )}
+
+            ${campo(
+              "E-mail",
+              orcamento.cliente_email || "-"
+            )}
 
           </div>
 
           <div class="billing-column">
 
-            ${campo("Fone", orcamento.cliente_telefone || "-")}
-            ${campo("CEP", clienteCep)}
-            ${campo("UF", clienteUf)}
-            ${campo("CPF/CNPJ", orcamento.cliente_documento || "-")}
-            ${campo("Insc. Est.", clienteInscricao)}
+            ${campo(
+              "Fone",
+              orcamento.cliente_telefone || "-"
+            )}
+
+            ${campo(
+              "CEP",
+              clienteCep
+            )}
+
+            ${campo(
+              "UF",
+              clienteUf
+            )}
+
+            ${campo(
+              "CPF/CNPJ",
+              orcamento.cliente_documento || "-"
+            )}
+
+            ${campo(
+              "Insc. Est.",
+              clienteInscricao
+            )}
 
           </div>
 
@@ -986,9 +1032,9 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
       </section>
 
-      <!-- =========================================
-           PRODUTOS
-      ========================================== -->
+      <!-- =======================================
+           TABELA DE PRODUTOS
+      ======================================== -->
 
       <section class="section">
 
@@ -1003,9 +1049,18 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
               <th>Imagem</th>
               <th>Cod.</th>
               <th>Descrição</th>
-              <th class="number-cell">Qtde.</th>
-              <th class="number-cell">Unit.</th>
-              <th class="number-cell">Total</th>
+
+              <th class="number-cell">
+                Qtde.
+              </th>
+
+              <th class="number-cell">
+                Unit.
+              </th>
+
+              <th class="number-cell">
+                Total
+              </th>
             </tr>
           </thead>
 
@@ -1014,6 +1069,8 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
           </tbody>
 
         </table>
+
+        <!-- RESUMO DOS VALORES -->
 
         <div class="products-summary">
 
@@ -1055,9 +1112,9 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
       </section>
 
-      <!-- =========================================
+      <!-- =======================================
            CONDIÇÕES COMERCIAIS
-      ========================================== -->
+      ======================================== -->
 
       <section class="section">
 
@@ -1091,11 +1148,13 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
             <strong>Observações:</strong>
 
-            <p>${escaparHtml(
-              orcamento.observacoes_venda ||
-                orcamento.observacoes ||
-                "-"
-            )}</p>
+            <p>
+              ${escaparHtml(
+                orcamento.observacoes_venda ||
+                  orcamento.observacoes ||
+                  "-"
+              )}
+            </p>
 
           </div>
 
@@ -1105,11 +1164,15 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
               ? `
                 <div class="commercial-observation">
 
-                  <strong>Observação Padrão:</strong>
+                  <strong>
+                    Observação Padrão:
+                  </strong>
 
-                  <p>${escaparHtml(
-                    orcamento.observacoes
-                  )}</p>
+                  <p>
+                    ${escaparHtml(
+                      orcamento.observacoes
+                    )}
+                  </p>
 
                 </div>
               `
@@ -1120,9 +1183,9 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 
       </section>
 
-      <!-- =========================================
+      <!-- =======================================
            RODAPÉ
-      ========================================== -->
+      ======================================== -->
 
       <footer class="document-footer">
 
@@ -1149,7 +1212,7 @@ function montarDocumentoOrcamento({ orcamento, itens }) {
 }
 
 // ======================================================
-// AGUARDAR IMAGENS E RENDERIZAÇÃO
+// AGUARDAR CARREGAMENTO DAS IMAGENS
 // ======================================================
 
 async function aguardarImagens(container, limiteMs = 8000) {
@@ -1185,7 +1248,7 @@ async function aguardarImagens(container, limiteMs = 8000) {
   try {
     await container.ownerDocument.fonts?.ready;
   } catch {
-    // Mantém as fontes disponíveis.
+    // Mantém a renderização mesmo se a fonte falhar.
   }
 
   await new Promise((resolve) => {
@@ -1196,7 +1259,7 @@ async function aguardarImagens(container, limiteMs = 8000) {
 }
 
 // ======================================================
-// CONVERTER IMAGEM PARA DATA URL
+// CONVERTER IMAGENS PARA DATA URL
 // ======================================================
 
 async function imagemParaDataUrl(src) {
@@ -1256,7 +1319,7 @@ async function incorporarImagens(container) {
 }
 
 // ======================================================
-// CONTAINER INVISÍVEL PARA O USUÁRIO
+// CRIAR CONTAINER INVISÍVEL PARA PDF
 // ======================================================
 
 function criarContainerPdf(conteudo) {
@@ -1391,7 +1454,10 @@ export async function criarArquivoOrcamentoPdf({
     const quantidadePaginas =
       pdf.internal.getNumberOfPages();
 
-    if (!quantidadePaginas || quantidadePaginas < 1) {
+    if (
+      !quantidadePaginas ||
+      quantidadePaginas < 1
+    ) {
       throw new Error(
         "O documento PDF não possui páginas válidas."
       );
@@ -1509,7 +1575,10 @@ export function gerarOrcamentoPdf({
     iniciouImpressao = true;
 
     try {
-      await aguardarImagens(documento.body, 5000);
+      await aguardarImagens(
+        documento.body,
+        5000
+      );
 
       const janela = iframe.contentWindow;
 

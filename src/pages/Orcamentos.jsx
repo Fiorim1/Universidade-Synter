@@ -170,6 +170,9 @@ function Orcamentos() {
   const [filtroTipoPrecoDigital, setFiltroTipoPrecoDigital] =
     useState("");
 
+  // Busca livre, independente das etapas do funil digital.
+  const [buscaDigitalRapida, setBuscaDigitalRapida] = useState("");
+
 
   const [produtoSelecionado, setProdutoSelecionado] =
     useState(null);
@@ -2087,6 +2090,7 @@ function Orcamentos() {
     setFiltroLinhaDigital("");
     setFiltroModeloDigital("");
     setFiltroTipoPrecoDigital("");
+    setBuscaDigitalRapida("");
     setProdutoSelecionado(null);
     setQuantidadeProduto(1);
     setPrecoClienteProduto("");
@@ -2801,6 +2805,7 @@ function Orcamentos() {
 
   function limparFunilDigital() {
 
+    setBuscaDigitalRapida("");
     setFiltroLinhaDigital("");
     setFiltroModeloDigital("");
     setFiltroTipoPrecoDigital("");
@@ -2879,33 +2884,35 @@ function Orcamentos() {
       modoPesquisaProduto === "digital"
     ) {
 
-      // Assim como no funil mecânico,
-      // os resultados só aparecem após
-      // o representante iniciar a seleção.
-      if (!filtroLinhaDigital) {
+      // Pesquisa livre: por nome, código, linha ou descrição,
+      // sem exigir que a linha seja selecionada primeiro.
+      const termoDigital = normalizarTextoProduto(buscaDigitalRapida);
+
+      if (!termoDigital && !filtroLinhaDigital && !filtroModeloDigital) {
         return [];
       }
 
+      return produtosDigitais.filter((produto) => {
+        const atendeEtapas =
+          (!filtroLinhaDigital ||
+            produto._funilDigital.linha === filtroLinhaDigital) &&
+          (!filtroModeloDigital ||
+            produto._funilDigital.modelo === filtroModeloDigital) &&
+          (!filtroTipoPrecoDigital ||
+            produto._funilDigital.tipoPreco === filtroTipoPrecoDigital);
 
-      return produtosDigitais.filter(
-        (produto) => {
+        if (!atendeEtapas) return false;
+        if (!termoDigital) return true;
 
-          return (
-            (!filtroLinhaDigital ||
-              produto._funilDigital.linha ===
-                filtroLinhaDigital) &&
-
-            (!filtroModeloDigital ||
-              produto._funilDigital.modelo ===
-                filtroModeloDigital) &&
-
-            (!filtroTipoPrecoDigital ||
-              produto._funilDigital.tipoPreco ===
-                filtroTipoPrecoDigital)
-          );
-
-        }
-      );
+        return normalizarTextoProduto([
+          produto.codigo,
+          produto.nome,
+          produto.linha,
+          produto.variacao,
+          produto.descricao,
+          produto.tipo_preco
+        ].filter(Boolean).join(" ")).includes(termoDigital);
+      });
 
     }
 
@@ -2962,7 +2969,8 @@ function Orcamentos() {
     produtosDigitais,
     filtroLinhaDigital,
     filtroModeloDigital,
-    filtroTipoPrecoDigital
+    filtroTipoPrecoDigital,
+    buscaDigitalRapida
   ]);
 
 
@@ -7701,318 +7709,177 @@ Synter`;
 
 
               {modoPesquisaProduto === "digital" && (
+                <div className="synter-digital-search">
+                  <style>{`
+                    .synter-digital-search {
+                      border: 1px solid rgba(255,255,255,.13);
+                      border-radius: 16px;
+                      background: linear-gradient(145deg,#151515,#0b0b0b);
+                      padding: 22px;
+                      color: #f7f7f7;
+                      margin: 14px 0 18px;
+                    }
+                    .synter-digital-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:18px; }
+                    .synter-digital-head small { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; font-weight:800; color:#a8a8a8; }
+                    .synter-digital-head h3 { font-size:20px; margin:5px 0; line-height:1.25; color:#fff; }
+                    .synter-digital-head p { font-size:12px; margin:0; color:#aaa; }
+                    .synter-digital-count { border:1px solid #353535; border-radius:10px; text-align:center; padding:9px 12px; min-width:68px; }
+                    .synter-digital-count strong { font-size:18px; display:block; color:#fff; }
+                    .synter-digital-count span { color:#aaa; font-size:10px; }
+                    .synter-digital-field { margin-bottom:19px; }
+                    .synter-digital-field label, .synter-digital-caption { display:block; color:#c9c9c9; font-size:11px; font-weight:750; letter-spacing:.25px; margin-bottom:10px; }
+                    .synter-digital-searchbox { display:flex; align-items:center; gap:10px; border:1px solid #424242; background:#0e0e0e; border-radius:10px; padding:0 13px; }
+                    .synter-digital-searchbox:focus-within { border-color:#fafafa; box-shadow:0 0 0 2px rgba(255,255,255,.08); }
+                    .synter-digital-searchbox > span { color:#aaa; font-size:19px; }
+                    .synter-digital-searchbox input { width:100%; min-width:0; padding:14px 0; background:transparent; border:0; outline:0; color:#fff; font-size:13px; box-shadow:none; }
+                    .synter-digital-searchbox input::placeholder { color:#898989; }
+                    .synter-digital-section { border-top:1px solid #292929; padding-top:17px; margin-top:16px; }
+                    .synter-digital-row { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; }
+                    .synter-digital-row .synter-digital-caption { margin:0; }
+                    .synter-digital-reset { color:#bbb; border:0; background:transparent; cursor:pointer; padding:5px 0; font-size:11px; text-decoration:underline; }
+                    .synter-digital-chips { display:flex; flex-wrap:wrap; gap:8px; }
+                    .synter-digital-chips button { border:1px solid #383838; border-radius:9px; padding:9px 12px; background:#191919; color:#dedede; font-size:12px; font-weight:600; cursor:pointer; transition: background .16s,border-color .16s,color .16s; }
+                    .synter-digital-chips button:hover:not(:disabled) { background:#292929; border-color:#777; }
+                    .synter-digital-chips button.ativo { background:#fff; color:#111; border-color:#fff; }
+                    .synter-digital-chips button:disabled { opacity:.4; cursor:not-allowed; }
+                    .synter-digital-modelos { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; }
+                    .synter-digital-modelos button { text-align:left; min-width:0; padding:13px; border:1px solid #333; background:#161616; color:#fff; border-radius:11px; display:flex; flex-direction:column; gap:8px; cursor:pointer; }
+                    .synter-digital-modelos button:hover:not(:disabled) { border-color:#777; background:#222; }
+                    .synter-digital-modelos button.ativo { background:#f5f5f5; color:#151515; border-color:#fff; }
+                    .synter-digital-modelos .icone { font-size:18px; opacity:.7; }
+                    .synter-digital-modelos strong { font-size:12px; line-height:1.4; overflow-wrap:anywhere; }
+                    .synter-digital-modelos button:disabled { opacity:.45; cursor:not-allowed; }
+                    .synter-digital-hint { margin:12px 0 0; color:#a5a5a5; font-size:11px; line-height:1.5; }
+                    .synter-digital-summary { border-top:1px solid #292929; margin-top:18px; padding-top:15px; display:flex; gap:12px; justify-content:space-between; flex-wrap:wrap; align-items:center; font-size:12px; color:#bbb; }
+                    .synter-digital-summary strong { color:#fff; }
+                    @media(max-width:760px) { .synter-digital-modelos { grid-template-columns:repeat(2,minmax(0,1fr)); } .synter-digital-search { padding:16px; } }
+                    @media(max-width:440px) { .synter-digital-modelos { grid-template-columns:minmax(0,1fr); } .synter-digital-head h3 { font-size:17px; } }
+                  `}</style>
 
-                <div className="orcamentos-funil-mecanico orcamentos-funil-digital">
-
-                  <div className="orcamentos-funil-topo">
-
+                  <div className="synter-digital-head">
                     <div>
-
-                      <span>
-                        PESQUISA GUIADA
-                      </span>
-
-                      <strong>
-                        Encontre a fechadura digital correta
-                      </strong>
-
-                      <p>
-                        Selecione na ordem: linha, modelo e tipo de preço.
-                      </p>
-
+                      <small>CATÁLOGO DIGITAL SYNTER</small>
+                      <h3>Encontre seu produto</h3>
+                      <p>Pesquise uma referência diretamente ou refine por linha e modelo.</p>
                     </div>
-
-
-                    <div className="orcamentos-funil-progresso">
-
-                      <strong>
-                        {etapasFunilDigitalPreenchidas}/3
-                      </strong>
-
-                      <span>
-                        etapas
-                      </span>
-
+                    <div className="synter-digital-count" aria-live="polite">
+                      <strong>{produtosFiltrados.length}</strong>
+                      <span>resultados</span>
                     </div>
-
                   </div>
 
-
-                  <div className="orcamentos-funil-barra">
-
-                    <span
-                      style={{
-                        width:
-                          `${(etapasFunilDigitalPreenchidas / 3) * 100}%`
-                      }}
-                    ></span>
-
+                  <div className="synter-digital-field">
+                    <label htmlFor="synter-busca-digital">BUSCA RÁPIDA</label>
+                    <div className="synter-digital-searchbox">
+                      <span aria-hidden="true">⌕</span>
+                      <input
+                        type="search"
+                        id="synter-busca-digital"
+                        value={buscaDigitalRapida}
+                        placeholder="Digite o modelo, código ou característica..."
+                        onChange={(evento) => {
+                          setBuscaDigitalRapida(evento.target.value);
+                          setProdutoSelecionado(null);
+                        }}
+                        disabled={carregandoProdutos || adicionandoProduto}
+                      />
+                    </div>
                   </div>
 
-
-                  <div className="orcamentos-funil-grid">
-
-
-                    {/* 1. LINHA */}
-
-                    <div
-                      className={
-                        `orcamentos-funil-campo ${
-                          filtroLinhaDigital
-                            ? "preenchido"
-                            : "atual"
-                        }`
-                      }
-                    >
-
-                      <div className="orcamentos-funil-label">
-
-                        <span>
-                          1
-                        </span>
-
-                        <label htmlFor="funil_digital_linha">
-                          Linha
-                        </label>
-
-                      </div>
-
-                      <select
-                        id="funil_digital_linha"
-                        value={filtroLinhaDigital}
-                        onChange={
-                          (event) => {
-
-                            setFiltroLinhaDigital(
-                              event.target.value
-                            );
-
-                            setFiltroModeloDigital("");
-                            setFiltroTipoPrecoDigital("");
-                            setProdutoSelecionado(
-                              null
-                            );
-
-                          }
-                        }
-                        disabled={
-                          carregandoProdutos ||
-                          adicionandoProduto
-                        }
-                      >
-
-                        <option value="">
-                          Selecione a linha
-                        </option>
-
-                        {opcoesLinhaDigital.map(
-                          (opcao) => (
-
-                            <option
-                              key={opcao}
-                              value={opcao}
-                            >
-                              {opcao}
-                            </option>
-
-                          )
-                        )}
-
-                      </select>
-
-                    </div>
-
-
-                    {/* 2. MODELO */}
-
-                    <div
-                      className={
-                        `orcamentos-funil-campo ${
-                          filtroModeloDigital
-                            ? "preenchido"
-                            : filtroLinhaDigital
-                              ? "atual"
-                              : "bloqueado"
-                        }`
-                      }
-                    >
-
-                      <div className="orcamentos-funil-label">
-
-                        <span>
-                          2
-                        </span>
-
-                        <label htmlFor="funil_digital_modelo">
-                          Modelo
-                        </label>
-
-                      </div>
-
-                      <select
-                        id="funil_digital_modelo"
-                        value={filtroModeloDigital}
-                        onChange={
-                          (event) => {
-
-                            setFiltroModeloDigital(
-                              event.target.value
-                            );
-
-                            setFiltroTipoPrecoDigital("");
-                            setProdutoSelecionado(
-                              null
-                            );
-
-                          }
-                        }
-                        disabled={
-                          !filtroLinhaDigital ||
-                          carregandoProdutos ||
-                          adicionandoProduto
-                        }
-                      >
-
-                        <option value="">
-                          Selecione o modelo
-                        </option>
-
-                        {opcoesModeloDigital.map(
-                          (opcao) => (
-
-                            <option
-                              key={opcao}
-                              value={opcao}
-                            >
-                              {opcao}
-                            </option>
-
-                          )
-                        )}
-
-                      </select>
-
-                    </div>
-
-
-                    {/* 3. TIPO DE PREÇO */}
-
-                    <div
-                      className={
-                        `orcamentos-funil-campo ${
-                          filtroTipoPrecoDigital
-                            ? "preenchido"
-                            : filtroModeloDigital
-                              ? "atual"
-                              : "bloqueado"
-                        }`
-                      }
-                    >
-
-                      <div className="orcamentos-funil-label">
-
-                        <span>
-                          3
-                        </span>
-
-                        <label htmlFor="funil_digital_tipo_preco">
-                          Tipo de preço
-                        </label>
-
-                      </div>
-
-                      <select
-                        id="funil_digital_tipo_preco"
-                        value={filtroTipoPrecoDigital}
-                        onChange={
-                          (event) => {
-
-                            setFiltroTipoPrecoDigital(
-                              event.target.value
-                            );
-
-                            setProdutoSelecionado(
-                              null
-                            );
-
-                          }
-                        }
-                        disabled={
-                          !filtroModeloDigital ||
-                          carregandoProdutos ||
-                          adicionandoProduto
-                        }
-                      >
-
-                        <option value="">
-                          Selecione o tipo de preço
-                        </option>
-
-                        {opcoesTipoPrecoDigital.map(
-                          (opcao) => (
-
-                            <option
-                              key={opcao}
-                              value={opcao}
-                            >
-                              {opcao}
-                            </option>
-
-                          )
-                        )}
-
-                      </select>
-
-                    </div>
-
-                  </div>
-
-
-                  <div className="orcamentos-funil-resumo">
-
-                    <div>
-
-                      {filtroLinhaDigital ? (
-
-                        <>
-
-                          <strong>
-                            {produtosFiltrados.length}
-                          </strong>
-
-                          <span>
-                            opção(ões) compatível(is)
-                          </span>
-
-                        </>
-
-                      ) : (
-
-                        <span>
-                          Comece selecionando uma linha.
-                        </span>
-
+                  <div className="synter-digital-section">
+                    <div className="synter-digital-row">
+                      <span className="synter-digital-caption">1. ESCOLHA A LINHA</span>
+                      {(filtroLinhaDigital || filtroModeloDigital || filtroTipoPrecoDigital || buscaDigitalRapida) && (
+                        <button type="button" className="synter-digital-reset" onClick={limparFunilDigital} disabled={adicionandoProduto}>Limpar filtros</button>
                       )}
-
                     </div>
-
-
-                    {etapasFunilDigitalPreenchidas > 0 && (
-
+                    <div className="synter-digital-chips">
                       <button
                         type="button"
-                        onClick={limparFunilDigital}
-                        disabled={adicionandoProduto}
-                      >
-                        Limpar funil
-                      </button>
-
-                    )}
-
+                        className={!filtroLinhaDigital ? "ativo" : ""}
+                        onClick={() => {
+                          setFiltroLinhaDigital("");
+                          setFiltroModeloDigital("");
+                          setFiltroTipoPrecoDigital("");
+                          setProdutoSelecionado(null);
+                        }}
+                        disabled={carregandoProdutos || adicionandoProduto}
+                      >Todas as linhas</button>
+                      {opcoesLinhaDigital.map((linha) => (
+                        <button
+                          key={linha}
+                          type="button"
+                          className={filtroLinhaDigital === linha ? "ativo" : ""}
+                          onClick={() => {
+                            setFiltroLinhaDigital(linha);
+                            setFiltroModeloDigital("");
+                            setFiltroTipoPrecoDigital("");
+                            setProdutoSelecionado(null);
+                          }}
+                          disabled={carregandoProdutos || adicionandoProduto}
+                        >{linha}</button>
+                      ))}
+                    </div>
                   </div>
 
-                </div>
+                  <div className="synter-digital-section">
+                    <div className="synter-digital-row">
+                      <span className="synter-digital-caption">2. ESCOLHA O MODELO</span>
+                      <span style={{fontSize:11,color:"#999"}}>{opcoesModeloDigital.length} modelo(s)</span>
+                    </div>
+                    <div className="synter-digital-modelos">
+                      {opcoesModeloDigital.map((modelo) => (
+                        <button
+                          key={modelo}
+                          type="button"
+                          className={filtroModeloDigital === modelo ? "ativo" : ""}
+                          onClick={() => {
+                            setFiltroModeloDigital(filtroModeloDigital === modelo ? "" : modelo);
+                            setFiltroTipoPrecoDigital("");
+                            setProdutoSelecionado(null);
+                          }}
+                          disabled={carregandoProdutos || adicionandoProduto}
+                        >
+                          <span className="icone" aria-hidden="true">▣</span>
+                          <strong>{modelo}</strong>
+                        </button>
+                      ))}
+                    </div>
+                    {!filtroLinhaDigital && <p className="synter-digital-hint">Você pode escolher qualquer modelo ou selecionar uma linha para reduzir as opções.</p>}
+                  </div>
 
+                  {filtroModeloDigital && (
+                    <div className="synter-digital-section">
+                      <span className="synter-digital-caption">3. TIPO DE PREÇO</span>
+                      <div className="synter-digital-chips">
+                        <button
+                          type="button"
+                          className={!filtroTipoPrecoDigital ? "ativo" : ""}
+                          onClick={() => {setFiltroTipoPrecoDigital("");setProdutoSelecionado(null);}}
+                          disabled={adicionandoProduto}
+                        >Todos os tipos</button>
+                        {opcoesTipoPrecoDigital.map((opcao) => (
+                          <button
+                            type="button"
+                            key={opcao}
+                            className={filtroTipoPrecoDigital === opcao ? "ativo" : ""}
+                            onClick={() => {setFiltroTipoPrecoDigital(opcao);setProdutoSelecionado(null);}}
+                            disabled={adicionandoProduto}
+                          >{opcao}</button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="synter-digital-summary">
+                    <span>
+                      {buscaDigitalRapida || filtroLinhaDigital || filtroModeloDigital
+                        ? <><strong>{produtosFiltrados.length}</strong> produto(s) compatível(is) com a pesquisa</>
+                        : "Comece digitando o modelo ou escolhendo uma linha."}
+                    </span>
+                    <span>{filtroModeloDigital ? `Selecionado: ${filtroModeloDigital}` : "Selecione um produto na lista abaixo"}</span>
+                  </div>
+                </div>
               )}
 
 
@@ -8067,8 +7934,8 @@ Synter`;
                           !filtroMacaneta
                             ? "Selecione a maçaneta para iniciar o funil mecânico."
                             : modoPesquisaProduto === "digital" &&
-                              !filtroLinhaDigital
-                              ? "Selecione a linha para iniciar o funil digital."
+                              !filtroLinhaDigital && !buscaDigitalRapida
+                              ? "Pesquise pelo nome ou código, ou selecione uma linha para começar."
                               : "Nenhum produto encontrado com estes filtros."}
 
                         </div>
