@@ -100,6 +100,16 @@ const FICHAS_NAVIS = {
 }
 
 
+// Fichas técnicas Glorian
+import glorianPdf0155 from "../assets/fichas-tecnicas/glorian/FT_Glorian_Roseta_01_55mm.pdf"
+import glorianPdf0440 from "../assets/fichas-tecnicas/glorian/FT_Glorian_Roseta_04_40mm.pdf"
+import glorianPdf0455 from "../assets/fichas-tecnicas/glorian/FT_Glorian_Roseta_04_55mm.pdf"
+
+const FICHAS_GLORIAN = {
+    "01": { "55": glorianPdf0155 },
+    "04": { "40": glorianPdf0440, "55": glorianPdf0455 },
+}
+
 function FichaTec() {
 
     // Controla a abertura do modal de perfil
@@ -107,8 +117,24 @@ function FichaTec() {
     const [navisModalOpen, setNavisModalOpen] = useState(false)
     const [navisRoseta, setNavisRoseta] = useState("")
     const [navisMaquina, setNavisMaquina] = useState("")
+    const [glorianModalOpen, setGlorianModalOpen] = useState(false)
+    const [glorianRoseta, setGlorianRoseta] = useState("")
+    const [glorianMaquina, setGlorianMaquina] = useState("")
 
     const navisPdfSelecionado = FICHAS_NAVIS[navisRoseta]?.[navisMaquina] || null
+    const glorianPdfSelecionado = FICHAS_GLORIAN[glorianRoseta]?.[glorianMaquina] || null
+
+    function abrirFichasGlorian() {
+        setGlorianRoseta("")
+        setGlorianMaquina("")
+        setGlorianModalOpen(true)
+    }
+
+    function fecharFichasGlorian() {
+        setGlorianModalOpen(false)
+        setGlorianRoseta("")
+        setGlorianMaquina("")
+    }
 
     function abrirFichasNavis() {
         setNavisRoseta("")
@@ -469,12 +495,29 @@ function FichaTec() {
 
                                 />
 
-                                <CardsDashboard
-                                    image={GLORIAN}
-                                    title="Glorian"
-                                    desc="Ficha técnica em breve"
-
-                                />
+                                <div
+                                    role="button"
+                                    tabIndex={0}
+                                    aria-label="Escolher a ficha técnica Glorian"
+                                    onClickCapture={(event) => {
+                                        event.preventDefault()
+                                        event.stopPropagation()
+                                        abrirFichasGlorian()
+                                    }}
+                                    onKeyDown={(event) => {
+                                        if (event.key === "Enter" || event.key === " ") {
+                                            event.preventDefault()
+                                            abrirFichasGlorian()
+                                        }
+                                    }}
+                                    style={{ cursor: "pointer" }}
+                                >
+                                    <CardsDashboard
+                                        image={GLORIAN}
+                                        title="Glorian"
+                                        desc="Selecione a ficha técnica desejada"
+                                    />
+                                </div>
 
                             </div>
 
@@ -866,6 +909,95 @@ function FichaTec() {
                                 style={{ display: "block", padding: 13, background: "white", color: "#111", textDecoration: "none", fontWeight: 700, textAlign: "center", borderRadius: 8 }}
                             >
                                 Visualizar ficha técnica — Roseta {navisRoseta}, {navisMaquina} mm
+                            </a>
+                        ) : (
+                            <p style={{ fontSize: 13, margin: 0, color: "#aaa" }}>
+                                Selecione as duas opções para liberar o PDF.
+                            </p>
+                        )}
+                    </section>
+                </div>
+            )}
+
+            {/* Seleção das fichas técnicas da Glorian */}
+            {glorianModalOpen && (
+                <div
+                    role="presentation"
+                    onClick={fecharFichasGlorian}
+                    style={{
+                        position: "fixed", inset: 0, zIndex: 9999,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        background: "rgba(0,0,0,.76)", backdropFilter: "blur(6px)", padding: 20
+                    }}
+                >
+                    <section
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label="Selecionar ficha técnica Glorian"
+                        onClick={(event) => event.stopPropagation()}
+                        style={{
+                            width: "100%", maxWidth: 460, padding: 26,
+                            background: "#101010", color: "white",
+                            border: "1px solid #333", borderRadius: 14,
+                            boxShadow: "0 18px 60px rgba(0,0,0,.5)"
+                        }}
+                    >
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                            <h2 style={{ margin: 0, fontSize: 22 }}>Ficha Técnica — Glorian</h2>
+                            <button
+                                type="button"
+                                onClick={fecharFichasGlorian}
+                                aria-label="Fechar"
+                                style={{ border: 0, background: "transparent", color: "white", fontSize: 28, cursor: "pointer" }}
+                            >×</button>
+                        </div>
+
+                        <p style={{ fontSize: 14, color: "#bbb", margin: "10px 0 22px" }}>
+                            Escolha a roseta e o tamanho da máquina para visualizar a ficha técnica correspondente.
+                        </p>
+
+                        <label htmlFor="glorian-roseta" style={{ display: "block", marginBottom: 8, fontWeight: 600 }}>
+                            Tipo de roseta
+                        </label>
+                        <select
+                            id="glorian-roseta"
+                            value={glorianRoseta}
+                            onChange={(event) => {
+                                setGlorianRoseta(event.target.value)
+                                setGlorianMaquina("")
+                            }}
+                            style={{ width: "100%", padding: 12, background: "#191919", color: "white", border: "1px solid #444", borderRadius: 8, marginBottom: 18 }}
+                        >
+                            <option value="">Selecione a roseta</option>
+                            {Object.keys(FICHAS_GLORIAN).map((roseta) => (
+                                <option key={roseta} value={roseta}>Roseta {roseta}</option>
+                            ))}
+                        </select>
+
+                        <label htmlFor="glorian-maquina" style={{ display: "block", marginBottom: 8, fontWeight: 600 }}>
+                            Tamanho da máquina
+                        </label>
+                        <select
+                            id="glorian-maquina"
+                            value={glorianMaquina}
+                            disabled={!glorianRoseta}
+                            onChange={(event) => setGlorianMaquina(event.target.value)}
+                            style={{ width: "100%", padding: 12, background: "#191919", color: "white", border: "1px solid #444", borderRadius: 8, marginBottom: 22, opacity: glorianRoseta ? 1 : .55 }}
+                        >
+                            <option value="">Selecione o tamanho</option>
+                            {Object.keys(FICHAS_GLORIAN[glorianRoseta] || {}).map((mm) => (
+                                <option key={mm} value={mm}>{mm} mm</option>
+                            ))}
+                        </select>
+
+                        {glorianPdfSelecionado ? (
+                            <a
+                                href={glorianPdfSelecionado}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ display: "block", padding: 13, background: "white", color: "#111", textDecoration: "none", fontWeight: 700, textAlign: "center", borderRadius: 8 }}
+                            >
+                                Visualizar ficha técnica — Roseta {glorianRoseta}, {glorianMaquina} mm
                             </a>
                         ) : (
                             <p style={{ fontSize: 13, margin: 0, color: "#aaa" }}>
