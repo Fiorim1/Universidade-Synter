@@ -644,3 +644,159 @@
     font-size: 20px;
   }
 }
+
+/* ========================================
+   SYNTER ANALYTICS
+   APRIMORAMENTO EXECUTIVO
+======================================== */
+
+/* Cabeçalho sem símbolo BI */
+
+.sa-header {
+  justify-content: flex-start;
+  margin-bottom: 38px;
+}
+
+.sa-header-mark {
+  display: none !important;
+}
+
+/* Título principal */
+
+.sa-header h1 {
+  font-size: clamp(38px, 5vw, 66px);
+  font-weight: 850;
+  letter-spacing: -2.5px;
+}
+
+.sa-header p {
+  max-width: 800px;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* Resumo executivo */
+
+.sa-summary {
+  padding: 34px;
+  background: linear-gradient(
+    135deg,
+    #19191d 0%,
+    #101013 60%,
+    #0b0b0d 100%
+  );
+}
+
+.sa-summary-heading h2 {
+  margin-bottom: 9px;
+  font-size: clamp(22px, 2.5vw, 29px);
+  letter-spacing: -0.8px;
+}
+
+.sa-executive-description {
+  margin: 0 0 28px;
+  color: #a2a2ab;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* Cartões do resumo */
+
+.sa-summary-item {
+  min-height: 170px;
+  padding: 25px;
+  background: #141417;
+  border: 1px solid #36363d;
+  border-radius: 16px;
+}
+
+.sa-summary-item > span {
+  color: #a5a5af;
+  font-size: 10px;
+  letter-spacing: 1.3px;
+}
+
+.sa-summary-item strong {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+/* Indicadores da qualidade dos dados */
+
+.sa-data-coverage {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.sa-data-coverage > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 17px 19px;
+  border: 1px solid #303037;
+  border-radius: 12px;
+  background: #101013;
+}
+
+.sa-data-coverage span {
+  color: #a4a4ae;
+  font-size: 11px;
+}
+
+.sa-data-coverage strong {
+  color: #ffffff;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* Conclusão */
+
+.sa-conclusion {
+  padding: 38px;
+  background: linear-gradient(
+    145deg,
+    #19191d,
+    #111114
+  );
+}
+
+.sa-conclusion h2 {
+  font-size: clamp(23px, 2.5vw, 30px);
+  letter-spacing: -0.7px;
+}
+
+.sa-conclusion > p {
+  max-width: 1100px;
+  font-size: 14px;
+  line-height: 2;
+}
+
+/* Responsividade */
+
+@media (max-width: 900px) {
+  .sa-data-coverage {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .sa-summary {
+    padding: 20px;
+  }
+
+  .sa-summary-item {
+    min-height: auto;
+  }
+
+  .sa-data-coverage > div {
+    padding: 14px;
+  }
+
+  .sa-conclusion {
+    padding: 22px;
+  }
+}

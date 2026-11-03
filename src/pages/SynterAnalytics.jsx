@@ -31,38 +31,30 @@ import "../styles/SynterAnalytics.css";
 
 const CORES = [
   "#ffffff",
-  "#a4a4ad",
-  "#73737f",
-  "#50505d",
-  "#33333c",
+  "#b0b0b8",
+  "#85858e",
+  "#5b5b65",
 ];
 
 function dataLocal(data = new Date()) {
   const ano = data.getFullYear();
-  const mes = String(
-    data.getMonth() + 1
-  ).padStart(2, "0");
-  const dia = String(
-    data.getDate()
-  ).padStart(2, "0");
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  const dia = String(data.getDate()).padStart(2, "0");
 
   return `${ano}-${mes}-${dia}`;
 }
 
-function somarDias(data, quantidade) {
-  const novo = new Date(`${data}T12:00:00`);
-  novo.setDate(novo.getDate() + quantidade);
-
-  return dataLocal(novo);
+function somarDias(data, dias) {
+  const d = new Date(`${data}T12:00:00`);
+  d.setDate(d.getDate() + dias);
+  return dataLocal(d);
 }
 
-function calcularPeriodo(tipo, referencia) {
-  const data = new Date(
-    `${referencia}T12:00:00`
-  );
+function obterPeriodo(tipo, referencia) {
+  const d = new Date(`${referencia}T12:00:00`);
 
-  const ano = data.getFullYear();
-  const mes = data.getMonth();
+  const ano = d.getFullYear();
+  const mes = d.getMonth();
 
   if (tipo === "ano") {
     return {
@@ -73,47 +65,32 @@ function calcularPeriodo(tipo, referencia) {
   }
 
   if (tipo === "semana") {
-    const diaSemana = data.getDay();
-    const deslocamento = (diaSemana + 6) % 7;
-
-    const inicio = somarDias(
-      referencia,
-      -deslocamento
-    );
-
-    const fim = somarDias(inicio, 7);
+    const deslocamento = (d.getDay() + 6) % 7;
+    const inicio = somarDias(referencia, -deslocamento);
 
     return {
       inicio,
-      fim,
-      titulo: "Semana selecionada",
+      fim: somarDias(inicio, 7),
+      titulo: "Análise semanal",
     };
   }
 
-  const inicio = dataLocal(
-    new Date(ano, mes, 1)
-  );
-
-  const fim = dataLocal(
-    new Date(ano, mes + 1, 1)
-  );
-
   return {
-    inicio,
-    fim,
-    titulo: data.toLocaleDateString("pt-BR", {
+    inicio: dataLocal(new Date(ano, mes, 1)),
+    fim: dataLocal(new Date(ano, mes + 1, 1)),
+    titulo: d.toLocaleDateString("pt-BR", {
       month: "long",
       year: "numeric",
     }),
   };
 }
 
-function dataFormatada(data) {
-  if (!data) return "-";
+function formatarData(valor) {
+  if (!valor) return "-";
 
-  const partes = data.split("-");
+  const [ano, mes, dia] = valor.split("-");
 
-  return `${partes[2]}/${partes[1]}/${partes[0]}`;
+  return `${dia}/${mes}/${ano}`;
 }
 
 function percentual(valor, total) {
@@ -122,7 +99,7 @@ function percentual(valor, total) {
   return `${((valor / total) * 100).toFixed(1)}%`;
 }
 
-function CartaoIndicador({
+function CardIndicador({
   titulo,
   valor,
   descricao,
@@ -132,28 +109,25 @@ function CartaoIndicador({
     <div className="sa-kpi">
       <div className="sa-kpi-top">
         <span>{titulo}</span>
-        <span className="sa-kpi-icon">
-          {icone}
-        </span>
+        <span className="sa-kpi-icon">{icone}</span>
       </div>
 
       <strong>{valor}</strong>
-
       <p>{descricao}</p>
     </div>
   );
 }
 
-function CardGrafico({
+function SecaoGrafico({
   titulo,
   descricao,
   children,
-  destaque,
+  amplo,
 }) {
   return (
     <section
       className={`sa-chart-card ${
-        destaque ? "sa-chart-wide" : ""
+        amplo ? "sa-chart-wide" : ""
       }`}
     >
       <div className="sa-chart-header">
@@ -168,7 +142,7 @@ function CardGrafico({
   );
 }
 
-function EstadoVazio({ mensagem }) {
+function SemDados({ mensagem }) {
   return (
     <div className="sa-empty">
       <span className="sa-empty-icon">◎</span>
@@ -177,56 +151,47 @@ function EstadoVazio({ mensagem }) {
   );
 }
 
-function ListaRanking({ dados, tituloVazio }) {
-  if (!dados?.length) {
-    return (
-      <EstadoVazio mensagem={tituloVazio} />
-    );
+function Ranking({ dados, mensagem }) {
+  if (!dados.length) {
+    return <SemDados mensagem={mensagem} />;
   }
 
   const maior = dados[0]?.total || 1;
 
   return (
     <div className="sa-ranking">
-      {dados.slice(0, 6).map(
-        (item, indice) => (
-          <div
-            className="sa-ranking-item"
-            key={`${item.nome}-${indice}`}
-          >
-            <div className="sa-ranking-top">
-              <span>
-                <small>
-                  {String(indice + 1).padStart(2, "0")}
-                </small>
+      {dados.slice(0, 6).map((item, index) => (
+        <div
+          className="sa-ranking-item"
+          key={`${item.nome}-${index}`}
+        >
+          <div className="sa-ranking-top">
+            <span>
+              <small>{String(index + 1).padStart(2, "0")}</small>
+              {item.nome}
+            </span>
 
-                {item.nome}
-              </span>
-
-              <strong>{item.total}</strong>
-            </div>
-
-            <div className="sa-progress">
-              <div
-                style={{
-                  width: `${
-                    (item.total / maior) * 100
-                  }%`,
-                }}
-              />
-            </div>
+            <strong>{item.total}</strong>
           </div>
-        )
-      )}
+
+          <div className="sa-progress">
+            <div
+              style={{
+                width: `${(item.total / maior) * 100}%`,
+              }}
+            />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
 
 const tooltipStyle = {
-  background: "#1c1c20",
-  border: "1px solid #39393f",
+  background: "#1b1b20",
+  border: "1px solid #393940",
   borderRadius: 12,
-  color: "#fff",
+  color: "#ffffff",
 };
 
 export default function SynterAnalytics() {
@@ -247,10 +212,7 @@ export default function SynterAnalytics() {
     useState(0);
 
   const periodo = useMemo(
-    () => calcularPeriodo(
-      tipoPeriodo,
-      referencia
-    ),
+    () => obterPeriodo(tipoPeriodo, referencia),
     [tipoPeriodo, referencia]
   );
 
@@ -267,17 +229,17 @@ export default function SynterAnalytics() {
 
         if (erroSessao || !session?.access_token) {
           throw new Error(
-            "Sua sessão expirou. Faça login novamente."
+            "Sua sessão expirou. Entre novamente na plataforma."
           );
         }
 
-        const parametros = new URLSearchParams({
+        const query = new URLSearchParams({
           inicio: periodo.inicio,
           fim: periodo.fim,
         });
 
         const resposta = await fetch(
-          `/api/synter-analytics?${parametros}`,
+          `/api/synter-analytics?${query}`,
           {
             signal,
             headers: {
@@ -287,40 +249,25 @@ export default function SynterAnalytics() {
           }
         );
 
-        let resultado;
-
-        try {
-          resultado = await resposta.json();
-        } catch {
-          throw new Error(
-            "A API do Synter Analytics não respondeu corretamente."
-          );
-        }
+        const resultado = await resposta.json();
 
         if (!resposta.ok) {
           throw new Error(
             resultado.error ||
-              "Erro ao carregar os indicadores."
+            "Falha ao consultar o Notion."
           );
         }
 
         if (!signal.aborted) {
           setDados(resultado);
         }
-
       } catch (error) {
-        if (
-          signal.aborted ||
-          error.name === "AbortError"
-        ) {
-          return;
-        }
+        if (signal.aborted) return;
 
         setDados(null);
-
         setErro(
           error.message ||
-            "Não foi possível buscar os dados."
+          "Não foi possível carregar os dados."
         );
       } finally {
         if (!signal.aborted) {
@@ -341,66 +288,40 @@ export default function SynterAnalytics() {
 
   const indicadores = dados?.indicadores;
 
-  const total = indicadores?.total ?? 0;
+  const total = indicadores?.total || 0;
 
   const laudos = indicadores?.laudos || {};
 
-  const procedentes =
-    laudos.Procedente || 0;
+  const procedentes = laudos.Procedente || 0;
+  const improcedentes = laudos.Improcedente || 0;
+  const cobrancas = laudos["Com cobrança"] || 0;
+  const semLaudo = laudos["Sem laudo"] || 0;
 
-  const improcedentes =
-    laudos.Improcedente || 0;
+  const classificados =
+    procedentes + improcedentes + cobrancas;
 
-  const comCobranca =
-    laudos["Com cobrança"] || 0;
+  const problemas = indicadores?.problemas || [];
+  const produtos = indicadores?.produtos || [];
+  const duvidas = indicadores?.duvidas || [];
+  const evolucao = indicadores?.porDia || [];
 
-  const semLaudo =
-    laudos["Sem laudo"] || 0;
+  const cobertura = indicadores?.cobertura || {};
 
-  const laudosConcluidos =
-    procedentes + improcedentes + comCobranca;
+  const principalProblema = problemas[0];
+  const principalProduto = produtos[0];
+  const principalDuvida = duvidas[0];
 
-  const distribuicaoLaudos = [
-    {
-      nome: "Procedentes",
-      total: procedentes,
-    },
-    {
-      nome: "Improcedentes",
-      total: improcedentes,
-    },
-    {
-      nome: "Com cobrança",
-      total: comCobranca,
-    },
-    {
-      nome: "Sem laudo / não analisado",
-      total: semLaudo,
-    },
-  ].filter((x) => x.total > 0);
+  const laudosGrafico = [
+    { nome: "Procedentes", total: procedentes },
+    { nome: "Improcedentes", total: improcedentes },
+    { nome: "Com cobrança", total: cobrancas },
+    { nome: "Sem laudo", total: semLaudo },
+  ].filter((item) => item.total > 0);
 
-  const problemas =
-    indicadores?.problemas || [];
-
-  const produtos =
-    indicadores?.produtos || [];
-
-  const duvidas =
-    indicadores?.duvidas || [];
-
-  const evolucao =
-    indicadores?.porDia || [];
-
-  const principalProblema =
-    problemas[0] || null;
-
-  const principalProduto =
-    produtos[0] || null;
-
-  const principalDuvida =
-    duvidas[0] || null;
-
-  const avisos = dados?.avisos;
+  const confiabilidadeLimitada =
+    dados?.avisos?.limiteRegistros ||
+    dados?.avisos?.limiteAnalises ||
+    dados?.avisos?.leituraIncompleta;
 
   return (
     <div className="sa-page">
@@ -409,13 +330,13 @@ export default function SynterAnalytics() {
       <main className="sa-container">
 
         {/* ====================================
-            CABEÇALHO
+            CABEÇALHO EXECUTIVO
         ==================================== */}
 
-        <div className="sa-header">
+        <header className="sa-header">
           <div>
             <span className="sa-eyebrow">
-              UNIVERSIDADE SYNTER • INTELIGÊNCIA GERENCIAL
+              UNIVERSIDADE SYNTER / INTELIGÊNCIA GERENCIAL
             </span>
 
             <h1>
@@ -423,16 +344,12 @@ export default function SynterAnalytics() {
             </h1>
 
             <p>
-              Entenda os atendimentos, identifique
-              problemas recorrentes e acompanhe os
-              resultados do SAC e da Assistência Técnica.
+              Indicadores de qualidade, desempenho do SAC
+              e análise das ocorrências de Assistência
+              Técnica para apoiar decisões estratégicas.
             </p>
           </div>
-
-          <div className="sa-header-mark">
-            BI
-          </div>
-        </div>
+        </header>
 
         {/* ====================================
             FILTROS
@@ -449,13 +366,9 @@ export default function SynterAnalytics() {
                 key={valor}
                 type="button"
                 className={
-                  tipoPeriodo === valor
-                    ? "active"
-                    : ""
+                  tipoPeriodo === valor ? "active" : ""
                 }
-                onClick={() =>
-                  setTipoPeriodo(valor)
-                }
+                onClick={() => setTipoPeriodo(valor)}
               >
                 {texto}
               </button>
@@ -481,7 +394,7 @@ export default function SynterAnalytics() {
               type="button"
               className="sa-refresh"
               onClick={() =>
-                setAtualizacao((v) => v + 1)
+                setAtualizacao((valor) => valor + 1)
               }
               disabled={carregando}
             >
@@ -495,173 +408,191 @@ export default function SynterAnalytics() {
         <div className="sa-period-caption">
           <span>
             {periodo.titulo} •{" "}
-            {dataFormatada(periodo.inicio)} até{" "}
-            {dataFormatada(
-              somarDias(periodo.fim, -1)
-            )}
+            {formatarData(periodo.inicio)} até{" "}
+            {formatarData(somarDias(periodo.fim, -1))}
           </span>
 
           <span>
-            Fonte: Notion • Data de abertura
+            Fonte oficial: Notion • Chamados técnicos
           </span>
         </div>
 
-        {/* ====================================
-            ERROS
-        ==================================== */}
-
         {erro && (
           <div className="sa-error" role="alert">
-            <strong>Não foi possível carregar o BI.</strong>
+            <strong>Não foi possível carregar os indicadores.</strong>
             <p>{erro}</p>
           </div>
         )}
 
         {carregando && (
           <div className="sa-loading">
-            Consultando os atendimentos no Notion...
+            Analisando os registros de atendimento...
           </div>
         )}
 
-        {/* ====================================
-            CONTEÚDO DOS INDICADORES
-        ==================================== */}
-
         {!carregando && indicadores && (
           <>
-            {(
-              avisos?.limiteRegistros ||
-              avisos?.limiteAnalises ||
-              avisos?.laudosPendentes > 0
-            ) && (
+            {confiabilidadeLimitada && (
               <div className="sa-notice">
                 <strong>
-                  Atenção à cobertura dos dados
+                  Atenção: análise parcial dos registros
                 </strong>
 
                 <p>
-                  {avisos.limiteRegistros
-                    ? "O limite de 200 chamados foi atingido. Os totais podem estar incompletos. "
-                    : ""}
-
-                  {avisos.limiteAnalises
-                    ? "Somente os primeiros 60 chamados foram enviados para leitura detalhada dos laudos. "
-                    : ""}
-
-                  {avisos.laudosPendentes > 0
-                    ? `${avisos.laudosPendentes} chamado(s) não tiveram o laudo verificado nesta consulta.`
-                    : ""}
+                  {cobertura.paginasLidas || 0} de{" "}
+                  {total} registros tiveram suas páginas
+                  internas lidas com sucesso. Algumas
+                  classificações podem não ter sido
+                  identificadas. Consulte os logs da API
+                  se o número de leituras for baixo.
                 </p>
               </div>
             )}
 
             {/* ====================================
-                INDICADORES PRINCIPAIS
+                INDICADORES
             ==================================== */}
 
             <div className="sa-kpi-grid">
-              <CartaoIndicador
+              <CardIndicador
                 titulo="Chamados registrados"
                 valor={total}
-                descricao="Atendimentos encontrados no período."
+                descricao="Total encontrado no período."
                 icone="▦"
               />
 
-              <CartaoIndicador
-                titulo="Procedentes"
+              <CardIndicador
+                titulo="Laudos procedentes"
                 valor={procedentes}
-                descricao="Laudos que confirmaram procedência."
+                descricao="Ocorrências com procedência registrada."
                 icone="✓"
               />
 
-              <CartaoIndicador
-                titulo="Improcedentes"
+              <CardIndicador
+                titulo="Laudos improcedentes"
                 valor={improcedentes}
-                descricao="Laudos classificados como improcedentes."
+                descricao="Ocorrências com improcedência registrada."
                 icone="○"
               />
 
-              <CartaoIndicador
-                titulo="Sem laudo confirmado"
+              <CardIndicador
+                titulo="Sem laudo identificado"
                 valor={semLaudo}
-                descricao="Inclui registros ainda não analisados."
+                descricao="Inclui análises não concluídas ou não acessíveis."
                 icone="◷"
               />
             </div>
 
             {/* ====================================
-                RESUMO DESTAQUE
+                RESUMO EXECUTIVO
             ==================================== */}
 
             <section className="sa-summary">
               <div className="sa-summary-heading">
                 <span className="sa-eyebrow">
-                  RESUMO DO PERÍODO
+                  VISÃO EXECUTIVA DO PERÍODO
                 </span>
 
                 <h2>
-                  O que a gerência precisa saber?
+                  Resumo Executivo de Qualidade e Atendimento
                 </h2>
+
+                <p className="sa-executive-description">
+                  Síntese dos principais resultados,
+                  ocorrências e pontos de atenção
+                  identificados nos chamados.
+                </p>
               </div>
 
               <div className="sa-summary-grid">
                 <div className="sa-summary-item">
                   <span>
-                    01 • PRINCIPAL PROBLEMA
+                    01 / OCORRÊNCIA MAIS FREQUENTE
                   </span>
 
                   <strong>
                     {principalProblema?.nome ||
-                      "Sem registros"}
+                      "Análise pendente"}
                   </strong>
 
                   <p>
                     {principalProblema
-                      ? `${principalProblema.total} chamado(s) relacionado(s).`
-                      : "Ainda não existem dados para identificar o principal problema."}
+                      ? `${principalProblema.total} ocorrência(s) nesta categoria.`
+                      : "Nenhuma categoria técnica pôde ser identificada nos registros consultados."}
                   </p>
                 </div>
 
                 <div className="sa-summary-item">
                   <span>
-                    02 • PRODUTO MAIS CITADO
+                    02 / PRODUTO COM MAIS REGISTROS
                   </span>
 
                   <strong>
                     {principalProduto?.nome ||
-                      "Sem registros"}
+                      "Identificação pendente"}
                   </strong>
 
                   <p>
                     {principalProduto
-                      ? `${principalProduto.total} ocorrência(s) registradas.`
-                      : "Nenhum produto identificado."}
+                      ? `${principalProduto.total} chamado(s) relacionados a este modelo.`
+                      : "Os modelos ainda não foram extraídos com sucesso dos chamados."}
                   </p>
                 </div>
 
                 <div className="sa-summary-item">
                   <span>
-                    03 • PRINCIPAL DÚVIDA
+                    03 / DÚVIDA MAIS RECORRENTE
                   </span>
 
                   <strong>
                     {principalDuvida?.nome ||
-                      "Não identificada"}
+                      "Sem classificação suficiente"}
                   </strong>
 
                   <p>
                     {principalDuvida
-                      ? `${principalDuvida.total} registro(s) reconhecido(s) como dúvida.`
-                      : "Não foram identificadas dúvidas nos campos analisados."}
+                      ? `${principalDuvida.total} dúvida(s) identificada(s).`
+                      : "Ainda não é possível determinar qual dúvida é mais frequente."}
                   </p>
                 </div>
               </div>
 
+              {/* COBERTURA DOS DADOS */}
+
+              <div className="sa-data-coverage">
+                <div>
+                  <span>Produtos identificados</span>
+                  <strong>
+                    {cobertura.produtosIdentificados || 0}
+                    {" / "}
+                    {total}
+                  </strong>
+                </div>
+
+                <div>
+                  <span>Problemas classificados</span>
+                  <strong>
+                    {cobertura.problemasIdentificados || 0}
+                    {" / "}
+                    {total}
+                  </strong>
+                </div>
+
+                <div>
+                  <span>Laudos identificados</span>
+                  <strong>
+                    {cobertura.laudosClassificados || 0}
+                    {" / "}
+                    {total}
+                  </strong>
+                </div>
+              </div>
+
               <p className="sa-summary-disclaimer">
-                As categorias são extraídas dos relatos
-                e das classificações disponíveis.
-                Identificar uma reclamação não significa
-                confirmar um defeito de fabricação.
+                A ocorrência mais frequente representa
+                os sintomas ou categorias registradas,
+                não necessariamente um defeito de
+                fabricação confirmado.
               </p>
             </section>
 
@@ -670,24 +601,23 @@ export default function SynterAnalytics() {
             ==================================== */}
 
             <div className="sa-charts-grid">
-
-              <CardGrafico
-                titulo="Principais problemas"
-                descricao="Veja quais situações aparecem mais nos atendimentos."
+              <SecaoGrafico
+                titulo="Principais problemas registrados"
+                descricao="Categorias técnicas mais recorrentes nos chamados analisados."
               >
                 {problemas.length ? (
                   <ResponsiveContainer
                     width="100%"
-                    height={295}
+                    height={300}
                   >
                     <BarChart
                       data={problemas.slice(0, 6)}
                       layout="vertical"
                       margin={{
                         top: 5,
-                        right: 18,
+                        right: 20,
                         bottom: 5,
-                        left: 15,
+                        left: 5,
                       }}
                     >
                       <CartesianGrid
@@ -705,10 +635,9 @@ export default function SynterAnalytics() {
                       <YAxis
                         type="category"
                         dataKey="nome"
-                        width={125}
-                        stroke="#aaaab1"
+                        width={145}
+                        stroke="#b2b2ba"
                         fontSize={10}
-                        tickLine={false}
                       />
 
                       <Tooltip
@@ -717,47 +646,43 @@ export default function SynterAnalytics() {
 
                       <Bar
                         dataKey="total"
-                        name="Chamados"
-                        fill="#e5e5e8"
-                        radius={[0, 6, 6, 0]}
+                        name="Ocorrências"
+                        fill="#eeeeef"
+                        radius={[0, 7, 7, 0]}
                       />
                     </BarChart>
                   </ResponsiveContainer>
                 ) : (
-                  <EstadoVazio
-                    mensagem="Não foram encontrados problemas neste período."
-                  />
+                  <SemDados mensagem="Não foi possível identificar categorias de problemas neste período." />
                 )}
-              </CardGrafico>
+              </SecaoGrafico>
 
-              <CardGrafico
-                titulo="Resultado dos laudos"
-                descricao="Distribuição entre procedentes, improcedentes, com cobrança e sem análise."
+              <SecaoGrafico
+                titulo="Procedência dos atendimentos"
+                descricao="Resultado dos laudos técnicos registrados."
               >
-                {distribuicaoLaudos.length ? (
+                {laudosGrafico.length ? (
                   <ResponsiveContainer
                     width="100%"
-                    height={295}
+                    height={300}
                   >
                     <PieChart>
                       <Pie
-                        data={distribuicaoLaudos}
+                        data={laudosGrafico}
                         dataKey="total"
                         nameKey="nome"
                         cx="50%"
                         cy="43%"
                         innerRadius={58}
-                        outerRadius={88}
-                        paddingAngle={4}
+                        outerRadius={90}
+                        paddingAngle={3}
                       >
-                        {distribuicaoLaudos.map(
-                          (_, indice) => (
+                        {laudosGrafico.map(
+                          (_, index) => (
                             <Cell
-                              key={indice}
+                              key={index}
                               fill={
-                                CORES[
-                                  indice % CORES.length
-                                ]
+                                CORES[index % CORES.length]
                               }
                             />
                           )
@@ -776,36 +701,34 @@ export default function SynterAnalytics() {
                     </PieChart>
                   </ResponsiveContainer>
                 ) : (
-                  <EstadoVazio
-                    mensagem="Nenhum laudo disponível."
-                  />
+                  <SemDados mensagem="Não existem laudos disponíveis." />
                 )}
-              </CardGrafico>
+              </SecaoGrafico>
 
-              <CardGrafico
-                titulo="Produtos mais reclamados"
-                descricao="Ranking de modelos encontrados nos chamados."
+              <SecaoGrafico
+                titulo="Produtos com mais reclamações"
+                descricao="Ranking dos modelos mais citados no período."
               >
-                <ListaRanking
+                <Ranking
                   dados={produtos}
-                  tituloVazio="Nenhum produto encontrado."
+                  mensagem="Os nomes dos produtos não foram identificados."
                 />
-              </CardGrafico>
+              </SecaoGrafico>
 
-              <CardGrafico
+              <SecaoGrafico
                 titulo="Dúvidas mais frequentes"
-                descricao="Assuntos que podem exigir orientações, vídeos ou treinamentos."
+                descricao="Assuntos que podem exigir orientações ou materiais de treinamento."
               >
-                <ListaRanking
+                <Ranking
                   dados={duvidas}
-                  tituloVazio="Não foram identificadas dúvidas neste período."
+                  mensagem="Ainda não há dúvidas suficientemente identificadas para gerar um ranking."
                 />
-              </CardGrafico>
+              </SecaoGrafico>
 
-              <CardGrafico
-                titulo="Evolução dos atendimentos"
-                descricao="Quantidade de chamados por dia de abertura."
-                destaque
+              <SecaoGrafico
+                titulo="Evolução do volume de atendimentos"
+                descricao="Quantidade de registros por data de abertura."
+                amplo
               >
                 {evolucao.length ? (
                   <ResponsiveContainer
@@ -830,8 +753,8 @@ export default function SynterAnalytics() {
                         dataKey="nome"
                         stroke="#9999a0"
                         fontSize={10}
-                        tickFormatter={(valor) =>
-                          valor.slice(5)
+                        tickFormatter={(v) =>
+                          v.slice(5)
                         }
                       />
 
@@ -852,107 +775,145 @@ export default function SynterAnalytics() {
                         stroke="#ffffff"
                         strokeWidth={3}
                         dot={{
-                          fill: "#fff",
+                          fill: "#ffffff",
                           r: 4,
-                        }}
-                        activeDot={{
-                          r: 6,
                         }}
                       />
                     </LineChart>
                   </ResponsiveContainer>
                 ) : (
-                  <EstadoVazio
-                    mensagem="Sem registros para exibir a evolução."
-                  />
+                  <SemDados mensagem="Não existem registros para o gráfico de evolução." />
                 )}
-              </CardGrafico>
+              </SecaoGrafico>
             </div>
 
             {/* ====================================
-                CONCLUSÃO GERENCIAL
+                CONCLUSÃO EXECUTIVA
             ==================================== */}
 
             <section className="sa-conclusion">
               <span className="sa-eyebrow">
-                ANÁLISE GERENCIAL
+                CONSOLIDAÇÃO GERENCIAL
               </span>
 
               <h2>
-                Conclusão do período
+                Diagnóstico e Considerações do Período
               </h2>
 
               {total === 0 ? (
                 <p>
-                  Não foram encontrados chamados
-                  ativos no período selecionado.
-                  Verifique a data e se a conexão
-                  possui acesso à base correta.
+                  Não foram localizados chamados ativos
+                  para o período selecionado. Verifique
+                  se a base e o intervalo de datas
+                  correspondem aos atendimentos desejados.
                 </p>
               ) : (
                 <>
                   <p>
-                    Foram encontrados{" "}
-                    <strong>{total} chamados</strong>.
-                    O problema mais identificado foi{" "}
+                    No período analisado, foram
+                    registrados <strong>{total} atendimentos</strong>.
+                    {" "}Desses,{" "}
                     <strong>
-                      {principalProblema?.nome ||
-                        "não informado"}
-                    </strong>,
-                    e o produto mais citado foi{" "}
+                      {cobertura.problemasIdentificados || 0}
+                    </strong>{" "}
+                    possuem categoria de problema
+                    identificada e{" "}
                     <strong>
-                      {principalProduto?.nome ||
-                        "não informado"}
-                    </strong>.
+                      {cobertura.produtosIdentificados || 0}
+                    </strong>{" "}
+                    possuem produto identificado.
                   </p>
 
+                  {principalProblema && (
+                    <p>
+                      A categoria de maior recorrência
+                      entre os registros classificados foi{" "}
+                      <strong>
+                        {principalProblema.nome}
+                      </strong>,
+                      com{" "}
+                      <strong>
+                        {principalProblema.total} ocorrência(s)
+                      </strong>.
+                    </p>
+                  )}
+
+                  {principalProduto && (
+                    <p>
+                      O modelo mais citado foi{" "}
+                      <strong>
+                        {principalProduto.nome}
+                      </strong>,
+                      presente em{" "}
+                      <strong>
+                        {principalProduto.total} chamado(s)
+                      </strong>.
+                    </p>
+                  )}
+
                   <p>
-                    Entre os laudos identificados,
-                    houve{" "}
-                    <strong>
-                      {procedentes} procedente(s)
-                    </strong>,
+                    Em relação aos laudos, foram
+                    identificados{" "}
+                    <strong>{procedentes} procedentes</strong>,
                     {" "}
                     <strong>
-                      {improcedentes} improcedente(s)
+                      {improcedentes} improcedentes
                     </strong>
                     {" "}e{" "}
                     <strong>
-                      {comCobranca} com cobrança
+                      {cobrancas} com cobrança
                     </strong>.
-                  </p>
-
-                  <p>
-                    Foram registrados{" "}
+                    {" "}Outros{" "}
                     <strong>
-                      {laudosConcluidos}
+                      {semLaudo} registros
                     </strong>{" "}
-                    laudos classificados na amostra.
-                    {semLaudo > 0
-                      ? ` Há ${semLaudo} registro(s) sem laudo verificado nesta consulta.`
-                      : ""}
+                    permanecem sem classificação de
+                    laudo identificada na consulta.
                   </p>
 
-                  <p>
-                    Taxa de procedência entre os
-                    laudos classificados:{" "}
-                    <strong>
-                      {percentual(
-                        procedentes,
-                        laudosConcluidos
-                      )}
-                    </strong>.
-                  </p>
+                  {classificados > 0 ? (
+                    <p>
+                      A taxa de procedência entre os
+                      laudos classificados foi de{" "}
+                      <strong>
+                        {percentual(
+                          procedentes,
+                          classificados
+                        )}
+                      </strong>.
+                    </p>
+                  ) : (
+                    <p>
+                      A taxa de procedência ainda
+                      não pode ser calculada porque
+                      nenhum laudo foi identificado.
+                    </p>
+                  )}
+
+                  {cobertura.problemasIdentificados <
+                    total && (
+                    <p>
+                      <strong>
+                        Ponto de atenção:
+                      </strong>{" "}
+                      há registros sem categoria
+                      técnica identificada. Antes
+                      de tomar decisões sobre a
+                      qualidade dos produtos, é
+                      recomendável concluir a análise
+                      dessas ocorrências.
+                    </p>
+                  )}
                 </>
               )}
 
               <div className="sa-conclusion-foot">
                 <span>
-                  Base: Notion — Assistência Técnica
+                  Fonte: Notion — Assistência Técnica Synter
                 </span>
 
                 <span>
-                  Atualizado:{" "}
+                  Atualização:{" "}
                   {new Date(
                     dados.atualizadoEm
                   ).toLocaleString("pt-BR")}

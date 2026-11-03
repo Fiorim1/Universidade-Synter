@@ -2,241 +2,126 @@
 const NOTION_API = "https://api.notion.com/v1";
 const NOTION_VERSION = "2025-09-03";
 
-// Base já utilizada pela Synter no Notion
-const DATA_SOURCE_PADRAO =
+const DATA_SOURCE_ID =
+  process.env.NOTION_DATA_SOURCE_ID ||
   "3c1d3a6a-2cde-8041-be39-000bd40b4445";
 
-const MAX_CHAMADOS = 200;
-const MAX_ANALISES = 60;
+const MAX_REGISTROS = 200;
+const MAX_DETALHAMENTOS = 100;
+
+const sleep = (ms) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 function normalizar(valor) {
-  return String(valor || "")
+  return String(valor ?? "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
+    .replace(/\s+/g, " ")
     .trim();
 }
 
-function textoPropriedade(propriedade) {
-  if (!propriedade) return "";
+function textoRico(lista) {
+  return (lista || [])
+    .map((item) => item.plain_text || item.text?.content || "")
+    .join("");
+}
 
-  if (propriedade.type === "title") {
-    return (propriedade.title || [])
-      .map((x) => x.plain_text || "")
-      .join("");
+function textoPropriedade(prop) {
+  if (!prop) return "";
+
+  switch (prop.type) {
+    case "title":
+      return textoRico(prop.title);
+    case "rich_text":
+      return textoRico(prop.rich_text);
+    case "select":
+      return prop.select?.name || "";
+    case "status":
+      return prop.status?.name || "";
+    case "multi_select":
+      return (prop.multi_select || [])
+        .map((item) => item.name)
+        .join(", ");
+    case "number":
+      return String(prop.number ?? "");
+    case "formula":
+      return String(
+        prop.formula?.string ??
+        prop.formula?.number ??
+        ""
+      );
+    default:
+      return "";
   }
+}
 
-  if (propriedade.type === "rich_text") {
-    return (propriedade.rich_text || [])
-      .map((x) => x.plain_text || "")
-      .join("");
-  }
+function obterPropriedade(propriedades, nomes) {
+  const entradas = Object.entries(propriedades || {});
 
-  if (propriedade.type === "select") {
-    return propriedade.select?.name || "";
-  }
+  for (const nome of nomes) {
+    const entrada = entradas.find(
+      ([chave]) => normalizar(chave) === normalizar(nome)
+    );
 
-  if (propriedade.type === "multi_select") {
-    return (propriedade.multi_select || [])
-      .map((x) => x.name)
-      .join(", ");
-  }
-
-  if (propriedade.type === "number") {
-    return String(propriedade.number ?? "");
+    if (entrada) {
+      const valor = textoPropriedade(entrada[1]);
+      if (valor.trim()) return valor.trim();
+    }
   }
 
   return "";
 }
 
 function textoBloco(bloco) {
-  const conteudo = bloco?.[bloco.type];
-
-  return (conteudo?.rich_text || [])
-    .map((x) => x.plain_text || "")
-    .join("");
+  return textoRico(
+    bloco?.[bloco.type]?.rich_text || []
+  ).trim();
 }
 
-function identificarProblema(texto) {
-  const valor = normalizar(texto);
+async function notion(path, options = {}, tentativa = 0) {
+  const resposta = await fetch(`${NOTION_API}${path}`, {
+    ...options,
+    headers: {
+      Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
+      "Notion-Version": NOTION_VERSION,
+      "Content-Type": "application/json",
+    },
+  });
 
-  if (!valor) return "Não classificado";
+  if (resposta.status === 429 && tentativa < 4) {
+    const segundos = Math.min(
+      Number(resposta.headers.get("retry-after")) || 2,
+      10
+    );
 
-  if (
-    /biometr|digital nao|leitor|sensor|placa|display|tela/.test(
-      valor
-    )
-  ) {
-    return "Placa, tela e sensores";
+    await sleep(segundos * 1000);
+
+    return notion(path, options, tentativa + 1);
   }
 
-  if (
-    /pilha|bateria|usb|alimentac|autonomia|carga/.test(
-      valor
-    )
-  ) {
-    return "Pilhas e alimentação";
+  if (!resposta.ok) {
+    let mensagem = `Notion HTTP ${resposta.status}`;
+
+    try {
+      const erro = await resposta.json();
+      mensagem = erro.message || mensagem;
+    } catch {
+      // Mantém a descrição HTTP.
+    }
+
+    throw new Error(mensagem);
   }
 
-  if (
-    /aplicativo|app|wifi|wi-fi|bluetooth|rede|conexao/.test(
-      valor
-    )
-  ) {
-    return "Aplicativo e comunicação";
-  }
-
-  if (
-    /cadastro|senha|reset|configurac|credencia/.test(
-      valor
-    )
-  ) {
-    return "Cadastro e configuração";
-  }
-
-  if (
-    /instalac|montagem|inversao|direcao/.test(
-      valor
-    )
-  ) {
-    return "Instalação";
-  }
-
-  if (
-    /macaneta|quebrad|quebra|mecanism|travamento|motor/.test(
-      valor
-    )
-  ) {
-    return "Componentes mecânicos";
-  }
-
-  if (
-    /oxidac|corros|umidade|desgaste/.test(
-      valor
-    )
-  ) {
-    return "Desgaste e corrosão";
-  }
-
-  if (/fabricac|fabrica|defeito/.test(valor)) {
-    return "Possível falha de fabricação";
-  }
-
-  return "Outros problemas";
+  return resposta.json();
 }
 
-function identificarDuvida(texto) {
-  const valor = normalizar(texto);
+async function validarUsuario(req) {
+  const authorization = req.headers.authorization || "";
 
-  if (
-    !/duvida|como fazer|como configurar|como cadastrar|orientac|informac|gostaria de saber/.test(
-      valor
-    )
-  ) {
-    return null;
-  }
-
-  if (/app|aplicativo|wifi|rede/.test(valor)) {
-    return "Aplicativo e conectividade";
-  }
-
-  if (/senha|cadastro|reset|digital/.test(valor)) {
-    return "Cadastro, senha e reset";
-  }
-
-  if (/garantia|nota fiscal/.test(valor)) {
-    return "Garantia";
-  }
-
-  if (/instalac|montagem/.test(valor)) {
-    return "Instalação";
-  }
-
-  return "Funcionamento e orientações";
-}
-
-function nomeCategoriaAnalise(texto) {
-  const v = normalizar(texto);
-
-  if (!v) return null;
-
-  if (
-    v.includes("duvidas sobre funcionamento") ||
-    v.includes("documentacao, manual")
-  ) {
-    return "Dúvidas e orientações";
-  }
-
-  if (
-    v.includes("pilhas") ||
-    v.includes("alimentacao")
-  ) {
-    return "Pilhas e alimentação";
-  }
-
-  if (
-    v.includes("rede, comunicacao") ||
-    v.includes("aplicativo")
-  ) {
-    return "Aplicativo e comunicação";
-  }
-
-  if (
-    v.includes("configuracao") ||
-    v.includes("cadastro") ||
-    v.includes("credenciais")
-  ) {
-    return "Cadastro e configuração";
-  }
-
-  if (v.includes("instalacao")) {
-    return "Instalação";
-  }
-
-  if (
-    v.includes("componentes mecanicos") ||
-    v.includes("motor") ||
-    v.includes("travamento") ||
-    v.includes("componentes danificados") ||
-    v.includes("falha de funcionamento mecanico")
-  ) {
-    return "Componentes mecânicos";
-  }
-
-  if (
-    v.includes("oxidacao") ||
-    v.includes("corrosao") ||
-    v.includes("desgaste")
-  ) {
-    return "Desgaste e corrosão";
-  }
-
-  if (
-    v.includes("fabricacao") ||
-    v.includes("falha eletronica") ||
-    v.includes("defeito de placa")
-  ) {
-    return "Possível falha de fabricação";
-  }
-
-  return identificarProblema(texto);
-}
-
-function classificarLaudo(valor) {
-  const v = normalizar(valor);
-
-  if (v === "improcedente") return "Improcedente";
-  if (v === "procedente") return "Procedente";
-  if (v === "com cobranca") return "Com cobrança";
-
-  return null;
-}
-
-async function validarSessao(req) {
-  const cabecalho = req.headers.authorization || "";
-  const token = cabecalho.startsWith("Bearer ")
-    ? cabecalho.slice(7)
-    : "";
+  const token = authorization.startsWith("Bearer ")
+    ? authorization.slice(7)
+    : null;
 
   if (!token) return false;
 
@@ -244,21 +129,19 @@ async function validarSessao(req) {
     process.env.SUPABASE_URL ||
     process.env.VITE_SUPABASE_URL;
 
-  const anonKey =
+  const chave =
     process.env.SUPABASE_ANON_KEY ||
     process.env.VITE_SUPABASE_ANON_KEY;
 
-  if (!url || !anonKey) {
-    throw new Error(
-      "Configuração de autenticação do Supabase ausente."
-    );
+  if (!url || !chave) {
+    throw new Error("Supabase não configurado no servidor.");
   }
 
   const resposta = await fetch(
     `${url.replace(/\/$/, "")}/auth/v1/user`,
     {
       headers: {
-        apikey: anonKey,
+        apikey: chave,
         Authorization: `Bearer ${token}`,
       },
     }
@@ -271,74 +154,23 @@ async function validarSessao(req) {
   return Boolean(usuario?.id);
 }
 
-async function requisitarNotion(caminho, opcoes = {}, tentativa = 0) {
-  const resposta = await fetch(`${NOTION_API}${caminho}`, {
-    ...opcoes,
-    headers: {
-      Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
-      "Notion-Version": NOTION_VERSION,
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (resposta.status === 429 && tentativa < 3) {
-    const espera = Math.min(
-      Number(resposta.headers.get("retry-after") || 2),
-      10
-    );
-
-    await new Promise((resolve) =>
-      setTimeout(resolve, espera * 1000)
-    );
-
-    return requisitarNotion(
-      caminho,
-      opcoes,
-      tentativa + 1
-    );
-  }
-
-  if (!resposta.ok) {
-    let mensagem = `Notion HTTP ${resposta.status}`;
-
-    try {
-      const dados = await resposta.json();
-      mensagem = dados.message || mensagem;
-    } catch {
-      // Preserva mensagem HTTP.
-    }
-
-    throw new Error(mensagem);
-  }
-
-  return resposta.json();
-}
-
-async function buscarChamados(inicio, fim) {
-  const id =
-    process.env.NOTION_DATA_SOURCE_ID ||
-    DATA_SOURCE_PADRAO;
-
+async function listarChamados(inicio, fim) {
   const registros = [];
-  let cursor;
-  let temMais = false;
+  let cursor = null;
+  let hasMore = false;
 
   do {
-    const corpo = {
+    const body = {
       page_size: 100,
       filter: {
         and: [
           {
             timestamp: "created_time",
-            created_time: {
-              on_or_after: inicio,
-            },
+            created_time: { on_or_after: inicio },
           },
           {
             timestamp: "created_time",
-            created_time: {
-              before: fim,
-            },
+            created_time: { before: fim },
           },
         ],
       },
@@ -350,253 +182,352 @@ async function buscarChamados(inicio, fim) {
       ],
     };
 
-    if (cursor) corpo.start_cursor = cursor;
+    if (cursor) body.start_cursor = cursor;
 
-    const resposta = await requisitarNotion(
-      `/data_sources/${id}/query`,
+    const resposta = await notion(
+      `/data_sources/${DATA_SOURCE_ID}/query`,
       {
         method: "POST",
-        body: JSON.stringify(corpo),
+        body: JSON.stringify(body),
       }
     );
 
-    // Registros arquivados ou na lixeira
-    // não entram nos indicadores operacionais.
-    const validos = (resposta.results || []).filter(
-      (x) => !x.archived && !x.in_trash
+    registros.push(
+      ...(resposta.results || []).filter(
+        (p) => !p.archived && !p.in_trash
+      )
     );
 
-    registros.push(...validos);
-
+    hasMore = Boolean(resposta.has_more);
     cursor = resposta.next_cursor;
-    temMais = Boolean(resposta.has_more);
 
   } while (
-    temMais &&
+    hasMore &&
     cursor &&
-    registros.length < MAX_CHAMADOS
+    registros.length < MAX_REGISTROS
   );
 
   return {
-    registros: registros.slice(0, MAX_CHAMADOS),
-    limitado: temMais,
+    paginas: registros.slice(0, MAX_REGISTROS),
+    limitado: hasMore,
   };
 }
 
-async function buscarBlocos(paginaId, profundidade = 0) {
-  let cursor;
-  const blocos = [];
+async function lerBlocos(id, profundidade = 0) {
+  const encontrados = [];
+  let cursor = null;
 
   do {
-    const query = new URLSearchParams({
+    const params = new URLSearchParams({
       page_size: "100",
     });
 
     if (cursor) {
-      query.set("start_cursor", cursor);
+      params.set("start_cursor", cursor);
     }
 
-    const resposta = await requisitarNotion(
-      `/blocks/${paginaId}/children?${query.toString()}`
+    const dados = await notion(
+      `/blocks/${id}/children?${params.toString()}`
     );
 
-    for (const bloco of resposta.results || []) {
-      blocos.push(bloco);
+    for (const bloco of dados.results || []) {
+      encontrados.push(bloco);
 
       if (
-        profundidade < 2 &&
         bloco.has_children &&
-        [
-          "callout",
-          "toggle",
-          "bulleted_list_item",
-          "numbered_list_item",
-        ].includes(bloco.type)
+        profundidade < 3
       ) {
-        const filhos = await buscarBlocos(
+        const filhos = await lerBlocos(
           bloco.id,
           profundidade + 1
         );
 
-        blocos.push(...filhos);
+        encontrados.push(...filhos);
       }
     }
 
-    cursor = resposta.next_cursor;
-  } while (respostaHasCursor(cursor));
+    cursor = dados.next_cursor;
 
-  return blocos;
+    if (!dados.has_more) break;
+  } while (cursor);
+
+  return encontrados;
 }
 
-function respostaHasCursor(cursor) {
-  return Boolean(cursor);
+function categoriaMarcada(texto) {
+  const t = normalizar(texto);
+
+  const regras = [
+    ["Pilhas e alimentação", /pilhas|alimentacao|bateria/],
+    ["Placa e componentes eletrônicos", /falha eletronica|defeito de placa/],
+    ["Sensores e funcionamento", /falha de funcionamento|comportamento anormal/],
+    ["Aplicativo e conectividade", /rede|comunicacao|aplicativo|infraestrutura/],
+    ["Cadastro e configuração", /configuracao|cadastro|reset|credenciais/],
+    ["Instalação", /instalacao inadequada|nao homologada/],
+    ["Componentes mecânicos", /componentes mecanicos|componentes danificados|falha de funcionamento mecanico|mecanismo de travamento/],
+    ["Oxidação e corrosão", /oxidacao|corrosao|umidade/],
+    ["Desgaste e manutenção", /desgaste|limpeza|manutencao/],
+    ["Fabricação", /defeito ou falha de fabricacao|defeito ou falha de fabricacao/],
+    ["Dúvidas e orientações", /duvidas sobre funcionamento|documentacao|manual|informacao tecnica divergente/],
+    ["Transferência de dispositivo", /vinculacao|desvinculacao|transferencia de dispositivo/],
+    ["Componentes ausentes", /falta de componentes|perda|substituicao de componentes/],
+    ["Uso indevido", /uso indevido|fora das especificacoes/],
+    ["Intervenção não autorizada", /intervencao|modificacao nao autorizada/],
+    ["Incompatibilidade", /incompativeis|incompativel/],
+  ];
+
+  return regras.find(([, regex]) => regex.test(t))?.[0] || null;
 }
 
-function analisarBlocos(blocos) {
+function classificarSintoma(texto) {
+  const t = normalizar(texto);
+
+  if (!t) return null;
+
+  const regras = [
+    ["Placa, tela e sensores", /placa|biometr|leitor|sensor|display|tela/],
+    ["Pilhas e alimentação", /pilha|bateria|usb|carregador|consumo|energia|carga/],
+    ["Aplicativo e conectividade", /aplicativo|bluetooth|wi.?fi|conexao|internet/],
+    ["Cadastro e configuração", /senha|cadastro|reset|configurac|usuario/],
+    ["Instalação", /instalac|montagem|reversao|inversao/],
+    ["Componentes mecânicos", /macaneta|quebr|travamento|motor|mecanism|trinco/],
+    ["Oxidação e corrosão", /oxidac|corros|ferrug|umidade/],
+    ["Desgaste e manutenção", /desgaste|limpeza|lubrificac/],
+  ];
+
+  return regras.find(([, regex]) => regex.test(t))?.[0] || null;
+}
+
+function identificarDuvida(texto) {
+  const t = normalizar(texto);
+
+  if (!/duvida|como |orientac|informac|gostaria de saber|preciso saber/.test(t)) {
+    return null;
+  }
+
+  if (/app|wifi|conexao/.test(t)) {
+    return "Aplicativo e conectividade";
+  }
+
+  if (/senha|reset|cadastro|digital/.test(t)) {
+    return "Senhas, cadastro e reset";
+  }
+
+  if (/garantia|nota fiscal/.test(t)) {
+    return "Garantia e documentação";
+  }
+
+  if (/instalac|montagem/.test(t)) {
+    return "Instalação";
+  }
+
+  return "Uso e funcionamento";
+}
+
+function identificarLaudo(texto) {
+  const t = normalizar(texto);
+
+  if (t === "procedente") return "Procedente";
+  if (t === "improcedente") return "Improcedente";
+  if (t === "com cobranca") return "Com cobrança";
+
+  return null;
+}
+
+function extrairAnalise(blocos) {
   let secao = "";
-  let laudo = "Sem laudo";
-  let problemaTecnico = null;
-  let duvidaTecnica = null;
+  let categoria = null;
+  let laudo = null;
+  let duvida = null;
+
+  const relatos = [];
 
   for (const bloco of blocos) {
     const texto = textoBloco(bloco);
-    const textoNormalizado = normalizar(texto);
+    const t = normalizar(texto);
+
+    if (!t) continue;
 
     if (
-      /analise tecnica/.test(textoNormalizado) &&
-      (bloco.type.startsWith("heading") ||
-        textoNormalizado.length < 70)
+      /(?:^|\b)analise tecnica\b/.test(t) &&
+      t.length < 100
     ) {
       secao = "analise";
       continue;
     }
 
     if (
-      /laudo da ocorrencia/.test(textoNormalizado) &&
-      (bloco.type.startsWith("heading") ||
-        textoNormalizado.length < 70)
+      /(?:^|\b)laudo da ocorrencia\b/.test(t) &&
+      t.length < 100
     ) {
       secao = "laudo";
       continue;
     }
 
     if (
-      /parecer tecnico/.test(textoNormalizado) &&
-      bloco.type.startsWith("heading")
+      /(?:^|\b)relato da ocorrencia\b/.test(t) &&
+      t.length < 100
     ) {
-      secao = "parecer";
+      secao = "relato";
       continue;
     }
 
     if (
-      /pedidos de reposicao/.test(textoNormalizado) &&
-      bloco.type.startsWith("heading")
+      /parecer tecnico|pedidos de reposicao/.test(t) &&
+      t.length < 100
     ) {
-      secao = "reposicao";
+      secao = "outro";
       continue;
+    }
+
+    if (secao === "relato") {
+      relatos.push(texto);
     }
 
     if (
-      bloco.type !== "to_do" ||
-      !bloco.to_do?.checked
+      secao === "analise" &&
+      bloco.type === "to_do" &&
+      bloco.to_do?.checked
     ) {
-      continue;
-    }
+      const resultado = categoriaMarcada(texto);
 
-    if (secao === "analise") {
-      const categoria = nomeCategoriaAnalise(texto);
+      if (resultado) {
+        categoria = categoria || resultado;
 
-      if (categoria === "Dúvidas e orientações") {
-        duvidaTecnica = categoria;
-      } else if (!problemaTecnico) {
-        problemaTecnico = categoria;
+        if (resultado === "Dúvidas e orientações") {
+          duvida = identificarDuvida(
+            relatos.join(" ")
+          ) || "Uso e funcionamento";
+        }
       }
     }
 
-    if (secao === "laudo") {
-      const resultado = classificarLaudo(texto);
+    if (
+      secao === "laudo" &&
+      bloco.type === "to_do" &&
+      bloco.to_do?.checked
+    ) {
+      const resultado = identificarLaudo(texto);
 
       if (resultado) laudo = resultado;
     }
   }
 
   return {
+    categoria,
     laudo,
-    problemaTecnico,
-    duvidaTecnica,
+    duvida,
+    relatoInterno: relatos.join(" "),
   };
 }
 
-async function processarEmLotes(registros) {
-  const resultados = [];
+async function analisarPaginas(paginas) {
+  const resultado = new Map();
   let indice = 0;
 
-  // Duas consultas simultâneas para respeitar
-  // melhor os limites da API do Notion.
-  async function trabalhador() {
-    while (indice < registros.length) {
-      const atual = registros[indice++];
+  async function worker() {
+    while (indice < paginas.length) {
+      const pagina = paginas[indice++];
 
       try {
-        const blocos = await buscarBlocos(atual.id);
+        const blocos = await lerBlocos(pagina.id);
 
-        resultados.push({
-          id: atual.id,
-          ...analisarBlocos(blocos),
-          analisado: true,
+        resultado.set(pagina.id, {
+          ...extrairAnalise(blocos),
+          leituraOk: true,
         });
-      } catch {
-        resultados.push({
-          id: atual.id,
-          laudo: "Sem laudo",
-          problemaTecnico: null,
-          duvidaTecnica: null,
-          analisado: false,
+      } catch (error) {
+        console.error(
+          `Erro ao ler chamado ${pagina.id}:`,
+          error.message
+        );
+
+        resultado.set(pagina.id, {
+          leituraOk: false,
         });
       }
     }
   }
 
   await Promise.all([
-    trabalhador(),
-    trabalhador(),
+    worker(),
+    worker(),
   ]);
 
-  return new Map(resultados.map((x) => [x.id, x]));
+  return resultado;
 }
 
-function agrupar(registros, chave) {
-  const mapa = new Map();
+function montarChamado(pagina, detalhes) {
+  const props = pagina.properties || {};
 
-  for (const item of registros) {
-    const nome = item[chave] || "Não informado";
+  const produto = obterPropriedade(props, [
+    "Produto (nome e/ou modelo)",
+    "Produto",
+    "Modelo",
+    "Nome do produto",
+  ]);
 
-    mapa.set(nome, (mapa.get(nome) || 0) + 1);
-  }
+  const relato = obterPropriedade(props, [
+    "Descrição da ocorrência (através do relato do cliente/usuario)",
+    "Descrição da ocorrência",
+    "Descrição do problema",
+    "Relato do cliente",
+  ]) || detalhes?.relatoInterno || "";
 
-  return Array.from(mapa.entries())
-    .map(([nome, total]) => ({ nome, total }))
-    .sort((a, b) => b.total - a.total);
-}
+  const tipo = obterPropriedade(props, [
+    "Tipo do produto",
+    "Tipo de produto",
+    "Categoria",
+  ]);
 
-function extrairChamado(pagina, analise) {
-  const propriedades = pagina.properties || {};
-
-  const produto = textoPropriedade(
-    propriedades["Produto (nome e/ou modelo)"]
-  );
-
-  const relato = textoPropriedade(
-    propriedades[
-      "Descrição da ocorrência (através do relato do cliente/usuario)"
-    ]
-  );
-
-  const tipo = textoPropriedade(
-    propriedades["Tipo do produto"]
-  );
-
-  const problema =
-    analise?.problemaTecnico ||
-    identificarProblema(relato);
+  const categoria =
+    detalhes?.categoria ||
+    classificarSintoma(relato);
 
   const duvida =
-    analise?.duvidaTecnica ||
+    detalhes?.duvida ||
     identificarDuvida(relato);
 
   return {
     id: pagina.id,
     data: pagina.created_time,
-    produto: produto || "Não informado",
-    tipo: tipo || "Não informado",
-    problema,
+    produto: produto || null,
+    tipo: tipo || null,
+    relato,
+    problema: categoria,
     duvida,
-    laudo: analise?.laudo || "Sem laudo",
-    laudoVerificado: Boolean(analise?.analisado),
+    laudo: detalhes?.laudo || null,
+    leituraOk: detalhes?.leituraOk === true,
   };
 }
 
-function agregar(chamados) {
+function ranking(lista, campo) {
+  const contagem = new Map();
+
+  for (const item of lista) {
+    const nome = item[campo];
+
+    if (!nome) continue;
+
+    contagem.set(
+      nome,
+      (contagem.get(nome) || 0) + 1
+    );
+  }
+
+  return [...contagem.entries()]
+    .map(([nome, total]) => ({
+      nome,
+      total,
+    }))
+    .sort(
+      (a, b) =>
+        b.total - a.total ||
+        a.nome.localeCompare(b.nome)
+    );
+}
+
+function indicadores(chamados) {
   const laudos = {
     Procedente: 0,
     Improcedente: 0,
@@ -605,42 +536,72 @@ function agregar(chamados) {
   };
 
   for (const chamado of chamados) {
-    laudos[chamado.laudo]++;
+    const chave = chamado.laudo || "Sem laudo";
+    laudos[chave]++;
   }
 
-  const porDia = agrupar(
-    chamados.map((x) => ({
-      dia: x.data?.slice(0, 10) || "",
-    })),
-    "dia"
-  );
+  const problemasIdentificados =
+    chamados.filter((c) => c.problema);
+
+  const produtosIdentificados =
+    chamados.filter((c) => c.produto);
+
+  const duvidasIdentificadas =
+    chamados.filter((c) => c.duvida);
+
+  const dias = chamados.map((c) => ({
+    dia: c.data?.slice(0, 10),
+  }));
 
   return {
     total: chamados.length,
     laudos,
-    problemas: agrupar(chamados, "problema"),
-    produtos: agrupar(chamados, "produto"),
-    duvidas: agrupar(
-      chamados.filter((x) => x.duvida),
+    problemas: ranking(
+      problemasIdentificados,
+      "problema"
+    ),
+    produtos: ranking(
+      produtosIdentificados,
+      "produto"
+    ),
+    duvidas: ranking(
+      duvidasIdentificadas,
       "duvida"
     ),
-    tipos: agrupar(chamados, "tipo"),
-    porDia: porDia.sort(
-      (a, b) => a.nome.localeCompare(b.nome)
-    ),
-    analisados: chamados.filter(
-      (x) => x.laudoVerificado
-    ).length,
+    tipos: ranking(chamados, "tipo"),
+    porDia: ranking(dias, "dia")
+      .map((item) => ({
+        nome: item.nome,
+        total: item.total,
+      }))
+      .sort(
+        (a, b) =>
+          a.nome.localeCompare(b.nome)
+      ),
+
+    cobertura: {
+      produtosIdentificados:
+        produtosIdentificados.length,
+
+      problemasIdentificados:
+        problemasIdentificados.length,
+
+      duvidasIdentificadas:
+        duvidasIdentificadas.length,
+
+      paginasLidas:
+        chamados.filter((c) => c.leituraOk).length,
+
+      laudosClassificados:
+        chamados.filter((c) => c.laudo).length,
+    },
   };
 }
 
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "private, no-store");
-  res.setHeader("Vary", "Authorization");
 
   if (req.method !== "GET") {
-    res.setHeader("Allow", "GET");
-
     return res.status(405).json({
       error: "Método não permitido.",
     });
@@ -649,39 +610,33 @@ export default async function handler(req, res) {
   try {
     if (!process.env.NOTION_TOKEN) {
       return res.status(503).json({
-        error:
-          "Configure NOTION_TOKEN nas variáveis de ambiente da Vercel.",
+        error: "NOTION_TOKEN não configurado.",
       });
     }
 
-    const autenticado = await validarSessao(req);
-
-    if (!autenticado) {
+    if (!(await validarUsuario(req))) {
       return res.status(401).json({
-        error: "Faça login para acessar o relatório.",
+        error: "Sessão inválida ou expirada.",
       });
     }
 
     const { inicio, fim } = req.query;
 
-    const padraoData = /^\d{4}-\d{2}-\d{2}$/;
+    const regexData = /^\d{4}-\d{2}-\d{2}$/;
 
     if (
       typeof inicio !== "string" ||
       typeof fim !== "string" ||
-      !padraoData.test(inicio) ||
-      !padraoData.test(fim)
+      !regexData.test(inicio) ||
+      !regexData.test(fim)
     ) {
       return res.status(400).json({
-        error: "Informe um período válido.",
+        error: "Período inválido.",
       });
     }
 
-    const inicioDate = new Date(`${inicio}T00:00:00Z`);
-    const fimDate = new Date(`${fim}T00:00:00Z`);
-
     const duracao =
-      (fimDate - inicioDate) / 86400000;
+      (new Date(fim) - new Date(inicio)) / 86400000;
 
     if (
       !Number.isFinite(duracao) ||
@@ -689,62 +644,76 @@ export default async function handler(req, res) {
       duracao > 370
     ) {
       return res.status(400).json({
-        error: "O período deve ter entre 1 e 370 dias.",
+        error: "Período permitido: 1 a 370 dias.",
       });
     }
 
-    // Horário local de Santa Catarina.
-    const inicioIso = `${inicio}T00:00:00-03:00`;
-    const fimIso = `${fim}T00:00:00-03:00`;
-
-    const resultado = await buscarChamados(
-      inicioIso,
-      fimIso
+    const encontrados = await listarChamados(
+      `${inicio}T00:00:00-03:00`,
+      `${fim}T00:00:00-03:00`
     );
 
-    const registrosAnalisaveis =
-      resultado.registros.slice(0, MAX_ANALISES);
+    const paginasParaAnalise =
+      encontrados.paginas.slice(0, MAX_DETALHAMENTOS);
 
-    const analises = await processarEmLotes(
-      registrosAnalisaveis
+    const detalhes = await analisarPaginas(
+      paginasParaAnalise
     );
 
-    const chamados = resultado.registros.map(
+    const chamados = encontrados.paginas.map(
       (pagina) =>
-        extrairChamado(
+        montarChamado(
           pagina,
-          analises.get(pagina.id)
+          detalhes.get(pagina.id)
         )
     );
 
-    const indicadores = agregar(chamados);
+    const resumo = indicadores(chamados);
 
     return res.status(200).json({
       periodo: { inicio, fim },
-      indicadores,
+      indicadores: resumo,
       atualizadoEm: new Date().toISOString(),
+
       avisos: {
-        limiteRegistros: resultado.limitado,
-        limiteAnalises:
-          resultado.registros.length > MAX_ANALISES,
-        laudosAnalisados: indicadores.analisados,
-        laudosPendentes:
-          chamados.length - indicadores.analisados,
         base:
           "Chamados de Assistências Técnicas e Suporte Técnico",
-        criterioData: "Data de criação do chamado",
+
+        criterioData:
+          "Data de criação do chamado",
+
+        limiteRegistros:
+          encontrados.limitado,
+
+        limiteAnalises:
+          encontrados.paginas.length >
+          MAX_DETALHAMENTOS,
+
+        laudosAnalisados:
+          resumo.cobertura.paginasLidas,
+
+        laudosPendentes:
+          resumo.total -
+          resumo.cobertura.laudosClassificados,
+
+        leituraIncompleta:
+          resumo.cobertura.paginasLidas <
+          Math.min(
+            resumo.total,
+            MAX_DETALHAMENTOS
+          ),
       },
     });
 
   } catch (error) {
     console.error(
-      "Falha na integração Synter Analytics:",
+      "Synter Analytics:",
       error.message
     );
 
     return res.status(500).json({
       error:
-        "Não foi possível consultar os dados do Notion. Verifique a conexão e as permissões.",
+        "Erro ao consultar o Notion. Verifique o log da função na Vercel e as permissões de leitura.",
     });
   }
 }
