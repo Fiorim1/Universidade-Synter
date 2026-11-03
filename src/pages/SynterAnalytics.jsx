@@ -1911,7 +1911,7 @@ export default function SynterAnalytics() {
                         stroke="#a0a0a8"
                         fontSize={10}
                         tickFormatter={(valor) =>
-                          valor.slice(5)
+                          formatarData(valor).slice(0, 5)
                         }
                       />
 
@@ -1922,6 +1922,8 @@ export default function SynterAnalytics() {
 
                       <Tooltip
                         contentStyle={estiloTooltip}
+                        labelFormatter={(valor) => formatarData(valor)}
+                        formatter={(valor) => [valor, "Chamados"]}
                       />
 
                       <Line
