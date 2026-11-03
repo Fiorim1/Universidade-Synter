@@ -1944,7 +1944,7 @@ export default function SynterAnalytics() {
               </span>
 
               <h2>
-                Diagnóstico e Recomendações do Período
+                Diagnóstico do Período
               </h2>
 
               {!podeConcluir ? (
@@ -2090,67 +2090,6 @@ export default function SynterAnalytics() {
                     </p>
                   )}
 
-                  {principalProblema && (
-                    <p>
-                      <strong>
-                        Recomendação técnica:
-                      </strong>{" "}
-                      acompanhar a recorrência
-                      da categoria{" "}
-                      <strong>
-                        {principalProblema.nome}
-                      </strong>,
-                      verificando os produtos
-                      envolvidos, os relatos,
-                      os pareceres técnicos
-                      e as soluções aplicadas.
-                    </p>
-                  )}
-
-                  {principalDuvida && (
-                    <p>
-                      <strong>
-                        Recomendação de atendimento:
-                      </strong>{" "}
-                      avaliar a criação ou
-                      atualização de materiais
-                      explicativos sobre{" "}
-                      <strong>
-                        {principalDuvida.nome}
-                      </strong>,
-                      para reduzir dúvidas
-                      repetitivas.
-                    </p>
-                  )}
-
-                  {(cobertura.produtos || 0) <
-                    total && (
-                    <p>
-                      <strong>
-                        Qualidade dos registros:
-                      </strong>{" "}
-                      parte dos chamados
-                      não apresenta modelo
-                      de produto identificável.
-                      Recomenda-se aprimorar
-                      o preenchimento desse
-                      campo no Notion.
-                    </p>
-                  )}
-
-                  <p>
-                    <strong>
-                      Observação:
-                    </strong>{" "}
-                    os tipos de problema e os
-                    sintomas relatados não
-                    comprovam, isoladamente,
-                    a existência de defeito
-                    de fabricação. A conclusão
-                    técnica deve considerar
-                    os pareceres e as evidências
-                    registradas.
-                  </p>
                 </>
               )}
 
