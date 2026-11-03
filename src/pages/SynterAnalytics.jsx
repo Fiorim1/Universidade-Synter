@@ -400,7 +400,19 @@ function indicadoresDosChamados(chamados) {
     ),
 
     modalidades: agrupar(
-      chamados,
+      chamados.map((chamado) => {
+        const tipo = normalizar(chamado.atendimento);
+
+        return {
+          ...chamado,
+          atendimento:
+            tipo === "assistencia tecnica"
+              ? "Assistência técnica"
+              : tipo === "suporte tecnico"
+                ? "Suporte técnico"
+                : chamado.atendimento,
+        };
+      }),
       "atendimento"
     ),
 
