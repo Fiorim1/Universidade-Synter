@@ -5,7 +5,7 @@ import {
   Routes,
   Route,
   useLocation,
-  Navigate
+  Navigate,
 } from "react-router-dom";
 
 // ========================================
@@ -18,38 +18,26 @@ import ForgotPassword from "./components/ForgotPassword.jsx";
 import UpdatePassword from "./components/UpdatePassword.jsx";
 
 // ========================================
-// MFA / 2FA
-// ========================================
-
-import MFASetup from "./components/MFASetup.jsx";
-import MFAVerify from "./components/MFAVerify.jsx";
-
-// ========================================
 // PÁGINAS
 // ========================================
 
 import Manuals from "./routes/Manuals.jsx";
 
 import Dashboard from "./pages/Dashboard.jsx";
+import DashboardSAC from "./pages/DashboardSAC.jsx";
+
 import Videos from "./pages/Videos.jsx";
 import TabelaPrecos from "./pages/TabelaPrecos.jsx";
 import AssistenciaTecnica from "./pages/AssistenciaTecnica.jsx";
+import VisitasTecnicas from "./pages/VisitasTecnicas.jsx";
+
 import ImageToPdf from "./pages/ImageToPdf.jsx";
 import TreinamentoComercial from "./pages/TreinamentoComercial.jsx";
 import Marketing from "./pages/Marketing.jsx";
 import DigMarketing from "./pages/DigMarketing.jsx";
+
 import Orcamentos from "./pages/Orcamentos.jsx";
 import FichaTec from "./pages/FichaTec.jsx";
-
-// ========================================
-// NOVO MÓDULO — VISITAS TÉCNICAS
-// ========================================
-
-import VisitasTecnicas from "./pages/VisitasTecnicas.jsx";
-
-// ========================================
-// PÁGINA NÃO ENCONTRADA
-// ========================================
 
 import NotFound from "./pages/NotFound.jsx";
 
@@ -65,7 +53,6 @@ import PublicRoute from "./components/PublicRoute.jsx";
 // ========================================
 
 import SynterAssistant from "./components/SynterAssistant.jsx";
-import DashboardSAC from "./pages/DashboardSAC.jsx";
 
 // ========================================
 // COMPONENTE PRINCIPAL
@@ -82,7 +69,7 @@ function App() {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: "auto"
+      behavior: "auto",
     });
 
     document.documentElement.scrollTop = 0;
@@ -90,7 +77,7 @@ function App() {
   }, [location.pathname]);
 
   // ========================================
-  // PÁGINAS ONDE O ASSISTENTE NÃO APARECE
+  // PÁGINAS SEM ASSISTENTE
   // ========================================
 
   const paginasPublicas = [
@@ -99,8 +86,6 @@ function App() {
     "/register",
     "/forgot-password",
     "/update-password",
-    "/mfa/setup",
-    "/mfa/verify"
   ];
 
   const mostrarAssistente =
@@ -113,7 +98,6 @@ function App() {
       {/* ======================================== */}
 
       <Routes>
-
         {/* ======================================== */}
         {/* LOGIN                                    */}
         {/* ======================================== */}
@@ -150,32 +134,6 @@ function App() {
         />
 
         {/* ======================================== */}
-        {/* CONFIGURAÇÃO DO 2FA                      */}
-        {/* ======================================== */}
-
-        <Route
-          path="/mfa/setup"
-          element={
-            <ProtectedRoute>
-              <MFASetup />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ======================================== */}
-        {/* VERIFICAÇÃO DO 2FA                       */}
-        {/* ======================================== */}
-
-        <Route
-          path="/mfa/verify"
-          element={
-            <ProtectedRoute>
-              <MFAVerify />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ======================================== */}
         {/* RECUPERAÇÃO DE SENHA                     */}
         {/* ======================================== */}
 
@@ -194,9 +152,7 @@ function App() {
 
         <Route
           path="/update-password"
-          element={
-            <UpdatePassword />
-          }
+          element={<UpdatePassword />}
         />
 
         {/* ======================================== */}
@@ -208,6 +164,19 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ======================================== */}
+        {/* DASHBOARD SAC                            */}
+        {/* ======================================== */}
+
+        <Route
+          path="/dashsac"
+          element={
+            <ProtectedRoute>
+              <DashboardSAC />
             </ProtectedRoute>
           }
         />
@@ -305,7 +274,7 @@ function App() {
         />
 
         {/* ======================================== */}
-        {/* VISITAS TÉCNICAS — NOVO MÓDULO           */}
+        {/* VISITAS TÉCNICAS                         */}
         {/* ======================================== */}
 
         <Route
@@ -369,12 +338,27 @@ function App() {
           }
         />
 
+        {/* ======================================== */}
+        {/* PÁGINAS ANTIGAS DO MFA                   */}
+        {/* ======================================== */}
+
         <Route
-          path="/dashsac"
+          path="/mfa/setup"
           element={
-            <ProtectedRoute>
-              <DashboardSAC />
-            </ProtectedRoute>
+            <Navigate
+              to="/dashboard"
+              replace
+            />
+          }
+        />
+
+        <Route
+          path="/mfa/verify"
+          element={
+            <Navigate
+              to="/dashboard"
+              replace
+            />
           }
         />
 
@@ -384,11 +368,8 @@ function App() {
 
         <Route
           path="*"
-          element={
-            <NotFound />
-          }
+          element={<NotFound />}
         />
-
       </Routes>
 
       {/* ======================================== */}
