@@ -39,6 +39,17 @@ import DigMarketing from "./pages/DigMarketing.jsx";
 import Orcamentos from "./pages/Orcamentos.jsx";
 import FichaTec from "./pages/FichaTec.jsx";
 
+// ========================================
+// NOVO MÓDULO — SYNTER ANALYTICS
+// BUSINESS INTELLIGENCE / RELATÓRIOS
+// ========================================
+
+import SynterAnalytics from "./pages/SynterAnalytics.jsx";
+
+// ========================================
+// PÁGINA NÃO ENCONTRADA
+// ========================================
+
 import NotFound from "./pages/NotFound.jsx";
 
 // ========================================
@@ -98,6 +109,7 @@ function App() {
       {/* ======================================== */}
 
       <Routes>
+
         {/* ======================================== */}
         {/* LOGIN                                    */}
         {/* ======================================== */}
@@ -156,7 +168,7 @@ function App() {
         />
 
         {/* ======================================== */}
-        {/* DASHBOARD                                */}
+        {/* DASHBOARD PRINCIPAL                      */}
         {/* ======================================== */}
 
         <Route
@@ -177,6 +189,19 @@ function App() {
           element={
             <ProtectedRoute>
               <DashboardSAC />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ======================================== */}
+        {/* SYNTER ANALYTICS — BI GERENCIAL          */}
+        {/* ======================================== */}
+
+        <Route
+          path="/synter-analytics"
+          element={
+            <ProtectedRoute>
+              <SynterAnalytics />
             </ProtectedRoute>
           }
         />
@@ -339,7 +364,7 @@ function App() {
         />
 
         {/* ======================================== */}
-        {/* PÁGINAS ANTIGAS DO MFA                   */}
+        {/* ROTAS ANTIGAS DO GOOGLE AUTHENTICATOR    */}
         {/* ======================================== */}
 
         <Route
@@ -370,6 +395,7 @@ function App() {
           path="*"
           element={<NotFound />}
         />
+
       </Routes>
 
       {/* ======================================== */}
