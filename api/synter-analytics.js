@@ -1,6 +1,6 @@
 
-const API = "https://api.notion.com/v1";
-const VERSION = "2025-09-03";
+const NOTION_API = "https://api.notion.com/v1";
+const NOTION_VERSION = "2025-09-03";
 
 const DATA_SOURCE_ID =
   process.env.NOTION_DATA_SOURCE_ID;
@@ -17,74 +17,73 @@ const normalizar = (valor) =>
     .replace(/\s+/g, " ")
     .trim();
 
-const esperar = (ms) =>
+const pausa = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-function textoRico(itens) {
-  return (itens || [])
+function textoRico(itens = []) {
+  return itens
     .map(
       (item) =>
-        item.plain_text ||
-        item.text?.content ||
+        item.plain_text ??
+        item.text?.content ??
         ""
     )
-    .join("");
+    .join("")
+    .trim();
 }
 
-function valorCampo(campo) {
-  if (!campo) return "";
+function valorPropriedade(prop) {
+  if (!prop) return "";
 
-  switch (campo.type) {
+  switch (prop.type) {
     case "title":
-      return textoRico(campo.title);
+      return textoRico(prop.title);
 
     case "rich_text":
-      return textoRico(campo.rich_text);
+      return textoRico(prop.rich_text);
 
     case "select":
-      return campo.select?.name || "";
+      return prop.select?.name || "";
 
     case "status":
-      return campo.status?.name || "";
+      return prop.status?.name || "";
 
     case "multi_select":
-      return (campo.multi_select || [])
+      return (prop.multi_select || [])
         .map((item) => item.name)
         .join(", ");
 
     case "date":
-      return campo.date?.start || "";
+      return prop.date?.start || "";
 
     case "number":
-      return String(campo.number ?? "");
+      return String(prop.number ?? "");
 
     case "formula":
       return String(
-        campo.formula?.string ??
-        campo.formula?.number ??
+        prop.formula?.string ??
+        prop.formula?.number ??
         ""
       );
+
+    case "url":
+      return prop.url || "";
 
     default:
       return "";
   }
 }
 
-function campo(properties, nomes) {
-  const entradas = Object.entries(
-    properties || {}
-  );
+function obterCampo(props, nomes) {
+  const entradas = Object.entries(props || {});
 
   for (const nome of nomes) {
-    const encontrado = entradas.find(
+    const entrada = entradas.find(
       ([chave]) =>
-        normalizar(chave) ===
-        normalizar(nome)
+        normalizar(chave) === normalizar(nome)
     );
 
-    const valor = valorCampo(
-      encontrado?.[1]
-    );
+    const valor = valorPropriedade(entrada?.[1]);
 
     if (valor) return valor;
   }
@@ -92,50 +91,65 @@ function campo(properties, nomes) {
   return "";
 }
 
+function valorUtil(valor) {
+  const v = normalizar(valor);
+
+  return (
+    v &&
+    ![
+      "nao informado",
+      "nao informada",
+      "nenhum",
+      "n/a",
+      "-",
+    ].includes(v)
+  );
+}
+
 // ========================================
-// CONSULTAS À API DO NOTION
+// REQUISIÇÕES À API DO NOTION
 // ========================================
 
-async function requisitarNotion(
+async function notion(
   caminho,
-  options = {},
+  opcoes = {},
   tentativa = 0
 ) {
   const resposta = await fetch(
-    `${API}${caminho}`,
+    `${NOTION_API}${caminho}`,
     {
-      ...options,
+      ...opcoes,
       headers: {
         Authorization:
           `Bearer ${process.env.NOTION_TOKEN}`,
 
-        "Notion-Version": VERSION,
+        "Notion-Version": NOTION_VERSION,
 
         "Content-Type": "application/json",
       },
     }
   );
 
-  // Controle de limite de requisições
-
   if (
-    resposta.status === 429 &&
-    tentativa < 5
+    (
+      resposta.status === 429 ||
+      resposta.status >= 500
+    ) &&
+    tentativa < 4
   ) {
     const segundos = Math.min(
       Number(
-        resposta.headers.get(
-          "retry-after"
-        )
-      ) || 2,
-      15
+        resposta.headers.get("retry-after")
+      ) ||
+        2 ** tentativa + 1,
+      12
     );
 
-    await esperar(segundos * 1000);
+    await pausa(segundos * 1000);
 
-    return requisitarNotion(
+    return notion(
       caminho,
-      options,
+      opcoes,
       tentativa + 1
     );
   }
@@ -145,7 +159,7 @@ async function requisitarNotion(
 
     throw new Error(
       `Notion HTTP ${resposta.status}: ${
-        erro.slice(0, 250)
+        erro.slice(0, 200)
       }`
     );
   }
@@ -154,17 +168,15 @@ async function requisitarNotion(
 }
 
 // ========================================
-// AUTENTICAÇÃO DO USUÁRIO
+// AUTENTICAÇÃO COM SUPABASE
 // ========================================
 
-async function verificarSessao(req) {
-  const authorization =
+async function validarLogin(req) {
+  const cabecalho =
     req.headers.authorization || "";
 
-  const token = authorization.startsWith(
-    "Bearer "
-  )
-    ? authorization.slice(7)
+  const token = cabecalho.startsWith("Bearer ")
+    ? cabecalho.slice(7)
     : "";
 
   if (!token) return false;
@@ -179,7 +191,7 @@ async function verificarSessao(req) {
 
   if (!url || !chave) {
     throw new Error(
-      "Configuração de autenticação ausente."
+      "Configuração do Supabase ausente."
     );
   }
 
@@ -201,120 +213,225 @@ async function verificarSessao(req) {
 }
 
 // ========================================
-// EXTRAÇÃO DAS PROPRIEDADES DO CHAMADO
+// EXTRAIR CAMPOS REAIS DOS CHAMADOS
 // ========================================
 
-function resumirPagina(pagina) {
+function extrairPropriedades(pagina) {
   const props = pagina.properties || {};
+
+  // ----------------------------------------
+  // TIPO DO PRODUTO
+  // ----------------------------------------
+
+  const tipo = obterCampo(props, [
+    "Tipo de produto",
+    "Tipo do produto",
+  ]);
+
+  // ----------------------------------------
+  // PRODUTOS ELETRÔNICOS E MECÂNICOS
+  // ----------------------------------------
+
+  const eletronico = obterCampo(props, [
+    "Produto Eletronico",
+    "Produto Eletrônico",
+  ]);
+
+  const mecanico = obterCampo(props, [
+    "Produto Mec",
+    "Produto Mecânico",
+    "Produto Mecanico",
+  ]);
+
+  const generico = obterCampo(props, [
+    "Produto (nome e/ou modelo)",
+    "Nome do produto",
+    "Modelo",
+    "Produto",
+  ]);
+
+  // Seleciona prioritariamente o campo
+  // correspondente ao tipo de produto.
+
+  const principal =
+    normalizar(tipo).includes("eletronico")
+      ? eletronico
+      : normalizar(tipo).includes("mecanico")
+        ? mecanico
+        : eletronico || mecanico;
+
+  // Ignora "Não Informado" no ranking.
+
+  const produto =
+    [
+      principal,
+      generico,
+      eletronico,
+      mecanico,
+    ].find(valorUtil) || null;
+
+  // ----------------------------------------
+  // TIPO DE PROBLEMA
+  // ----------------------------------------
+
+  const tipoProblema = obterCampo(props, [
+    "Tipo de problema",
+    "Tipo do problema",
+  ]);
+
+  // ----------------------------------------
+  // CONSOLIDAR DADOS
+  // ----------------------------------------
 
   return {
     id: pagina.id,
 
     data: (
-      campo(props, [
+      obterCampo(props, [
         "Data de início",
         "Data de abertura",
         "Data do atendimento",
-      ]) || pagina.created_time
+      ]) ||
+      pagina.created_time ||
+      ""
     ).slice(0, 10),
 
-    produto: campo(props, [
-      "Produto (nome e/ou modelo)",
-      "Nome do produto",
-      "Modelo",
-      "Produto",
+    dataConclusao: obterCampo(props, [
+      "Data de conclusão",
+      "Data de finalização",
     ]),
 
-    tipo: campo(props, [
-      "Tipo de produto",
-      "Tipo do produto",
-    ]),
+    produto,
 
-    atendimento: campo(props, [
-      "Assistência ou Suporte",
-      "Tipo de assistência",
-    ]),
+    tipo: tipo || null,
 
-    status: campo(props, [
-      "Status",
-      "Situação",
-    ]),
+    atendimento:
+      obterCampo(props, [
+        "Assistência ou Suporte",
+        "Tipo de assistência",
+        "Tipo de assistencia",
+      ]) || null,
 
-    parecer: campo(props, [
-      "Parecer",
-      "Laudo",
-      "Laudo da ocorrência",
-    ]),
+    status:
+      obterCampo(props, [
+        "Status",
+        "Situação",
+      ]) || null,
 
-    relato: campo(props, [
-      "Descrição da ocorrência (através do relato do cliente/usuario)",
-      "Descrição da ocorrência",
-      "Relato do cliente",
-      "Problema relatado",
-    ]),
+    parecer:
+      obterCampo(props, [
+        "Parecer",
+        "Laudo",
+        "Laudo da ocorrência",
+      ]) || null,
+
+    tipoProblema:
+      valorUtil(tipoProblema)
+        ? tipoProblema
+        : null,
+
+    responsavel:
+      obterCampo(props, [
+        "Atendido por",
+        "Responsável",
+        "Responsavel",
+      ]) || null,
+
+    relato:
+      obterCampo(props, [
+        "Descrição da ocorrência (através do relato do cliente/usuario)",
+        "Descrição da ocorrência",
+        "Descrição do problema",
+        "Relato do cliente",
+        "Problema relatado",
+      ]) || "",
   };
 }
 
 // ========================================
-// LISTAR CHAMADOS DO NOTION
-//
-// A paginação permite que o frontend
-// recupere todas as páginas da base.
+// LISTAR CHAMADOS
+// MANTÉM A PAGINAÇÃO EXISTENTE
 // ========================================
 
 async function listarPaginas(cursor) {
-  const body = {
+  const corpo = {
     page_size: 100,
   };
 
   if (cursor) {
-    body.start_cursor = cursor;
+    corpo.start_cursor = cursor;
   }
 
-  const resposta = await requisitarNotion(
+  const dados = await notion(
     `/data_sources/${DATA_SOURCE_ID}/query`,
     {
       method: "POST",
-      body: JSON.stringify(body),
+      body: JSON.stringify(corpo),
     }
   );
 
   return {
-    chamados: (resposta.results || [])
+    chamados: (dados.results || [])
       .filter(
         (pagina) =>
           !pagina.archived &&
           !pagina.in_trash
       )
-      .map(resumirPagina),
+      .map(extrairPropriedades),
 
-    has_more: Boolean(
-      resposta.has_more
-    ),
+    has_more: Boolean(dados.has_more),
 
-    next_cursor:
-      resposta.next_cursor,
+    next_cursor: dados.next_cursor,
   };
 }
 
 // ========================================
-// LER BLOCOS INTERNOS DOS CHAMADOS
-//
-// Inclui blocos aninhados e paginação.
+// VALIDAR ORIGEM DO CHAMADO
+// ========================================
+
+async function verificarOrigem(pagina) {
+  const pai =
+    pagina.parent?.data_source_id ||
+    pagina.parent?.database_id;
+
+  if (pai === DATA_SOURCE_ID) {
+    return;
+  }
+
+  // Compatibilidade com o banco
+  // associado à fonte de dados.
+
+  const fonte = await notion(
+    `/data_sources/${DATA_SOURCE_ID}`
+  );
+
+  if (
+    !fonte.parent?.database_id ||
+    pai !== fonte.parent.database_id
+  ) {
+    throw new Error(
+      "Página fora da base de chamados autorizada."
+    );
+  }
+}
+
+// ========================================
+// LER BLOCOS INTERNOS DO NOTION
 // ========================================
 
 async function lerBlocos(
   id,
-  profundidade = 0,
-  controle = { total: 0 }
+  nivel = 0,
+  controle = { quantidade: 0 }
 ) {
-  if (profundidade > 6) {
+  if (nivel > 8) {
     throw new Error(
-      "O chamado contém blocos mais profundos que o limite de leitura."
+      "Profundidade de blocos superior ao limite de segurança."
     );
   }
 
-  const encontrados = [];
+  const saida = [];
+
   let cursor;
 
   do {
@@ -329,65 +446,193 @@ async function lerBlocos(
       );
     }
 
-    const resposta =
-      await requisitarNotion(
-        `/blocks/${id}/children?${params}`
-      );
+    const dados = await notion(
+      `/blocks/${id}/children?${params}`
+    );
 
-    for (
-      const bloco of
-      resposta.results || []
-    ) {
-      controle.total++;
+    for (const bloco of dados.results || []) {
+      controle.quantidade++;
 
-      if (controle.total > 1200) {
+      if (controle.quantidade > 2000) {
         throw new Error(
-          "O chamado ultrapassou o limite de segurança de 1200 blocos."
+          "Limite de blocos do chamado excedido."
         );
       }
 
-      encontrados.push(bloco);
+      saida.push(bloco);
 
       if (bloco.has_children) {
         const filhos = await lerBlocos(
           bloco.id,
-          profundidade + 1,
+          nivel + 1,
           controle
         );
 
-        encontrados.push(...filhos);
+        saida.push(...filhos);
       }
     }
 
-    cursor = resposta.next_cursor;
+    cursor = dados.has_more
+      ? dados.next_cursor
+      : null;
 
-    if (!resposta.has_more) {
-      break;
+    if (dados.has_more && !cursor) {
+      throw new Error(
+        "Paginação incompleta dos blocos."
+      );
     }
   } while (cursor);
 
-  return encontrados;
+  return saida;
 }
 
 // ========================================
-// CLASSIFICAÇÕES TÉCNICAS
+// TEXTO DE CADA BLOCO
 // ========================================
 
-function categoriaTecnica(texto) {
+function obterTextoBloco(bloco) {
+  const conteudo =
+    bloco[bloco.type] || {};
+
+  return textoRico(
+    conteudo.rich_text ||
+    conteudo.title ||
+    []
+  );
+}
+
+// ========================================
+// IDENTIFICAR SEÇÕES DO FORMULÁRIO
+//
+// - Descrição do problema
+// - Parecer técnico
+// - Descrição da solução
+// - Análise técnica
+// ========================================
+
+function extrairSecoes(blocos) {
+  const secoes = {
+    problema: [],
+    parecer: [],
+    solucao: [],
+    analise: [],
+    outros: [],
+  };
+
+  const marcados = [];
+
+  let secao = "outros";
+
+  for (const bloco of blocos) {
+    const texto = obterTextoBloco(bloco);
+    const t = normalizar(texto);
+
+    if (!t) continue;
+
+    const titulo =
+      bloco.type.startsWith("heading") ||
+      (
+        bloco.type === "paragraph" &&
+        texto.length < 90
+      );
+
+    if (titulo) {
+      if (
+        /^(descricao do problema|relato da ocorrencia)$/.test(t)
+      ) {
+        secao = "problema";
+        continue;
+      }
+
+      if (/^parecer tecnico$/.test(t)) {
+        secao = "parecer";
+        continue;
+      }
+
+      if (
+        /^(descricao da solucao|solucao|registro de solucao)$/.test(t)
+      ) {
+        secao = "solucao";
+        continue;
+      }
+
+      if (/^analise tecnica$/.test(t)) {
+        secao = "analise";
+        continue;
+      }
+
+      if (
+        /^(pedidos de reposicao|identificacao|dados do cliente)$/.test(t)
+      ) {
+        secao = "outros";
+        continue;
+      }
+    }
+
+    // Identificar caixas marcadas
+    // em formulários do Notion.
+
+    if (
+      bloco.type === "to_do" &&
+      bloco.to_do?.checked
+    ) {
+      marcados.push({
+        texto,
+        secao,
+      });
+    }
+
+    // Ignorar textos instrutivos.
+
+    if (
+      /^descreva abaixo (o problema|o parecer tecnico|a solucao)/.test(t)
+    ) {
+      continue;
+    }
+
+    secoes[secao].push(texto);
+  }
+
+  return {
+    relato:
+      secoes.problema
+        .join(" ")
+        .trim(),
+
+    parecerTecnico:
+      secoes.parecer
+        .join(" ")
+        .trim(),
+
+    solucao:
+      secoes.solucao
+        .join(" ")
+        .trim(),
+
+    analise:
+      secoes.analise
+        .join(" ")
+        .trim(),
+
+    marcados,
+  };
+}
+
+// ========================================
+// CLASSIFICAÇÕES TÉCNICAS COMPLEMENTARES
+// ========================================
+
+function categoriaDoTexto(texto) {
   const t = normalizar(texto);
 
   const regras = [
     [
       "Pilhas e alimentação",
-      /pilhas|alimentacao|bateria/,
+      /pilha|bateria|alimentacao/,
     ],
     [
       "Placa eletrônica",
       /falha eletronica|defeito de placa/,
-    ],
-    [
-      "Funcionamento eletrônico",
-      /comportamento anormal|falha de funcionamento/,
     ],
     [
       "Aplicativo e comunicação",
@@ -395,7 +640,7 @@ function categoriaTecnica(texto) {
     ],
     [
       "Cadastro e configuração",
-      /configuracao|cadastro|reset|credenciais/,
+      /configuracao|cadastro|credenciais|reset/,
     ],
     [
       "Instalação inadequada",
@@ -403,7 +648,7 @@ function categoriaTecnica(texto) {
     ],
     [
       "Componentes mecânicos",
-      /componentes mecanicos|componentes danificados|mecanismo de travamento|falha de funcionamento mecanico/,
+      /componentes mecanicos|componentes danificados|travamento/,
     ],
     [
       "Oxidação e corrosão",
@@ -414,32 +659,20 @@ function categoriaTecnica(texto) {
       /desgaste|limpeza|manutencao/,
     ],
     [
-      "Falha de fabricação",
-      /defeito ou falha de fabricacao/,
-    ],
-    [
       "Dúvidas de utilização",
-      /duvidas sobre funcionamento|documentacao|manual|informacao tecnica divergente/,
+      /duvidas sobre funcionamento|informacao tecnica divergente/,
     ],
     [
       "Transferência de dispositivo",
       /vinculacao|desvinculacao|transferencia/,
     ],
     [
-      "Falta de componentes",
-      /falta de componentes|perda|substituicao de componentes/,
-    ],
-    [
       "Uso indevido",
       /uso indevido|fora das especificacoes/,
     ],
     [
-      "Intervenção não autorizada",
-      /intervencao|modificacao nao autorizada/,
-    ],
-    [
-      "Incompatibilidade",
-      /incompativeis|incompativel/,
+      "Falha de fabricação",
+      /defeito ou falha de fabricacao/,
     ],
   ];
 
@@ -451,13 +684,11 @@ function categoriaTecnica(texto) {
 }
 
 // ========================================
-// IDENTIFICAR SINTOMAS RELATADOS
+// SINTOMAS RELATADOS PELO CLIENTE
 // ========================================
 
 function sintomaRelatado(texto) {
   const t = normalizar(texto);
-
-  if (!t) return null;
 
   const regras = [
     [
@@ -502,53 +733,72 @@ function sintomaRelatado(texto) {
 // ========================================
 
 function classificarDuvida(
-  texto,
-  marcada = false
+  tipoProblema,
+  relato
 ) {
-  const t = normalizar(texto);
+  const tipo = normalizar(tipoProblema);
+  const texto = normalizar(relato);
 
-  if (
-    !marcada &&
-    !/duvida|como |orientacao|gostaria de saber|preciso saber|informacao/.test(
-      t
-    )
-  ) {
+  const conjunto = `${tipo} ${texto}`;
+
+  const ehOrientacao =
+    /duvida|orientacao|informacao|como (se |fazer|realizar|trocar|cadastrar|configurar)|se informar|gostaria de saber|preciso saber/.test(
+      conjunto
+    );
+
+  if (!ehOrientacao) {
     return null;
   }
 
   if (
-    /aplicativo|wifi|conexao/.test(t)
+    /pilha|bateria|troca de pilha/.test(
+      conjunto
+    )
+  ) {
+    return "Troca de pilhas";
+  }
+
+  if (
+    /app|aplicativo|wifi|conexao/.test(
+      conjunto
+    )
   ) {
     return "Aplicativo e conectividade";
   }
 
   if (
-    /reset|senha|cadastro|digital/.test(t)
+    /senha|reset|cadastro|digital/.test(
+      conjunto
+    )
   ) {
-    return "Senha, cadastro e reset";
+    return "Cadastro, senha e reset";
   }
 
   if (
-    /garantia|nota fiscal/.test(t)
+    /garantia|nota fiscal/.test(
+      conjunto
+    )
   ) {
     return "Garantia e documentação";
   }
 
   if (
-    /instalacao|montagem/.test(t)
+    /instalacao|montagem/.test(
+      conjunto
+    )
   ) {
     return "Instalação";
   }
 
-  return "Uso e funcionamento";
+  return "Funcionamento e utilização";
 }
 
 // ========================================
-// IDENTIFICAR LAUDO OFICIAL
+// NORMALIZAÇÃO DOS LAUDOS
 // ========================================
 
-function laudoOficial(texto) {
-  const t = normalizar(texto);
+function laudoOficial(valor) {
+  const t = normalizar(valor);
 
   if (t === "procedente") {
     return "Procedente";
@@ -566,256 +816,127 @@ function laudoOficial(texto) {
 }
 
 // ========================================
-// ANALISAR BLOCOS DO CHAMADO
-// ========================================
-
-function analisarConteudo(blocos) {
-  let secao = "";
-
-  const relato = [];
-  const categorias = [];
-  const duvidas = [];
-
-  let laudo = null;
-
-  for (const bloco of blocos) {
-    const texto = textoRico(
-      bloco[bloco.type]?.rich_text
-    ).trim();
-
-    const t = normalizar(texto);
-
-    if (!t) continue;
-
-    const tituloDeSecao =
-      bloco.type.startsWith("heading") ||
-      (
-        texto.length < 90 &&
-        bloco.type === "paragraph"
-      );
-
-    if (tituloDeSecao) {
-      if (
-        /relato da ocorrencia/.test(t)
-      ) {
-        secao = "relato";
-        continue;
-      }
-
-      if (
-        /analise tecnica/.test(t)
-      ) {
-        secao = "analise";
-        continue;
-      }
-
-      if (
-        /parecer tecnico/.test(t)
-      ) {
-        secao = "parecer";
-        continue;
-      }
-
-      if (
-        /laudo da ocorrencia/.test(t)
-      ) {
-        secao = "laudo";
-        continue;
-      }
-
-      if (
-        /pedidos de reposicao/.test(t)
-      ) {
-        secao = "reposicao";
-        continue;
-      }
-    }
-
-    if (secao === "relato") {
-      relato.push(texto);
-    }
-
-    if (
-      secao === "analise" &&
-      bloco.type === "to_do" &&
-      bloco.to_do?.checked === true
-    ) {
-      const categoria =
-        categoriaTecnica(texto);
-
-      if (
-        categoria &&
-        !categorias.includes(categoria)
-      ) {
-        categorias.push(categoria);
-      }
-
-      if (
-        categoria ===
-        "Dúvidas de utilização"
-      ) {
-        duvidas.push(
-          "Uso e funcionamento"
-        );
-      }
-    }
-
-    if (
-      secao === "laudo" &&
-      bloco.type === "to_do" &&
-      bloco.to_do?.checked === true
-    ) {
-      laudo =
-        laudoOficial(texto) ||
-        laudo;
-    }
-  }
-
-  return {
-    relatoInterno: relato.join(" "),
-    categorias,
-    duvidas,
-    laudo,
-  };
-}
-
-// ========================================
-// VALIDAR ORIGEM DO CHAMADO
-//
-// CORREÇÃO:
-// Compatibilidade com data_source_id
-// e database_id do Notion.
-// ========================================
-
-async function validarOrigemChamado(
-  pagina
-) {
-  const parentId =
-    pagina.parent?.data_source_id ||
-    pagina.parent?.database_id;
-
-  // Página vinculada diretamente
-  // à fonte de dados autorizada.
-
-  if (parentId === DATA_SOURCE_ID) {
-    return true;
-  }
-
-  // Recupera a fonte de dados para
-  // identificar o banco correspondente.
-
-  const fonte = await requisitarNotion(
-    `/data_sources/${DATA_SOURCE_ID}`
-  );
-
-  const bancoDaFonte =
-    fonte.parent?.database_id;
-
-  // Permite a página somente quando
-  // pertence ao banco autorizado.
-
-  if (
-    !bancoDaFonte ||
-    parentId !== bancoDaFonte
-  ) {
-    throw new Error(
-      "O chamado não pertence à base autorizada."
-    );
-  }
-
-  return true;
-}
-
-// ========================================
-// DETALHAR UM CHAMADO
-//
-// Consulta a página e todos os blocos
-// internos para análise técnica.
+// LER UM CHAMADO INDIVIDUALMENTE
 // ========================================
 
 async function detalharChamado(id) {
-  // 1. Recuperar a página
+  // Recuperar página original do Notion.
 
-  const pagina =
-    await requisitarNotion(
-      `/pages/${id}`
-    );
-
-  // 2. Validar origem
-
-  await validarOrigemChamado(
-    pagina
+  const pagina = await notion(
+    `/pages/${id}`
   );
 
-  // 3. Recuperar propriedades
+  // Validar origem da página.
 
-  const propriedades =
-    resumirPagina(pagina);
+  await verificarOrigem(pagina);
 
-  // 4. Ler todos os blocos
+  // Ler propriedades reais.
 
-  const blocos = await lerBlocos(
-    id
-  );
+  const base = extrairPropriedades(pagina);
 
-  // 5. Analisar as informações
+  // Ler todos os blocos disponíveis.
 
-  const analise =
-    analisarConteudo(blocos);
+  const blocos = await lerBlocos(id);
 
-  // 6. Consolidar o relato
+  // Identificar textos do formulário.
+
+  const secoes = extrairSecoes(blocos);
+
+  // Consolidar o relato do cliente.
 
   const relatoCompleto = [
-    propriedades.relato,
-    analise.relatoInterno,
+    base.relato,
+    secoes.relato,
   ]
     .filter(Boolean)
     .join(" ");
 
-  // 7. Identificar as categorias
+  // ====================================
+  // CLASSIFICAÇÃO PRINCIPAL
+  //
+  // Prioridade: Tipo de problema no Notion.
+  // ====================================
 
-  const categorias =
-    analise.categorias.length
-      ? analise.categorias
-      : [];
+  const categorias = [];
 
-  // 8. Identificar os sintomas
-
-  const sintoma =
-    sintomaRelatado(
-      relatoCompleto
+  if (base.tipoProblema) {
+    categorias.push(
+      base.tipoProblema
     );
+  }
 
-  // 9. Identificar dúvidas
+  // Classificações complementares
+  // marcadas na análise técnica.
 
-  const duvida =
-    analise.duvidas[0] ||
-    classificarDuvida(
-      relatoCompleto,
-      categorias.includes(
-        "Dúvidas de utilização"
+  for (const marcado of secoes.marcados) {
+    if (
+      marcado.secao !== "analise"
+    ) {
+      continue;
+    }
+
+    const categoria =
+      categoriaDoTexto(
+        marcado.texto
+      );
+
+    if (
+      categoria &&
+      !categorias.includes(categoria)
+    ) {
+      categorias.push(categoria);
+    }
+  }
+
+  // ====================================
+  // PARECER
+  // ====================================
+
+  const laudoMarcado =
+    secoes.marcados
+      .filter(
+        (item) =>
+          item.secao === "parecer" ||
+          item.secao === "analise"
       )
-    );
+      .map(
+        (item) =>
+          laudoOficial(item.texto)
+      )
+      .find(Boolean);
 
-  // 10. Retornar informações
-  // para o Synter Analytics
+  // ====================================
+  // RETORNAR ANÁLISE PARA O FRONTEND
+  // ====================================
 
   return {
-    id,
+    ...base,
 
-    ...propriedades,
+    relato: relatoCompleto,
 
-    laudo:
-      laudoOficial(
-        propriedades.parecer
-      ) ||
-      analise.laudo,
+    parecerTecnico:
+      secoes.parecerTecnico,
+
+    solucao:
+      secoes.solucao,
 
     categorias,
 
-    sintoma,
+    sintoma:
+      sintomaRelatado(
+        relatoCompleto
+      ),
 
-    duvida,
+    duvida:
+      classificarDuvida(
+        base.tipoProblema,
+        relatoCompleto
+      ),
+
+    laudo:
+      laudoOficial(base.parecer) ||
+      laudoMarcado ||
+      null,
 
     classificacaoConfirmada:
       categorias.length > 0,
@@ -826,6 +947,9 @@ async function detalharChamado(id) {
 
 // ========================================
 // ENDPOINT PRINCIPAL
+//
+// GET  = LISTAR CHAMADOS
+// POST = ANALISAR CHAMADOS INDIVIDUAIS
 // ========================================
 
 export default async function handler(
@@ -842,24 +966,21 @@ export default async function handler(
     "Authorization"
   );
 
-  // ====================================
-  // MÉTODOS PERMITIDOS
-  // ====================================
-
   if (
-    !["GET", "POST"].includes(
-      req.method
-    )
+    !["GET", "POST"].includes(req.method)
   ) {
+    res.setHeader(
+      "Allow",
+      "GET, POST"
+    );
+
     return res.status(405).json({
       error: "Método não permitido.",
     });
   }
 
   try {
-    // ==================================
-    // CONFIGURAÇÃO DO NOTION
-    // ==================================
+    // Verificar configuração.
 
     if (
       !process.env.NOTION_TOKEN ||
@@ -871,47 +992,37 @@ export default async function handler(
       });
     }
 
-    // ==================================
-    // VALIDAR LOGIN
-    // ==================================
+    // Verificar usuário autenticado.
 
-    if (
-      !(await verificarSessao(req))
-    ) {
+    if (!(await validarLogin(req))) {
       return res.status(401).json({
         error:
           "Sessão inválida ou expirada.",
       });
     }
 
-    // ==================================
-    // GET
-    //
-    // LISTAR OS CHAMADOS
-    // ==================================
+    // ====================================
+    // GET — LISTAGEM
+    // ====================================
 
     if (req.method === "GET") {
       const cursor =
-        typeof req.query.cursor ===
+        typeof req.query?.cursor ===
         "string"
           ? req.query.cursor
           : undefined;
 
       const resultado =
-        await listarPaginas(
-          cursor
-        );
+        await listarPaginas(cursor);
 
       return res.status(200).json(
         resultado
       );
     }
 
-    // ==================================
-    // POST
-    //
-    // LER CHAMADOS INDIVIDUALMENTE
-    // ==================================
+    // ====================================
+    // POST — LEITURA DETALHADA
+    // ====================================
 
     const ids = req.body?.ids;
 
@@ -919,23 +1030,22 @@ export default async function handler(
       !Array.isArray(ids) ||
       ids.length < 1 ||
       ids.length > 4 ||
+      new Set(ids).size !== ids.length ||
       ids.some(
         (id) =>
           typeof id !== "string" ||
-          !/^[0-9a-f-]{32,36}$/i.test(
+          !/^(?:[0-9a-f]{32}|[0-9a-f-]{36})$/i.test(
             id
           )
       )
     ) {
       return res.status(400).json({
         error:
-          "Envie de 1 a 4 IDs válidos.",
+          "Envie de 1 a 4 IDs distintos e válidos.",
       });
     }
 
-    // ==================================
-    // PROCESSAR TODOS OS IDs RECEBIDOS
-    // ==================================
+    // Ler cada chamado separadamente.
 
     const resultados = [];
 
@@ -946,45 +1056,36 @@ export default async function handler(
 
         resultados.push({
           id,
-
           sucesso: true,
-
           chamado,
         });
-      } catch (error) {
+      } catch (erro) {
         console.error(
-          `Falha no chamado ${id}:`,
-          error.message
+          `Falha de leitura do chamado ${id}: ${erro.message}`
         );
 
         resultados.push({
           id,
-
           sucesso: false,
-
           erro:
             "Não foi possível ler completamente este chamado.",
         });
       }
     }
 
-    // ==================================
-    // RETORNAR RESULTADOS
-    // ==================================
-
     return res.status(200).json({
       resultados,
     });
 
-  } catch (error) {
+  } catch (erro) {
     console.error(
       "Synter Analytics:",
-      error.message
+      erro.message
     );
 
     return res.status(500).json({
       error:
-        "Erro na consulta do Notion. Verifique os logs da Vercel.",
+        "Falha na consulta do Notion. Verifique os logs da Vercel.",
     });
   }
 }

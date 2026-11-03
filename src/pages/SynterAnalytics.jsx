@@ -22,13 +22,15 @@ import {
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+
 import { supabase } from "../services/supabaseClient";
 
 import "../styles/SynterAnalytics.css";
 
 // ========================================
 // SYNTER ANALYTICS
-// RELATÓRIO GERENCIAL INTEGRADO AO NOTION
+// RELATÓRIO GERENCIAL DE ATENDIMENTOS
+// INTEGRADO AO NOTION
 // ========================================
 
 const CORES = [
@@ -140,28 +142,84 @@ function percentual(valor, total) {
   ).toFixed(1)}%`;
 }
 
+function diferencaDias(inicio, fim) {
+  if (
+    !inicio ||
+    !fim ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(
+      inicio.slice(0, 10)
+    ) ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(
+      fim.slice(0, 10)
+    )
+  ) {
+    return null;
+  }
+
+  const a = Date.parse(
+    `${inicio.slice(0, 10)}T00:00:00Z`
+  );
+
+  const b = Date.parse(
+    `${fim.slice(0, 10)}T00:00:00Z`
+  );
+
+  if (
+    !Number.isFinite(a) ||
+    !Number.isFinite(b) ||
+    b < a
+  ) {
+    return null;
+  }
+
+  return Math.round(
+    (b - a) / 86400000
+  );
+}
+
 // ========================================
-// AGRUPAMENTO DE DADOS
+// NORMALIZAÇÃO E AGRUPAMENTO
 // ========================================
+
+function normalizar(valor) {
+  return String(valor ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
 
 function agrupar(lista, campo) {
   const mapa = new Map();
 
   for (const item of lista) {
-    const valores = Array.isArray(
-      item[campo]
-    )
-      ? item[campo]
-      : [item[campo]];
+    const bruto = item[campo];
 
-    // Evita contar a mesma categoria
-    // duas vezes dentro do mesmo chamado.
+    const valores = Array.isArray(bruto)
+      ? bruto
+      : [bruto];
+
+    // Um chamado conta apenas uma vez
+    // por categoria ou modelo.
+
     const unicos = new Set(
       valores
         .map((valor) =>
-          String(valor || "").trim()
+          String(valor ?? "").trim()
         )
-        .filter(Boolean)
+        .filter((valor) => {
+          const texto = normalizar(valor);
+
+          return (
+            texto &&
+            ![
+              "nao informado",
+              "nao informada",
+              "n/a",
+              "-",
+            ].includes(texto)
+          );
+        })
     );
 
     for (const nome of unicos) {
@@ -172,9 +230,7 @@ function agrupar(lista, campo) {
     }
   }
 
-  return Array.from(
-    mapa.entries()
-  )
+  return [...mapa.entries()]
     .map(([nome, total]) => ({
       nome,
       total,
@@ -187,7 +243,7 @@ function agrupar(lista, campo) {
 }
 
 // ========================================
-// INDICADORES GERENCIAIS
+// CALCULAR INDICADORES DOS CHAMADOS
 // ========================================
 
 function indicadoresDosChamados(chamados) {
@@ -198,23 +254,115 @@ function indicadoresDosChamados(chamados) {
     "Sem laudo": 0,
   };
 
-  for (const chamado of chamados) {
-    const chave =
-      chamado.laudo &&
-      Object.prototype.hasOwnProperty.call(
-        laudos,
-        chamado.laudo
-      )
-        ? chamado.laudo
-        : "Sem laudo";
+  let finalizados = 0;
+  let pendentes = 0;
 
-    laudos[chave]++;
+  const temposResolucao = [];
+
+  for (const chamado of chamados) {
+    // ------------------------------------
+    // PROCEDÊNCIA
+    // ------------------------------------
+
+    const laudo = normalizar(
+      chamado.laudo
+    );
+
+    if (laudo === "procedente") {
+      laudos.Procedente++;
+    } else if (
+      laudo === "improcedente"
+    ) {
+      laudos.Improcedente++;
+    } else if (
+      laudo === "com cobranca"
+    ) {
+      laudos["Com cobrança"]++;
+    } else {
+      laudos["Sem laudo"]++;
+    }
+
+    // ------------------------------------
+    // STATUS
+    // ------------------------------------
+
+    const status = normalizar(
+      chamado.status
+    );
+
+    const encerrado =
+      /finalizad|concluid|encerrad|resolvid/.test(
+        status
+      );
+
+    if (encerrado) {
+      finalizados++;
+    } else {
+      pendentes++;
+    }
+
+    // ------------------------------------
+    // TEMPO DE RESOLUÇÃO
+    //
+    // Calculado em dias corridos
+    // pelas datas de início e conclusão.
+    // ------------------------------------
+
+    if (encerrado) {
+      const dias = diferencaDias(
+        chamado.data,
+        chamado.dataConclusao
+      );
+
+      if (dias !== null) {
+        temposResolucao.push(dias);
+      }
+    }
   }
+
+  const mediaResolucao =
+    temposResolucao.length > 0
+      ? temposResolucao.reduce(
+          (soma, dias) =>
+            soma + dias,
+          0
+        ) / temposResolucao.length
+      : null;
+
+  const comProduto = chamados.filter(
+    (item) =>
+      Boolean(item.produto) &&
+      normalizar(item.produto) !==
+        "nao informado"
+  ).length;
+
+  const classificados = chamados.filter(
+    (item) =>
+      Array.isArray(item.categorias) &&
+      item.categorias.length > 0
+  ).length;
+
+  const comDuvida = chamados.filter(
+    (item) => Boolean(item.duvida)
+  ).length;
+
+  const comLaudo =
+    laudos.Procedente +
+    laudos.Improcedente +
+    laudos["Com cobrança"];
 
   return {
     total: chamados.length,
 
     laudos,
+
+    finalizados,
+    pendentes,
+
+    mediaResolucao,
+
+    temposCalculados:
+      temposResolucao.length,
 
     produtos: agrupar(
       chamados,
@@ -226,6 +374,11 @@ function indicadoresDosChamados(chamados) {
       "categorias"
     ),
 
+    tiposProblema: agrupar(
+      chamados,
+      "tipoProblema"
+    ),
+
     sintomas: agrupar(
       chamados,
       "sintoma"
@@ -234,6 +387,11 @@ function indicadoresDosChamados(chamados) {
     duvidas: agrupar(
       chamados,
       "duvida"
+    ),
+
+    responsaveis: agrupar(
+      chamados,
+      "responsavel"
     ),
 
     tipos: agrupar(
@@ -260,33 +418,35 @@ function indicadoresDosChamados(chamados) {
     ),
 
     cobertura: {
-      produtos: chamados.filter(
-        (c) => Boolean(c.produto)
-      ).length,
+      produtos: comProduto,
 
-      classificados: chamados.filter(
-        (c) =>
-          Array.isArray(c.categorias) &&
-          c.categorias.length > 0
-      ).length,
+      classificados,
+
+      comDuvida,
+
+      comLaudo,
 
       comSintoma: chamados.filter(
         (c) => Boolean(c.sintoma)
       ).length,
 
-      comLaudo: chamados.filter(
-        (c) => Boolean(c.laudo)
+      comResponsavel: chamados.filter(
+        (c) => Boolean(c.responsavel)
       ).length,
 
-      comDuvida: chamados.filter(
-        (c) => Boolean(c.duvida)
+      comRelato: chamados.filter(
+        (c) => Boolean(c.relato)
+      ).length,
+
+      comSolucao: chamados.filter(
+        (c) => Boolean(c.solucao)
       ).length,
     },
   };
 }
 
 // ========================================
-// COMPONENTE — CARTÃO DE INDICADOR
+// COMPONENTES DO PAINEL
 // ========================================
 
 function Cartao({
@@ -311,10 +471,6 @@ function Cartao({
   );
 }
 
-// ========================================
-// COMPONENTE — GRÁFICOS
-// ========================================
-
 function BlocoGrafico({
   titulo,
   descricao,
@@ -338,10 +494,6 @@ function BlocoGrafico({
     </section>
   );
 }
-
-// ========================================
-// COMPONENTE — RANKING
-// ========================================
 
 function Ranking({
   dados = [],
@@ -406,7 +558,7 @@ const estiloTooltip = {
 };
 
 // ========================================
-// INTEGRAÇÃO COM API DO NOTION
+// COMUNICAÇÃO COM API EXISTENTE
 // ========================================
 
 async function chamarAPI(
@@ -460,35 +612,33 @@ async function chamarAPI(
     }
   );
 
-  let dados;
+  let resultado;
 
   try {
-    dados = await resposta.json();
+    resultado = await resposta.json();
   } catch {
     throw new Error(
-      "A API do Synter Analytics não retornou uma resposta válida."
+      "A API não retornou uma resposta JSON válida."
     );
   }
 
   if (!resposta.ok) {
     throw new Error(
-      dados.error ||
-      `Erro de comunicação (${resposta.status}).`
+      resultado.error ||
+        `Erro HTTP ${resposta.status}.`
     );
   }
 
-  return dados;
+  return resultado;
 }
 
 // ========================================
-// LER UM LOTE COM NOVAS TENTATIVAS
+// PROCESSAR CHAMADOS EM LOTES
 //
-// CORREÇÃO PRINCIPAL:
-//
-// 1. Detecta IDs ausentes na resposta.
-// 2. Não duplica chamados já recebidos.
-// 3. Retenta apenas os pendentes.
-// 4. Devolve os IDs sem leitura.
+// Garante:
+// - Nenhum ID ignorado
+// - Sem chamados duplicados
+// - Novas tentativas por falha
 // ========================================
 
 async function processarLote({
@@ -513,10 +663,11 @@ async function processarLote({
     tentativa++
   ) {
     if (signal.aborted) {
-      throw new DOMException(
-        "Operação cancelada",
-        "AbortError"
-      );
+      return {
+        concluidos: [],
+        falhas: pendentes,
+        ultimoErro: "Cancelado",
+      };
     }
 
     try {
@@ -526,24 +677,28 @@ async function processarLote({
         signal
       );
 
-      const resultados = Array.isArray(
-        resposta.resultados
-      )
-        ? resposta.resultados
-        : [];
+      if (
+        !Array.isArray(
+          resposta.resultados
+        )
+      ) {
+        throw new Error(
+          "A API não retornou a lista de resultados."
+        );
+      }
 
       const solicitados =
         new Set(pendentes);
 
-      const recebidos = new Set();
+      const recebidos =
+        new Set();
 
       const proximos = [];
 
-      // ==================================
-      // PROCESSAR RESPOSTAS RECEBIDAS
-      // ==================================
-
-      for (const item of resultados) {
+      for (
+        const item of
+        resposta.resultados
+      ) {
         if (
           !item?.id ||
           !solicitados.has(item.id) ||
@@ -564,15 +719,14 @@ async function processarLote({
             item.chamado
           );
         } else {
-          proximos.push(item.id);
+          proximos.push(
+            item.id
+          );
         }
       }
 
-      // ==================================
-      // IDENTIFICAR IDs NÃO RETORNADOS
-      //
-      // ESTE ERA O PROBLEMA ORIGINAL.
-      // ==================================
+      // Também tenta novamente
+      // IDs ausentes da resposta.
 
       for (const id of pendentes) {
         if (!recebidos.has(id)) {
@@ -580,14 +734,11 @@ async function processarLote({
         }
       }
 
-      // ==================================
-      // MANTER APENAS IDS NÃO CONCLUÍDOS
-      // ==================================
-
       pendentes = [
         ...new Set(proximos),
       ].filter(
-        (id) => !concluidos.has(id)
+        (id) =>
+          !concluidos.has(id)
       );
 
     } catch (error) {
@@ -600,10 +751,8 @@ async function processarLote({
 
       ultimoErro =
         error.message ||
-        "Erro na consulta do lote.";
+        "Falha na leitura do lote.";
 
-      // Os IDs continuam pendentes
-      // e serão enviados novamente.
       console.error(
         `Tentativa ${tentativa}/${MAX_TENTATIVAS}:`,
         ultimoErro
@@ -623,7 +772,7 @@ async function processarLote({
 }
 
 // ========================================
-// PÁGINA PRINCIPAL
+// SYNTER ANALYTICS — COMPONENTE PRINCIPAL
 // ========================================
 
 export default function SynterAnalytics() {
@@ -663,13 +812,10 @@ export default function SynterAnalytics() {
   ] = useState({
     etapa: "",
     total: 0,
+    processados: 0,
     lidos: 0,
     falhas: 0,
   });
-
-  // ========================================
-  // PERÍODO SELECIONADO
-  // ========================================
 
   const periodo = useMemo(
     () =>
@@ -684,7 +830,7 @@ export default function SynterAnalytics() {
   );
 
   // ========================================
-  // ANALISAR TODOS OS CHAMADOS
+  // CONSULTA TODOS OS CHAMADOS
   // ========================================
 
   useEffect(() => {
@@ -696,48 +842,45 @@ export default function SynterAnalytics() {
 
     async function iniciarAnalise() {
       setCarregando(true);
-
       setErro("");
-
       setDados(null);
 
       setProgresso({
         etapa:
           "Conectando ao Notion...",
         total: 0,
+        processados: 0,
         lidos: 0,
         falhas: 0,
       });
 
       try {
-        // ==================================
-        // VALIDAR SESSÃO SUPABASE
-        // ==================================
+        // ------------------------------------
+        // VALIDAR SESSÃO
+        // ------------------------------------
 
         const {
           data: { session },
           error: erroSessao,
-        } =
-          await supabase.auth.getSession();
+        } = await supabase.auth.getSession();
 
         if (
           erroSessao ||
           !session?.access_token
         ) {
           throw new Error(
-            "Sua sessão expirou. Entre novamente na Universidade Synter."
+            "Sua sessão expirou. Faça login novamente."
           );
         }
 
         const token =
           session.access_token;
 
-        // ==================================
-        // 1. RECUPERAR TODAS AS PÁGINAS
-        // ==================================
+        // ------------------------------------
+        // LISTAR TODAS AS PÁGINAS
+        // ------------------------------------
 
         const todos = [];
-
         const idsEncontrados =
           new Set();
 
@@ -757,7 +900,7 @@ export default function SynterAnalytics() {
             )
           ) {
             throw new Error(
-              "O Notion retornou um cursor repetido. A listagem foi interrompida para evitar registros duplicados."
+              "O Notion retornou uma paginação repetida."
             );
           }
 
@@ -780,7 +923,7 @@ export default function SynterAnalytics() {
             )
           ) {
             throw new Error(
-              "A API retornou uma lista de chamados inválida."
+              "A listagem de chamados retornou um formato inválido."
             );
           }
 
@@ -798,7 +941,9 @@ export default function SynterAnalytics() {
                 chamado.id
               );
 
-              todos.push(chamado);
+              todos.push(
+                chamado
+              );
             }
           }
 
@@ -809,42 +954,40 @@ export default function SynterAnalytics() {
           cursor =
             resposta.next_cursor;
 
-          setProgresso({
-            etapa:
-              `${todos.length} chamados localizados na base do Notion...`,
-            total: 0,
-            lidos: 0,
-            falhas: 0,
-          });
-
           if (
             temMais &&
             !cursor
           ) {
             throw new Error(
-              "A listagem do Notion veio incompleta. O servidor não retornou o cursor da próxima página."
+              "Paginação incompleta do Notion."
             );
           }
+
+          setProgresso({
+            etapa:
+              `${todos.length} chamados localizados na base...`,
+            total: 0,
+            processados: 0,
+            lidos: 0,
+            falhas: 0,
+          });
         }
 
-        // ==================================
-        // 2. FILTRAR O PERÍODO
-        // ==================================
+        // ------------------------------------
+        // FILTRAR O PERÍODO
+        // ------------------------------------
 
         const selecionados =
           todos.filter(
             (chamado) =>
-              typeof chamado.data ===
-                "string" &&
-              chamado.data >=
-                periodo.inicio &&
-              chamado.data <
-                periodo.fim
+              typeof chamado.data === "string" &&
+              chamado.data >= periodo.inicio &&
+              chamado.data < periodo.fim
           );
 
-        // ==================================
-        // 3. PROCESSAR TODOS OS REGISTROS
-        // ==================================
+        // ------------------------------------
+        // LER CADA CHAMADO
+        // ------------------------------------
 
         const completos =
           new Map();
@@ -852,29 +995,19 @@ export default function SynterAnalytics() {
         const falhas =
           new Set();
 
-        setProgresso({
-          etapa:
-            "Iniciando leitura individual dos chamados...",
-          total:
-            selecionados.length,
-          lidos: 0,
-          falhas: 0,
-        });
-
         for (
           let indice = 0;
           indice <
-          selecionados.length;
+            selecionados.length;
           indice +=
-          TAMANHO_LOTE
+            TAMANHO_LOTE
         ) {
           if (signal.aborted) return;
 
           const lote =
             selecionados.slice(
               indice,
-              indice +
-                TAMANHO_LOTE
+              indice + TAMANHO_LOTE
             );
 
           const resultado =
@@ -883,10 +1016,6 @@ export default function SynterAnalytics() {
               lote,
               signal,
             });
-
-          // ==================================
-          // INSERIR CHAMADOS SEM DUPLICAR
-          // ==================================
 
           for (
             const chamado of
@@ -902,10 +1031,6 @@ export default function SynterAnalytics() {
             );
           }
 
-          // ==================================
-          // REGISTRAR FALHAS
-          // ==================================
-
           for (
             const id of
             resultado.falhas
@@ -917,17 +1042,18 @@ export default function SynterAnalytics() {
             }
           }
 
-          // ==================================
-          // ATUALIZAR PROGRESSO
-          // ==================================
-
           setProgresso({
             etapa:
-              "Lendo relatos, análises técnicas, dúvidas e pareceres...",
+              "Analisando relatos, produtos, categorias e pareceres...",
             total:
               selecionados.length,
+
+            processados:
+              indice + lote.length,
+
             lidos:
               completos.size,
+
             falhas:
               falhas.size,
           });
@@ -935,37 +1061,24 @@ export default function SynterAnalytics() {
 
         if (signal.aborted) return;
 
-        // ==================================
-        // 4. CONFERIR INTEGRIDADE
-        // ==================================
-
-        const idsSelecionados =
-          new Set(
-            selecionados.map(
-              (item) =>
-                item.id
-            )
-          );
-
-        // Caso alguma resposta
-        // inesperada deixe um ID
-        // sem conclusão e sem falha,
-        // ele será incluído nas falhas.
+        // ------------------------------------
+        // CONFERÊNCIA FINAL DOS IDS
+        // ------------------------------------
 
         for (
-          const id of
-          idsSelecionados
+          const chamado of
+          selecionados
         ) {
           if (
-            !completos.has(id)
+            !completos.has(
+              chamado.id
+            )
           ) {
-            falhas.add(id);
+            falhas.add(
+              chamado.id
+            );
           }
         }
-
-        // ==================================
-        // 5. CALCULAR INDICADORES
-        // ==================================
 
         const chamadosCompletos =
           [...completos.values()];
@@ -1001,17 +1114,15 @@ export default function SynterAnalytics() {
       } catch (error) {
         if (
           signal.aborted ||
-          error.name ===
-            "AbortError"
+          error.name === "AbortError"
         ) {
           return;
         }
 
         setErro(
           error.message ||
-          "Falha na leitura dos chamados."
+          "Não foi possível consultar os chamados."
         );
-
       } finally {
         if (!signal.aborted) {
           setCarregando(false);
@@ -1031,7 +1142,7 @@ export default function SynterAnalytics() {
   ]);
 
   // ========================================
-  // DADOS PARA O PAINEL
+  // INDICADORES EXIBIDOS
   // ========================================
 
   const indicadores =
@@ -1058,20 +1169,49 @@ export default function SynterAnalytics() {
   const problemas =
     indicadores?.problemas || [];
 
-  const sintomas =
-    indicadores?.sintomas || [];
-
   const produtos =
     indicadores?.produtos || [];
 
   const duvidas =
     indicadores?.duvidas || [];
 
+  const sintomas =
+    indicadores?.sintomas || [];
+
+  const responsaveis =
+    indicadores?.responsaveis || [];
+
   const evolucao =
     indicadores?.porDia || [];
 
   const cobertura =
     indicadores?.cobertura || {};
+
+  const finalizados =
+    indicadores?.finalizados || 0;
+
+  const pendentes =
+    indicadores?.pendentes || 0;
+
+  const mediaResolucao =
+    indicadores?.mediaResolucao;
+
+  const podeConcluir =
+    dados?.completo === true;
+
+  const laudosConcluidos =
+    procedentes +
+    improcedentes +
+    cobranca;
+
+  const principalProblema =
+    problemas[0];
+
+  const principalProduto =
+    produtos[0];
+
+  const principalDuvida =
+    duvidas[0];
 
   const laudosGrafico = [
     {
@@ -1094,14 +1234,6 @@ export default function SynterAnalytics() {
     (item) =>
       item.total > 0
   );
-
-  const podeConcluir =
-    dados?.completo === true;
-
-  const laudosConcluidos =
-    procedentes +
-    improcedentes +
-    cobranca;
 
   // ========================================
   // INTERFACE
@@ -1131,10 +1263,10 @@ export default function SynterAnalytics() {
             </h1>
 
             <p>
-              Análise gerencial dos
-              atendimentos, diagnósticos
-              técnicos, dúvidas e pareceres
-              registrados no Notion.
+              Indicadores estratégicos de qualidade,
+              desempenho do SAC e análise completa
+              dos atendimentos técnicos registrados
+              na plataforma Notion.
             </p>
           </div>
         </header>
@@ -1146,33 +1278,21 @@ export default function SynterAnalytics() {
         <section className="sa-filters">
           <div className="sa-filter-buttons">
             {[
-              [
-                "semana",
-                "Semanal",
-              ],
-              [
-                "mes",
-                "Mensal",
-              ],
-              [
-                "ano",
-                "Anual",
-              ],
+              ["semana", "Semanal"],
+              ["mes", "Mensal"],
+              ["ano", "Anual"],
             ].map(
               ([valor, texto]) => (
                 <button
                   key={valor}
                   type="button"
                   className={
-                    periodoTipo ===
-                    valor
+                    periodoTipo === valor
                       ? "active"
                       : ""
                   }
                   onClick={() =>
-                    setPeriodoTipo(
-                      valor
-                    )
+                    setPeriodoTipo(valor)
                   }
                 >
                   {texto}
@@ -1190,9 +1310,7 @@ export default function SynterAnalytics() {
               <input
                 type="date"
                 value={referencia}
-                onChange={(
-                  event
-                ) =>
+                onChange={(event) =>
                   setReferencia(
                     event.target.value ||
                     dataLocal()
@@ -1202,15 +1320,12 @@ export default function SynterAnalytics() {
             </label>
 
             <button
-              className="sa-refresh"
               type="button"
-              disabled={
-                carregando
-              }
+              className="sa-refresh"
+              disabled={carregando}
               onClick={() =>
                 setAtualizar(
-                  (valor) =>
-                    valor + 1
+                  (v) => v + 1
                 )
               }
             >
@@ -1238,8 +1353,7 @@ export default function SynterAnalytics() {
           </span>
 
           <span>
-            Fonte: Notion •
-            Data de início
+            Fonte oficial: Notion
           </span>
         </div>
 
@@ -1250,7 +1364,7 @@ export default function SynterAnalytics() {
         {carregando && (
           <div className="sa-notice">
             <strong>
-              Análise técnica em andamento
+              Análise dos chamados em andamento
             </strong>
 
             <p>
@@ -1264,27 +1378,20 @@ export default function SynterAnalytics() {
                     style={{
                       width: `${
                         (
-                          (progresso.lidos +
-                            progresso.falhas) /
+                          progresso.processados /
                           progresso.total
-                        ) *
-                        100
+                        ) * 100
                       }%`,
                     }}
                   />
                 </div>
 
                 <p>
-                  {
-                    progresso.lidos
-                  }{" "}
-                  de{" "}
-                  {
-                    progresso.total
-                  }{" "}
-                  chamados lidos.
+                  {progresso.lidos} de{" "}
+                  {progresso.total} chamados
+                  lidos com sucesso.
                   {progresso.falhas > 0 &&
-                    ` ${progresso.falhas} falha(s) identificada(s).`}
+                    ` ${progresso.falhas} com falha de leitura.`}
                 </p>
               </>
             )}
@@ -1292,7 +1399,7 @@ export default function SynterAnalytics() {
         )}
 
         {/* ====================================
-            ERRO
+            ERROS
         ==================================== */}
 
         {erro && (
@@ -1301,12 +1408,10 @@ export default function SynterAnalytics() {
             role="alert"
           >
             <strong>
-              Falha ao consultar o Notion
+              Não foi possível carregar o relatório.
             </strong>
 
-            <p>
-              {erro}
-            </p>
+            <p>{erro}</p>
 
             <button
               type="button"
@@ -1323,627 +1428,747 @@ export default function SynterAnalytics() {
         )}
 
         {/* ====================================
-            RELATÓRIO
+            RESULTADOS
         ==================================== */}
 
-        {!carregando &&
-          dados && (
-            <>
+        {!carregando && dados && (
+          <>
 
-              {/* ====================================
-                  INTEGRIDADE
-              ==================================== */}
+            {/* ====================================
+                INTEGRIDADE DA ANÁLISE
+            ==================================== */}
 
-              <section className="sa-summary">
-                <span className="sa-eyebrow">
-                  INTEGRIDADE DA ANÁLISE
-                </span>
+            <section className="sa-summary">
+              <span className="sa-eyebrow">
+                CONTROLE DE INTEGRIDADE
+              </span>
 
-                <h2>
-                  Conferência dos registros
-                </h2>
+              <h2>
+                Conferência dos Registros
+              </h2>
 
-                <div className="sa-data-coverage">
-                  <div>
-                    <span>
-                      Chamados encontrados
-                    </span>
-
-                    <strong>
-                      {dados.totalEsperado}
-                    </strong>
-                  </div>
-
-                  <div>
-                    <span>
-                      Chamados lidos
-                    </span>
-
-                    <strong>
-                      {dados.totalLido}
-                    </strong>
-                  </div>
-
-                  <div>
-                    <span>
-                      Falhas de leitura
-                    </span>
-
-                    <strong>
-                      {dados.falhas.length}
-                    </strong>
-                  </div>
-                </div>
-
-                <p className="sa-summary-disclaimer">
-                  {podeConcluir
-                    ? "Todos os chamados encontrados para o período foram lidos individualmente pela integração."
-                    : "A leitura não foi concluída integralmente. Os indicadores apresentados são parciais e não devem ser utilizados como fechamento oficial."}
-                </p>
-
-                {!podeConcluir && (
-                  <button
-                    className="sa-refresh"
-                    type="button"
-                    onClick={() =>
-                      setAtualizar(
-                        (v) =>
-                          v + 1
-                      )
-                    }
-                  >
-                    Reprocessar chamados
-                  </button>
-                )}
-              </section>
-
-              {/* ====================================
-                  INDICADORES PRINCIPAIS
-              ==================================== */}
-
-              <div className="sa-kpi-grid">
-                <Cartao
-                  titulo="Chamados analisados"
-                  valor={total}
-                  descricao="Registros lidos integralmente."
-                />
-
-                <Cartao
-                  titulo="Procedentes"
-                  valor={procedentes}
-                  descricao="Pareceres classificados como procedentes."
-                />
-
-                <Cartao
-                  titulo="Improcedentes"
-                  valor={improcedentes}
-                  descricao="Pareceres classificados como improcedentes."
-                />
-
-                <Cartao
-                  titulo="Sem laudo"
-                  valor={semLaudo}
-                  descricao="Registros lidos sem parecer final identificado."
-                />
-              </div>
-
-              {/* ====================================
-                  RESUMO EXECUTIVO
-              ==================================== */}
-
-              <section className="sa-summary">
-                <div className="sa-summary-heading">
-                  <span className="sa-eyebrow">
-                    ANÁLISE DE QUALIDADE E ATENDIMENTO
+              <div className="sa-data-coverage">
+                <div>
+                  <span>
+                    Chamados encontrados
                   </span>
 
-                  <h2>
-                    Resumo Executivo do Período
-                  </h2>
-
-                  <p className="sa-executive-description">
-                    Principais resultados
-                    obtidos a partir da
-                    análise individual
-                    dos chamados técnicos.
-                  </p>
+                  <strong>
+                    {dados.totalEsperado}
+                  </strong>
                 </div>
 
-                <div className="sa-summary-grid">
+                <div>
+                  <span>
+                    Chamados analisados
+                  </span>
 
-                  <div className="sa-summary-item">
-                    <span>
-                      PRINCIPAL CLASSIFICAÇÃO TÉCNICA
-                    </span>
-
-                    <strong>
-                      {problemas[0]?.nome ||
-                        "Sem classificação registrada"}
-                    </strong>
-
-                    <p>
-                      {problemas[0]
-                        ? `${problemas[0].total} chamado(s) com esta classificação.`
-                        : "Não foi encontrada uma categoria técnica marcada nos registros analisados."}
-                    </p>
-                  </div>
-
-                  <div className="sa-summary-item">
-                    <span>
-                      PRODUTO COM MAIS OCORRÊNCIAS
-                    </span>
-
-                    <strong>
-                      {produtos[0]?.nome ||
-                        "Modelo não disponível"}
-                    </strong>
-
-                    <p>
-                      {produtos[0]
-                        ? `${produtos[0].total} ocorrência(s) envolvendo este modelo.`
-                        : "O nome dos modelos não foi identificado nos chamados."}
-                    </p>
-                  </div>
-
-                  <div className="sa-summary-item">
-                    <span>
-                      PRINCIPAL DÚVIDA IDENTIFICADA
-                    </span>
-
-                    <strong>
-                      {duvidas[0]?.nome ||
-                        "Sem dúvida classificada"}
-                    </strong>
-
-                    <p>
-                      {duvidas[0]
-                        ? `${duvidas[0].total} atendimento(s) relacionado(s).`
-                        : "Não foi possível estabelecer uma dúvida mais recorrente."}
-                    </p>
-                  </div>
+                  <strong>
+                    {dados.totalLido}
+                  </strong>
                 </div>
 
-                <div className="sa-data-coverage">
-                  <div>
-                    <span>
-                      Modelos identificados
-                    </span>
+                <div>
+                  <span>
+                    Falhas de leitura
+                  </span>
 
-                    <strong>
-                      {cobertura.produtos || 0}
-                      {" / "}
-                      {total}
-                    </strong>
-                  </div>
-
-                  <div>
-                    <span>
-                      Categorias técnicas marcadas
-                    </span>
-
-                    <strong>
-                      {cobertura.classificados || 0}
-                      {" / "}
-                      {total}
-                    </strong>
-                  </div>
-
-                  <div>
-                    <span>
-                      Pareceres identificados
-                    </span>
-
-                    <strong>
-                      {cobertura.comLaudo || 0}
-                      {" / "}
-                      {total}
-                    </strong>
-                  </div>
+                  <strong>
+                    {dados.falhas.length}
+                  </strong>
                 </div>
-              </section>
-
-              {/* ====================================
-                  GRÁFICOS
-              ==================================== */}
-
-              <div className="sa-charts-grid">
-
-                {/* PROBLEMAS */}
-
-                <BlocoGrafico
-                  titulo="Principais classificações técnicas"
-                  descricao="Categorias selecionadas pela equipe técnica nos chamados."
-                >
-                  {problemas.length ? (
-                    <ResponsiveContainer
-                      width="100%"
-                      height={320}
-                    >
-                      <BarChart
-                        data={problemas.slice(0, 8)}
-                        layout="vertical"
-                        margin={{
-                          left: 10,
-                          right: 15,
-                        }}
-                      >
-                        <CartesianGrid
-                          stroke="#29292e"
-                          horizontal={false}
-                        />
-
-                        <XAxis
-                          type="number"
-                          allowDecimals={false}
-                          stroke="#a0a0a8"
-                          fontSize={11}
-                        />
-
-                        <YAxis
-                          type="category"
-                          dataKey="nome"
-                          width={145}
-                          stroke="#b0b0ba"
-                          fontSize={10}
-                        />
-
-                        <Tooltip
-                          contentStyle={estiloTooltip}
-                        />
-
-                        <Bar
-                          dataKey="total"
-                          name="Chamados"
-                          fill="#ffffff"
-                          radius={[0, 6, 6, 0]}
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  ) : (
-                    <div className="sa-empty">
-                      <p>
-                        Nenhuma categoria técnica marcada foi encontrada.
-                      </p>
-                    </div>
-                  )}
-                </BlocoGrafico>
-
-                {/* LAUDOS */}
-
-                <BlocoGrafico
-                  titulo="Resultado dos pareceres"
-                  descricao="Procedentes, improcedentes, com cobrança e sem laudo."
-                >
-                  {laudosGrafico.length ? (
-                    <ResponsiveContainer
-                      width="100%"
-                      height={320}
-                    >
-                      <PieChart>
-                        <Pie
-                          data={laudosGrafico}
-                          dataKey="total"
-                          nameKey="nome"
-                          innerRadius={60}
-                          outerRadius={95}
-                          paddingAngle={3}
-                        >
-                          {laudosGrafico.map(
-                            (_, indice) => (
-                              <Cell
-                                key={indice}
-                                fill={
-                                  CORES[
-                                    indice %
-                                    CORES.length
-                                  ]
-                                }
-                              />
-                            )
-                          )}
-                        </Pie>
-
-                        <Tooltip
-                          contentStyle={estiloTooltip}
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  ) : (
-                    <div className="sa-empty">
-                      <p>
-                        Nenhum parecer disponível.
-                      </p>
-                    </div>
-                  )}
-                </BlocoGrafico>
-
-                {/* PRODUTOS */}
-
-                <BlocoGrafico
-                  titulo="Produtos mais citados"
-                  descricao="Ranking por modelo registrado nos chamados."
-                >
-                  <Ranking
-                    dados={produtos}
-                    vazio="Nenhum modelo foi identificado nos registros analisados."
-                  />
-                </BlocoGrafico>
-
-                {/* SINTOMAS */}
-
-                <BlocoGrafico
-                  titulo="Sintomas mais relatados"
-                  descricao="Problemas descritos pelos clientes, independentemente do laudo final."
-                >
-                  <Ranking
-                    dados={sintomas}
-                    vazio="Nenhum sintoma pôde ser identificado nos relatos."
-                  />
-                </BlocoGrafico>
-
-                {/* DÚVIDAS */}
-
-                <BlocoGrafico
-                  titulo="Dúvidas mais recorrentes"
-                  descricao="Assuntos que exigiram orientações de uso ou configuração."
-                >
-                  <Ranking
-                    dados={duvidas}
-                    vazio="Nenhuma dúvida foi identificada nos registros analisados."
-                  />
-                </BlocoGrafico>
-
-                {/* STATUS */}
-
-                <BlocoGrafico
-                  titulo="Situação dos atendimentos"
-                  descricao="Distribuição dos status registrados no Notion."
-                >
-                  <Ranking
-                    dados={indicadores.status}
-                    vazio="Nenhum status registrado."
-                  />
-                </BlocoGrafico>
-
-                {/* EVOLUÇÃO */}
-
-                <BlocoGrafico
-                  titulo="Evolução dos chamados"
-                  descricao="Quantidade de atendimentos por data de início."
-                  amplo
-                >
-                  {evolucao.length ? (
-                    <ResponsiveContainer
-                      width="100%"
-                      height={280}
-                    >
-                      <LineChart
-                        data={evolucao}
-                      >
-                        <CartesianGrid
-                          stroke="#303036"
-                          strokeDasharray="3 3"
-                        />
-
-                        <XAxis
-                          dataKey="nome"
-                          stroke="#a0a0a8"
-                          fontSize={10}
-                          tickFormatter={(v) =>
-                            v.slice(5)
-                          }
-                        />
-
-                        <YAxis
-                          allowDecimals={false}
-                          stroke="#a0a0a8"
-                        />
-
-                        <Tooltip
-                          contentStyle={estiloTooltip}
-                        />
-
-                        <Line
-                          dataKey="total"
-                          name="Chamados"
-                          stroke="#ffffff"
-                          strokeWidth={3}
-                          dot={{
-                            fill: "#ffffff",
-                            r: 4,
-                          }}
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  ) : (
-                    <div className="sa-empty">
-                      <p>
-                        Sem registros de datas.
-                      </p>
-                    </div>
-                  )}
-                </BlocoGrafico>
               </div>
 
-              {/* ====================================
-                  CONCLUSÃO GERENCIAL
-              ==================================== */}
+              <p className="sa-summary-disclaimer">
+                {podeConcluir
+                  ? "Todos os chamados do período foram consultados individualmente. A disponibilidade das informações depende do preenchimento dos campos no Notion."
+                  : "Existem chamados que não puderam ser lidos. Os indicadores abaixo são parciais e não devem ser utilizados como fechamento gerencial definitivo."}
+              </p>
 
-              <section className="sa-conclusion">
+              {!podeConcluir && (
+                <button
+                  type="button"
+                  className="sa-refresh"
+                  onClick={() =>
+                    setAtualizar(
+                      (v) => v + 1
+                    )
+                  }
+                >
+                  Reprocessar análise
+                </button>
+              )}
+            </section>
+
+            {/* ====================================
+                INDICADORES PRINCIPAIS
+            ==================================== */}
+
+            <div className="sa-kpi-grid">
+              <Cartao
+                titulo="Chamados analisados"
+                valor={total}
+                descricao="Registros consultados no período."
+              />
+
+              <Cartao
+                titulo="Atendimentos finalizados"
+                valor={finalizados}
+                descricao="Chamados com status de conclusão."
+              />
+
+              <Cartao
+                titulo="Atendimentos não finalizados"
+                valor={pendentes}
+                descricao="Inclui registros sem status reconhecido."
+              />
+
+              <Cartao
+                titulo="Tempo médio de resolução"
+                valor={
+                  mediaResolucao === null ||
+                  mediaResolucao === undefined
+                    ? "—"
+                    : `${mediaResolucao.toFixed(1)} dias`
+                }
+                descricao={`Dias corridos com datas válidas (${indicadores.temposCalculados} chamados).`}
+              />
+
+              <Cartao
+                titulo="Laudos procedentes"
+                valor={procedentes}
+                descricao="Procedência registrada no Notion."
+              />
+
+              <Cartao
+                titulo="Laudos improcedentes"
+                valor={improcedentes}
+                descricao="Improcedência registrada no Notion."
+              />
+
+              <Cartao
+                titulo="Com cobrança"
+                valor={cobranca}
+                descricao="Chamados com esse parecer registrado."
+              />
+
+              <Cartao
+                titulo="Sem laudo identificado"
+                valor={semLaudo}
+                descricao="Sem parecer final reconhecido."
+              />
+            </div>
+
+            {/* ====================================
+                RESUMO EXECUTIVO
+            ==================================== */}
+
+            <section className="sa-summary">
+              <div className="sa-summary-heading">
                 <span className="sa-eyebrow">
-                  DIAGNÓSTICO GERENCIAL
+                  VISÃO ESTRATÉGICA DE QUALIDADE E ATENDIMENTO
                 </span>
 
                 <h2>
-                  Conclusão e Recomendações do Período
+                  Resumo Executivo do Período
                 </h2>
 
-                {!podeConcluir ? (
+                <p className="sa-executive-description">
+                  Indicadores consolidados dos
+                  atendimentos, principais
+                  ocorrências e oportunidades
+                  de melhoria identificadas.
+                </p>
+              </div>
+
+              <div className="sa-summary-grid">
+                <div className="sa-summary-item">
+                  <span>
+                    01 / PROBLEMA MAIS RECORRENTE
+                  </span>
+
+                  <strong>
+                    {principalProblema?.nome ||
+                      "Classificação indisponível"}
+                  </strong>
+
                   <p>
-                    A análise do período está
-                    incompleta. Foram encontrados{" "}
-                    <strong>
-                      {dados.totalEsperado}
-                    </strong>{" "}
-                    chamados, dos quais{" "}
-                    <strong>
-                      {dados.totalLido}
-                    </strong>{" "}
-                    foram lidos integralmente.
-                    Existem{" "}
-                    <strong>
-                      {dados.falhas.length}
-                    </strong>{" "}
-                    chamado(s) pendentes de leitura.
-                    O relatório não deve ser
-                    considerado definitivo até
-                    que essas falhas sejam resolvidas.
+                    {principalProblema
+                      ? `${principalProblema.total} atendimento(s) classificados nesta categoria.`
+                      : "Nenhum problema foi classificado nos registros lidos."}
                   </p>
-                ) : total === 0 ? (
+                </div>
+
+                <div className="sa-summary-item">
+                  <span>
+                    02 / PRODUTO MAIS CITADO
+                  </span>
+
+                  <strong>
+                    {principalProduto?.nome ||
+                      "Modelo não identificado"}
+                  </strong>
+
                   <p>
-                    Nenhum chamado foi encontrado
-                    no período selecionado.
+                    {principalProduto
+                      ? `${principalProduto.total} chamado(s) envolvendo este produto.`
+                      : "Os registros não apresentaram modelos identificáveis."}
                   </p>
+                </div>
+
+                <div className="sa-summary-item">
+                  <span>
+                    03 / DÚVIDA MAIS FREQUENTE
+                  </span>
+
+                  <strong>
+                    {principalDuvida?.nome ||
+                      "Sem dúvida identificada"}
+                  </strong>
+
+                  <p>
+                    {principalDuvida
+                      ? `${principalDuvida.total} atendimento(s) relacionados a esta dúvida.`
+                      : "Não foram reconhecidas dúvidas suficientes para um ranking."}
+                  </p>
+                </div>
+              </div>
+
+              {/* COBERTURA DOS DADOS */}
+
+              <div className="sa-data-coverage">
+                <div>
+                  <span>
+                    Modelos identificados
+                  </span>
+
+                  <strong>
+                    {cobertura.produtos || 0}
+                    {" / "}
+                    {total}
+                  </strong>
+                </div>
+
+                <div>
+                  <span>
+                    Problemas classificados
+                  </span>
+
+                  <strong>
+                    {cobertura.classificados || 0}
+                    {" / "}
+                    {total}
+                  </strong>
+                </div>
+
+                <div>
+                  <span>
+                    Pareceres identificados
+                  </span>
+
+                  <strong>
+                    {cobertura.comLaudo || 0}
+                    {" / "}
+                    {total}
+                  </strong>
+                </div>
+              </div>
+
+              <p className="sa-summary-disclaimer">
+                Os rankings de problemas representam
+                os tipos de ocorrência registrados.
+                Eles não equivalem automaticamente
+                a defeitos de fabricação confirmados.
+              </p>
+            </section>
+
+            {/* ====================================
+                GRÁFICOS
+            ==================================== */}
+
+            <div className="sa-charts-grid">
+
+              {/* PRINCIPAIS PROBLEMAS */}
+
+              <BlocoGrafico
+                titulo="Principais tipos de problema"
+                descricao="Ranking baseado nas classificações registradas no Notion."
+              >
+                {problemas.length ? (
+                  <ResponsiveContainer
+                    width="100%"
+                    height={330}
+                  >
+                    <BarChart
+                      data={problemas.slice(0, 8)}
+                      layout="vertical"
+                      margin={{
+                        left: 10,
+                        right: 20,
+                      }}
+                    >
+                      <CartesianGrid
+                        stroke="#29292e"
+                        horizontal={false}
+                      />
+
+                      <XAxis
+                        type="number"
+                        allowDecimals={false}
+                        stroke="#a0a0a8"
+                        fontSize={11}
+                      />
+
+                      <YAxis
+                        type="category"
+                        dataKey="nome"
+                        width={145}
+                        stroke="#b0b0ba"
+                        fontSize={10}
+                      />
+
+                      <Tooltip
+                        contentStyle={estiloTooltip}
+                      />
+
+                      <Bar
+                        dataKey="total"
+                        name="Chamados"
+                        fill="#ffffff"
+                        radius={[0, 6, 6, 0]}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
                 ) : (
-                  <>
+                  <div className="sa-empty">
                     <p>
-                      No período analisado,
-                      foram consultados
-                      individualmente{" "}
+                      Nenhuma classificação de problema
+                      foi identificada no período.
+                    </p>
+                  </div>
+                )}
+              </BlocoGrafico>
+
+              {/* PROCEDÊNCIA */}
+
+              <BlocoGrafico
+                titulo="Procedência dos atendimentos"
+                descricao="Distribuição dos pareceres oficiais registrados."
+              >
+                {laudosGrafico.length ? (
+                  <ResponsiveContainer
+                    width="100%"
+                    height={330}
+                  >
+                    <PieChart>
+                      <Pie
+                        data={laudosGrafico}
+                        dataKey="total"
+                        nameKey="nome"
+                        innerRadius={60}
+                        outerRadius={95}
+                        paddingAngle={3}
+                      >
+                        {laudosGrafico.map(
+                          (_, indice) => (
+                            <Cell
+                              key={indice}
+                              fill={
+                                CORES[
+                                  indice %
+                                  CORES.length
+                                ]
+                              }
+                            />
+                          )
+                        )}
+                      </Pie>
+
+                      <Tooltip
+                        contentStyle={estiloTooltip}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="sa-empty">
+                    <p>
+                      Nenhum parecer disponível.
+                    </p>
+                  </div>
+                )}
+              </BlocoGrafico>
+
+              {/* PRODUTOS */}
+
+              <BlocoGrafico
+                titulo="Produtos mais citados"
+                descricao="Modelos com maior número de atendimentos."
+              >
+                <Ranking
+                  dados={produtos}
+                  vazio="Nenhum modelo identificado."
+                />
+              </BlocoGrafico>
+
+              {/* DÚVIDAS */}
+
+              <BlocoGrafico
+                titulo="Dúvidas mais frequentes"
+                descricao="Principais solicitações de orientação dos clientes."
+              >
+                <Ranking
+                  dados={duvidas}
+                  vazio="Nenhuma dúvida identificada."
+                />
+              </BlocoGrafico>
+
+              {/* SINTOMAS */}
+
+              <BlocoGrafico
+                titulo="Sintomas relatados"
+                descricao="Problemas descritos pelos clientes, independentemente do laudo final."
+              >
+                <Ranking
+                  dados={sintomas}
+                  vazio="Nenhum sintoma identificado."
+                />
+              </BlocoGrafico>
+
+              {/* RESPONSÁVEIS */}
+
+              <BlocoGrafico
+                titulo="Atendimentos por responsável"
+                descricao="Quantidade de chamados associados a cada atendente."
+              >
+                <Ranking
+                  dados={responsaveis}
+                  vazio="Nenhum responsável identificado."
+                />
+              </BlocoGrafico>
+
+              {/* STATUS */}
+
+              <BlocoGrafico
+                titulo="Situação dos atendimentos"
+                descricao="Distribuição dos status cadastrados no Notion."
+              >
+                <Ranking
+                  dados={
+                    indicadores.status || []
+                  }
+                  vazio="Nenhum status disponível."
+                />
+              </BlocoGrafico>
+
+              {/* MODALIDADES */}
+
+              <BlocoGrafico
+                titulo="Tipos de atendimento"
+                descricao="Distribuição entre assistência e suporte técnico."
+              >
+                <Ranking
+                  dados={
+                    indicadores.modalidades || []
+                  }
+                  vazio="Nenhum tipo de atendimento identificado."
+                />
+              </BlocoGrafico>
+
+              {/* EVOLUÇÃO */}
+
+              <BlocoGrafico
+                titulo="Evolução dos atendimentos"
+                descricao="Quantidade de chamados por data de abertura."
+                amplo
+              >
+                {evolucao.length ? (
+                  <ResponsiveContainer
+                    width="100%"
+                    height={290}
+                  >
+                    <LineChart
+                      data={evolucao}
+                    >
+                      <CartesianGrid
+                        stroke="#303036"
+                        strokeDasharray="3 3"
+                      />
+
+                      <XAxis
+                        dataKey="nome"
+                        stroke="#a0a0a8"
+                        fontSize={10}
+                        tickFormatter={(valor) =>
+                          valor.slice(5)
+                        }
+                      />
+
+                      <YAxis
+                        allowDecimals={false}
+                        stroke="#a0a0a8"
+                      />
+
+                      <Tooltip
+                        contentStyle={estiloTooltip}
+                      />
+
+                      <Line
+                        dataKey="total"
+                        name="Chamados"
+                        stroke="#ffffff"
+                        strokeWidth={3}
+                        dot={{
+                          fill: "#ffffff",
+                          r: 4,
+                        }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="sa-empty">
+                    <p>
+                      Sem dados para o gráfico.
+                    </p>
+                  </div>
+                )}
+              </BlocoGrafico>
+            </div>
+
+            {/* ====================================
+                DIAGNÓSTICO GERENCIAL
+            ==================================== */}
+
+            <section className="sa-conclusion">
+              <span className="sa-eyebrow">
+                CONSOLIDAÇÃO EXECUTIVA
+              </span>
+
+              <h2>
+                Diagnóstico e Recomendações do Período
+              </h2>
+
+              {!podeConcluir ? (
+                <p>
+                  A análise está incompleta.
+                  Foram encontrados{" "}
+                  <strong>
+                    {dados.totalEsperado}
+                  </strong>{" "}
+                  chamados, sendo{" "}
+                  <strong>
+                    {dados.totalLido}
+                  </strong>{" "}
+                  lidos com sucesso e{" "}
+                  <strong>
+                    {dados.falhas.length}
+                  </strong>{" "}
+                  com falha de leitura.
+                  Os resultados apresentados
+                  são parciais e não devem
+                  ser considerados o
+                  fechamento oficial.
+                </p>
+              ) : total === 0 ? (
+                <p>
+                  Não foram identificados chamados
+                  no período selecionado.
+                </p>
+              ) : (
+                <>
+                  <p>
+                    No período analisado,
+                    foram consultados
+                    individualmente{" "}
+                    <strong>
+                      {total} chamados
+                    </strong>.
+                    {" "}Desses,{" "}
+                    <strong>
+                      {finalizados}
+                    </strong>{" "}
+                    possuem status de conclusão
+                    e{" "}
+                    <strong>
+                      {pendentes}
+                    </strong>{" "}
+                    não possuem status de
+                    conclusão reconhecido.
+                  </p>
+
+                  {principalProblema && (
+                    <p>
+                      O tipo de problema mais
+                      recorrente foi{" "}
                       <strong>
-                        {total} chamados
-                      </strong>.
-                      {" "}Desses,{" "}
+                        {principalProblema.nome}
+                      </strong>,
+                      registrado em{" "}
                       <strong>
-                        {cobertura.classificados || 0}
+                        {principalProblema.total}
                       </strong>{" "}
-                      possuem classificação técnica
-                      marcada no Notion.
+                      chamado(s).
                     </p>
+                  )}
 
-                    {problemas[0] && (
-                      <p>
-                        A classificação técnica
-                        mais frequente foi{" "}
-                        <strong>
-                          {problemas[0].nome}
-                        </strong>,
-                        presente em{" "}
-                        <strong>
-                          {problemas[0].total}
-                        </strong>{" "}
-                        chamado(s).
-                      </p>
-                    )}
-
-                    {produtos[0] && (
-                      <p>
-                        O produto mais citado foi{" "}
-                        <strong>
-                          {produtos[0].nome}
-                        </strong>,
-                        com{" "}
-                        <strong>
-                          {produtos[0].total}
-                        </strong>{" "}
-                        ocorrência(s).
-                      </p>
-                    )}
-
-                    {duvidas[0] && (
-                      <p>
-                        A dúvida mais recorrente
-                        foi relacionada a{" "}
-                        <strong>
-                          {duvidas[0].nome}
-                        </strong>,
-                        identificada em{" "}
-                        <strong>
-                          {duvidas[0].total}
-                        </strong>{" "}
-                        atendimento(s).
-                      </p>
-                    )}
-
+                  {principalProduto && (
                     <p>
-                      Quanto aos pareceres,
-                      foram identificados{" "}
+                      O produto mais citado
+                      foi{" "}
                       <strong>
-                        {procedentes} procedente(s)
+                        {principalProduto.nome}
                       </strong>,
-                      {" "}
+                      com{" "}
                       <strong>
-                        {improcedentes} improcedente(s)
-                      </strong>,
-                      {" "}
-                      <strong>
-                        {cobranca} com cobrança
-                      </strong>
-                      {" "}e{" "}
-                      <strong>
-                        {semLaudo} sem laudo identificado
-                      </strong>.
+                        {principalProduto.total}
+                      </strong>{" "}
+                      ocorrência(s) registradas.
                     </p>
+                  )}
 
+                  {principalDuvida && (
                     <p>
-                      A taxa de procedência entre
-                      os pareceres classificados
+                      A principal dúvida
+                      identificada foi{" "}
+                      <strong>
+                        {principalDuvida.nome}
+                      </strong>,
+                      com{" "}
+                      <strong>
+                        {principalDuvida.total}
+                      </strong>{" "}
+                      atendimento(s).
+                    </p>
+                  )}
+
+                  <p>
+                    Quanto à procedência,
+                    foram encontrados{" "}
+                    <strong>
+                      {procedentes} laudos procedentes
+                    </strong>,
+                    {" "}
+                    <strong>
+                      {improcedentes} improcedentes
+                    </strong>,
+                    {" "}
+                    <strong>
+                      {cobranca} com cobrança
+                    </strong>{" "}
+                    e{" "}
+                    <strong>
+                      {semLaudo} sem parecer identificado
+                    </strong>.
+                  </p>
+
+                  <p>
+                    A taxa de procedência
+                    entre os laudos classificados
+                    foi de{" "}
+                    <strong>
+                      {percentual(
+                        procedentes,
+                        laudosConcluidos
+                      )}
+                    </strong>.
+                  </p>
+
+                  {mediaResolucao !== null &&
+                    mediaResolucao !== undefined && (
+                    <p>
+                      O tempo médio entre
+                      abertura e conclusão
                       foi de{" "}
                       <strong>
-                        {percentual(
-                          procedentes,
-                          laudosConcluidos
-                        )}
-                      </strong>.
+                        {mediaResolucao.toFixed(1)}
+                        {" "}dias corridos
+                      </strong>,
+                      considerando{" "}
+                      <strong>
+                        {indicadores.temposCalculados}
+                      </strong>{" "}
+                      chamados com datas válidas.
                     </p>
+                  )}
 
-                    {(cobertura.classificados || 0) <
-                      total && (
-                      <p>
-                        <strong>
-                          Recomendação gerencial:
-                        </strong>{" "}
-                        revisar os atendimentos
-                        sem classificação técnica
-                        identificada, garantindo
-                        maior precisão aos indicadores
-                        de qualidade dos produtos.
-                      </p>
-                    )}
+                  {principalProblema && (
+                    <p>
+                      <strong>
+                        Recomendação técnica:
+                      </strong>{" "}
+                      acompanhar a recorrência
+                      da categoria{" "}
+                      <strong>
+                        {principalProblema.nome}
+                      </strong>,
+                      verificando os produtos
+                      envolvidos, os relatos,
+                      os pareceres técnicos
+                      e as soluções aplicadas.
+                    </p>
+                  )}
 
-                    {problemas[0] && (
-                      <p>
-                        Recomenda-se também
-                        acompanhar a recorrência
-                        da categoria{" "}
-                        <strong>
-                          {problemas[0].nome}
-                        </strong>,
-                        verificando os modelos
-                        envolvidos, as evidências
-                        técnicas e os laudos
-                        antes de estabelecer
-                        ações corretivas.
-                      </p>
-                    )}
-                  </>
-                )}
+                  {principalDuvida && (
+                    <p>
+                      <strong>
+                        Recomendação de atendimento:
+                      </strong>{" "}
+                      avaliar a criação ou
+                      atualização de materiais
+                      explicativos sobre{" "}
+                      <strong>
+                        {principalDuvida.nome}
+                      </strong>,
+                      para reduzir dúvidas
+                      repetitivas.
+                    </p>
+                  )}
 
-                <div className="sa-conclusion-foot">
-                  <span>
-                    Fonte: Notion — Chamados Synter
-                  </span>
+                  {(cobertura.produtos || 0) <
+                    total && (
+                    <p>
+                      <strong>
+                        Qualidade dos registros:
+                      </strong>{" "}
+                      parte dos chamados
+                      não apresenta modelo
+                      de produto identificável.
+                      Recomenda-se aprimorar
+                      o preenchimento desse
+                      campo no Notion.
+                    </p>
+                  )}
 
-                  <span>
-                    Atualizado em{" "}
-                    {new Date(
-                      dados.atualizadoEm
-                    ).toLocaleString("pt-BR")}
-                  </span>
-                </div>
-              </section>
-            </>
-          )}
+                  <p>
+                    <strong>
+                      Observação:
+                    </strong>{" "}
+                    os tipos de problema e os
+                    sintomas relatados não
+                    comprovam, isoladamente,
+                    a existência de defeito
+                    de fabricação. A conclusão
+                    técnica deve considerar
+                    os pareceres e as evidências
+                    registradas.
+                  </p>
+                </>
+              )}
+
+              <div className="sa-conclusion-foot">
+                <span>
+                  Fonte: Notion — Chamados Synter
+                </span>
+
+                <span>
+                  Atualização:{" "}
+                  {new Date(
+                    dados.atualizadoEm
+                  ).toLocaleString("pt-BR")}
+                </span>
+              </div>
+            </section>
+          </>
+        )}
       </main>
 
       <Footer />
