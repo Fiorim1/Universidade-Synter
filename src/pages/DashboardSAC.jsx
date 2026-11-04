@@ -2,35 +2,23 @@
 import { useState } from "react";
 
 import Header from "../components/Header";
-import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 import CardsDashboard from "../components/CardsDashboard";
 
-// ========================================
-// ÍCONES
-// ========================================
-
 import AppIcon from "../assets/app-icon.png";
 import AstIcon from "../assets/ast-icon.png";
 import TabelaIcon from "../assets/tabela-icon.png";
 
-// ========================================
-// ESTILOS
-// ========================================
-
 import "../styles/Dashboard.css";
-
-// ========================================
-// DASHBOARD SAC
-// ========================================
+import "../styles/DashboardSAC.css";
 
 function DashboardSAC() {
   const [profileOpen, setProfileOpen] = useState(false);
 
   return (
-    <div className="dashboard-page">
+    <div className="dashboard-page dashboard-sac-page">
 
       {/* ========================================
           HEADER
@@ -39,27 +27,56 @@ function DashboardSAC() {
       <Header />
 
       {/* ========================================
-          HERO
+          HERO — PADRÃO SYNTER
       ======================================== */}
 
-      <section className="dashboard-hero-area">
+      <section className="dashboard-sac-hero">
+        <div className="dashboard-sac-hero-inner">
 
-        <div className="dashboard-profile">
-          <UserProfileButton
-            onClick={() => setProfileOpen(true)}
-          />
+          <div className="dashboard-sac-profile">
+            <UserProfileButton
+              onClick={() => setProfileOpen(true)}
+            />
+          </div>
+
+          <div className="dashboard-sac-hero-text">
+
+            <div className="dashboard-sac-eyebrow">
+              <svg
+                width="23"
+                height="23"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <rect
+                  x="3"
+                  y="3"
+                  width="18"
+                  height="18"
+                  rx="4"
+                />
+                <path d="M3 9h18M9 3v18" />
+              </svg>
+
+              <span>SUPORTE E ATENDIMENTO</span>
+            </div>
+
+            <h1>Gestão de Atendimento</h1>
+
+            <p>
+              Centralize os chamados técnicos, registre
+              visitas e acompanhe os indicadores de
+              qualidade e desempenho do SAC Synter.
+            </p>
+
+          </div>
+
         </div>
-
-        <div className="dashboard-hero-content">
-          <Hero
-            variant="dashboard"
-            one="Gestão de Atendimento"
-            two="Universidade Synter | SAC"
-            three="Centralize os chamados técnicos, registre visitas e acompanhe os indicadores de qualidade e desempenho do atendimento."
-            showFeatures
-          />
-        </div>
-
       </section>
 
       {/* ========================================
@@ -70,19 +87,10 @@ function DashboardSAC() {
 
         <div className="dashboard-section-title">
           <div className="dashboard-section-bar"></div>
-
           <h4>ACESSO RÁPIDO</h4>
         </div>
 
-        {/* ========================================
-            CARTÕES DO DASHBOARD
-        ======================================== */}
-
         <div className="cards">
-
-          {/* ====================================
-              CHAMADOS TÉCNICOS
-          ==================================== */}
 
           <CardsDashboard
             image={AppIcon}
@@ -91,20 +99,12 @@ function DashboardSAC() {
             route="/assistencia-tecnica"
           />
 
-          {/* ====================================
-              VISITAS TÉCNICAS
-          ==================================== */}
-
           <CardsDashboard
             image={AstIcon}
             title="Documentos de Visita Técnica"
             desc="Registre visitas, colete assinaturas e gere formulários em PDF."
             route="/visitas-tecnicas"
           />
-
-          {/* ====================================
-              SYNTER ANALYTICS
-          ==================================== */}
 
           <CardsDashboard
             image={TabelaIcon}
@@ -114,7 +114,6 @@ function DashboardSAC() {
           />
 
         </div>
-
       </main>
 
       {/* ========================================
@@ -124,7 +123,7 @@ function DashboardSAC() {
       <Footer />
 
       {/* ========================================
-          MODAL DO PERFIL
+          PERFIL
       ======================================== */}
 
       {profileOpen && (

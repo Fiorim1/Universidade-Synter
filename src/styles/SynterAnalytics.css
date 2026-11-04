@@ -1,132 +1,172 @@
 
-/* ========================================
-   SYNTER ANALYTICS — BUSINESS INTELLIGENCE
-======================================== */
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   SYNTER ANALYTICS — DESIGN SYSTEM
+   ========================================== */
 
 .sa-page {
+  --sa-bg: #080808;
+  --sa-surface: #111113;
+  --sa-surface-alt: #171719;
+  --sa-border: #2d2d32;
+  --sa-text: #ffffff;
+  --sa-muted: #a6a6b0;
+
+  width: 100%;
   min-height: 100vh;
-  background: #080809;
-  color: #ffffff;
+  overflow-x: hidden;
+  background: var(--sa-bg);
+  color: var(--sa-text);
   font-family: inherit;
+  box-sizing: border-box;
 }
+
+.sa-page *,
+.sa-page *::before,
+.sa-page *::after {
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   CONTAINER PRINCIPAL
+   ========================================== */
 
 .sa-container {
   width: min(1480px, calc(100% - 64px));
+  max-width: 1480px;
   margin: 0 auto;
-  padding: 64px 0 90px;
+  padding: 0 0 90px;
 }
 
-/* ========================================
-   CABEÇALHO
-======================================== */
+/* ==========================================
+   HERO — PADRÃO ASSISTÊNCIA TÉCNICA
+   ========================================== */
 
 .sa-header {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 35px;
-  margin-bottom: 34px;
+  justify-content: flex-start;
+
+  min-height: 360px;
+  margin: 0 0 36px;
+  padding: 68px 0 75px;
+
+  background: #080808;
+}
+
+.sa-header > div {
+  max-width: 1100px;
+  min-width: 0;
 }
 
 .sa-eyebrow {
   display: block;
-  color: #9b9ba3;
+  margin-bottom: 18px;
+
+  color: #b8b8c0;
+
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 750;
+  letter-spacing: 2.3px;
+  line-height: 1.6;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  line-height: 1.8;
 }
 
 .sa-header h1 {
-  margin: 13px 0 15px;
-  font-size: clamp(36px, 5vw, 64px);
+  margin: 0 0 24px;
+
+  color: #ffffff;
+  font-size: clamp(42px, 5.4vw, 76px);
   font-weight: 850;
-  letter-spacing: -2.5px;
-  line-height: 1.12;
+  letter-spacing: -3px;
+  line-height: 1.09;
 }
 
 .sa-header h1 span {
-  color: #a2a2aa;
+  color: #ffffff;
 }
 
 .sa-header p {
-  max-width: 700px;
+  max-width: 900px;
   margin: 0;
-  color: #a4a4ac;
-  font-size: 15px;
+
+  color: #bcbcc4;
+  font-size: 16px;
+  font-weight: 400;
   line-height: 1.8;
 }
 
+/* Remove o antigo símbolo BI */
+
 .sa-header-mark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 92px;
-  height: 92px;
-  border: 1px solid #34343a;
-  border-radius: 24px;
-  background: linear-gradient(
-    145deg,
-    #202024,
-    #0d0d0f
-  );
-  color: #ffffff;
-  font-size: 32px;
-  font-weight: 900;
-  letter-spacing: -2px;
+  display: none !important;
 }
 
-/* ========================================
-   FILTROS
-======================================== */
+/* ==========================================
+   FILTROS DE PERÍODO
+   ========================================== */
 
 .sa-filters {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 18px;
-  padding: 18px;
-  border: 1px solid #29292f;
+  gap: 20px;
+
+  width: 100%;
+  margin-bottom: 0;
+  padding: 20px;
+
+  background: #121214;
+  border: 1px solid var(--sa-border);
   border-radius: 18px;
-  background: #111113;
 }
 
 .sa-filter-buttons {
   display: flex;
   align-items: center;
   gap: 5px;
+
   padding: 5px;
-  background: #1d1d20;
+
+  background: #1c1c20;
   border-radius: 12px;
 }
 
 .sa-filter-buttons button {
-  border: none;
-  border-radius: 9px;
-  padding: 11px 19px;
+  min-height: 40px;
+  padding: 0 20px;
+
   background: transparent;
-  color: #a9a9b0;
+  border: 0;
+  border-radius: 9px;
+
+  color: #a9a9b2;
+  font-family: inherit;
   font-size: 12px;
   font-weight: 700;
+
   cursor: pointer;
-  transition: 0.2s;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .sa-filter-buttons button:hover {
   color: #ffffff;
+  background: #2b2b30;
 }
 
 .sa-filter-buttons button.active {
+  color: #101012;
   background: #ffffff;
-  color: #111113;
 }
 
 .sa-filter-actions {
   display: flex;
   align-items: flex-end;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
@@ -134,134 +174,174 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  color: #aaaaaf;
+
+  color: #b7b7c0;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 650;
 }
 
 .sa-date-filter input {
-  min-height: 42px;
-  padding: 0 12px;
-  border: 1px solid #36363b;
-  border-radius: 10px;
-  background: #1b1b1e;
+  min-width: 160px;
+  min-height: 43px;
+  padding: 0 13px;
+
   color: #ffffff;
   color-scheme: dark;
-  font: inherit;
+  background: #1d1d21;
+
+  border: 1px solid #39393f;
+  border-radius: 10px;
+
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
 }
 
-.sa-date-filter input:focus {
-  outline: 1px solid #8c8c96;
+.sa-date-filter input:focus-visible {
+  border-color: #d0d0d8;
+  outline: 2px solid #ffffff33;
+  outline-offset: 2px;
 }
 
 .sa-refresh {
-  min-height: 42px;
-  padding: 0 18px;
-  border: 1px solid #484850;
-  border-radius: 10px;
-  background: #26262b;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 43px;
+  padding: 0 20px;
+
   color: #ffffff;
+  background: #29292e;
+
+  border: 1px solid #45454c;
+  border-radius: 10px;
+
+  font-family: inherit;
   font-size: 12px;
   font-weight: 700;
+
   cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
-.sa-refresh:hover {
-  background: #333339;
+.sa-refresh:hover:not(:disabled) {
+  background: #36363d;
+  border-color: #676770;
 }
 
 .sa-refresh:disabled {
-  opacity: 0.5;
-  cursor: wait;
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .sa-period-caption {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 15px 4px 26px;
-  color: #888891;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  padding: 17px 4px 26px;
+
+  color: #9898a3;
   font-size: 12px;
 }
 
-/* ========================================
-   AVISOS E CARREGAMENTO
-======================================== */
+/* ==========================================
+   LOADING, PROGRESSO E MENSAGENS
+   ========================================== */
 
 .sa-error,
 .sa-notice,
 .sa-loading {
-  margin-bottom: 20px;
-  padding: 18px 20px;
-  border: 1px solid #3b3b42;
-  border-radius: 14px;
-  background: #17171b;
+  margin-bottom: 22px;
+  padding: 20px 24px;
+
   color: #eeeeef;
+  background: #171719;
+
+  border: 1px solid #393940;
+  border-radius: 16px;
+
   font-size: 13px;
 }
 
 .sa-error {
-  border-color: #7b3535;
+  border-color: #884444;
 }
 
 .sa-error strong,
 .sa-notice strong {
   display: block;
-  margin-bottom: 7px;
+  margin-bottom: 10px;
+  color: #ffffff;
+  font-size: 14px;
 }
 
 .sa-error p,
 .sa-notice p {
-  margin: 0;
-  color: #b4b4bb;
-  line-height: 1.7;
+  margin: 8px 0;
+  color: #bdbdc5;
+  line-height: 1.75;
 }
 
 .sa-loading {
   text-align: center;
 }
 
-/* ========================================
-   INDICADORES
-======================================== */
+/* ==========================================
+   INDICADORES GERENCIAIS
+   ========================================== */
 
 .sa-kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 15px;
-  margin-bottom: 24px;
+  gap: 16px;
+
+  margin-bottom: 25px;
 }
 
 .sa-kpi {
   min-width: 0;
-  padding: 23px;
-  border: 1px solid #2a2a2f;
-  border-radius: 18px;
+  min-height: 165px;
+  padding: 24px;
+
   background: linear-gradient(
     145deg,
-    #18181b,
-    #101012
+    #19191c 0%,
+    #111113 100%
   );
-  transition: 0.2s ease;
+
+  border: 1px solid #303036;
+  border-radius: 18px;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .sa-kpi:hover {
-  border-color: #494950;
   transform: translateY(-3px);
+  border-color: #52525b;
 }
 
 .sa-kpi-top {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 15px;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-bottom: 18px;
 }
 
 .sa-kpi-top > span:first-child {
-  color: #b0b0b7;
+  color: #c2c2cb;
   font-size: 12px;
   font-weight: 650;
+  line-height: 1.5;
 }
 
 .sa-kpi-icon {
@@ -269,99 +349,182 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 31px;
-  height: 31px;
-  border: 1px solid #36363d;
+
+  width: 32px;
+  height: 32px;
+
+  color: #f2f2f5;
+  border: 1px solid #3e3e45;
   border-radius: 9px;
-  color: #eeeeef;
+
   font-size: 17px;
 }
 
 .sa-kpi strong {
   display: block;
+
   color: #ffffff;
-  font-size: 38px;
+  font-size: clamp(26px, 2.5vw, 39px);
   font-weight: 850;
-  letter-spacing: -1.5px;
+  letter-spacing: -1.4px;
   line-height: 1.2;
+
+  overflow-wrap: anywhere;
 }
 
 .sa-kpi p {
-  margin: 9px 0 0;
-  color: #81818b;
+  margin: 10px 0 0;
+
+  color: #a1a1ac;
   font-size: 11px;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
-/* ========================================
-   RESUMO GERENCIAL
-======================================== */
+/* ==========================================
+   SEÇÕES GERENCIAIS
+   ========================================== */
 
 .sa-summary {
-  padding: 30px;
-  margin-bottom: 24px;
-  border: 1px solid #323238;
-  border-radius: 20px;
+  min-width: 0;
+  margin-bottom: 25px;
+  padding: 34px;
+
   background: linear-gradient(
     135deg,
-    #1c1c20,
-    #0c0c0e
+    #1b1b1e 0%,
+    #111113 55%,
+    #0d0d0f 100%
   );
+
+  border: 1px solid #34343b;
+  border-radius: 20px;
+}
+
+.sa-summary > h2 {
+  margin: 10px 0 22px;
+  color: #ffffff;
+  font-size: clamp(21px, 2.3vw, 27px);
+  letter-spacing: -0.7px;
 }
 
 .sa-summary-heading h2 {
-  margin: 9px 0 25px;
-  font-size: 24px;
-  letter-spacing: -0.7px;
+  margin: 8px 0 10px;
+
+  color: #ffffff;
+  font-size: clamp(22px, 2.5vw, 29px);
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  line-height: 1.3;
+}
+
+.sa-executive-description {
+  margin: 0 0 27px;
+
+  color: #a6a6b0;
+  font-size: 13px;
+  line-height: 1.8;
 }
 
 .sa-summary-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  gap: 16px;
 }
 
 .sa-summary-item {
-  padding: 22px;
-  border: 1px solid #34343b;
-  border-radius: 15px;
-  background: #141417;
+  min-width: 0;
+  min-height: 168px;
+  padding: 24px;
+
+  background: #141416;
+  border: 1px solid #38383f;
+  border-radius: 16px;
 }
 
 .sa-summary-item > span {
   display: block;
-  margin-bottom: 15px;
-  color: #91919a;
+  margin-bottom: 17px;
+
+  color: #aaaaB5;
   font-size: 10px;
   font-weight: 800;
-  letter-spacing: 1.2px;
+  letter-spacing: 1.25px;
+  line-height: 1.6;
 }
 
 .sa-summary-item strong {
   display: block;
+
   color: #ffffff;
-  font-size: 20px;
+  font-size: clamp(17px, 1.8vw, 21px);
+  font-weight: 800;
+  letter-spacing: -0.5px;
   line-height: 1.4;
+
   overflow-wrap: anywhere;
 }
 
 .sa-summary-item p {
-  margin: 10px 0 0;
-  color: #9999a2;
+  margin: 11px 0 0;
+
+  color: #a4a4ae;
   font-size: 12px;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 .sa-summary-disclaimer {
   margin: 22px 0 0;
-  color: #92929a;
+
+  color: #9e9ea8;
   font-size: 11px;
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
-/* ========================================
-   GRÁFICOS
-======================================== */
+/* ==========================================
+   COBERTURA DOS DADOS
+   ========================================== */
+
+.sa-data-coverage {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+
+  margin-top: 23px;
+}
+
+.sa-data-coverage > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  min-width: 0;
+  min-height: 57px;
+  padding: 15px 18px;
+
+  background: #101012;
+  border: 1px solid #313138;
+  border-radius: 12px;
+}
+
+.sa-data-coverage span {
+  color: #b2b2bd;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.sa-data-coverage strong {
+  flex-shrink: 0;
+
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* ==========================================
+   ÁREA DOS GRÁFICOS
+   ========================================== */
 
 .sa-charts-grid {
   display: grid;
@@ -371,10 +534,17 @@
 
 .sa-chart-card {
   min-width: 0;
-  padding: 25px;
-  border: 1px solid #29292f;
-  border-radius: 19px;
+  padding: 26px;
+
   background: #121214;
+  border: 1px solid #303036;
+  border-radius: 19px;
+
+  transition: border-color 0.2s ease;
+}
+
+.sa-chart-card:hover {
+  border-color: #494950;
 }
 
 .sa-chart-wide {
@@ -386,16 +556,19 @@
 }
 
 .sa-chart-header h2 {
-  margin: 0 0 7px;
+  margin: 0 0 8px;
+
   color: #ffffff;
   font-size: 18px;
   font-weight: 800;
   letter-spacing: -0.4px;
+  line-height: 1.4;
 }
 
 .sa-chart-header p {
   margin: 0;
-  color: #92929c;
+
+  color: #a4a4af;
   font-size: 12px;
   line-height: 1.7;
 }
@@ -405,137 +578,206 @@
   min-width: 0;
 }
 
+/* Recharts */
+
+.sa-chart-content .recharts-responsive-container {
+  max-width: 100%;
+}
+
+.sa-chart-content .recharts-cartesian-axis-tick text {
+  fill: #aeb0b9;
+}
+
+.sa-chart-content .recharts-default-tooltip {
+  border-radius: 10px;
+}
+
+.sa-chart-content .recharts-legend-item-text {
+  color: #c9c9d0 !important;
+}
+
+/* ==========================================
+   ESTADO VAZIO
+   ========================================== */
+
 .sa-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 240px;
-  padding: 20px;
+
+  min-height: 245px;
+  padding: 22px;
+
   text-align: center;
-  color: #92929a;
+  color: #a5a5af;
 }
 
 .sa-empty-icon {
-  font-size: 44px;
-  color: #666670;
+  color: #71717b;
+  font-size: 42px;
 }
 
 .sa-empty p {
-  max-width: 280px;
-  margin: 10px 0 0;
+  max-width: 310px;
+  margin: 9px 0 0;
+
+  color: #a4a4af;
   font-size: 12px;
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
-/* ========================================
-   RANKING
-======================================== */
+/* ==========================================
+   RANKING DOS ATENDIMENTOS
+   ========================================== */
 
 .sa-ranking {
   display: flex;
   flex-direction: column;
   gap: 22px;
+
+  width: 100%;
   min-height: 250px;
 }
 
 .sa-ranking-item {
+  width: 100%;
   min-width: 0;
 }
 
 .sa-ranking-top {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   gap: 16px;
-  margin-bottom: 9px;
+
+  margin-bottom: 10px;
 }
 
 .sa-ranking-top span {
   display: flex;
   align-items: center;
   gap: 12px;
+
   min-width: 0;
+
   color: #eeeeef;
   font-size: 12px;
   font-weight: 650;
+  line-height: 1.5;
+
   overflow-wrap: anywhere;
 }
 
 .sa-ranking-top small {
-  color: #757581;
+  flex-shrink: 0;
+
+  color: #8d8d99;
   font-size: 10px;
-  font-weight: 750;
+  font-weight: 800;
 }
 
 .sa-ranking-top strong {
   flex-shrink: 0;
+
+  color: #ffffff;
   font-size: 14px;
+  font-weight: 800;
 }
 
 .sa-progress {
   width: 100%;
   height: 8px;
   overflow: hidden;
-  background: #29292e;
+
+  background: #2b2b31;
   border-radius: 100px;
 }
 
-.sa-progress div {
+.sa-progress > div {
   height: 100%;
+
   background: linear-gradient(
     90deg,
-    #757580,
-    #e2e2e6
+    #8d8d97,
+    #eeeeef
   );
-  border-radius: 100px;
+
+  border-radius: inherit;
+
   transition: width 0.3s ease;
 }
 
-/* ========================================
-   CONCLUSÃO GERENCIAL
-======================================== */
+/* ==========================================
+   DIAGNÓSTICO DO PERÍODO
+   ========================================== */
 
 .sa-conclusion {
-  margin-top: 25px;
-  padding: 32px;
-  border: 1px solid #393940;
+  margin-top: 26px;
+  padding: 36px;
+
+  background: linear-gradient(
+    145deg,
+    #1a1a1e 0%,
+    #111114 100%
+  );
+
+  border: 1px solid #3a3a42;
   border-radius: 20px;
-  background: #17171a;
 }
 
 .sa-conclusion h2 {
-  margin: 10px 0 22px;
-  font-size: 26px;
+  margin: 10px 0 24px;
+
+  color: #ffffff;
+  font-size: clamp(23px, 2.5vw, 30px);
+  font-weight: 800;
+  letter-spacing: -0.8px;
 }
 
 .sa-conclusion > p {
-  max-width: 1050px;
-  margin: 12px 0;
-  color: #bcbcc4;
+  max-width: 1100px;
+  margin: 13px 0;
+
+  color: #c5c5ce;
   font-size: 14px;
-  line-height: 1.9;
+  line-height: 1.95;
 }
 
 .sa-conclusion > p strong {
   color: #ffffff;
+  font-weight: 750;
 }
 
 .sa-conclusion-foot {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 28px;
-  padding-top: 18px;
-  border-top: 1px solid #35353b;
-  color: #85858f;
+  gap: 12px;
+
+  margin-top: 30px;
+  padding-top: 19px;
+
+  color: #92929c;
+  border-top: 1px solid #38383f;
+
   font-size: 11px;
+  line-height: 1.6;
 }
 
-/* ========================================
-   RESPONSIVIDADE
-======================================== */
+/* ==========================================
+   ACESSIBILIDADE
+   ========================================== */
+
+.sa-page button:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* ==========================================
+   TABLETS E TELAS INTERMEDIÁRIAS
+   ========================================== */
 
 @media (max-width: 1100px) {
   .sa-kpi-grid {
@@ -545,61 +787,95 @@
   .sa-summary-grid {
     grid-template-columns: 1fr;
   }
+
+  .sa-data-coverage {
+    grid-template-columns: 1fr;
+  }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 850px) {
   .sa-container {
-    width: min(100% - 32px, 1480px);
-    padding-top: 38px;
+    width: calc(100% - 36px);
+    padding-bottom: 65px;
   }
 
   .sa-header {
-    align-items: flex-start;
-  }
-
-  .sa-header-mark {
-    width: 60px;
-    height: 60px;
-    font-size: 23px;
-    border-radius: 15px;
+    min-height: 310px;
+    padding: 55px 0;
   }
 
   .sa-header h1 {
-    letter-spacing: -1.5px;
+    font-size: clamp(39px, 6.5vw, 57px);
+    letter-spacing: -2px;
+  }
+
+  .sa-header p {
+    font-size: 15px;
   }
 
   .sa-charts-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .sa-chart-wide {
     grid-column: auto;
   }
+
+  .sa-summary,
+  .sa-conclusion {
+    padding: 26px;
+  }
 }
+
+/* ==========================================
+   CELULARES
+   ========================================== */
 
 @media (max-width: 600px) {
   .sa-container {
     width: calc(100% - 24px);
-    padding-top: 26px;
+    padding-bottom: 55px;
   }
 
-  .sa-header-mark {
-    display: none;
+  .sa-header {
+    min-height: 265px;
+    margin-bottom: 22px;
+    padding: 35px 0 40px;
+  }
+
+  .sa-eyebrow {
+    margin-bottom: 15px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+  }
+
+  .sa-header h1 {
+    margin-bottom: 17px;
+    font-size: clamp(36px, 9vw, 46px);
+    letter-spacing: -1.5px;
+  }
+
+  .sa-header p {
+    font-size: 14px;
+    line-height: 1.75;
   }
 
   .sa-filters {
-    align-items: stretch;
     flex-direction: column;
-    padding: 12px;
+    align-items: stretch;
+    gap: 16px;
+    padding: 13px;
+    border-radius: 14px;
   }
 
   .sa-filter-buttons {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .sa-filter-buttons button {
-    padding: 11px 8px;
+    min-width: 0;
+    padding: 10px 6px;
   }
 
   .sa-filter-actions {
@@ -615,188 +891,104 @@
 
   .sa-period-caption {
     flex-direction: column;
+    gap: 6px;
+    font-size: 11px;
   }
 
   .sa-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }
 
   .sa-kpi {
+    min-height: 145px;
     padding: 15px;
+    border-radius: 14px;
   }
 
   .sa-kpi strong {
-    font-size: 29px;
+    font-size: 27px;
+  }
+
+  .sa-kpi-top {
+    margin-bottom: 13px;
   }
 
   .sa-kpi-top > span:first-child {
     font-size: 11px;
   }
 
+  .sa-kpi-icon {
+    width: 27px;
+    height: 27px;
+  }
+
   .sa-summary,
   .sa-chart-card,
   .sa-conclusion {
-    padding: 18px;
+    padding: 19px;
     border-radius: 15px;
   }
 
   .sa-summary-heading h2 {
-    font-size: 20px;
-  }
-}
-
-/* ========================================
-   SYNTER ANALYTICS
-   APRIMORAMENTO EXECUTIVO
-======================================== */
-
-/* Cabeçalho sem símbolo BI */
-
-.sa-header {
-  justify-content: flex-start;
-  margin-bottom: 38px;
-}
-
-.sa-header-mark {
-  display: none !important;
-}
-
-/* Título principal */
-
-.sa-header h1 {
-  font-size: clamp(38px, 5vw, 66px);
-  font-weight: 850;
-  letter-spacing: -2.5px;
-}
-
-.sa-header p {
-  max-width: 800px;
-  font-size: 15px;
-  line-height: 1.8;
-}
-
-/* Resumo executivo */
-
-.sa-summary {
-  padding: 34px;
-  background: linear-gradient(
-    135deg,
-    #19191d 0%,
-    #101013 60%,
-    #0b0b0d 100%
-  );
-}
-
-.sa-summary-heading h2 {
-  margin-bottom: 9px;
-  font-size: clamp(22px, 2.5vw, 29px);
-  letter-spacing: -0.8px;
-}
-
-.sa-executive-description {
-  margin: 0 0 28px;
-  color: #a2a2ab;
-  font-size: 13px;
-  line-height: 1.8;
-}
-
-/* Cartões do resumo */
-
-.sa-summary-item {
-  min-height: 170px;
-  padding: 25px;
-  background: #141417;
-  border: 1px solid #36363d;
-  border-radius: 16px;
-}
-
-.sa-summary-item > span {
-  color: #a5a5af;
-  font-size: 10px;
-  letter-spacing: 1.3px;
-}
-
-.sa-summary-item strong {
-  font-size: 21px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-}
-
-/* Indicadores da qualidade dos dados */
-
-.sa-data-coverage {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 22px;
-}
-
-.sa-data-coverage > div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  padding: 17px 19px;
-  border: 1px solid #303037;
-  border-radius: 12px;
-  background: #101013;
-}
-
-.sa-data-coverage span {
-  color: #a4a4ae;
-  font-size: 11px;
-}
-
-.sa-data-coverage strong {
-  color: #ffffff;
-  font-size: 14px;
-  white-space: nowrap;
-}
-
-/* Conclusão */
-
-.sa-conclusion {
-  padding: 38px;
-  background: linear-gradient(
-    145deg,
-    #19191d,
-    #111114
-  );
-}
-
-.sa-conclusion h2 {
-  font-size: clamp(23px, 2.5vw, 30px);
-  letter-spacing: -0.7px;
-}
-
-.sa-conclusion > p {
-  max-width: 1100px;
-  font-size: 14px;
-  line-height: 2;
-}
-
-/* Responsividade */
-
-@media (max-width: 900px) {
-  .sa-data-coverage {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  .sa-summary {
-    padding: 20px;
+    font-size: 22px;
   }
 
   .sa-summary-item {
-    min-height: auto;
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .sa-summary-item strong {
+    font-size: 19px;
   }
 
   .sa-data-coverage > div {
     padding: 14px;
   }
 
-  .sa-conclusion {
-    padding: 22px;
+  .sa-conclusion > p {
+    font-size: 13px;
+    line-height: 1.85;
+  }
+
+  .sa-conclusion-foot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ==========================================
+   TELAS MUITO PEQUENAS
+   ========================================== */
+
+@media (max-width: 380px) {
+  .sa-kpi-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sa-header h1 {
+    font-size: 35px;
+  }
+
+  .sa-chart-card {
+    padding: 15px;
+  }
+}
+
+/* ==========================================
+   MOVIMENTO REDUZIDO
+   ========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .sa-kpi,
+  .sa-refresh,
+  .sa-filter-buttons button,
+  .sa-progress > div {
+    transition: none;
+  }
+
+  .sa-kpi:hover {
+    transform: none;
   }
 }
