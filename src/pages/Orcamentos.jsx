@@ -365,8 +365,11 @@ function Orcamentos() {
         throw new Error("Usuário não autenticado.");
       }
 
+      // A página depende de um perfil válido para verificar as permissões.
+      // Não usamos .single() aqui: se não houver registro visível (por
+      // exemplo, devido à RLS), mostramos um erro claro, em vez de PGRST116.
       const {
-        data: perfil,
+        data: perfisEncontrados,
         error: perfilError
       } = await supabase
         .from("profiles")
@@ -376,15 +379,27 @@ function Orcamentos() {
           role
         `)
         .eq("id", user.id)
-        .single();
+        .limit(2);
 
       if (perfilError) {
-        throw perfilError;
+        throw new Error(
+          `Não foi possível consultar seu perfil: ${perfilError.message}`
+        );
       }
 
-      if (!perfil) {
-        throw new Error("Perfil do usuário não encontrado.");
+      if (!Array.isArray(perfisEncontrados) || perfisEncontrados.length === 0) {
+        throw new Error(
+          "Seu perfil não foi encontrado ou não está acessível no Supabase. Verifique se existe um registro em profiles com o ID do usuário autenticado e se a política RLS permite a leitura do próprio perfil."
+        );
       }
+
+      if (perfisEncontrados.length > 1) {
+        throw new Error(
+          "Foram encontrados perfis duplicados para sua conta. Solicite a verificação da tabela profiles no Supabase."
+        );
+      }
+
+      const perfil = perfisEncontrados[0];
 
       setRole(perfil.role);
 
