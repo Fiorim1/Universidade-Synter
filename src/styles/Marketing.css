@@ -1,566 +1,527 @@
-/* ======================================== */
-/* MARKETING                                */
-/* ======================================== */
 
-.marketing-page {
-    position: relative;
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   MATERIAIS DE MARKETING
+   IDENTIDADE VISUAL PADRONIZADA
+========================================== */
 
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-
-    min-height: 100vh;
-    min-height: 100svh;
-
-    display: flex;
-    flex-direction: column;
-
-    background: #050505;
-    color: #ffffff;
-
-    overflow-x: hidden;
+.synter-marketing-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: #080808;
+  color: #ffffff;
+  font-family: inherit;
 }
 
-
-/* ======================================== */
-/* HERO                                     */
-/* ======================================== */
-
-.marketing-page .dashboard-hero-area {
-    position: relative;
-
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-
-    min-height: 465px;
-
-    border-bottom:
-        1px solid rgba(255, 255, 255, 0.08);
-
-    background:
-        radial-gradient(
-            circle at 30% 40%,
-            rgba(255, 255, 255, 0.025) 0%,
-            transparent 38%
-        ),
-        linear-gradient(
-            90deg,
-            #050505 0%,
-            #070707 45%,
-            #090909 100%
-        );
-
-    overflow: hidden;
+.synter-marketing-page *,
+.synter-marketing-page *::before,
+.synter-marketing-page *::after {
+  box-sizing: border-box;
 }
 
+/* ==========================================
+   HERO
+========================================== */
 
-/* ======================================== */
-/* SOMBRA / PROFUNDIDADE DO HERO            */
-/* ======================================== */
-
-.marketing-page .dashboard-hero-area::after {
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.01) 0%,
-            rgba(0, 0, 0, 0.08) 60%,
-            rgba(0, 0, 0, 0.22) 100%
-        );
-
-    pointer-events: none;
-
-    z-index: 0;
+.synter-marketing-page .mkt-hero {
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  margin: 0;
+  padding: 0;
+  background: #080808;
+  border-bottom: 1px solid #242428;
 }
 
-
-/* ======================================== */
-/* PERFIL                                   */
-/* ======================================== */
-
-.marketing-page .dashboard-profile {
-    position: absolute;
-
-    top: 28px;
-    right: 60px;
-
-    max-width:
-        calc(
-            100% - 40px
-        );
-
-    z-index: 10;
+.synter-marketing-page .mkt-hero-container {
+  position: relative;
+  width: min(1440px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 76px 0 64px;
 }
 
-
-/* ======================================== */
-/* CONTEÚDO DO HERO                         */
-/* ======================================== */
-
-.marketing-page .dashboard-hero-content {
-    position: relative;
-
-    z-index: 2;
-
-    width: 100%;
-    max-width: 1400px;
-    min-width: 0;
-
-    margin: 0 auto;
-
-    padding:
-        72px
-        60px
-        70px;
-
-    box-sizing: border-box;
+.synter-marketing-page .mkt-profile {
+  position: absolute;
+  top: 34px;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
-
-/* ======================================== */
-/* CONTEÚDO PRINCIPAL                       */
-/* ======================================== */
-
-.marketing-page .dashboard-content {
-    position: relative;
-
-    z-index: 2;
-
-    width: 100%;
-    max-width: 1400px;
-    min-width: 0;
-
-    margin: 0 auto;
-
-    padding:
-        38px
-        60px
-        80px;
-
-    box-sizing: border-box;
-
-    flex: 1;
+.synter-marketing-page .mkt-hero-content {
+  width: 100%;
+  max-width: 1100px;
+  min-width: 0;
 }
 
+.synter-marketing-page .mkt-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 0 20px;
+  color: #b7b7bf;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
 
-/* ======================================== */
-/* TÍTULO DA SEÇÃO                          */
-/* ======================================== */
+.synter-marketing-page .mkt-eyebrow svg {
+  display: block;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+}
 
-.marketing-page .dashboard-section-title {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
+.synter-marketing-page .mkt-title {
+  max-width: 1100px;
+  margin: 0 0 22px;
+  padding: 0;
+  color: #ffffff;
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
 
-    display: flex;
-    align-items: center;
+.synter-marketing-page .mkt-description {
+  max-width: 810px;
+  margin: 0;
+  color: #b7b7c0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.75;
+}
 
+/* ==========================================
+   DESTAQUES DO HERO
+========================================== */
+
+.synter-marketing-page .mkt-features {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 28px;
+  max-width: 820px;
+  margin-top: 32px;
+  padding-top: 22px;
+  border-top: 1px solid #2c2c30;
+}
+
+.synter-marketing-page .mkt-feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.synter-marketing-page .mkt-feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  color: #ffffff;
+  border: 1px solid #45454b;
+  border-radius: 50%;
+}
+
+.synter-marketing-page .mkt-feature-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.synter-marketing-page .mkt-feature-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.synter-marketing-page .mkt-feature-info strong {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.synter-marketing-page .mkt-feature-info span {
+  color: #95959e;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* ==========================================
+   CONTEÚDO
+========================================== */
+
+.synter-marketing-page .mkt-main {
+  flex: 1;
+  width: min(1440px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 48px 0 90px;
+}
+
+/* ==========================================
+   TÍTULO DA SEÇÃO
+========================================== */
+
+.synter-marketing-page .mkt-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 26px;
+}
+
+.synter-marketing-page .mkt-section-bar {
+  display: block;
+  flex: 0 0 3px;
+  width: 3px;
+  height: 20px;
+  background: #ffffff;
+  border-radius: 3px;
+}
+
+.synter-marketing-page .mkt-section-heading h2 {
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  line-height: 1.5;
+}
+
+/* ==========================================
+   GRID DE CARTÕES — DESKTOP
+========================================== */
+
+.synter-marketing-page .mkt-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+/* ==========================================
+   CARTÕES
+========================================== */
+
+.synter-marketing-page .mkt-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 132px;
+
+  margin: 0;
+  padding: 18px;
+
+  background: linear-gradient(
+    135deg,
+    #151515 0%,
+    #0c0c0d 100%
+  );
+
+  border: 1px solid #323236;
+  border-radius: 14px;
+
+  color: #ffffff;
+  text-decoration: none;
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* CARTÃO DISPONÍVEL */
+
+.synter-marketing-page .mkt-card-active {
+  cursor: pointer;
+}
+
+.synter-marketing-page .mkt-card-active:hover {
+  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    #1c1c1e 0%,
+    #111113 100%
+  );
+  border-color: #5c5c63;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+/* CARTÃO INDISPONÍVEL */
+
+.synter-marketing-page .mkt-card-disabled {
+  cursor: default;
+}
+
+/* ==========================================
+   ÍCONE
+========================================== */
+
+.synter-marketing-page .mkt-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 76px;
+  width: 76px;
+  height: 76px;
+  min-width: 76px;
+
+  background: #19191b;
+  border: 1px solid #3c3c40;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.synter-marketing-page .mkt-card-icon img {
+  display: block;
+  width: 43px;
+  height: 43px;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* ==========================================
+   TEXTO DO CARTÃO
+========================================== */
+
+.synter-marketing-page .mkt-card-info {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.synter-marketing-page .mkt-card-info h3 {
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: -0.3px;
+  line-height: 1.35;
+  overflow-wrap: break-word;
+}
+
+.synter-marketing-page .mkt-card-info p {
+  margin: 0;
+  padding: 0;
+  color: #a4a4ae;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.55;
+  overflow-wrap: break-word;
+}
+
+/* ==========================================
+   SETA DO CARTÃO
+========================================== */
+
+.synter-marketing-page .mkt-card-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+
+  margin-left: auto;
+  color: #ffffff;
+
+  border: 1px solid #39393e;
+  border-radius: 50%;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.synter-marketing-page .mkt-card-arrow svg {
+  width: 21px;
+  height: 21px;
+}
+
+.synter-marketing-page
+.mkt-card-active:hover
+.mkt-card-arrow {
+  background: #303034;
+  border-color: #72727b;
+}
+
+/* ==========================================
+   STATUS DOS CARTÕES
+========================================== */
+
+.synter-marketing-page .mkt-card-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding: 6px 8px;
+
+  background: #222226;
+  border: 1px solid #3a3a40;
+  border-radius: 7px;
+
+  color: #9d9da7;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ==========================================
+   ACESSIBILIDADE
+========================================== */
+
+.synter-marketing-page .mkt-card-active:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 4px;
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+========================================== */
+
+@media (max-width: 1100px) {
+  .synter-marketing-page .mkt-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 800px;
+  }
+}
+
+@media (max-width: 768px) {
+  .synter-marketing-page .mkt-hero {
+    min-height: 0;
+  }
+
+  .synter-marketing-page .mkt-hero-container {
+    width: calc(100% - 40px);
+    padding: 110px 0 45px;
+  }
+
+  .synter-marketing-page .mkt-profile {
+    top: 22px;
+    right: 0;
+  }
+
+  .synter-marketing-page .mkt-eyebrow {
     gap: 12px;
+    font-size: 10px;
+    letter-spacing: 1.4px;
+  }
 
-    margin-bottom: 26px;
+  .synter-marketing-page .mkt-title {
+    font-size: clamp(38px, 8vw, 52px);
+    letter-spacing: -1.4px;
+  }
+
+  .synter-marketing-page .mkt-description {
+    font-size: 14px;
+  }
+
+  .synter-marketing-page .mkt-features {
+    gap: 18px;
+  }
+
+  .synter-marketing-page .mkt-main {
+    width: calc(100% - 40px);
+    padding: 35px 0 65px;
+  }
 }
 
+@media (max-width: 640px) {
+  .synter-marketing-page .mkt-cards-grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 440px;
+  }
 
-/* ======================================== */
-/* BARRA DO TÍTULO                          */
-/* ======================================== */
+  .synter-marketing-page .mkt-card {
+    min-height: 110px;
+    padding: 15px;
+    gap: 14px;
+  }
 
-.marketing-page .dashboard-section-bar {
-    width: 3px;
-    height: 20px;
+  .synter-marketing-page .mkt-card-icon {
+    flex-basis: 64px;
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+  }
 
-    flex-shrink: 0;
+  .synter-marketing-page .mkt-card-icon img {
+    width: 36px;
+    height: 36px;
+  }
 
-    border-radius: 10px;
-
-    background: #ffffff;
-
-    box-shadow:
-        0 0 8px
-        rgba(255, 255, 255, 0.18);
+  .synter-marketing-page .mkt-card-status {
+    font-size: 9px;
+  }
 }
 
+@media (max-width: 480px) {
+  .synter-marketing-page .mkt-hero-container {
+    width: calc(100% - 32px);
+  }
 
-/* ======================================== */
-/* TEXTO DO TÍTULO                          */
-/* ======================================== */
+  .synter-marketing-page .mkt-title {
+    font-size: 36px;
+    letter-spacing: -1.3px;
+  }
 
-.marketing-page .dashboard-section-title h4 {
-    min-width: 0;
-    max-width: 100%;
+  .synter-marketing-page .mkt-features {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    margin: 0;
+  .synter-marketing-page .mkt-main {
+    width: calc(100% - 32px);
+    padding: 30px 0 55px;
+  }
 
-    color: #ffffff;
-
+  .synter-marketing-page .mkt-card-info h3 {
     font-size: 13px;
-    font-weight: 600;
+  }
 
-    line-height: 1.2;
-
-    letter-spacing: 3px;
-
-    text-transform: uppercase;
-
-    overflow-wrap: anywhere;
+  .synter-marketing-page .mkt-card-info p {
+    font-size: 11px;
+  }
 }
 
-
-/* ======================================== */
-/* GRID DOS CARDS                           */
-/* ======================================== */
-
-.marketing-page .cards {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            3,
-            minmax(0, 1fr)
-        );
-
-    align-items: stretch;
-
-    gap: 16px;
-
-    margin: 0;
-
-    box-sizing: border-box;
-}
-
-
-/* ======================================== */
-/* GARANTE CARDS DO MESMO TAMANHO           */
-/* ======================================== */
-
-.marketing-page .cards > * {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-
-    height: 100%;
-
-    box-sizing: border-box;
-}
-
-
-/* ======================================== */
-/* EFEITO DE FUNDO DA PÁGINA                */
-/* ======================================== */
-
-.marketing-page::before {
-    content: "";
-
-    position: fixed;
-
-    width: 700px;
-    height: 700px;
-
-    right: -350px;
-    bottom: -350px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(255, 255, 255, 0.018);
-
-    filter: blur(150px);
-
-    pointer-events: none;
-
-    z-index: 0;
-}
-
-
-/* ======================================== */
-/* RESPONSIVO - NOTEBOOK                    */
-/* ======================================== */
-
-@media (max-width: 1200px) {
-
-    .marketing-page .dashboard-profile {
-        right: 40px;
-    }
-
-
-    .marketing-page .dashboard-hero-content {
-        padding-left: 40px;
-        padding-right: 40px;
-    }
-
-
-    .marketing-page .dashboard-content {
-        padding-left: 40px;
-        padding-right: 40px;
-    }
-
-
-    .marketing-page .cards {
-        grid-template-columns:
-            repeat(
-                2,
-                minmax(0, 1fr)
-            );
-    }
-
-}
-
-
-/* ======================================== */
-/* RESPONSIVO - TABLET                      */
-/* ======================================== */
-
-@media (max-width: 850px) {
-
-    .marketing-page .dashboard-hero-area {
-        width: 100%;
-        max-width: 100%;
-
-        min-height: auto;
-    }
-
-
-    .marketing-page .dashboard-profile {
-        position: relative;
-
-        top: auto;
-        right: auto;
-
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-
-        padding-top: 18px;
-
-        padding-left:
-            max(
-                16px,
-                env(safe-area-inset-left)
-            );
-
-        padding-right:
-            max(
-                16px,
-                env(safe-area-inset-right)
-            );
-
-        box-sizing: border-box;
-    }
-
-
-    .marketing-page .dashboard-hero-content {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-
-        padding-top: 32px;
-        padding-bottom: 50px;
-
-        padding-left:
-            max(
-                18px,
-                env(safe-area-inset-left)
-            );
-
-        padding-right:
-            max(
-                18px,
-                env(safe-area-inset-right)
-            );
-    }
-
-
-    .marketing-page .dashboard-content {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-
-        padding-top: 30px;
-        padding-bottom: 58px;
-
-        padding-left:
-            max(
-                18px,
-                env(safe-area-inset-left)
-            );
-
-        padding-right:
-            max(
-                18px,
-                env(safe-area-inset-right)
-            );
-    }
-
-
-    .marketing-page .dashboard-section-title {
-        gap: 10px;
-
-        margin-bottom: 22px;
-    }
-
-
-    .marketing-page .dashboard-section-title h4 {
-        font-size: 11px;
-
-        line-height: 1.4;
-
-        letter-spacing: 2px;
-    }
-
-
-    .marketing-page .dashboard-section-bar {
-        height: 18px;
-    }
-
-
-    .marketing-page .cards {
-        grid-template-columns:
-            minmax(0, 1fr);
-
-        gap: 16px;
-    }
-
-
-    .marketing-page .cards > * {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-    }
-
-}
-
-
-/* ======================================== */
-/* RESPONSIVO - CELULAR                     */
-/* ======================================== */
-
-@media (max-width: 550px) {
-
-    .marketing-page .dashboard-profile {
-        padding-top: 14px;
-
-        padding-left:
-            max(
-                14px,
-                env(safe-area-inset-left)
-            );
-
-        padding-right:
-            max(
-                14px,
-                env(safe-area-inset-right)
-            );
-    }
-
-
-    .marketing-page .dashboard-hero-content {
-        padding-top: 26px;
-        padding-bottom: 42px;
-
-        padding-left:
-            max(
-                14px,
-                env(safe-area-inset-left)
-            );
-
-        padding-right:
-            max(
-                14px,
-                env(safe-area-inset-right)
-            );
-    }
-
-
-    .marketing-page .dashboard-content {
-        padding-top: 24px;
-        padding-bottom: 48px;
-
-        padding-left:
-            max(
-                14px,
-                env(safe-area-inset-left)
-            );
-
-        padding-right:
-            max(
-                14px,
-                env(safe-area-inset-right)
-            );
-    }
-
-
-    .marketing-page .dashboard-section-title {
-        gap: 10px;
-
-        margin-bottom: 20px;
-    }
-
-
-    .marketing-page .dashboard-section-title h4 {
-        font-size: 11px;
-
-        letter-spacing: 2px;
-    }
-
-
-    .marketing-page .dashboard-section-bar {
-        height: 18px;
-    }
-
-
-    .marketing-page .cards {
-        gap: 14px;
-    }
-
-}
-
-
-/* ======================================== */
-/* RESPONSIVO - CELULAR PEQUENO             */
-/* ======================================== */
-
-@media (max-width: 380px) {
-
-    .marketing-page .dashboard-profile,
-    .marketing-page .dashboard-hero-content,
-    .marketing-page .dashboard-content {
-        padding-left:
-            max(
-                12px,
-                env(safe-area-inset-left)
-            );
-
-        padding-right:
-            max(
-                12px,
-                env(safe-area-inset-right)
-            );
-    }
-
-
-    .marketing-page .dashboard-section-title h4 {
-        font-size: 10.5px;
-
-        letter-spacing: 1.6px;
-    }
-
-
-    .marketing-page .cards {
-        gap: 12px;
-    }
-
+@media (prefers-reduced-motion: reduce) {
+  .synter-marketing-page .mkt-card,
+  .synter-marketing-page .mkt-card-arrow {
+    transition: none;
+  }
+
+  .synter-marketing-page .mkt-card-active:hover {
+    transform: none;
+  }
 }

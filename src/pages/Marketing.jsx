@@ -1,34 +1,24 @@
 
 import { useState } from "react";
-
-// ========================================
-// COMPONENTES
-// ========================================
+import { Link } from "react-router-dom";
 
 import Header from "../components/Header";
-import Profile from "../components/Profile";
-import UserProfileButton from "../components/UserProfileButton";
 import Footer from "../components/Footer";
-import CardsDashboard from "../components/CardsDashboard";
+import UserProfileButton from "../components/UserProfileButton";
+import Profile from "../components/Profile";
 
-// ========================================
-// ÍCONES DOS CARTÕES
-// ========================================
+// ÍCONES
 
 import MKT1 from "../assets/logomkt1.png";
 import MKT2 from "../assets/logomkt2.png";
 import MKT3 from "../assets/logomkt3.png";
 
-// ========================================
 // ESTILOS
-// ========================================
 
-import "../styles/Dashboard.css";
 import "../styles/Marketing.css";
-import "../styles/MarketingHero.css";
 
 // ========================================
-// ÍCONE GEOMÉTRICO PADRÃO SYNTER
+// ÍCONE PADRÃO SYNTER
 // ========================================
 
 function IconeSynter() {
@@ -55,19 +45,19 @@ function IconeSynter() {
 // ÍCONES DOS DESTAQUES
 // ========================================
 
-function IconeConteudo() {
+function IconeImagem() {
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.6"
+      strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
     >
       <rect x="3" y="3" width="18" height="18" rx="3" />
-      <circle cx="8.5" cy="8.5" r="1.5" />
+      <circle cx="8" cy="8" r="1.5" />
       <path d="m4 17 5-5 4 4 3-3 4 4" />
     </svg>
   );
@@ -79,14 +69,13 @@ function IconeDivulgacao() {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.6"
+      strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      <path d="M3 11v2a2 2 0 0 0 2 2h3l3 5h3l-3-6" />
-      <path d="M8 10c5 0 8-2 12-5v14c-4-3-7-5-12-5V10Z" />
-      <path d="M20 9a4 4 0 0 1 0 6" />
+      <path d="M3 10v4a2 2 0 0 0 2 2h3l3 5h3l-3-6" />
+      <path d="M8 10c5 0 8-2 12-5v14c-4-3-7-5-12-5v-4Z" />
     </svg>
   );
 }
@@ -97,7 +86,7 @@ function IconeAcesso() {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.6"
+      strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
@@ -107,8 +96,28 @@ function IconeAcesso() {
   );
 }
 
+function IconeSeta() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="9" />
+      <path d="M8 12h8" />
+      <path d="m12 8 4 4-4 4" />
+    </svg>
+  );
+}
+
 // ========================================
-// COMPONENTE DE DESTAQUE
+// DESTAQUES DO HERO
 // ========================================
 
 function DestaqueMarketing({
@@ -117,12 +126,12 @@ function DestaqueMarketing({
   descricao,
 }) {
   return (
-    <div className="synter-mkt-feature">
-      <span className="synter-mkt-feature-icon">
+    <div className="mkt-feature">
+      <span className="mkt-feature-icon">
         {icone}
       </span>
 
-      <div className="synter-mkt-feature-text">
+      <div className="mkt-feature-info">
         <strong>{titulo}</strong>
         <span>{descricao}</span>
       </div>
@@ -131,42 +140,98 @@ function DestaqueMarketing({
 }
 
 // ========================================
-// PÁGINA DE MARKETING
+// CARTÃO DE MARKETING
 // ========================================
 
-function Marketing() {
+function CartaoMarketing({
+  imagem,
+  titulo,
+  descricao,
+  rota,
+  disponivel = false,
+}) {
+  const conteudo = (
+    <>
+      <div className="mkt-card-icon">
+        <img
+          src={imagem}
+          alt=""
+          aria-hidden="true"
+        />
+      </div>
+
+      <div className="mkt-card-info">
+        <h3>{titulo}</h3>
+        <p>{descricao}</p>
+      </div>
+
+      {disponivel ? (
+        <span
+          className="mkt-card-arrow"
+          aria-hidden="true"
+        >
+          <IconeSeta />
+        </span>
+      ) : (
+        <span className="mkt-card-status">
+          Em breve
+        </span>
+      )}
+    </>
+  );
+
+  if (!disponivel || !rota) {
+    return (
+      <div className="mkt-card mkt-card-disabled">
+        {conteudo}
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      to={rota}
+      className="mkt-card mkt-card-active"
+      aria-label={`Acessar ${titulo}`}
+    >
+      {conteudo}
+    </Link>
+  );
+}
+
+// ========================================
+// PÁGINA DE MATERIAIS DE MARKETING
+// ========================================
+
+export default function Marketing() {
   const [profileOpen, setProfileOpen] =
     useState(false);
 
   return (
-    <div className="dashboard-page synter-marketing-page">
+    <div className="synter-marketing-page">
 
-      {/* =====================================
-          HEADER
-      ===================================== */}
+      {/* HEADER */}
 
       <Header />
 
-      {/* =====================================
-          HERO PADRÃO UNIVERSIDADE SYNTER
-      ===================================== */}
+      {/* ====================================
+          HERO — PADRÃO UNIVERSIDADE SYNTER
+      ==================================== */}
 
-      <section className="synter-mkt-hero">
-        <div className="synter-mkt-hero-container">
+      <section className="mkt-hero">
+        <div className="mkt-hero-container">
 
-          {/* PERFIL */}
-
-          <div className="synter-mkt-profile">
+          <div className="mkt-profile">
             <UserProfileButton
-              onClick={() => setProfileOpen(true)}
+              onClick={() =>
+                setProfileOpen(true)
+              }
             />
           </div>
 
-          {/* CONTEÚDO */}
+          <div className="mkt-hero-content">
 
-          <div className="synter-mkt-hero-content">
-
-            <div className="synter-mkt-eyebrow">
+            <div className="mkt-eyebrow">
               <IconeSynter />
 
               <span>
@@ -174,22 +239,20 @@ function Marketing() {
               </span>
             </div>
 
-            <h1 className="synter-mkt-title">
+            <h1 className="mkt-title">
               Materiais de Marketing
             </h1>
 
-            <p className="synter-mkt-description">
-              Encontre artes, conteúdos e materiais de
-              apoio para divulgar os produtos Synter
-              e fortalecer suas ações de marketing.
+            <p className="mkt-description">
+              Encontre artes, conteúdos e materiais
+              de apoio para divulgar os produtos
+              Synter e fortalecer suas ações de marketing.
             </p>
 
-            {/* DESTAQUES */}
-
-            <div className="synter-mkt-features">
+            <div className="mkt-features">
 
               <DestaqueMarketing
-                icone={<IconeConteudo />}
+                icone={<IconeImagem />}
                 titulo="Materiais Visuais"
                 descricao="Conteúdos para divulgação"
               />
@@ -212,77 +275,62 @@ function Marketing() {
         </div>
       </section>
 
-      {/* =====================================
+      {/* ====================================
           CONTEÚDO PRINCIPAL
-      ===================================== */}
+      ==================================== */}
 
-      <main className="dashboard-content">
+      <main className="mkt-main">
 
-        {/* TÍTULO DA SEÇÃO */}
+        <div className="mkt-section-heading">
+          <span className="mkt-section-bar" />
 
-        <div className="dashboard-section-title">
-          <div className="dashboard-section-bar" />
-
-          <h4>
+          <h2>
             MATERIAIS DE MARKETING
-          </h4>
+          </h2>
         </div>
 
-        {/* =====================================
-            CARTÕES DE MARKETING
-        ===================================== */}
+        {/* TRÊS CARTÕES LADO A LADO */}
 
-        <div className="cards">
+        <div className="mkt-cards-grid">
 
-          {/* FECHADURAS DIGITAIS */}
-
-          <CardsDashboard
-            image={MKT1}
-            title="Vídeos e Imagens de Fechaduras Digitais"
-            desc="Acesse vídeos, imagens e materiais visuais das fechaduras digitais Synter para divulgação e apoio comercial."
-            route="/digmarketing"
+          <CartaoMarketing
+            imagem={MKT1}
+            titulo="Vídeos e Imagens de Fechaduras Digitais"
+            descricao="Acesse vídeos, imagens e materiais visuais das fechaduras digitais Synter para divulgação e apoio comercial."
+            rota="/digmarketing"
+            disponivel
           />
 
-          {/* FECHADURAS MECÂNICAS */}
-
-          <CardsDashboard
-            image={MKT2}
-            title="Vídeos e Imagens de Fechaduras Mecânicas"
-            desc="Acesse vídeos, imagens e materiais visuais das fechaduras mecânicas Synter para divulgação e apoio comercial."
-            enabled={false}
+          <CartaoMarketing
+            imagem={MKT2}
+            titulo="Vídeos e Imagens de Fechaduras Mecânicas"
+            descricao="Acesse vídeos, imagens e materiais visuais das fechaduras mecânicas Synter para divulgação e apoio comercial."
           />
 
-          {/* FERRAGENS */}
-
-          <CardsDashboard
-            image={MKT3}
-            title="Vídeos e Imagens de Ferragens"
-            desc="Acesse vídeos, imagens e materiais visuais das ferragens Synter para divulgação e apoio comercial."
-            enabled={false}
+          <CartaoMarketing
+            imagem={MKT3}
+            titulo="Vídeos e Imagens de Ferragens"
+            descricao="Acesse vídeos, imagens e materiais visuais das ferragens Synter para divulgação e apoio comercial."
           />
 
         </div>
 
       </main>
 
-      {/* =====================================
-          FOOTER
-      ===================================== */}
+      {/* FOOTER */}
 
       <Footer />
 
-      {/* =====================================
-          MODAL DO PERFIL
-      ===================================== */}
+      {/* MODAL DO PERFIL */}
 
       {profileOpen && (
         <Profile
-          onClose={() => setProfileOpen(false)}
+          onClose={() =>
+            setProfileOpen(false)
+          }
         />
       )}
 
     </div>
   );
 }
-
-export default Marketing;
