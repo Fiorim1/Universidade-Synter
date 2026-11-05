@@ -95,7 +95,7 @@ import F27 from "../assets/f27.png";
 import F28 from "../assets/f28.png";
 
 // ==========================================
-// FICHAS TÉCNICAS — NAVIS
+// PDFS — NAVIS
 // ==========================================
 
 import navisPdf0155 from "../assets/fichas-tecnicas/navis/FT_Navis_Roseta_01_55mm.pdf";
@@ -106,7 +106,7 @@ import navisPdf0755 from "../assets/fichas-tecnicas/navis/FT_Navis_Roseta_07_55m
 import navisPdf0955 from "../assets/fichas-tecnicas/navis/FT_Navis_Roseta_09_55mm.pdf";
 
 // ==========================================
-// FICHAS TÉCNICAS — GLORIAN
+// PDFS — GLORIAN
 // ==========================================
 
 import glorianPdf0155 from "../assets/fichas-tecnicas/glorian/FT_Glorian_Roseta_01_55mm.pdf";
@@ -114,7 +114,7 @@ import glorianPdf0440 from "../assets/fichas-tecnicas/glorian/FT_Glorian_Roseta_
 import glorianPdf0455 from "../assets/fichas-tecnicas/glorian/FT_Glorian_Roseta_04_55mm.pdf";
 
 // ==========================================
-// FICHAS TÉCNICAS — GOL
+// PDFS — GOL
 // ==========================================
 
 import golEspelho0540 from "../assets/fichas-tecnicas/gol/FT_Gol_Espelho_05_40mm.pdf";
@@ -122,31 +122,45 @@ import golRoseta0440 from "../assets/fichas-tecnicas/gol/FT_Gol_Roseta_04_40mm.p
 import golRoseta0640 from "../assets/fichas-tecnicas/gol/FT_Gol_Roseta_06_40mm.pdf";
 
 // ==========================================
-// MAPEAMENTO DOS PDFS
+// PDFS — STILLUS
+// ==========================================
+
+import stillusEspelho0540 from "../assets/fichas-tecnicas/stillus/FT_Stillus_Espelho_05_40mm.pdf";
+
+import stillusRoseta0440 from "../assets/fichas-tecnicas/stillus/FT_Stillus_Roseta_04_40mm.pdf";
+
+import stillusRoseta0455 from "../assets/fichas-tecnicas/stillus/FT_Stillus_Roseta_04_55mm.pdf";
+
+import stillusRoseta0740 from "../assets/fichas-tecnicas/stillus/FT_Stillus_Roseta_07_40mm.pdf";
+
+import stillusRoseta0755 from "../assets/fichas-tecnicas/stillus/FT_Stillus_Roseta_07_55mm.pdf";
+
+// ==========================================
+// MAPEAMENTO DE FICHAS
 // ==========================================
 
 const FICHAS_NAVIS = {
-  "01": {
+  "Roseta 01": {
     "55": navisPdf0155,
   },
-  "04": {
+  "Roseta 04": {
     "40": navisPdf0440,
     "55": navisPdf0455,
   },
-  "07": {
+  "Roseta 07": {
     "40": navisPdf0740,
     "55": navisPdf0755,
   },
-  "09": {
+  "Roseta 09": {
     "55": navisPdf0955,
   },
 };
 
 const FICHAS_GLORIAN = {
-  "01": {
+  "Roseta 01": {
     "55": glorianPdf0155,
   },
-  "04": {
+  "Roseta 04": {
     "40": glorianPdf0440,
     "55": glorianPdf0455,
   },
@@ -164,8 +178,22 @@ const FICHAS_GOL = {
   },
 };
 
+const FICHAS_STILLUS = {
+  "Espelho 05": {
+    "40": stillusEspelho0540,
+  },
+  "Roseta 04": {
+    "40": stillusRoseta0440,
+    "55": stillusRoseta0455,
+  },
+  "Roseta 07": {
+    "40": stillusRoseta0740,
+    "55": stillusRoseta0755,
+  },
+};
+
 // ==========================================
-// LISTAS DE PRODUTOS
+// PRODUTOS DIGITAIS
 // ==========================================
 
 const PRODUTOS_DIGITAIS = [
@@ -173,40 +201,51 @@ const PRODUTOS_DIGITAIS = [
   { image: VENUSS2, title: "Venus S2 PRO" },
   { image: SYRIUSS1, title: "Syrius S1" },
   { image: SYRIUSS1, title: "Syrius S1 Pro" },
-
   { image: SYRIUSS2PRO, title: "Syrius S2 Pro" },
-  { image: SYRIUSS2PRONEO, title: "Syrius S2 Pro Neo" },
+  {
+    image: SYRIUSS2PRONEO,
+    title: "Syrius S2 Pro Neo",
+  },
   { image: SYRIUSS2MAX, title: "Syrius S2 Max" },
   { image: SYRIUSS3PRO, title: "Syrius S3 Pro" },
-
   { image: SYRIUSS3MAX, title: "Syrius S3 Max" },
   { image: ERISS2FACEID, title: "Eris S2 Face Id" },
   { image: VEGAFACEID, title: "Vega Face Id" },
   { image: MARSIMG, title: "Mars S2 Pro" },
-
   { image: NEXUSIMG, title: "Nexus S1" },
   { image: NEXUSIMG, title: "Nexus S1 Pro" },
   { image: DALASS2PRO, title: "Dallas S2 Pro" },
   { image: DALASS3PRO, title: "Dallas S3 Pro" },
-
   { image: DOMOUSS1, title: "Domus S1" },
   { image: DOMOUSS1, title: "Domus S1 Pro" },
   { image: LYRAPRO, title: "Lyra Pro" },
-  { image: S2PRO, title: "Controladora de Acesso S2 Pro" },
-
-  { image: S2QR, title: "Controladora de Acesso S2 QR" },
+  {
+    image: S2PRO,
+    title: "Controladora de Acesso S2 Pro",
+  },
+  {
+    image: S2QR,
+    title: "Controladora de Acesso S2 QR",
+  },
   {
     image: S2FACEID,
     title: "Controladora de Acesso S2 Face Id",
   },
 ];
 
+// ==========================================
+// PRODUTOS MECÂNICOS
+// ==========================================
+
 const PRODUTOS_MECANICOS = [
-  { image: STILLUS, title: "Stillus" },
+  {
+    image: STILLUS,
+    title: "Stillus",
+    ficha: "stillus",
+  },
   { image: STARMAX, title: "Star Max" },
   { image: STAR, title: "Star" },
   { image: POLOMAX, title: "Polo Max" },
-
   { image: OLYMPIA, title: "Olympia" },
   { image: NAVISII, title: "Navis II" },
   {
@@ -215,7 +254,6 @@ const PRODUTOS_MECANICOS = [
     ficha: "navis",
   },
   { image: MARINEII, title: "Marine II" },
-
   { image: MARINE, title: "Marine" },
   { image: LUCK, title: "Luck" },
   {
@@ -228,12 +266,10 @@ const PRODUTOS_MECANICOS = [
     title: "Glorian",
     ficha: "glorian",
   },
-
   { image: CRISPUSMAX, title: "Crispus Max" },
   { image: CHAMPION, title: "Champion" },
   { image: CECI, title: "Ceci" },
   { image: ACQUAMAX, title: "Acqua Max" },
-
   { image: BARRAAPOIO, title: "Barra de Apoio" },
   {
     image: FECPCORRER,
@@ -247,13 +283,16 @@ const PRODUTOS_MECANICOS = [
     image: FECPC,
     title: "Fechadura para Porta de Correr",
   },
-
   {
     image: CHAVED,
     title: "Fechadura Porta de Correr c/ Chave Dobrável e Concha",
   },
   { image: FECROLETE, title: "Fechadura Rolete" },
 ];
+
+// ==========================================
+// FERRAGENS
+// ==========================================
 
 const FERRAGENS = [
   {
@@ -266,22 +305,18 @@ const FERRAGENS = [
   },
   { image: F3, title: "Porta Cadeado" },
   { image: F4, title: "Números (fixação com parafuso)" },
-
   { image: F5, title: "Números (fixação com dupla face)" },
   { image: F6, title: "Levantador de Guilhotina" },
   { image: F7, title: "Gancho de Rede" },
   { image: F8, title: "Fecho Porta Cadeado" },
-
   { image: F9, title: "Fecho Pino Bola" },
   { image: F10, title: "Fecho para Janela de Correr" },
   { image: F11, title: "Fecho Fio Redondo" },
   { image: F12, title: "Fecho Fio Chato" },
-
   { image: F13, title: "Fecho Concha Trava" },
   { image: F14, title: "Cremona" },
   { image: F15, title: "Concha Stand com Furo" },
   { image: F16, title: "Concha Stand" },
-
   { image: F17, title: "Borboleta para Guilhotina" },
   {
     image: F18,
@@ -289,12 +324,10 @@ const FERRAGENS = [
   },
   { image: F19, title: "Alça" },
   { image: F20, title: "Quartzo" },
-
   { image: F21, title: "Opala" },
   { image: F22, title: "Jaspe (com furo)" },
   { image: F23, title: "Jaspe" },
   { image: F24, title: "Jade Max" },
-
   { image: F25, title: "Jade" },
   { image: F26, title: "Vara de Cremona" },
   { image: F27, title: "Tarjeta" },
@@ -302,14 +335,20 @@ const FERRAGENS = [
 ];
 
 // ==========================================
-// AGRUPAR 4 PRODUTOS POR LINHA
+// AGRUPAR PRODUTOS
 // ==========================================
 
 function agruparEmLinhas(produtos, quantidade = 4) {
   const linhas = [];
 
-  for (let indice = 0; indice < produtos.length; indice += quantidade) {
-    linhas.push(produtos.slice(indice, indice + quantidade));
+  for (
+    let indice = 0;
+    indice < produtos.length;
+    indice += quantidade
+  ) {
+    linhas.push(
+      produtos.slice(indice, indice + quantidade)
+    );
   }
 
   return linhas;
@@ -340,17 +379,19 @@ function IconeSeta() {
 }
 
 // ==========================================
-// CARD DE FICHA DISPONÍVEL
+// CARTÃO COM FICHA DISPONÍVEL
 // ==========================================
 
-function CartaoFichaDisponivel({ produto, onClick }) {
+function CartaoFichaDisponivel({
+  produto,
+  onClick,
+}) {
   return (
     <button
       type="button"
       className="cads-container"
       onClick={onClick}
       aria-label={`Selecionar ficha técnica ${produto.title}`}
-      title={`Ver fichas técnicas de ${produto.title}`}
     >
       <div className="card-image">
         <img
@@ -365,7 +406,10 @@ function CartaoFichaDisponivel({ produto, onClick }) {
         <p>Selecione a ficha técnica desejada</p>
       </div>
 
-      <span className="card-arrow" aria-hidden="true">
+      <span
+        className="card-arrow"
+        aria-hidden="true"
+      >
         <IconeSeta />
       </span>
     </button>
@@ -373,7 +417,7 @@ function CartaoFichaDisponivel({ produto, onClick }) {
 }
 
 // ==========================================
-// SEÇÃO DOS PRODUTOS
+// SEÇÃO DE PRODUTOS
 // ==========================================
 
 function SecaoProdutos({
@@ -424,7 +468,7 @@ function SecaoProdutos({
 }
 
 // ==========================================
-// MODAL DE SELEÇÃO DE FICHA TÉCNICA
+// MODAL DE SELEÇÃO DE FICHA
 // ==========================================
 
 function ModalFichaTecnica({
@@ -432,8 +476,11 @@ function ModalFichaTecnica({
   fichas,
   onClose,
 }) {
-  const [acabamento, setAcabamento] = useState("");
-  const [maquina, setMaquina] = useState("");
+  const [acabamento, setAcabamento] =
+    useState("");
+
+  const [maquina, setMaquina] =
+    useState("");
 
   const pdfSelecionado =
     fichas[acabamento]?.[maquina] || null;
@@ -444,6 +491,10 @@ function ModalFichaTecnica({
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/[^a-zA-Z0-9._-]/g, "_");
 
+  // ========================================
+  // FECHAR COM ESC
+  // ========================================
+
   useEffect(() => {
     function fecharComEsc(evento) {
       if (evento.key === "Escape") {
@@ -451,12 +502,15 @@ function ModalFichaTecnica({
       }
     }
 
-    window.addEventListener("keydown", fecharComEsc);
-
     const overflowAnterior =
       document.body.style.overflow;
 
     document.body.style.overflow = "hidden";
+
+    window.addEventListener(
+      "keydown",
+      fecharComEsc
+    );
 
     return () => {
       window.removeEventListener(
@@ -468,6 +522,10 @@ function ModalFichaTecnica({
         overflowAnterior;
     };
   }, [onClose]);
+
+  // ========================================
+  // ESTILOS DO MODAL
+  // ========================================
 
   const estiloCampo = {
     display: "block",
@@ -492,17 +550,23 @@ function ModalFichaTecnica({
     borderRadius: 9,
     fontSize: 13,
     fontWeight: 700,
-    textAlign: "center",
     textDecoration: "none",
     boxSizing: "border-box",
     cursor: "pointer",
   };
 
+  // ========================================
+  // INTERFACE DO MODAL
+  // ========================================
+
   return (
     <div
       role="presentation"
       onMouseDown={(evento) => {
-        if (evento.target === evento.currentTarget) {
+        if (
+          evento.target ===
+          evento.currentTarget
+        ) {
           onClose();
         }
       }}
@@ -535,7 +599,8 @@ function ModalFichaTecnica({
           color: "#ffffff",
           border: "1px solid #333333",
           borderRadius: 16,
-          boxShadow: "0 20px 70px rgba(0,0,0,.55)",
+          boxShadow:
+            "0 20px 70px rgba(0,0,0,.55)",
           boxSizing: "border-box",
         }}
       >
@@ -601,14 +666,15 @@ function ModalFichaTecnica({
             lineHeight: 1.7,
           }}
         >
-          Selecione a configuração desejada para
-          visualizar ou baixar a ficha técnica em PDF.
+          Selecione a configuração desejada
+          para visualizar ou baixar a ficha
+          técnica em PDF.
         </p>
 
-        {/* TIPO DE ROSETA / ESPELHO */}
+        {/* ACABAMENTO */}
 
         <label
-          htmlFor="ficha-tipo"
+          htmlFor="ficha-acabamento"
           style={{
             display: "block",
             marginBottom: 9,
@@ -616,16 +682,17 @@ function ModalFichaTecnica({
             fontWeight: 600,
           }}
         >
-          {modelo === "Gol"
-            ? "Tipo de acabamento"
-            : "Tipo de roseta"}
+          Tipo de roseta ou espelho
         </label>
 
         <select
-          id="ficha-tipo"
+          id="ficha-acabamento"
           value={acabamento}
           onChange={(evento) => {
-            setAcabamento(evento.target.value);
+            setAcabamento(
+              evento.target.value
+            );
+
             setMaquina("");
           }}
           style={{
@@ -637,16 +704,19 @@ function ModalFichaTecnica({
             Selecione uma opção
           </option>
 
-          {Object.keys(fichas).map((tipo) => (
-            <option key={tipo} value={tipo}>
-              {modelo === "Gol"
-                ? tipo
-                : `Roseta ${tipo}`}
-            </option>
-          ))}
+          {Object.keys(fichas).map(
+            (tipo) => (
+              <option
+                key={tipo}
+                value={tipo}
+              >
+                {tipo}
+              </option>
+            )
+          )}
         </select>
 
-        {/* TAMANHO DA MÁQUINA */}
+        {/* MÁQUINA */}
 
         <label
           htmlFor="ficha-maquina"
@@ -665,7 +735,9 @@ function ModalFichaTecnica({
           value={maquina}
           disabled={!acabamento}
           onChange={(evento) =>
-            setMaquina(evento.target.value)
+            setMaquina(
+              evento.target.value
+            )
           }
           style={{
             ...estiloCampo,
@@ -692,7 +764,7 @@ function ModalFichaTecnica({
           ))}
         </select>
 
-        {/* BOTÕES DE PDF */}
+        {/* VISUALIZAÇÃO E DOWNLOAD */}
 
         {pdfSelecionado ? (
           <div
@@ -737,10 +809,7 @@ function ModalFichaTecnica({
                 textAlign: "center",
               }}
             >
-              {modelo} —{" "}
-              {modelo === "Gol"
-                ? acabamento
-                : `Roseta ${acabamento}`}
+              {modelo} — {acabamento}
               {" • "}
               {maquina} mm
             </p>
@@ -754,8 +823,9 @@ function ModalFichaTecnica({
               lineHeight: 1.6,
             }}
           >
-            Selecione as opções acima para liberar
-            a visualização e o download do documento.
+            Selecione as opções acima
+            para visualizar ou baixar
+            o documento disponível.
           </p>
         )}
       </section>
@@ -764,7 +834,7 @@ function ModalFichaTecnica({
 }
 
 // ==========================================
-// HERO — ÍCONE
+// ÍCONE DO HERO
 // ==========================================
 
 function IconeSynter() {
@@ -788,52 +858,58 @@ function IconeSynter() {
 }
 
 // ==========================================
-// PÁGINA PRINCIPAL
+// PÁGINA FICHAS TÉCNICAS
 // ==========================================
 
 function FichaTec() {
   const [profileOpen, setProfileOpen] =
     useState(false);
 
-  const [modalSelecionado, setModalSelecionado] =
-    useState(null);
-
-  function abrirFicha(modelo) {
-    setModalSelecionado(modelo);
-  }
-
-  function fecharFicha() {
-    setModalSelecionado(null);
-  }
+  const [
+    modalSelecionado,
+    setModalSelecionado,
+  ] = useState(null);
 
   const configuracoes = {
     navis: {
       modelo: "Navis",
       fichas: FICHAS_NAVIS,
     },
+
     glorian: {
       modelo: "Glorian",
       fichas: FICHAS_GLORIAN,
     },
+
     gol: {
       modelo: "Gol",
       fichas: FICHAS_GOL,
+    },
+
+    stillus: {
+      modelo: "Stillus",
+      fichas: FICHAS_STILLUS,
     },
   };
 
   const configuracaoAtiva =
     configuracoes[modalSelecionado] || null;
 
+  function fecharFicha() {
+    setModalSelecionado(null);
+  }
+
   return (
     <>
       <Header />
 
       {/* =====================================
-          HERO — PADRÃO UNIVERSIDADE SYNTER
+          HERO — PADRÃO SYNTER
       ===================================== */}
 
       <section className="ficha-tec-hero">
         <div className="ficha-tec-hero-container">
+
           <div className="ficha-tec-profile">
             <UserProfileButton
               onClick={() =>
@@ -843,6 +919,7 @@ function FichaTec() {
           </div>
 
           <div className="ficha-tec-hero-content">
+
             <div className="ficha-tec-eyebrow">
               <IconeSynter />
 
@@ -856,45 +933,47 @@ function FichaTec() {
             </h1>
 
             <p className="ficha-tec-description">
-              Consulte e baixe as fichas técnicas e
-              especificações dos produtos Synter.
+              Consulte e baixe as fichas
+              técnicas e especificações
+              dos produtos Synter.
             </p>
+
           </div>
         </div>
       </section>
 
       {/* =====================================
-          CONTEÚDO PRINCIPAL
+          PRODUTOS
       ===================================== */}
 
       <main>
         <div className="manuals-container">
 
-          {/* PRODUTOS DIGITAIS */}
-
           <SecaoProdutos
             titulo="Produtos Digitais"
             classe="digials-products"
             produtos={PRODUTOS_DIGITAIS}
-            abrirFicha={abrirFicha}
+            abrirFicha={
+              setModalSelecionado
+            }
           />
-
-          {/* PRODUTOS MECÂNICOS */}
 
           <SecaoProdutos
             titulo="Produtos Mecânicos"
             classe="mechanical-products"
             produtos={PRODUTOS_MECANICOS}
-            abrirFicha={abrirFicha}
+            abrirFicha={
+              setModalSelecionado
+            }
           />
-
-          {/* FERRAGENS */}
 
           <SecaoProdutos
             titulo="Ferragens"
             classe="ironwork"
             produtos={FERRAGENS}
-            abrirFicha={abrirFicha}
+            abrirFicha={
+              setModalSelecionado
+            }
           />
 
         </div>
@@ -903,14 +982,18 @@ function FichaTec() {
       <Footer />
 
       {/* =====================================
-          MODAL DAS FICHAS TÉCNICAS
+          MODAL DA FICHA
       ===================================== */}
 
       {configuracaoAtiva && (
         <ModalFichaTecnica
           key={modalSelecionado}
-          modelo={configuracaoAtiva.modelo}
-          fichas={configuracaoAtiva.fichas}
+          modelo={
+            configuracaoAtiva.modelo
+          }
+          fichas={
+            configuracaoAtiva.fichas
+          }
           onClose={fecharFicha}
         />
       )}
