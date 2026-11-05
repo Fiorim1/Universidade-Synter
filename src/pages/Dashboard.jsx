@@ -7,7 +7,9 @@ import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 import CardsDashboard from "../components/CardsDashboard";
 
+// ==========================================
 // ÍCONES
+// ==========================================
 
 import ManualIcon from "../assets/manual-icon.png";
 import YtIcon from "../assets/Yt-Icon.png";
@@ -21,14 +23,16 @@ import AppIcon from "../assets/app-icon.png";
 import QuestionIcon from "../assets/perguntas-icon.png";
 import NvdIcon from "../assets/nvd-icon.png";
 
+// ==========================================
 // ESTILOS
+// ==========================================
 
 import "../styles/Dashboard.css";
 import "../styles/DashboardHero.css";
 import "../styles/DashboardGrid.css";
 
 // ==========================================
-// ÍCONE SYNTER
+// ÍCONE PADRÃO SYNTER
 // ==========================================
 
 function IconeSynter() {
@@ -52,7 +56,7 @@ function IconeSynter() {
 }
 
 // ==========================================
-// ÍCONES DOS DESTAQUES
+// ÍCONES DO HERO
 // ==========================================
 
 function IconeAtualizado() {
@@ -129,18 +133,20 @@ function DestaqueDashboard({
 }
 
 // ==========================================
-// DASHBOARD PRINCIPAL
+// DASHBOARD
 // ==========================================
 
 function Dashboard() {
-  const [profileOpen, setProfileOpen] = useState(false);
+  const [profileOpen, setProfileOpen] =
+    useState(false);
 
   return (
     <div className="dashboard-page synter-dashboard">
+
       <Header />
 
       {/* =====================================
-          HERO PADRÃO SYNTER
+          HERO
       ===================================== */}
 
       <section className="synter-db-hero">
@@ -148,7 +154,9 @@ function Dashboard() {
 
           <div className="synter-db-profile">
             <UserProfileButton
-              onClick={() => setProfileOpen(true)}
+              onClick={() =>
+                setProfileOpen(true)
+              }
             />
           </div>
 
@@ -156,7 +164,9 @@ function Dashboard() {
 
             <div className="synter-db-eyebrow">
               <IconeSynter />
-              <span>PLATAFORMA DE CONHECIMENTO</span>
+              <span>
+                PLATAFORMA DE CONHECIMENTO
+              </span>
             </div>
 
             <h1 className="synter-db-title">
@@ -195,7 +205,7 @@ function Dashboard() {
       </section>
 
       {/* =====================================
-          ACESSO RÁPIDO — 4 CARTÕES POR LINHA
+          ACESSO RÁPIDO
       ===================================== */}
 
       <main className="dashboard-content">
@@ -207,12 +217,16 @@ function Dashboard() {
 
         <div className="cards">
 
+          {/* APLICATIVO SYNTER */}
+
           <CardsDashboard
             image={AppIcon}
             title="Aplicativo Synter"
             desc="Desbrave mais sobre o aplicativo Synter"
             enabled={false}
           />
+
+          {/* ASSISTÊNCIA TÉCNICA */}
 
           <CardsDashboard
             image={FtIcon}
@@ -221,12 +235,16 @@ function Dashboard() {
             route="/dashsac"
           />
 
+          {/* FICHAS TÉCNICAS */}
+
           <CardsDashboard
             image={FtIcon}
             title="Fichas Técnicas"
             desc="Acesse as fichas técnicas dos nossos produtos"
             route="/fichas-tecnicas"
           />
+
+          {/* ORÇAMENTOS */}
 
           <CardsDashboard
             image={ImgIcon}
@@ -235,12 +253,16 @@ function Dashboard() {
             route="/orcamentos"
           />
 
+          {/* MANUAIS */}
+
           <CardsDashboard
             image={ManualIcon}
             title="Manual de Produtos"
             desc="Acesse os manuais dos nossos produtos"
             route="/manuals"
           />
+
+          {/* MARKETING */}
 
           <CardsDashboard
             image={MktIcon}
@@ -249,12 +271,16 @@ function Dashboard() {
             route="/marketing"
           />
 
+          {/* NOVIDADES */}
+
           <CardsDashboard
             image={NvdIcon}
             title="Novidades Synter"
             desc="Acompanhe as novidades da Synter"
             enabled={false}
           />
+
+          {/* PERGUNTAS FREQUENTES */}
 
           <CardsDashboard
             image={QuestionIcon}
@@ -263,6 +289,8 @@ function Dashboard() {
             route="/perguntas-frequentes"
           />
 
+          {/* TABELA DE PREÇOS */}
+
           <CardsDashboard
             image={TabelaIcon}
             title="Tabela de Preços"
@@ -270,12 +298,20 @@ function Dashboard() {
             route="/tabela-precos"
           />
 
+          {/* =================================
+              TREINAMENTO COMERCIAL
+              ACESSO LIBERADO
+          ================================= */}
+
           <CardsDashboard
             image={TcIcon}
             title="Treinamento Comercial"
             desc="Acesse nossos treinamentos comerciais"
-            enabled={false}
+            route="/treinamento-comercial"
+            enabled={true}
           />
+
+          {/* TREINAMENTOS TÉCNICOS */}
 
           <CardsDashboard
             image={TreinamentoIcon}
@@ -283,6 +319,8 @@ function Dashboard() {
             desc="Acesse nossos treinamentos técnicos"
             enabled={false}
           />
+
+          {/* VÍDEOS DE INSTALAÇÃO */}
 
           <CardsDashboard
             image={YtIcon}
@@ -296,11 +334,18 @@ function Dashboard() {
 
       <Footer />
 
+      {/* =====================================
+          PERFIL
+      ===================================== */}
+
       {profileOpen && (
         <Profile
-          onClose={() => setProfileOpen(false)}
+          onClose={() =>
+            setProfileOpen(false)
+          }
         />
       )}
+
     </div>
   );
 }
