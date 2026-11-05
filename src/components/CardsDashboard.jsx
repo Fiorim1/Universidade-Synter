@@ -51,6 +51,20 @@ function IconeFechar() {
 }
 
 // ==========================================
+// GERAR NOME DO ARQUIVO PDF
+// ==========================================
+
+function gerarNomePdf(titulo) {
+  const nome = String(titulo || "Manual-Synter")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return `${nome || "Manual-Synter"}.pdf`;
+}
+
+// ==========================================
 // CARD DASHBOARD
 // ==========================================
 
@@ -59,7 +73,9 @@ function CardsDashboard({
   title,
   desc,
   route,
+  pdf,
   enabled = true,
+  available,
 }) {
   const navigate = useNavigate();
 
@@ -68,14 +84,67 @@ function CardsDashboard({
   const tituloModalId = useId();
 
   // ========================================
-  // NAVEGAÇÃO
+  // IDENTIFICAR CONTEÚDO DISPONÍVEL
+  // ========================================
+
+  const possuiPdf =
+    typeof pdf === "string" && pdf.trim().length > 0;
+
+  const possuiRota =
+    typeof route === "string" && route.trim().length > 0;
+
+  const estaDisponivel =
+    enabled && (possuiPdf || possuiRota);
+
+  // ========================================
+  // BAIXAR MANUAL PDF
+  // ========================================
+
+  function baixarPdf() {
+    if (!possuiPdf) return;
+
+    const link = document.createElement("a");
+
+    link.href = pdf;
+    link.download = gerarNomePdf(title);
+
+    link.style.display = "none";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+  }
+
+  // ========================================
+  // NAVEGAÇÃO / DOWNLOAD
   // ========================================
 
   function handleClick() {
-    if (enabled && route) {
+    // Se estiver desabilitado,
+    // mostra a mensagem de desenvolvimento.
+
+    if (!enabled) {
+      setModalOpen(true);
+      return;
+    }
+
+    // Prioridade 1: download do PDF.
+
+    if (possuiPdf) {
+      baixarPdf();
+      return;
+    }
+
+    // Prioridade 2: navegar para a página.
+
+    if (possuiRota) {
       navigate(route);
       return;
     }
+
+    // Sem PDF e sem rota.
 
     setModalOpen(true);
   }
@@ -89,7 +158,7 @@ function CardsDashboard({
   }
 
   // ========================================
-  // ESC E ROLAGEM DA PÁGINA
+  // TECLA ESC E ROLAGEM
   // ========================================
 
   useEffect(() => {
@@ -135,15 +204,26 @@ function CardsDashboard({
       <button
         type="button"
         className={`cads-container ${
-          !enabled || !route
+          !estaDisponivel
             ? "card-disabled"
+            : ""
+        } ${
+          available && estaDisponivel
+            ? "card-available"
             : ""
         }`}
         onClick={handleClick}
         aria-label={
-          enabled && route
-            ? `Acessar ${title}`
-            : `${title} - conteúdo em desenvolvimento`
+          !estaDisponivel
+            ? `${title} - conteúdo em desenvolvimento`
+            : possuiPdf
+              ? `Baixar manual PDF - ${title}`
+              : `Acessar ${title}`
+        }
+        title={
+          possuiPdf && enabled
+            ? `Baixar manual de ${title}`
+            : title
         }
       >
         {/* IMAGEM / ÍCONE */}
@@ -159,7 +239,7 @@ function CardsDashboard({
           )}
         </div>
 
-        {/* INFORMAÇÕES */}
+        {/* TÍTULO E DESCRIÇÃO */}
 
         <div className="content-text-cards">
           <h3>{title}</h3>
@@ -168,7 +248,10 @@ function CardsDashboard({
 
         {/* SETA ORIGINAL */}
 
-        <span className="card-arrow">
+        <span
+          className="card-arrow"
+          aria-hidden="true"
+        >
           <IconeSeta />
         </span>
       </button>
