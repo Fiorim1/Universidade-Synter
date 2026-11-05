@@ -734,3 +734,48 @@
     font-weight: 500;
     letter-spacing: normal;
 }
+
+
+/* HERO — PADRÃO UNIVERSIDADE SYNTER */
+
+.visitas-page .vt-hero-kicker {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 20px;
+  color: #bcbcc3;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2.2px;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.visitas-page .vt-hero-kicker-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  color: #bcbcc3;
+}
+
+.visitas-page .visitas-hero h1 {
+  margin-top: 0;
+  font-size: clamp(42px, 5.4vw, 76px);
+  line-height: 1.08;
+  letter-spacing: -2.5px;
+  font-weight: 800;
+}
+
+@media (max-width: 600px) {
+  .visitas-page .vt-hero-kicker {
+    gap: 12px;
+    font-size: 10px;
+    letter-spacing: 1.4px;
+  }
+
+  .visitas-page .visitas-hero h1 {
+    font-size: clamp(36px, 9vw, 48px);
+    letter-spacing: -1.5px;
+  }
+}

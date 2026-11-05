@@ -6,6 +6,7 @@ import UserProfileButton from "../components/UserProfileButton";
 import NotificationsButton from "../pages/NotificationsButton";
 import Profile from "../components/Profile";
 
+
 import ImgIcon from "../assets/img-icon.png";
 
 import { localizarProdutoSynter } from "../utils/imagensProdutosSynter";
@@ -19,6 +20,7 @@ import {
 import { CONDICOES_PAGAMENTO_SYNTER, textoCondicaoPagamento } from "../data/condicoesPagamentoSynter";
 
 import "../styles/Orcamentos.css";
+import "../styles/OrcamentosHero.css";
 
 
 // ========================================
@@ -552,8 +554,7 @@ function Orcamentos() {
       );
 
       setErro(
-        error?.message ||
-        "Não foi possível carregar os orçamentos."
+        "Não conseguimos acessar seus orçamentos neste momento. Atualize a página ou entre novamente. Se o problema continuar, fale com o suporte."
       );
 
     }
@@ -876,8 +877,7 @@ function Orcamentos() {
       );
 
       setErroFormulario(
-        error?.message ||
-        "Não foi possível criar o orçamento."
+        "Não foi possível salvar o novo orçamento. Confira as informações e tente novamente."
       );
 
     }
@@ -947,8 +947,7 @@ function Orcamentos() {
       );
 
       setErroItens(
-        error?.message ||
-        "Não foi possível carregar os produtos deste orçamento."
+        "Não conseguimos mostrar os produtos deste orçamento agora. Tente abrir o orçamento novamente."
       );
 
     }
@@ -1228,8 +1227,7 @@ function Orcamentos() {
 
 
       setErroEdicao(
-        error?.message ||
-        "Não foi possível salvar as alterações."
+        "As alterações não foram salvas. Verifique os dados informados e tente novamente."
       );
 
     }
@@ -1310,8 +1308,7 @@ function Orcamentos() {
       setHistoricoOrcamento([]);
 
       setErroHistorico(
-        error?.message ||
-        "Não foi possível carregar o histórico deste orçamento."
+        "O histórico deste orçamento está indisponível no momento. Tente novamente mais tarde."
       );
 
     }
@@ -1500,8 +1497,7 @@ function Orcamentos() {
 
       mostrarAlertaSistema(
         "Não foi possível abrir o orçamento",
-        error?.message ||
-          "Tente novamente em alguns instantes.",
+        "Este orçamento não está disponível para visualização. Atualize a página e tente novamente.",
         "erro"
       );
 
@@ -1686,8 +1682,7 @@ function Orcamentos() {
       );
 
       setErroFluxoOrcamento(
-        error?.message ||
-        "Não foi possível enviar o orçamento."
+        "Não foi possível enviar o orçamento para análise. Tente novamente em instantes."
       );
 
     }
@@ -1768,8 +1763,7 @@ function Orcamentos() {
       );
 
       setErroFluxoOrcamento(
-        error?.message ||
-        "Não foi possível cancelar o orçamento."
+        "Não foi possível cancelar este orçamento agora. Tente novamente."
       );
 
     }
@@ -1840,8 +1834,7 @@ function Orcamentos() {
       );
 
       setErroFluxoOrcamento(
-        error?.message ||
-        "Não foi possível registrar a decisão."
+        "Não foi possível registrar a decisão sobre este orçamento. Tente novamente."
       );
 
     }
@@ -1999,8 +1992,7 @@ function Orcamentos() {
       );
 
       setErroAcaoItem(
-        error?.message ||
-        "Não foi possível atualizar o item."
+        "Não conseguimos atualizar este produto. Confira os valores e tente novamente."
       );
 
     }
@@ -2065,8 +2057,7 @@ function Orcamentos() {
       );
 
       setErroAcaoItem(
-        error?.message ||
-        "Não foi possível remover o produto."
+        "Não foi possível remover o produto do orçamento. Tente novamente."
       );
 
     }
@@ -2161,8 +2152,7 @@ function Orcamentos() {
       );
 
       setErroProdutos(
-        error?.message ||
-        "Não foi possível carregar o catálogo de produtos."
+        "O catálogo de produtos está temporariamente indisponível. Tente novamente em instantes."
       );
 
     }
@@ -3161,8 +3151,7 @@ function Orcamentos() {
       );
 
       setErroProdutos(
-        error?.message ||
-        "Não foi possível adicionar o produto ao orçamento."
+        "Não foi possível adicionar o produto. Verifique os dados e tente novamente."
       );
 
     }
@@ -3576,8 +3565,7 @@ Synter`;
 
       mostrarAlertaSistema(
         "Não foi possível preparar o PDF",
-        error?.message ||
-          "Tente novamente em alguns instantes.",
+        "Não conseguimos preparar o arquivo PDF. Tente novamente.",
         "erro"
       );
 
@@ -3800,8 +3788,7 @@ Synter`;
 
       mostrarAlertaSistema(
         "Não foi possível compartilhar",
-        error?.message ||
-          "O navegador não conseguiu compartilhar o arquivo PDF.",
+        "Não foi possível compartilhar o PDF. Você pode baixar o arquivo e enviá-lo ao cliente.",
         "erro"
       );
 
@@ -3848,8 +3835,7 @@ Synter`;
 
       mostrarAlertaSistema(
         "Não foi possível gerar o PDF",
-        error?.message ||
-          "Tente novamente em alguns instantes.",
+        "Não conseguimos gerar o PDF agora. Tente novamente em instantes.",
         "erro"
       );
 
@@ -4081,10 +4067,19 @@ Synter`;
 
             <div className="orcamentos-eyebrow-icon">
 
-              <img
-                src={ImgIcon}
-                alt=""
-              />
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m12 2 9 5-9 5-9-5 9-5Z" />
+                <path d="M3 7v10l9 5 9-5V7" />
+                <path d="M12 12v10" />
+              </svg>
 
             </div>
 

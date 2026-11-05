@@ -992,3 +992,92 @@
     transform: none;
   }
 }
+
+/* SYNTER ANALYTICS — HERO PADRÃO */
+
+.sa-page .sa-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 0;
+  height: auto;
+  margin: 0 0 26px;
+  padding: 46px 0 38px;
+  background: #080808;
+}
+
+.sa-page .sa-header-content {
+  width: 100%;
+  max-width: 1050px;
+  min-width: 0;
+}
+
+.sa-page .sa-hero-kicker {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 21px;
+  color: #bcbcc3;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.sa-page .sa-hero-kicker svg {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  color: #bcbcc3;
+}
+
+.sa-page .sa-header h1 {
+  margin: 0 0 20px;
+  color: #ffffff;
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+.sa-page .sa-header p {
+  max-width: 850px;
+  margin: 0;
+  color: #b7b7c0;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .sa-page .sa-header {
+    margin-bottom: 22px;
+    padding: 38px 0 30px;
+  }
+
+  .sa-page .sa-header h1 {
+    font-size: clamp(38px, 7vw, 52px);
+    letter-spacing: -1.5px;
+  }
+
+  .sa-page .sa-header p {
+    font-size: 14px;
+  }
+
+  .sa-page .sa-hero-kicker {
+    gap: 12px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sa-page .sa-header {
+    padding: 30px 0 25px;
+  }
+
+  .sa-page .sa-header h1 {
+    font-size: 37px;
+  }
+}

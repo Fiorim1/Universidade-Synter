@@ -1262,23 +1262,32 @@ export default function SynterAnalytics() {
         ==================================== */}
 
         <header className="sa-header">
-          <div>
-            <span className="sa-eyebrow">
-              UNIVERSIDADE SYNTER / INTELIGÊNCIA GERENCIAL
-            </span>
+          <div className="sa-header-content">
+            <div className="sa-hero-kicker">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m12 2 9 5-9 5-9-5 9-5Z" />
+                <path d="M3 7v10l9 5 9-5V7" />
+                <path d="M12 12v10" />
+              </svg>
+              <span>INTELIGÊNCIA GERENCIAL</span>
+            </div>
 
-            <h1>
-              Synter{" "}
-              <span>
-                Analytics.
-              </span>
-            </h1>
+            <h1>Synter Analytics.</h1>
 
             <p>
-              Indicadores estratégicos de qualidade,
-              desempenho do SAC e análise completa
-              dos atendimentos técnicos registrados
-              na plataforma Notion.
+              Acompanhe os indicadores de qualidade,
+              desempenho do SAC e resultados dos atendimentos
+              técnicos registrados na Universidade Synter.
             </p>
           </div>
         </header>

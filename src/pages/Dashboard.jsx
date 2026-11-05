@@ -183,7 +183,7 @@ function Dashboard() {
             image={QuestionIcon}
             title="Perguntas Frequentes"
             desc="Caso tenha uma pergunta, acesse aqui"
-            enabled={false}
+            route="/perguntas-frequente"
           />
 
 

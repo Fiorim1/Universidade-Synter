@@ -192,7 +192,7 @@ function CampoFormulario({
             color: "#999999",
           }}
         >
-          Número gerado automaticamente pelo Supabase.
+          Número gerado automaticamente pelo sistema.
         </small>
       )}
     </label>
@@ -816,10 +816,25 @@ export default function VisitasTecnicas() {
         <section className="visitas-hero">
           <div className="visitas-hero-top">
             <div>
-              <span className="vt-eyebrow">
-                UNIVERSIDADE SYNTER /
-                ASSISTÊNCIA TÉCNICA
-              </span>
+              <div className="vt-hero-kicker">
+                <svg
+                  className="vt-hero-kicker-icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m12 2 9 5-9 5-9-5 9-5Z" />
+                  <path d="M3 7v10l9 5 9-5V7" />
+                  <path d="M12 12v10" />
+                </svg>
+                <span>SUPORTE E ATENDIMENTO</span>
+              </div>
 
               <h1>Visitas Técnicas</h1>
 
@@ -1111,7 +1126,7 @@ export default function VisitasTecnicas() {
 
                   <p>
                     A referência é gerada
-                    automaticamente pelo Supabase.
+                    automaticamente pelo sistema.
                     Informe a data, os horários e
                     o técnico responsável.
                   </p>

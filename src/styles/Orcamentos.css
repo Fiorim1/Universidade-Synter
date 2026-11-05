@@ -14,15 +14,11 @@
 
   background:
 
-    radial-gradient(
-
-      circle at 50% 0%,
+    radial-gradient(circle at 50% 0%,
 
       rgba(255, 255, 255, 0.025),
 
-      transparent 32%
-
-    ),
+      transparent 32%),
 
     #050505;
 
@@ -72,13 +68,9 @@
 
 .orcamentos-hero-container {
 
-  width: min(
+  width: min(1180px,
 
-    1180px,
-
-    calc(100% - 48px)
-
-  );
+      calc(100% - 48px));
 
 
 
@@ -88,9 +80,7 @@
 
   padding:
 
-    72px 0
-
-    66px;
+    72px 0 66px;
 
 }
 
@@ -108,13 +98,9 @@
 
 
 
-  right: max(
+  right: max(48px,
 
-    48px,
-
-    calc((100vw - 1180px) / 2)
-
-  );
+      calc((100vw - 1180px) / 2));
 
 
 
@@ -240,15 +226,11 @@
 
   font-size:
 
-    clamp(
-
-      48px,
+    clamp(48px,
 
       5vw,
 
-      72px
-
-    );
+      72px);
 
 
 
@@ -316,9 +298,7 @@
 
   margin:
 
-    34px 0
-
-    22px;
+    34px 0 22px;
 
 
 
@@ -424,13 +404,9 @@
 
 .orcamentos-content {
 
-  width: min(
+  width: min(1180px,
 
-    1180px,
-
-    calc(100% - 48px)
-
-  );
+      calc(100% - 48px));
 
 
 
@@ -440,9 +416,7 @@
 
   padding:
 
-    48px 0
-
-    90px;
+    48px 0 90px;
 
 }
 
@@ -576,15 +550,11 @@
 
   background:
 
-    linear-gradient(
-
-      145deg,
+    linear-gradient(145deg,
 
       rgba(255, 255, 255, 0.035),
 
-      rgba(255, 255, 255, 0.012)
-
-    );
+      rgba(255, 255, 255, 0.012));
 
 
 
@@ -626,7 +596,7 @@
 
 
 
-.orcamentos-summary-card > span {
+.orcamentos-summary-card>span {
 
   display: block;
 
@@ -938,15 +908,11 @@
 
   background:
 
-    linear-gradient(
-
-      145deg,
+    linear-gradient(145deg,
 
       rgba(255, 255, 255, 0.025),
 
-      rgba(255, 255, 255, 0.008)
-
-    );
+      rgba(255, 255, 255, 0.008));
 
 }
 
@@ -1696,9 +1662,7 @@
 
   animation:
 
-    orcamentos-spin
-
-    0.8s linear infinite;
+    orcamentos-spin 0.8s linear infinite;
 
 }
 
@@ -1802,23 +1766,17 @@
 
   background:
 
-    linear-gradient(
-
-      145deg,
+    linear-gradient(145deg,
 
       #111111,
 
-      #090909
-
-    );
+      #090909);
 
 
 
   box-shadow:
 
-    0 30px 80px
-
-    rgba(0, 0, 0, 0.60);
+    0 30px 80px rgba(0, 0, 0, 0.60);
 
 }
 
@@ -2408,7 +2366,7 @@
 
 
 
-.orcamentos-detalhes-info > div {
+.orcamentos-detalhes-info>div {
 
   min-height: 72px;
 
@@ -2610,7 +2568,7 @@
 
 
 
-.orcamentos-detalhes-header > div > span {
+.orcamentos-detalhes-header>div>span {
 
   color: #ffffff;
 
@@ -2844,13 +2802,7 @@
 
   grid-template-columns:
 
-    minmax(0, 1fr)
-
-    140px
-
-    120px
-
-    minmax(170px, auto);
+    minmax(0, 1fr) 140px 120px minmax(170px, auto);
 
 
 
@@ -2886,7 +2838,7 @@
 
 
 
-.orcamentos-item-produto > span {
+.orcamentos-item-produto>span {
 
   display: block;
 
@@ -3184,9 +3136,7 @@
 
     padding:
 
-      110px 0
-
-      48px;
+      110px 0 48px;
 
   }
 
@@ -3240,9 +3190,7 @@
 
     padding:
 
-      38px 0
-
-      70px;
+      38px 0 70px;
 
   }
 
@@ -3564,9 +3512,7 @@
 
   grid-template-columns:
 
-    minmax(0, 1fr)
-
-    260px;
+    minmax(0, 1fr) 260px;
 
 
 
@@ -3816,9 +3762,7 @@
 
   grid-template-columns:
 
-    minmax(0, 1fr)
-
-    130px;
+    minmax(0, 1fr) 130px;
 
 
 
@@ -4010,7 +3954,7 @@
 
 
 
-.orcamentos-produto-main > strong {
+.orcamentos-produto-main>strong {
 
   display: block;
 
@@ -4200,11 +4144,7 @@
 
   grid-template-columns:
 
-    minmax(0, 1fr)
-
-    130px
-
-    150px;
+    minmax(0, 1fr) 130px 150px;
 
 
 
@@ -4246,7 +4186,7 @@
 
 
 
-.orcamentos-produto-selecionado > div:first-child > span {
+.orcamentos-produto-selecionado>div:first-child>span {
 
   display: block;
 
@@ -4276,7 +4216,7 @@
 
 
 
-.orcamentos-produto-selecionado > div:first-child > strong {
+.orcamentos-produto-selecionado>div:first-child>strong {
 
   display: block;
 
@@ -4294,7 +4234,7 @@
 
 
 
-.orcamentos-produto-selecionado > div:first-child > small {
+.orcamentos-produto-selecionado>div:first-child>small {
 
   display: block;
 
@@ -4694,7 +4634,7 @@
 
 
 
-.orcamentos-item-edicao > label {
+.orcamentos-item-edicao>label {
 
   display: block;
 
@@ -4820,11 +4760,7 @@
 
     grid-template-columns:
 
-      minmax(0, 1fr)
-
-      120px
-
-      110px;
+      minmax(0, 1fr) 120px 110px;
 
   }
 
@@ -4920,7 +4856,7 @@
 
 
 
-.orcamentos-fluxo-info > span {
+.orcamentos-fluxo-info>span {
 
   display: block;
 
@@ -4950,7 +4886,7 @@
 
 
 
-.orcamentos-fluxo-info > p {
+.orcamentos-fluxo-info>p {
 
   margin: 0;
 
@@ -5364,13 +5300,9 @@
 
   width:
 
-    min(
+    min(560px,
 
-      560px,
-
-      calc(100% - 32px)
-
-    );
+      calc(100% - 32px));
 
 
 
@@ -5386,11 +5318,7 @@
 
   grid-template-columns:
 
-    42px
-
-    minmax(0, 1fr)
-
-    34px;
+    42px minmax(0, 1fr) 34px;
 
 
 
@@ -5420,23 +5348,17 @@
 
   background:
 
-    linear-gradient(
-
-      145deg,
+    linear-gradient(145deg,
 
       rgba(22, 22, 22, 0.98),
 
-      rgba(10, 10, 10, 0.98)
-
-    );
+      rgba(10, 10, 10, 0.98));
 
 
 
   box-shadow:
 
-    0 18px 55px
-
-    rgba(0, 0, 0, 0.58);
+    0 18px 55px rgba(0, 0, 0, 0.58);
 
 
 
@@ -5448,9 +5370,7 @@
 
   animation:
 
-    orcamentos-alerta-entrada
-
-    0.28s ease;
+    orcamentos-alerta-entrada 0.28s ease;
 
 }
 
@@ -5634,13 +5554,9 @@
 
     transform:
 
-      translate(
+      translate(-50%,
 
-        -50%,
-
-        -14px
-
-      );
+        -14px);
 
   }
 
@@ -5654,13 +5570,9 @@
 
     transform:
 
-      translate(
+      translate(-50%,
 
-        -50%,
-
-        0
-
-      );
+        0);
 
   }
 
@@ -5684,11 +5596,7 @@
 
     grid-template-columns:
 
-      36px
-
-      minmax(0, 1fr)
-
-      30px;
+      36px minmax(0, 1fr) 30px;
 
 
 
@@ -5750,7 +5658,7 @@
 
 
 
-.orcamentos-form-separator > span {
+.orcamentos-form-separator>span {
 
   display: block;
 
@@ -5774,7 +5682,7 @@
 
 
 
-.orcamentos-form-separator > p {
+.orcamentos-form-separator>p {
 
   margin:
 
@@ -5848,7 +5756,7 @@
 
 
 
-.orcamentos-venda-title > span {
+.orcamentos-venda-title>span {
 
   display: block;
 
@@ -5872,7 +5780,7 @@
 
 
 
-.orcamentos-venda-title > p {
+.orcamentos-venda-title>p {
 
   margin:
 
@@ -5918,7 +5826,7 @@
 
 
 
-.orcamentos-venda-grid > div,
+.orcamentos-venda-grid>div,
 
 .orcamentos-venda-observacoes {
 
@@ -5948,7 +5856,7 @@
 
 .orcamentos-venda-grid span,
 
-.orcamentos-venda-observacoes > span {
+.orcamentos-venda-observacoes>span {
 
   display: block;
 
@@ -6068,7 +5976,7 @@
 
 
 
-.orcamentos-resumo-valores > div {
+.orcamentos-resumo-valores>div {
 
   display: flex;
 
@@ -6092,7 +6000,7 @@
 
 
 
-.orcamentos-resumo-valores > div > span {
+.orcamentos-resumo-valores>div>span {
 
   color:
 
@@ -6114,7 +6022,7 @@
 
 
 
-.orcamentos-resumo-valores > div > strong {
+.orcamentos-resumo-valores>div>strong {
 
   min-width: 125px;
 
@@ -6208,7 +6116,7 @@
 
 
 
-  .orcamentos-resumo-valores > div {
+  .orcamentos-resumo-valores>div {
 
     justify-content: space-between;
 
@@ -6222,7 +6130,7 @@
 
 
 
-  .orcamentos-resumo-valores > div > strong {
+  .orcamentos-resumo-valores>div>strong {
 
     min-width: 0;
 
@@ -6358,13 +6266,9 @@
 
   width:
 
-    min(
+    min(760px,
 
-      760px,
-
-      100%
-
-    );
+      100%);
 
 }
 
@@ -6490,7 +6394,7 @@
 
 
 
-.orcamentos-pdf-button > span {
+.orcamentos-pdf-button>span {
 
   font-size: 14px;
 
@@ -6620,7 +6524,7 @@
 
 
 
-.orcamentos-list-search > span {
+.orcamentos-list-search>span {
 
   position: absolute;
 
@@ -6940,7 +6844,7 @@
 
 
 
-.orcamentos-representante-cell > span {
+.orcamentos-representante-cell>span {
 
   width: 27px;
 
@@ -7170,13 +7074,9 @@
 
   grid-template-columns:
 
-    repeat(
+    repeat(auto-fit,
 
-      auto-fit,
-
-      minmax(165px, 1fr)
-
-    );
+      minmax(165px, 1fr));
 
 }
 
@@ -7288,7 +7188,7 @@
 
 
 
-.orcamentos-historico-header > div > span {
+.orcamentos-historico-header>div>span {
 
   display: block;
 
@@ -7340,7 +7240,7 @@
 
 
 
-.orcamentos-historico-header > small {
+.orcamentos-historico-header>small {
 
   flex-shrink: 0;
 
@@ -7492,7 +7392,7 @@
 
 
 
-.orcamentos-historico-marker > span {
+.orcamentos-historico-marker>span {
 
   width: 32px;
 
@@ -7538,9 +7438,7 @@
 
 
 
-.orcamentos-historico-item.evento-aprovado
-
-.orcamentos-historico-marker > span {
+.orcamentos-historico-item.evento-aprovado .orcamentos-historico-marker>span {
 
   border-color:
 
@@ -7562,13 +7460,9 @@
 
 
 
-.orcamentos-historico-item.evento-recusado
+.orcamentos-historico-item.evento-recusado .orcamentos-historico-marker>span,
 
-.orcamentos-historico-marker > span,
-
-.orcamentos-historico-item.evento-cancelado
-
-.orcamentos-historico-marker > span {
+.orcamentos-historico-item.evento-cancelado .orcamentos-historico-marker>span {
 
   border-color:
 
@@ -7658,7 +7552,7 @@
 
 
 
-.orcamentos-historico-conteudo > p {
+.orcamentos-historico-conteudo>p {
 
   margin:
 
@@ -7704,7 +7598,7 @@
 
 
 
-.orcamentos-historico-autor > span {
+.orcamentos-historico-autor>span {
 
   color:
 
@@ -7720,7 +7614,7 @@
 
 
 
-.orcamentos-historico-autor > strong {
+.orcamentos-historico-autor>strong {
 
   color:
 
@@ -7736,7 +7630,7 @@
 
 
 
-.orcamentos-historico-autor > small {
+.orcamentos-historico-autor>small {
 
   padding:
 
@@ -7986,9 +7880,7 @@
 
   animation:
 
-    orcamentos-historico-spin
-
-    0.7s linear infinite;
+    orcamentos-historico-spin 0.7s linear infinite;
 
 }
 
@@ -8066,7 +7958,7 @@
 
 
 
-  .orcamentos-historico-marker > span {
+  .orcamentos-historico-marker>span {
 
     width: 28px;
 
@@ -8262,15 +8154,11 @@
 
   background:
 
-    linear-gradient(
-
-      145deg,
+    linear-gradient(145deg,
 
       rgba(255, 255, 255, 0.025),
 
-      rgba(255, 255, 255, 0.008)
-
-    );
+      rgba(255, 255, 255, 0.008));
 
 }
 
@@ -8296,7 +8184,7 @@
 
 
 
-.orcamentos-funil-topo > div:first-child > span {
+.orcamentos-funil-topo>div:first-child>span {
 
   display: block;
 
@@ -8326,7 +8214,7 @@
 
 
 
-.orcamentos-funil-topo > div:first-child > strong {
+.orcamentos-funil-topo>div:first-child>strong {
 
   display: block;
 
@@ -8344,7 +8232,7 @@
 
 
 
-.orcamentos-funil-topo > div:first-child > p {
+.orcamentos-funil-topo>div:first-child>p {
 
   margin:
 
@@ -8478,7 +8366,7 @@
 
 
 
-.orcamentos-funil-barra > span {
+.orcamentos-funil-barra>span {
 
   display: block;
 
@@ -8514,13 +8402,9 @@
 
   grid-template-columns:
 
-    repeat(
+    repeat(5,
 
-      5,
-
-      minmax(0, 1fr)
-
-    );
+      minmax(0, 1fr));
 
 
 
@@ -8638,7 +8522,7 @@
 
 
 
-.orcamentos-funil-label > span {
+.orcamentos-funil-label>span {
 
   width: 19px;
 
@@ -8684,9 +8568,7 @@
 
 
 
-.orcamentos-funil-campo.preenchido
-
-.orcamentos-funil-label > span {
+.orcamentos-funil-campo.preenchido .orcamentos-funil-label>span {
 
   border-color:
 
@@ -8828,7 +8710,7 @@
 
 
 
-.orcamentos-funil-resumo > div {
+.orcamentos-funil-resumo>div {
 
   display: flex;
 
@@ -8954,13 +8836,9 @@
 
     grid-template-columns:
 
-      repeat(
+      repeat(2,
 
-        2,
-
-        minmax(0, 1fr)
-
-      );
+        minmax(0, 1fr));
 
   }
 
@@ -9147,6 +9025,7 @@
   }
 
 }
+
 /* =========================================
    AJUSTES FINAIS DE RESPONSIVIDADE MOBILE
    ========================================= */
@@ -9205,16 +9084,12 @@
     max-width: 100%;
 
     padding-left:
-      max(
-        16px,
-        env(safe-area-inset-left)
-      );
+      max(16px,
+        env(safe-area-inset-left));
 
     padding-right:
-      max(
-        16px,
-        env(safe-area-inset-right)
-      );
+      max(16px,
+        env(safe-area-inset-right));
 
     box-sizing: border-box;
   }
@@ -9226,10 +9101,8 @@
 
   .orcamentos-profile {
     right:
-      max(
-        16px,
-        env(safe-area-inset-right)
-      );
+      max(16px,
+        env(safe-area-inset-right));
   }
 
   .orcamentos-content {
@@ -9241,11 +9114,9 @@
     max-width: 100%;
 
     font-size:
-      clamp(
-        34px,
+      clamp(34px,
         10vw,
-        44px
-      );
+        44px);
 
     line-height: 1.03;
     letter-spacing: -1.3px;
@@ -9259,10 +9130,8 @@
 
   .orcamentos-summary-grid {
     grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
+      repeat(2,
+        minmax(0, 1fr));
   }
 
   .orcamentos-summary-card {
@@ -9273,28 +9142,20 @@
     align-items: flex-start;
 
     padding-top:
-      max(
-        12px,
-        env(safe-area-inset-top)
-      );
+      max(12px,
+        env(safe-area-inset-top));
 
     padding-right:
-      max(
-        12px,
-        env(safe-area-inset-right)
-      );
+      max(12px,
+        env(safe-area-inset-right));
 
     padding-bottom:
-      max(
-        12px,
-        env(safe-area-inset-bottom)
-      );
+      max(12px,
+        env(safe-area-inset-bottom));
 
     padding-left:
-      max(
-        12px,
-        env(safe-area-inset-left)
-      );
+      max(12px,
+        env(safe-area-inset-left));
 
     overflow-y: auto;
   }
@@ -9304,11 +9165,7 @@
     max-width: 100%;
 
     max-height:
-      calc(
-        100svh -
-        max(12px, env(safe-area-inset-top)) -
-        max(12px, env(safe-area-inset-bottom))
-      );
+      calc(100svh - max(12px, env(safe-area-inset-top)) - max(12px, env(safe-area-inset-bottom)));
   }
 
   .orcamentos-modal-header,
@@ -9373,10 +9230,8 @@
 
   .orcamentos-funil-grid {
     grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
+      repeat(2,
+        minmax(0, 1fr));
   }
 
 }
@@ -9402,11 +9257,9 @@
 
   .orcamentos-hero h1 {
     font-size:
-      clamp(
-        32px,
+      clamp(32px,
         10.5vw,
-        38px
-      );
+        38px);
   }
 
   .orcamentos-hero-description {
@@ -9416,8 +9269,7 @@
 
   .orcamentos-hero-divider {
     margin:
-      26px 0
-      18px;
+      26px 0 18px;
   }
 
   .orcamentos-role {
@@ -9462,8 +9314,7 @@
     gap: 14px;
 
     padding:
-      20px
-      16px;
+      20px 16px;
   }
 
   .orcamentos-modal-header h2 {
@@ -9478,8 +9329,7 @@
     gap: 16px;
 
     padding:
-      20px
-      16px;
+      20px 16px;
   }
 
   .orcamentos-form-full,
@@ -9500,9 +9350,7 @@
   .orcamentos-detalhes-body,
   .orcamentos-produtos-body {
     padding:
-      20px
-      16px
-      24px;
+      20px 16px 24px;
   }
 
   .orcamentos-detalhes-info {
@@ -9530,10 +9378,8 @@
 
   .orcamentos-produtos-lista {
     max-height:
-      min(
-        330px,
-        42svh
-      );
+      min(330px,
+        42svh);
   }
 
   .orcamentos-item {
@@ -9608,8 +9454,7 @@
     min-width: 0;
     flex: 1 1 0;
     padding:
-      0
-      8px;
+      0 8px;
   }
 
   .orcamentos-funil-mecanico {
@@ -9636,24 +9481,18 @@
   .orcamentos-hero-container,
   .orcamentos-content {
     padding-left:
-      max(
-        12px,
-        env(safe-area-inset-left)
-      );
+      max(12px,
+        env(safe-area-inset-left));
 
     padding-right:
-      max(
-        12px,
-        env(safe-area-inset-right)
-      );
+      max(12px,
+        env(safe-area-inset-right));
   }
 
   .orcamentos-profile {
     right:
-      max(
-        12px,
-        env(safe-area-inset-right)
-      );
+      max(12px,
+        env(safe-area-inset-right));
   }
 
   .orcamentos-modal-overlay {
@@ -9685,6 +9524,7 @@
   }
 
 }
+
 /* ========================================
    VISUALIZAÇÃO DO ITEM NO ORÇAMENTO
    ======================================== */
@@ -9696,8 +9536,7 @@
 
   display: grid;
   grid-template-columns:
-    minmax(230px, 0.8fr)
-    minmax(0, 1.45fr);
+    minmax(230px, 0.8fr) minmax(0, 1.45fr);
 
   gap: 0;
 
@@ -9711,11 +9550,9 @@
   border-radius: 13px;
 
   background:
-    linear-gradient(
-      145deg,
+    linear-gradient(145deg,
       rgba(255, 255, 255, 0.04),
-      rgba(255, 255, 255, 0.018)
-    );
+      rgba(255, 255, 255, 0.018));
 
   box-sizing: border-box;
 }
@@ -9736,12 +9573,10 @@
     1px solid rgba(255, 255, 255, 0.08);
 
   background:
-    radial-gradient(
-      circle at center,
+    radial-gradient(circle at center,
       rgba(255, 255, 255, 0.055),
       rgba(255, 255, 255, 0.012) 58%,
-      transparent 82%
-    );
+      transparent 82%);
 
   box-sizing: border-box;
 }
@@ -9757,10 +9592,7 @@
   object-fit: contain;
 
   filter:
-    drop-shadow(
-      0 18px 25px
-      rgba(0, 0, 0, 0.30)
-    );
+    drop-shadow(0 18px 25px rgba(0, 0, 0, 0.30));
 }
 
 
@@ -9779,7 +9611,7 @@
 }
 
 
-.orcamentos-produto-sem-imagem > span {
+.orcamentos-produto-sem-imagem>span {
   width: 48px;
   height: 48px;
 
@@ -9852,9 +9684,9 @@
 }
 
 
-.orcamentos-produto-visualizacao-titulo > span,
-.orcamentos-produto-visualizacao-preco > span,
-.orcamentos-produto-visualizacao-descricao > span {
+.orcamentos-produto-visualizacao-titulo>span,
+.orcamentos-produto-visualizacao-preco>span,
+.orcamentos-produto-visualizacao-descricao>span {
   display: block;
 
   margin-bottom: 7px;
@@ -9929,8 +9761,7 @@
   max-width: 100%;
 
   padding:
-    5px
-    8px;
+    5px 8px;
 
   border:
     1px solid rgba(255, 255, 255, 0.09);
@@ -9980,8 +9811,7 @@
 
   display: grid;
   grid-template-columns:
-    minmax(120px, 150px)
-    minmax(0, 1fr);
+    minmax(120px, 150px) minmax(0, 1fr);
 
   align-items: end;
 
@@ -9992,8 +9822,7 @@
 }
 
 
-.orcamentos-produto-visualizacao-compra
-.orcamentos-produto-total-previo {
+.orcamentos-produto-visualizacao-compra .orcamentos-produto-total-previo {
   text-align: right;
 }
 
@@ -10032,9 +9861,7 @@
 
   .orcamentos-modal-produtos {
     max-height:
-      calc(
-        100svh - 24px
-      );
+      calc(100svh - 24px);
   }
 
 
@@ -10090,8 +9917,7 @@
   }
 
 
-  .orcamentos-produto-visualizacao-compra
-  .orcamentos-produto-total-previo {
+  .orcamentos-produto-visualizacao-compra .orcamentos-produto-total-previo {
     text-align: left;
   }
 
@@ -10103,16 +9929,14 @@
   }
 
 }
+
 /* ========================================
    PREÇO PEDIDO / DESCONTO DO REPRESENTANTE
    ======================================== */
 
 .orcamentos-item {
   grid-template-columns:
-    minmax(0, 1fr)
-    minmax(230px, 0.75fr)
-    120px
-    minmax(170px, auto);
+    minmax(0, 1fr) minmax(230px, 0.75fr) 120px minmax(170px, auto);
 }
 
 
@@ -10140,8 +9964,7 @@
   padding: 10px;
 
   border:
-    1px solid
-    rgba(255, 255, 255, 0.07);
+    1px solid rgba(255, 255, 255, 0.07);
 
   border-radius: 8px;
 
@@ -10286,8 +10109,7 @@
   display: grid;
 
   grid-template-columns:
-    minmax(90px, 0.7fr)
-    minmax(140px, 1fr);
+    minmax(90px, 0.7fr) minmax(140px, 1fr);
 
   gap: 9px;
 }
@@ -10304,8 +10126,7 @@
 }
 
 
-.orcamentos-item-edicao-campos
-label > span {
+.orcamentos-item-edicao-campos label>span {
   color:
     rgba(255, 255, 255, 0.42);
 
@@ -10328,8 +10149,7 @@ label > span {
     0 9px;
 
   border:
-    1px solid
-    rgba(255, 255, 255, 0.13);
+    1px solid rgba(255, 255, 255, 0.13);
 
   border-radius: 7px;
 
@@ -10343,8 +10163,7 @@ label > span {
 }
 
 
-.orcamentos-item-edicao-campos
-input:focus {
+.orcamentos-item-edicao-campos input:focus {
   border-color:
     rgba(255, 255, 255, 0.34);
 }
@@ -10368,8 +10187,7 @@ input:focus {
     8px 10px;
 
   border:
-    1px solid
-    rgba(255, 255, 255, 0.07);
+    1px solid rgba(255, 255, 255, 0.07);
 
   border-radius: 7px;
 
@@ -10378,8 +10196,7 @@ input:focus {
 }
 
 
-.orcamentos-item-edicao-referencia
-> span {
+.orcamentos-item-edicao-referencia>span {
   color:
     rgba(255, 255, 255, 0.35);
 
@@ -10393,8 +10210,7 @@ input:focus {
 }
 
 
-.orcamentos-item-edicao-referencia
-> strong {
+.orcamentos-item-edicao-referencia>strong {
   color:
     rgba(255, 255, 255, 0.76);
 
@@ -10402,8 +10218,7 @@ input:focus {
 }
 
 
-.orcamentos-item-edicao-referencia
-> small {
+.orcamentos-item-edicao-referencia>small {
   margin:
     0 0 0 auto;
 
@@ -10417,9 +10232,7 @@ input:focus {
    DESCONTO NO RESUMO
    ======================================== */
 
-.orcamentos-resumo-valores
-.orcamentos-resumo-desconto
-> strong {
+.orcamentos-resumo-valores .orcamentos-resumo-desconto>strong {
   color: #b9f7ca;
 }
 
@@ -10430,10 +10243,7 @@ input:focus {
 
 .orcamentos-produto-visualizacao-compra {
   grid-template-columns:
-    minmax(105px, 0.7fr)
-    minmax(150px, 1fr)
-    minmax(120px, 0.8fr)
-    minmax(150px, 1fr);
+    minmax(105px, 0.7fr) minmax(150px, 1fr) minmax(120px, 0.8fr) minmax(150px, 1fr);
 }
 
 
@@ -10475,8 +10285,7 @@ input:focus {
     0 13px;
 
   border:
-    1px solid
-    rgba(255, 255, 255, 0.14);
+    1px solid rgba(255, 255, 255, 0.14);
 
   border-radius: 9px;
 
@@ -10493,8 +10302,7 @@ input:focus {
 }
 
 
-.orcamentos-preco-cliente
-input:focus {
+.orcamentos-preco-cliente input:focus {
   border-color:
     rgba(255, 255, 255, 0.36);
 
@@ -10526,10 +10334,8 @@ input:focus {
 }
 
 
-.orcamentos-produto-desconto-previo
-> span,
-.orcamentos-produto-total-previo
-> span {
+.orcamentos-produto-desconto-previo>span,
+.orcamentos-produto-total-previo>span {
   display: block;
 
   margin-bottom: 7px;
@@ -10545,8 +10351,7 @@ input:focus {
 }
 
 
-.orcamentos-produto-desconto-previo
-> strong {
+.orcamentos-produto-desconto-previo>strong {
   display: block;
 
   color: #b9f7ca;
@@ -10555,8 +10360,7 @@ input:focus {
 }
 
 
-.orcamentos-produto-desconto-previo
-> small {
+.orcamentos-produto-desconto-previo>small {
   display: block;
 
   margin-top: 4px;
@@ -10576,9 +10380,7 @@ input:focus {
 
   .orcamentos-item {
     grid-template-columns:
-      minmax(0, 1fr)
-      minmax(220px, 0.8fr)
-      110px;
+      minmax(0, 1fr) minmax(220px, 0.8fr) 110px;
   }
 
 
@@ -10592,17 +10394,14 @@ input:focus {
     padding-top: 10px;
 
     border-top:
-      1px solid
-      rgba(255, 255, 255, 0.06);
+      1px solid rgba(255, 255, 255, 0.06);
   }
 
 
   .orcamentos-produto-visualizacao-compra {
     grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
+      repeat(2,
+        minmax(0, 1fr));
   }
 
 }
@@ -10622,10 +10421,8 @@ input:focus {
 
   .orcamentos-item-precos {
     grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
+      repeat(2,
+        minmax(0, 1fr));
   }
 
 
@@ -10641,10 +10438,8 @@ input:focus {
 
   .orcamentos-item-edicao-campos {
     grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
+      repeat(2,
+        minmax(0, 1fr));
   }
 
 }
@@ -10678,8 +10473,7 @@ input:focus {
   }
 
 
-  .orcamentos-item-edicao-referencia
-  > small {
+  .orcamentos-item-edicao-referencia>small {
     margin-left: 0;
   }
 
@@ -10709,10 +10503,8 @@ input:focus {
 */
 .orcamentos-funil-digital .orcamentos-funil-grid {
   grid-template-columns:
-    repeat(
-      3,
-      minmax(0, 1fr)
-    );
+    repeat(3,
+      minmax(0, 1fr));
 }
 
 
@@ -10730,10 +10522,8 @@ input:focus {
 
   .orcamentos-funil-digital .orcamentos-funil-grid {
     grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
+      repeat(2,
+        minmax(0, 1fr));
   }
 
 }
@@ -10746,4 +10536,86 @@ input:focus {
       minmax(0, 1fr);
   }
 
+}
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   SELECT — PADRÃO VISUAL DOS ORÇAMENTOS
+========================================== */
+
+.orcamentos-page select {
+  width: 100%;
+  min-height: 43px;
+  padding: 11px 40px 11px 13px;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-color: #171719;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23bcbcc4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 13px center;
+  background-size: 16px;
+
+  color: #ffffff;
+  border: 1px solid #343439;
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+
+  outline: none;
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* HOVER */
+
+.orcamentos-page select:hover:not(:disabled) {
+  background-color: #1c1c20;
+  border-color: #505058;
+}
+
+/* FOCO */
+
+.orcamentos-page select:focus-visible {
+  border-color: #a8a8b2;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.07);
+}
+
+/* OPÇÕES DO SELECT */
+
+.orcamentos-page select option {
+  background: #171719;
+  color: #ffffff;
+  font-size: 13px;
+}
+
+/* PLACEHOLDER */
+
+.orcamentos-page select:has(option[value=""]:checked) {
+  color: #93939b;
+}
+
+/* DESABILITADO */
+
+.orcamentos-page select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 600px) {
+  .orcamentos-page select {
+    min-height: 46px;
+    font-size: 14px;
+  }
 }
