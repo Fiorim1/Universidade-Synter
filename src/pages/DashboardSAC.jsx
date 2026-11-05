@@ -21,10 +21,9 @@ import TabelaIcon from "../assets/tabela-icon.png";
 
 import "../styles/Dashboard.css";
 import "../styles/DashboardSAC.css";
-import "../styles/DashboardSACHero.css";
 
 // ========================================
-// ÍCONE GEOMÉTRICO — PADRÃO SYNTER
+// ÍCONE PADRÃO SYNTER
 // ========================================
 
 function IconeSynter() {
@@ -57,28 +56,22 @@ function DashboardSAC() {
   return (
     <div className="dashboard-page dashboard-sac-page">
 
-      {/* ========================================
-          HEADER
-      ======================================== */}
+      {/* HEADER */}
 
       <Header />
 
-      {/* ========================================
+      {/* =====================================
           HERO — PADRÃO UNIVERSIDADE SYNTER
-      ======================================== */}
+      ===================================== */}
 
       <section className="synter-sac-hero">
         <div className="synter-sac-hero-container">
-
-          {/* PERFIL DO USUÁRIO */}
 
           <div className="synter-sac-profile">
             <UserProfileButton
               onClick={() => setProfileOpen(true)}
             />
           </div>
-
-          {/* CONTEÚDO DO HERO */}
 
           <div className="synter-sac-hero-content">
 
@@ -101,18 +94,17 @@ function DashboardSAC() {
             </p>
 
           </div>
+
         </div>
       </section>
 
-      {/* ========================================
-          CONTEÚDO PRINCIPAL
-      ======================================== */}
+      {/* =====================================
+          CONTEÚDO — ACESSO RÁPIDO
+      ===================================== */}
 
-      <main className="dashboard-content">
+      <main className="dashboard-content synter-sac-content">
 
-        {/* TÍTULO DA SEÇÃO */}
-
-        <div className="dashboard-section-title">
+        <div className="dashboard-section-title synter-sac-section-title">
           <div className="dashboard-section-bar" />
 
           <h4>
@@ -120,13 +112,9 @@ function DashboardSAC() {
           </h4>
         </div>
 
-        {/* CARTÕES */}
+        {/* TRÊS CARTÕES LADO A LADO */}
 
-        <div className="cards">
-
-          {/* ====================================
-              CHAMADOS TÉCNICOS
-          ==================================== */}
+        <div className="cards synter-sac-cards">
 
           <CardsDashboard
             image={AppIcon}
@@ -135,20 +123,12 @@ function DashboardSAC() {
             route="/assistencia-tecnica"
           />
 
-          {/* ====================================
-              VISITAS TÉCNICAS
-          ==================================== */}
-
           <CardsDashboard
             image={AstIcon}
             title="Documentos de Visita Técnica"
             desc="Registre visitas, colete assinaturas e gere formulários em PDF."
             route="/visitas-tecnicas"
           />
-
-          {/* ====================================
-              SYNTER ANALYTICS
-          ==================================== */}
 
           <CardsDashboard
             image={TabelaIcon}
@@ -158,17 +138,14 @@ function DashboardSAC() {
           />
 
         </div>
+
       </main>
 
-      {/* ========================================
-          FOOTER
-      ======================================== */}
+      {/* FOOTER */}
 
       <Footer />
 
-      {/* ========================================
-          PERFIL DO USUÁRIO
-      ======================================== */}
+      {/* PERFIL */}
 
       {profileOpen && (
         <Profile

@@ -1,7 +1,9 @@
 
-/* ========================================
-   DASHBOARD SAC — HERO PADRÃO SYNTER
-======================================== */
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   DASHBOARD SAC
+   PADRÃO VISUAL — PERGUNTAS FREQUENTES
+========================================== */
 
 .dashboard-sac-page {
   min-height: 100vh;
@@ -9,105 +11,392 @@
   color: #ffffff;
 }
 
-.dashboard-sac-hero {
+/* ==========================================
+   HERO PRINCIPAL
+========================================== */
+
+.dashboard-sac-page .synter-sac-hero {
   position: relative;
-  display: flex;
-  align-items: center;
+  display: block;
+
   width: 100%;
-  min-height: 390px;
+  min-height: 320px;
+  height: auto;
+
+  margin: 0;
+  padding: 0;
+
   background: #080808;
-  border-bottom: 1px solid #191919;
+  border-bottom: 1px solid #242428;
+
+  box-sizing: border-box;
 }
 
-.dashboard-sac-hero-inner {
+/* ==========================================
+   CONTAINER DO HERO
+========================================== */
+
+.dashboard-sac-page .synter-sac-hero-container {
   position: relative;
-  width: 100%;
-  max-width: 1600px;
+
+  width: min(1440px, calc(100% - 80px));
+  max-width: 1440px;
+
   margin: 0 auto;
-  padding: 65px 40px 85px;
+  padding: 76px 0 64px;
+
+  box-sizing: border-box;
 }
 
-.dashboard-sac-profile {
+/* ==========================================
+   PERFIL DO USUÁRIO
+========================================== */
+
+.dashboard-sac-page .synter-sac-profile {
   position: absolute;
-  top: 28px;
-  right: 40px;
+
+  top: 34px;
+  right: 0;
   z-index: 5;
-}
 
-.dashboard-sac-hero-text {
-  max-width: 1150px;
-}
-
-.dashboard-sac-eyebrow {
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin-bottom: 24px;
-  color: #c5c5c8;
+  justify-content: flex-end;
 }
 
-.dashboard-sac-eyebrow span {
+/* ==========================================
+   CONTEÚDO DO HERO
+========================================== */
+
+.dashboard-sac-page .synter-sac-hero-content {
+  width: 100%;
+  max-width: 1100px;
+  min-width: 0;
+}
+
+/* IDENTIFICAÇÃO SUPERIOR */
+
+.dashboard-sac-page .synter-sac-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  margin: 0 0 20px;
+  padding: 0;
+
+  color: #b7b7bf;
+
+  font-family: inherit;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 2.4px;
+
+  letter-spacing: 2px;
+  line-height: 1.5;
+  text-transform: uppercase;
 }
 
-.dashboard-sac-eyebrow svg {
-  flex-shrink: 0;
-  color: #a5a5a8;
+.dashboard-sac-page .synter-sac-eyebrow svg {
+  display: block;
+
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+
+  color: #b7b7bf;
 }
 
-.dashboard-sac-hero h1 {
-  margin: 0 0 24px;
-  font-size: clamp(42px, 5.2vw, 76px);
-  font-weight: 800;
-  letter-spacing: -2.8px;
-  line-height: 1.1;
+/* TÍTULO */
+
+.dashboard-sac-page .synter-sac-title {
+  max-width: 1100px;
+
+  margin: 0 0 22px;
+  padding: 0;
+
   color: #ffffff;
+
+  font-family: inherit;
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 800;
+
+  letter-spacing: -2px;
+  line-height: 1.1;
 }
 
-.dashboard-sac-hero p {
-  max-width: 950px;
+/* DESCRIÇÃO */
+
+.dashboard-sac-page .synter-sac-description {
+  max-width: 810px;
+
   margin: 0;
-  color: #b4b4bc;
-  font-size: 17px;
-  line-height: 1.7;
+  padding: 0;
+
+  color: #b7b7c0;
+
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.75;
 }
+
+/* ==========================================
+   CONTEÚDO PRINCIPAL
+========================================== */
+
+.dashboard-sac-page .synter-sac-content {
+  display: block !important;
+
+  width: min(1440px, calc(100% - 80px)) !important;
+  max-width: 1440px !important;
+
+  margin: 0 auto !important;
+  padding: 48px 0 90px !important;
+
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   TÍTULO — ACESSO RÁPIDO
+========================================== */
+
+.dashboard-sac-page .synter-sac-section-title {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  gap: 12px;
+
+  margin: 0 0 26px;
+  padding: 0;
+}
+
+.dashboard-sac-page
+.synter-sac-section-title
+.dashboard-section-bar {
+  display: block;
+
+  width: 3px;
+  height: 20px;
+  flex: 0 0 3px;
+
+  background: #ffffff;
+  border-radius: 3px;
+}
+
+.dashboard-sac-page .synter-sac-section-title h4 {
+  margin: 0;
+  padding: 0;
+
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 1.8px;
+  line-height: 1.5;
+}
+
+/* ==========================================
+   GRID — 3 CARTÕES POR LINHA
+========================================== */
+
+.dashboard-sac-page .synter-sac-content .synter-sac-cards {
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr)) !important;
+
+  grid-auto-flow: row;
+
+  align-items: stretch !important;
+  justify-items: stretch !important;
+  justify-content: center !important;
+
+  gap: 16px !important;
+
+  width: 100% !important;
+  max-width: 100% !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   CARTÕES
+========================================== */
+
+.dashboard-sac-page
+.synter-sac-content
+.synter-sac-cards > * {
+  display: flex;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+
+  height: 100%;
+  min-height: 115px;
+
+  margin: 0 !important;
+  padding: initial;
+
+  flex: initial !important;
+
+  grid-column: auto !important;
+  grid-row: auto !important;
+
+  box-sizing: border-box;
+  border-radius: 14px;
+}
+
+/* EVITAR TEXTO ULTRAPASSANDO O CARTÃO */
+
+.dashboard-sac-page
+.synter-sac-cards > * * {
+  min-width: 0;
+}
+
+.dashboard-sac-page
+.synter-sac-cards h3,
+.dashboard-sac-page
+.synter-sac-cards h4,
+.dashboard-sac-page
+.synter-sac-cards p {
+  overflow-wrap: anywhere;
+}
+
+/* ==========================================
+   ESTADOS DE INTERAÇÃO
+========================================== */
+
+.dashboard-sac-page
+.synter-sac-cards > * {
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.dashboard-sac-page
+.synter-sac-cards > *:hover {
+  border-color: #505057;
+}
+
+/* ==========================================
+   RESPONSIVIDADE — NOTEBOOK / TABLET
+========================================== */
+
+@media (max-width: 1050px) {
+
+  .dashboard-sac-page
+  .synter-sac-content
+  .synter-sac-cards {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr)) !important;
+  }
+
+}
+
+/* ==========================================
+   RESPONSIVIDADE — TABLET
+========================================== */
 
 @media (max-width: 768px) {
-  .dashboard-sac-hero {
-    min-height: 340px;
+
+  .dashboard-sac-page .synter-sac-hero {
+    min-height: 0;
   }
 
-  .dashboard-sac-hero-inner {
-    padding: 110px 24px 55px;
+  .dashboard-sac-page .synter-sac-hero-container {
+    width: calc(100% - 40px);
+    padding: 110px 0 45px;
   }
 
-  .dashboard-sac-profile {
+  .dashboard-sac-page .synter-sac-profile {
     top: 22px;
-    right: 24px;
+    right: 0;
   }
 
-  .dashboard-sac-hero h1 {
-    font-size: clamp(38px, 8vw, 56px);
-    letter-spacing: -1.7px;
+  .dashboard-sac-page .synter-sac-eyebrow {
+    gap: 12px;
+    font-size: 10px;
+    letter-spacing: 1.4px;
   }
 
-  .dashboard-sac-hero p {
-    font-size: 15px;
+  .dashboard-sac-page .synter-sac-title {
+    font-size: clamp(38px, 8vw, 52px);
+    letter-spacing: -1.4px;
   }
+
+  .dashboard-sac-page .synter-sac-description {
+    font-size: 14px;
+  }
+
+  .dashboard-sac-page .synter-sac-content {
+    width: calc(100% - 40px) !important;
+    padding: 35px 0 65px !important;
+  }
+
+  .dashboard-sac-page
+  .synter-sac-content
+  .synter-sac-cards {
+    gap: 14px !important;
+  }
+
 }
 
-@media (max-width: 480px) {
-  .dashboard-sac-hero-inner {
-    padding: 105px 20px 45px;
+/* ==========================================
+   RESPONSIVIDADE — CELULAR
+========================================== */
+
+@media (max-width: 580px) {
+
+  .dashboard-sac-page .synter-sac-hero-container {
+    width: calc(100% - 32px);
   }
 
-  .dashboard-sac-profile {
-    right: 20px;
+  .dashboard-sac-page .synter-sac-title {
+    font-size: 36px;
+    letter-spacing: -1.3px;
   }
 
-  .dashboard-sac-hero h1 {
-    font-size: 38px;
+  .dashboard-sac-page .synter-sac-content {
+    width: calc(100% - 32px) !important;
+    padding: 30px 0 55px !important;
   }
+
+  .dashboard-sac-page
+  .synter-sac-content
+  .synter-sac-cards {
+    grid-template-columns:
+      minmax(0, 1fr) !important;
+
+    gap: 12px !important;
+  }
+
+  .dashboard-sac-page
+  .synter-sac-cards > * {
+    min-height: 100px;
+  }
+
+  .dashboard-sac-page
+  .synter-sac-section-title {
+    margin-bottom: 22px;
+  }
+
+}
+
+/* ==========================================
+   ACESSIBILIDADE
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .dashboard-sac-page
+  .synter-sac-cards > * {
+    transition: none;
+  }
+
 }
