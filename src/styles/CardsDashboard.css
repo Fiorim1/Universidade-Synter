@@ -1,7 +1,7 @@
 
 /* ==========================================
    UNIVERSIDADE SYNTER
-   CARDS DASHBOARD — PADRÃO OFICIAL
+   CARDS DASHBOARD — DESIGN ORIGINAL
 ========================================== */
 
 /* ==========================================
@@ -12,7 +12,9 @@
   position: relative;
 
   display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: flex-start;
 
   width: 100%;
   max-width: 100%;
@@ -20,6 +22,7 @@
   min-height: 115px;
 
   gap: 18px;
+  margin: 0;
   padding: 16px 18px;
 
   background: linear-gradient(
@@ -31,15 +34,22 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
 
-  box-sizing: border-box;
-
   color: #ffffff;
-  text-align: left;
-  cursor: pointer;
 
+  font-family: inherit;
+  text-align: left;
+  text-decoration: none;
+
+  cursor: pointer;
   overflow: hidden;
 
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+  box-sizing: border-box;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.18);
 
   transition:
     transform 0.25s ease,
@@ -49,7 +59,7 @@
 }
 
 /* ==========================================
-   BRILHO SUTIL
+   BRILHO DISCRETO
 ========================================== */
 
 .cads-container::before {
@@ -71,13 +81,11 @@
 }
 
 /* ==========================================
-   HOVER
+   HOVER DO CARD
 ========================================== */
 
 .cads-container:hover {
   transform: translateY(-3px);
-
-  border-color: rgba(255, 255, 255, 0.32);
 
   background: linear-gradient(
     135deg,
@@ -85,94 +93,48 @@
     #101010
   );
 
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
+  border-color: rgba(255, 255, 255, 0.32);
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.32);
 }
 
 .cads-container:hover::before {
   opacity: 1;
 }
 
-/* ==========================================
-   INDICADOR VERDE — DISPONÍVEL
-========================================== */
-
-/*
-  A classe card-available deve ser adicionada
-  somente aos cartões disponíveis.
-
-  Exemplo:
-  className="cads-container card-available"
-*/
-
-.cads-container.card-available::after {
-  content: "";
-
-  position: absolute;
-  top: 10px;
-  right: 12px;
-
-  width: 9px;
-  height: 9px;
-
-  background: #22c55e;
-
-  border: 1px solid #4ade80;
-  border-radius: 50%;
-
-  box-shadow:
-    0 0 5px rgba(34, 197, 94, 0.65),
-    0 0 10px rgba(34, 197, 94, 0.25);
-
-  z-index: 3;
-  pointer-events: none;
-
-  animation:
-    synterDisponivelPulse 3s ease-in-out infinite;
+.cads-container:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
 }
 
 /* ==========================================
-   ANIMAÇÃO LENTA DA BOLINHA
-========================================== */
-
-@keyframes synterDisponivelPulse {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: scale(0.9);
-
-    box-shadow:
-      0 0 3px rgba(34, 197, 94, 0.3),
-      0 0 6px rgba(34, 197, 94, 0.15);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.12);
-
-    box-shadow:
-      0 0 8px rgba(34, 197, 94, 0.8),
-      0 0 15px rgba(34, 197, 94, 0.35);
-  }
-}
-
-/* ==========================================
-   ÁREA DO ÍCONE
+   IMAGEM / ÍCONE
 ========================================== */
 
 .card-image {
+  position: relative;
+
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
 
-  flex-shrink: 0;
+  flex: 0 0 76px;
 
   width: 76px;
+  min-width: 76px;
   height: 76px;
+
+  margin: 0;
+  padding: 0;
 
   background: rgba(255, 255, 255, 0.025);
 
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 11px;
+
+  box-sizing: border-box;
 
   transition:
     border-color 0.25s ease,
@@ -184,58 +146,90 @@
   background: rgba(255, 255, 255, 0.045);
 }
 
+/* IMAGEM INTERNA */
+
 .card-image img {
   display: block;
 
   width: 52px;
   height: 52px;
+
   max-width: 100%;
+  max-height: 100%;
+
+  margin: 0;
+  padding: 0;
 
   object-fit: contain;
+  background: transparent;
 }
 
 /* ==========================================
-   TEXTOS
+   ÁREA DOS TEXTOS
 ========================================== */
 
 .content-text-cards {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
+  align-items: flex-start;
   justify-content: center;
 
-  flex: 1;
+  gap: 0;
 
+  width: auto;
   min-width: 0;
   max-width: 100%;
 
+  margin: 0;
+  padding: 0;
+
   color: #ffffff;
+  text-align: left;
 }
 
+/* TÍTULO */
+
 .content-text-cards h3 {
+  display: block;
+
+  width: 100%;
   min-width: 0;
 
   margin: 0 0 6px;
+  padding: 0;
 
   color: #ffffff;
 
+  font-family: inherit;
   font-size: 16px;
   font-weight: 600;
   line-height: 1.2;
 
+  text-align: left;
+
   overflow-wrap: break-word;
 }
 
+/* DESCRIÇÃO */
+
 .content-text-cards p {
+  display: block;
+
   min-width: 0;
   max-width: 230px;
 
   margin: 0;
+  padding: 0;
 
   color: #8f8f8f;
 
+  font-family: inherit;
   font-size: 12px;
   font-weight: 400;
   line-height: 1.45;
+
+  text-align: left;
 
   overflow-wrap: break-word;
 }
@@ -245,24 +239,31 @@
 ========================================== */
 
 .card-arrow {
+  position: relative;
+
   display: flex;
+  flex: 0 0 34px;
   align-items: center;
   justify-content: center;
 
-  flex-shrink: 0;
-
   width: 34px;
+  min-width: 34px;
   height: 34px;
 
-  margin-left: auto;
+  margin: 0 0 0 auto;
+  padding: 0;
+
+  background: rgba(255, 255, 255, 0.04);
 
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
 
-  background: rgba(255, 255, 255, 0.04);
-
   color: #ffffff;
+
   font-size: 18px;
+  line-height: 1;
+
+  box-sizing: border-box;
 
   transition:
     transform 0.25s ease,
@@ -271,16 +272,23 @@
     color 0.25s ease;
 }
 
+.card-arrow svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
 .cads-container:hover .card-arrow {
   transform: translateX(3px);
 
   background: #ffffff;
   border-color: #ffffff;
+
   color: #111111;
 }
 
 /* ==========================================
-   CARTÕES DESABILITADOS
+   CARD INDISPONÍVEL
 ========================================== */
 
 .card-disabled {
@@ -288,36 +296,54 @@
 }
 
 /*
-  Os cartões desabilitados não recebem
-  a bolinha verde de disponibilidade.
+  Mantém o design original dos cartões
+  indisponíveis.
+
+  Eles continuam abrindo o modal
+  Projeto em Produção.
 */
 
-.cads-container.card-disabled::after {
+/* ==========================================
+   REMOVER INDICADORES ADICIONAIS
+========================================== */
+
+/*
+  A bolinha verde foi retirada nesta versão.
+  Todos os cartões voltam ao visual original.
+*/
+
+.cads-container.card-available::after {
+  display: none;
+}
+
+.card-dashboard-status,
+.card-dashboard-status-dot,
+.card-dashboard-status-text {
   display: none;
 }
 
 /* ==========================================
-   OVERLAY — PROJETO EM PRODUÇÃO
+   OVERLAY DO MODAL
 ========================================== */
 
 .card-production-overlay {
-  position: fixed;
+  position: fixed !important;
 
-  inset: 0;
+  inset: 0 !important;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 
-  width: 100%;
-  height: 100dvh;
-  min-height: 100dvh;
+  width: 100% !important;
+  height: 100dvh !important;
+  min-height: 100dvh !important;
 
   padding:
     max(16px, env(safe-area-inset-top))
     max(16px, env(safe-area-inset-right))
     max(16px, env(safe-area-inset-bottom))
-    max(16px, env(safe-area-inset-left));
+    max(16px, env(safe-area-inset-left)) !important;
 
   background: rgba(0, 0, 0, 0.78);
 
@@ -337,7 +363,12 @@
 ========================================== */
 
 .card-production-modal {
-  position: relative;
+  position: relative !important;
+
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
 
   width: 100%;
   max-width: 460px;
@@ -345,8 +376,7 @@
 
   max-height: calc(100dvh - 32px);
 
-  margin: auto;
-
+  margin: auto !important;
   padding: 38px 34px 32px;
 
   background: linear-gradient(
@@ -363,7 +393,8 @@
   overflow-y: auto;
   overscroll-behavior: contain;
 
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.6);
 
   animation: productionModalOpen 0.25s ease;
 }
@@ -385,12 +416,16 @@
   width: 36px;
   height: 36px;
 
+  margin: 0;
+  padding: 0;
+
   background: transparent;
 
   border: none;
   border-radius: 10px;
 
   color: #999999;
+
   cursor: pointer;
 
   transition:
@@ -446,6 +481,9 @@
 
   min-width: 0;
   max-width: 100%;
+
+  margin: 0;
+  padding: 0;
 }
 
 .card-production-label {
@@ -464,11 +502,14 @@
   min-width: 0;
 
   margin: 0 0 12px;
+  padding: 0;
 
   color: #ffffff;
 
+  font-family: inherit;
   font-size: 25px;
   font-weight: 700;
+  line-height: 1.25;
 
   overflow-wrap: break-word;
 }
@@ -478,9 +519,11 @@
   max-width: 360px;
 
   margin: 0;
+  padding: 0;
 
   color: #999999;
 
+  font-family: inherit;
   font-size: 14px;
   line-height: 1.6;
 
@@ -492,6 +535,8 @@
 ========================================== */
 
 .card-production-button {
+  display: block;
+
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -499,13 +544,14 @@
   margin-top: 28px;
   padding: 13px 18px;
 
-  color: #ffffff;
-
   background: transparent;
 
   border: 1px solid #ffffff29;
   border-radius: 10px;
 
+  color: #ffffff;
+
+  font-family: inherit;
   font-size: 13px;
   font-weight: 700;
 
@@ -529,34 +575,50 @@
 @keyframes productionModalOpen {
   from {
     opacity: 0;
-    transform: translateY(10px) scale(0.98);
+    transform:
+      translateY(10px)
+      scale(0.98);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform:
+      translateY(0)
+      scale(1);
   }
 }
 
 /* ==========================================
-   RESPONSIVIDADE — TABLET / CELULAR
+   RESPONSIVIDADE — TABLETS
 ========================================== */
 
 @media (max-width: 650px) {
   .cads-container {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
     min-height: 105px;
+
     gap: 14px;
     padding: 14px;
   }
 
   .card-image {
+    flex-basis: 65px;
+
     width: 65px;
+    min-width: 65px;
     height: 65px;
   }
 
   .card-image img {
     width: 44px;
     height: 44px;
+  }
+
+  .content-text-cards {
+    min-width: 0;
   }
 
   .content-text-cards h3 {
@@ -569,9 +631,11 @@
   }
 
   .card-arrow {
+    flex-basis: 31px;
+
     width: 31px;
+    min-width: 31px;
     height: 31px;
-    font-size: 16px;
   }
 
   .card-production-overlay {
@@ -579,14 +643,17 @@
       max(14px, env(safe-area-inset-top))
       max(14px, env(safe-area-inset-right))
       max(14px, env(safe-area-inset-bottom))
-      max(14px, env(safe-area-inset-left));
+      max(14px, env(safe-area-inset-left)) !important;
   }
 
   .card-production-modal {
+    width: 100%;
     max-width: 420px;
+
     max-height: calc(100dvh - 28px);
 
     padding: 34px 24px 26px;
+
     border-radius: 16px;
   }
 
@@ -602,13 +669,18 @@
 @media (max-width: 420px) {
   .cads-container {
     min-height: 96px;
+
     gap: 12px;
     padding: 12px;
   }
 
   .card-image {
+    flex-basis: 58px;
+
     width: 58px;
+    min-width: 58px;
     height: 58px;
+
     border-radius: 10px;
   }
 
@@ -628,9 +700,11 @@
   }
 
   .card-arrow {
+    flex-basis: 29px;
+
     width: 29px;
+    min-width: 29px;
     height: 29px;
-    font-size: 15px;
   }
 
   .card-production-modal {
@@ -645,6 +719,7 @@
   .card-production-icon {
     width: 48px;
     height: 48px;
+
     margin-bottom: 20px;
   }
 
@@ -667,7 +742,10 @@
   }
 
   .card-image {
+    flex-basis: 54px;
+
     width: 54px;
+    min-width: 54px;
     height: 54px;
   }
 
@@ -677,13 +755,17 @@
   }
 
   .card-arrow {
+    flex-basis: 28px;
+
     width: 28px;
+    min-width: 28px;
     height: 28px;
+
     margin-top: 2px;
   }
 
   .card-production-overlay {
-    padding: 10px;
+    padding: 10px !important;
   }
 
   .card-production-modal {
@@ -695,9 +777,8 @@
    ACESSIBILIDADE
 ========================================== */
 
-.cads-container:focus-visible,
-.card-production-button:focus-visible,
-.card-production-close:focus-visible {
+.card-production-close:focus-visible,
+.card-production-button:focus-visible {
   outline: 2px solid #ffffff;
   outline-offset: 3px;
 }
@@ -705,15 +786,15 @@
 @media (prefers-reduced-motion: reduce) {
   .cads-container,
   .cads-container::before,
-  .card-arrow,
   .card-image,
+  .card-arrow,
+  .card-production-close,
   .card-production-button {
     transition: none;
   }
 
-  .cads-container.card-available::after {
-    animation: none;
-    opacity: 1;
+  .cads-container:hover,
+  .cads-container:hover .card-arrow {
     transform: none;
   }
 
