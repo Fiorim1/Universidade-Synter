@@ -3,11 +3,11 @@ import { useState } from "react"
 import Header from "../components/Header"
 import UserProfileButton from "../components/UserProfileButton"
 import Profile from "../components/Profile"
-import Hero from "../components/Hero"
 import CardsDashboard from "../components/CardsDashboard"
 import Footer from "../components/Footer"
 
 import "../styles/Manuals.css"
+import "../styles/FichaTecHero.css"
 
 // Importando imagens de produtos digitais
 import VENUSS2 from "../assets/venuss2pro.png"
@@ -155,30 +155,43 @@ function FichaTec() {
             <Header />
 
 
-            {/* HERO */}
+            {/* HERO — PADRÃO UNIVERSIDADE SYNTER */}
+            <section className="ficha-tec-hero">
+                <div className="ficha-tec-hero-container">
+                    <div className="ficha-tec-profile">
+                        <UserProfileButton
+                            onClick={() => setProfileOpen(true)}
+                        />
+                    </div>
 
-            <section className="videos-hero-area">
+                    <div className="ficha-tec-hero-content">
+                        <div className="ficha-tec-eyebrow">
+                            <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="m12 2 9 5-9 5-9-5 9-5Z" />
+                                <path d="M3 7v10l9 5 9-5V7" />
+                                <path d="M12 12v10" />
+                            </svg>
+                            <span>CENTRAL DE DOCUMENTAÇÃO</span>
+                        </div>
 
-                <div className="videos-profile">
+                        <h1 className="ficha-tec-title">Fichas Técnicas</h1>
 
-                    <UserProfileButton
-                        onClick={() => setProfileOpen(true)}
-                    />
-
+                        <p className="ficha-tec-description">
+                            Consulte e baixe as fichas técnicas e especificações
+                            dos produtos Synter.
+                        </p>
+                    </div>
                 </div>
-
-
-                <div className="videos-hero-content">
-
-                    <Hero
-                        variant="dashboard"
-                        one="Central de Documentação"
-                        two="Fichas Técnicas"
-                        three="Consulte e baixe as fichas técnicas e especificações dos produtos Synter."
-                    />
-
-                </div>
-
             </section>
 
 

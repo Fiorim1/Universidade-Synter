@@ -1,0 +1,185 @@
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   SYNTER ANALYTICS — HERO PADRÃO OFICIAL
+
+   REFERÊNCIA:
+   PÁGINA PERGUNTAS FREQUENTES
+========================================== */
+
+/* ==========================================
+   HERO PRINCIPAL
+========================================== */
+
+.sa-page .synter-analytics-hero {
+  position: relative;
+  display: block;
+
+  width: 100%;
+  min-height: 320px;
+  height: auto;
+
+  margin: 0;
+  padding: 0;
+
+  background: #080808;
+  border-bottom: 1px solid #242428;
+
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   CONTAINER CENTRAL
+========================================== */
+
+.sa-page .synter-analytics-hero-container {
+  position: relative;
+
+  width: min(1440px, calc(100% - 80px));
+  max-width: 1440px;
+
+  margin: 0 auto;
+  padding: 76px 0 64px;
+
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   IDENTIFICAÇÃO SUPERIOR
+========================================== */
+
+.sa-page .synter-analytics-eyebrow {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  margin: 0 0 20px;
+  padding: 0;
+
+  color: #b7b7bf;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.5;
+
+  text-transform: uppercase;
+}
+
+/* ÍCONE */
+
+.sa-page .synter-analytics-eyebrow svg {
+  display: block;
+
+  width: 24px;
+  height: 24px;
+
+  flex: 0 0 24px;
+
+  color: #b7b7bf;
+}
+
+/* ==========================================
+   TÍTULO
+========================================== */
+
+.sa-page .synter-analytics-title {
+  max-width: 1100px;
+
+  margin: 0 0 22px;
+  padding: 0;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 800;
+
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+/* ==========================================
+   DESCRIÇÃO
+========================================== */
+
+.sa-page .synter-analytics-description {
+  max-width: 810px;
+
+  margin: 0;
+  padding: 0;
+
+  color: #b7b7c0;
+
+  font-family: inherit;
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+/* ==========================================
+   DISTÂNCIA ATÉ OS FILTROS
+========================================== */
+
+.sa-page .synter-analytics-hero + .sa-container {
+  padding-top: 36px;
+}
+
+/* ==========================================
+   RESPONSIVIDADE — TABLETS
+========================================== */
+
+@media (max-width: 768px) {
+  .sa-page .synter-analytics-hero {
+    min-height: 0;
+  }
+
+  .sa-page .synter-analytics-hero-container {
+    width: calc(100% - 40px);
+    padding: 55px 0 45px;
+  }
+
+  .sa-page .synter-analytics-eyebrow {
+    gap: 12px;
+
+    font-size: 10px;
+    letter-spacing: 1.4px;
+  }
+
+  .sa-page .synter-analytics-title {
+    font-size: clamp(38px, 8vw, 52px);
+    letter-spacing: -1.4px;
+  }
+
+  .sa-page .synter-analytics-description {
+    font-size: 14px;
+  }
+
+  .sa-page .synter-analytics-hero + .sa-container {
+    padding-top: 25px;
+  }
+}
+
+/* ==========================================
+   RESPONSIVIDADE — CELULARES
+========================================== */
+
+@media (max-width: 480px) {
+  .sa-page .synter-analytics-hero-container {
+    width: calc(100% - 32px);
+    padding: 42px 0 35px;
+  }
+
+  .sa-page .synter-analytics-title {
+    font-size: 36px;
+    letter-spacing: -1.3px;
+  }
+
+  .sa-page .synter-analytics-description {
+    line-height: 1.7;
+  }
+}

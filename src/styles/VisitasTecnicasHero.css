@@ -1,0 +1,213 @@
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   VISITAS TÉCNICAS — HERO PADRÃO FAQ
+========================================== */
+
+.vt-standard-page {
+  min-height: 100vh;
+  background: #080808;
+  color: #ffffff;
+}
+
+/* ==========================================
+   HERO PRINCIPAL
+========================================== */
+
+.vt-standard-page .vt-standard-hero {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 320px;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  background: #080808;
+  border-bottom: 1px solid #242428;
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   CONTAINER
+========================================== */
+
+.vt-standard-page .vt-standard-hero-container {
+  position: relative;
+  width: min(1440px, calc(100% - 80px));
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 76px 0 64px;
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   PERFIL DO USUÁRIO
+========================================== */
+
+.vt-standard-page .vt-standard-profile {
+  position: absolute;
+  top: 34px;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* ==========================================
+   IDENTIFICAÇÃO SUPERIOR
+========================================== */
+
+.vt-standard-page .vt-standard-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 0 20px;
+  padding: 0;
+  color: #b7b7bf;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.vt-standard-page .vt-standard-eyebrow svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  color: #b7b7bf;
+}
+
+/* ==========================================
+   TÍTULO
+========================================== */
+
+.vt-standard-page .vt-standard-title {
+  max-width: 1100px;
+  margin: 0 0 22px;
+  padding: 0;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+/* ==========================================
+   DESCRIÇÃO
+========================================== */
+
+.vt-standard-page .vt-standard-description {
+  max-width: 810px;
+  margin: 0;
+  padding: 0;
+  color: #b7b7c0;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+/* ==========================================
+   BOTÃO DE NOVA VISITA
+========================================== */
+
+.vt-standard-page .vt-standard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.vt-standard-page .vt-standard-actions .vt-btn {
+  min-height: 44px;
+  font-family: inherit;
+}
+
+/* ==========================================
+   ESPAÇAMENTO DO CONTEÚDO
+========================================== */
+
+.vt-standard-page .visitas-main {
+  width: min(1440px, calc(100% - 80px));
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 38px 0 85px;
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   RESPONSIVIDADE — TABLET
+========================================== */
+
+@media (max-width: 768px) {
+  .vt-standard-page .vt-standard-hero {
+    min-height: 0;
+  }
+
+  .vt-standard-page .vt-standard-hero-container {
+    width: calc(100% - 40px);
+    padding: 110px 0 45px;
+  }
+
+  .vt-standard-page .vt-standard-profile {
+    top: 22px;
+    right: 0;
+  }
+
+  .vt-standard-page .vt-standard-eyebrow {
+    gap: 12px;
+    font-size: 10px;
+    letter-spacing: 1.4px;
+  }
+
+  .vt-standard-page .vt-standard-title {
+    font-size: clamp(38px, 8vw, 52px);
+    letter-spacing: -1.4px;
+  }
+
+  .vt-standard-page .vt-standard-description {
+    font-size: 14px;
+  }
+
+  .vt-standard-page .visitas-main {
+    width: calc(100% - 40px);
+    padding: 26px 0 65px;
+  }
+}
+
+/* ==========================================
+   RESPONSIVIDADE — CELULAR
+========================================== */
+
+@media (max-width: 480px) {
+  .vt-standard-page .vt-standard-hero-container {
+    width: calc(100% - 32px);
+  }
+
+  .vt-standard-page .vt-standard-title {
+    font-size: 36px;
+    letter-spacing: -1.3px;
+  }
+
+  .vt-standard-page .vt-standard-description {
+    line-height: 1.7;
+  }
+
+  .vt-standard-page .vt-standard-actions {
+    width: 100%;
+  }
+
+  .vt-standard-page .vt-standard-actions .vt-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .vt-standard-page .visitas-main {
+    width: calc(100% - 32px);
+  }
+}

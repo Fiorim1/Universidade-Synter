@@ -1,143 +1,244 @@
-/* Universidade Synter | Hero de Orçamentos — padrão Dashboard */
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   ORÇAMENTOS — HERO PADRONIZADO
+   REFERÊNCIA: PERGUNTAS FREQUENTES
+========================================== */
+
+/* HERO PRINCIPAL */
+
 .orcamentos-page .orcamentos-hero {
   position: relative;
-  display: flex;
-  align-items: center;
+  display: block;
+
   width: 100%;
-  min-height: 430px;
+  min-height: 320px;
   height: auto;
+
   margin: 0;
-  padding: 68px 0 64px;
+  padding: 0;
+
   background: #080808;
-  border-bottom: 1px solid #232326;
+  border-bottom: 1px solid #242428;
+
   box-sizing: border-box;
 }
 
+/* CONTAINER CENTRAL */
+
 .orcamentos-page .orcamentos-hero-container {
-  width: min(1280px, calc(100% - 64px));
-  max-width: 1280px;
+  position: relative;
+
+  width: min(1440px, calc(100% - 80px));
+  max-width: 1440px;
+
   margin: 0 auto;
-  padding: 0;
+  padding: 76px 0 64px;
+
   box-sizing: border-box;
 }
+
+/* CONTEÚDO */
+
+.orcamentos-page .orcamentos-hero-content {
+  width: 100%;
+  max-width: 1100px;
+  min-width: 0;
+}
+
+/* ==========================================
+   PERFIL E NOTIFICAÇÕES
+========================================== */
+
+.orcamentos-page .orcamentos-profile {
+  position: absolute;
+
+  top: 34px;
+  right: 0;
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+}
+
+/* ==========================================
+   IDENTIFICAÇÃO SUPERIOR
+========================================== */
 
 .orcamentos-page .orcamentos-eyebrow {
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin: 0 0 22px;
-  color: #babac1;
+  gap: 16px;
+
+  margin: 0 0 20px;
+  padding: 0;
+
+  color: #b7b7bf;
+
+  font-family: inherit;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 2.2px;
-  line-height: 1.4;
+  letter-spacing: 2px;
+  line-height: 1.5;
+
   text-transform: uppercase;
 }
 
-.orcamentos-page .orcamentos-eyebrow-icon {
-  display: inline-flex;
-  flex: 0 0 24px;
-  width: 24px;
-  height: 24px;
-  align-items: center;
-  justify-content: center;
-  color: #bcbcc2;
-  background: none;
-  border: 0;
-}
+/* ÍCONE GEOMÉTRICO */
 
-.orcamentos-page .orcamentos-eyebrow-icon svg {
+.orcamentos-page .orcamentos-eyebrow svg {
   display: block;
+
   width: 24px;
   height: 24px;
+
+  flex: 0 0 24px;
+
+  color: #b7b7bf;
 }
 
-.orcamentos-page .orcamentos-hero-container h1 {
-  margin: 0 0 23px;
-  color: #fff;
-  font-size: clamp(44px, 5.1vw, 76px);
+/* ==========================================
+   TÍTULO PRINCIPAL
+========================================== */
+
+.orcamentos-page .orcamentos-hero-title {
+  max-width: 1100px;
+
+  margin: 0 0 22px;
+  padding: 0;
+
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: clamp(42px, 5vw, 68px);
   font-weight: 800;
-  letter-spacing: -2.7px;
-  line-height: 1.08;
+
+  letter-spacing: -2px;
+  line-height: 1.1;
 }
+
+/* ==========================================
+   DESCRIÇÃO
+========================================== */
 
 .orcamentos-page .orcamentos-hero-description {
-  max-width: 830px;
+  max-width: 810px;
+
   margin: 0;
-  color: #b8b8bf;
-  font-size: 17px;
+  padding: 0;
+
+  color: #b7b7c0;
+
+  font-family: inherit;
+  font-size: 16px;
   font-weight: 400;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
-.orcamentos-page .orcamentos-hero-divider {
-  width: min(720px, 100%);
-  max-width: 720px;
-  height: 1px;
-  margin: 30px 0 19px;
-  background: #303035;
-  border: 0;
+/* ==========================================
+   PERFIL DE ACESSO
+========================================== */
+
+.orcamentos-page .orcamentos-hero-extra {
+  max-width: 810px;
+
+  margin-top: 28px;
+  padding-top: 18px;
+
+  border-top: 1px solid #2c2c30;
 }
 
 .orcamentos-page .orcamentos-role {
   display: flex;
   align-items: center;
+
   gap: 15px;
-  margin: 0;
+  flex-wrap: wrap;
 }
 
 .orcamentos-page .orcamentos-role-label {
   color: #9c9ca6;
+
+  font-family: inherit;
   font-size: 11px;
-  font-weight: 750;
+  font-weight: 700;
+
   letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 .orcamentos-page .orcamentos-role strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   padding: 8px 14px;
+
+  color: #ffffff;
   background: #161618;
-  border: 1px solid #38383e;
-  border-radius: 9px;
-  color: #fff;
+
+  font-family: inherit;
   font-size: 12px;
   font-weight: 700;
+
+  border: 1px solid #38383e;
+  border-radius: 9px;
 }
 
-.orcamentos-page .orcamentos-profile {
-  position: absolute;
-  top: 30px;
-  right: max(32px, calc((100% - 1280px) / 2));
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+/* ==========================================
+   RESPONSIVIDADE — TABLETS
+========================================== */
 
 @media (max-width: 768px) {
+
   .orcamentos-page .orcamentos-hero {
     min-height: 0;
-    padding: 112px 0 48px;
   }
+
   .orcamentos-page .orcamentos-hero-container {
     width: calc(100% - 40px);
+    padding: 110px 0 45px;
   }
+
   .orcamentos-page .orcamentos-profile {
-    top: 18px;
-    right: 20px;
+    top: 22px;
+    right: 0;
   }
+
   .orcamentos-page .orcamentos-eyebrow {
     gap: 12px;
     font-size: 10px;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.4px;
   }
-  .orcamentos-page .orcamentos-hero-container h1 {
-    font-size: clamp(40px, 9vw, 56px);
-    letter-spacing: -1.6px;
+
+  .orcamentos-page .orcamentos-hero-title {
+    font-size: clamp(38px, 8vw, 52px);
+    letter-spacing: -1.4px;
   }
+
   .orcamentos-page .orcamentos-hero-description {
-    font-size: 15px;
+    font-size: 14px;
   }
+}
+
+/* ==========================================
+   RESPONSIVIDADE — CELULARES
+========================================== */
+
+@media (max-width: 480px) {
+
+  .orcamentos-page .orcamentos-hero-container {
+    width: calc(100% - 32px);
+  }
+
+  .orcamentos-page .orcamentos-hero-title {
+    font-size: 36px;
+  }
+
   .orcamentos-page .orcamentos-role {
-    flex-wrap: wrap;
+    gap: 10px;
   }
 }

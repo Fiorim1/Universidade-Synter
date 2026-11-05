@@ -70,6 +70,8 @@ import PublicRoute from "./components/PublicRoute.jsx";
 
 import SynterAssistant from "./components/SynterAssistant.jsx";
 
+import "./styles/SynterHero.css";
+
 // ========================================
 // COMPONENTE PRINCIPAL
 // ========================================

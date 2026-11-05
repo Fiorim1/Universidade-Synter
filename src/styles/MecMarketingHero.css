@@ -1,0 +1,200 @@
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   MARKETING MECÂNICO
+   PADRÃO VISUAL — PERGUNTAS FREQUENTES
+========================================== */
+
+.mec-marketing-page {
+  min-height: 100vh;
+  background: #080808;
+  color: #ffffff;
+}
+
+/* ==========================================
+   HERO
+========================================== */
+
+.mec-marketing-page .mec-marketing-hero {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 320px;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  background: #080808;
+  border-bottom: 1px solid #242428;
+}
+
+/* CONTAINER */
+
+.mec-marketing-page .mec-marketing-hero-container {
+  position: relative;
+  width: min(1440px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 76px 0 64px;
+  box-sizing: border-box;
+}
+
+/* PERFIL */
+
+.mec-marketing-page .mec-marketing-profile {
+  position: absolute;
+  top: 34px;
+  right: 0;
+  z-index: 5;
+}
+
+/* IDENTIFICAÇÃO SUPERIOR */
+
+.mec-marketing-page .mec-marketing-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 0 20px;
+  padding: 0;
+  color: #b7b7bf;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+/* ÍCONE GEOMÉTRICO */
+
+.mec-marketing-page .mec-marketing-eyebrow svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  color: #b7b7bf;
+}
+
+/* TÍTULO */
+
+.mec-marketing-page .mec-marketing-title {
+  max-width: 1100px;
+  margin: 0 0 22px;
+  padding: 0;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+/* DESCRIÇÃO */
+
+.mec-marketing-page .mec-marketing-description {
+  max-width: 810px;
+  margin: 0;
+  padding: 0;
+  color: #b7b7c0;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+/* ==========================================
+   INFORMAÇÃO DE RESULTADOS
+========================================== */
+
+.mec-marketing-page .mec-marketing-counter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0 0 20px;
+  color: #a7a7b1;
+  font-size: 12px;
+}
+
+/* ==========================================
+   ESTADO VAZIO
+========================================== */
+
+.mec-marketing-page .mec-marketing-empty {
+  padding: 55px 25px;
+  text-align: center;
+  background: #131315;
+  border: 1px solid #34343a;
+  border-radius: 15px;
+}
+
+.mec-marketing-page .mec-marketing-empty h3 {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.mec-marketing-page .mec-marketing-empty p {
+  max-width: 480px;
+  margin: 0 auto;
+  color: #acacb6;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.mec-marketing-page .mec-marketing-empty button {
+  min-height: 40px;
+  margin-top: 22px;
+  padding: 0 18px;
+  color: #111111;
+  background: #ffffff;
+  border: 0;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+========================================== */
+
+@media (max-width: 768px) {
+  .mec-marketing-page .mec-marketing-hero {
+    min-height: 0;
+  }
+
+  .mec-marketing-page .mec-marketing-hero-container {
+    width: calc(100% - 40px);
+    padding: 110px 0 45px;
+  }
+
+  .mec-marketing-page .mec-marketing-profile {
+    top: 22px;
+    right: 0;
+  }
+
+  .mec-marketing-page .mec-marketing-eyebrow {
+    gap: 12px;
+    font-size: 10px;
+    letter-spacing: 1.4px;
+  }
+
+  .mec-marketing-page .mec-marketing-title {
+    font-size: clamp(38px, 8vw, 52px);
+    letter-spacing: -1.4px;
+  }
+
+  .mec-marketing-page .mec-marketing-description {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mec-marketing-page .mec-marketing-hero-container {
+    width: calc(100% - 32px);
+  }
+
+  .mec-marketing-page .mec-marketing-title {
+    font-size: 36px;
+  }
+}

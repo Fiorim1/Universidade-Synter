@@ -4043,87 +4043,67 @@ Synter`;
       {/* ================================= */}
 
       <section className="orcamentos-hero">
+  <div className="orcamentos-hero-container">
 
-        <div className="orcamentos-profile">
+    <div className="orcamentos-profile">
+      <NotificationsButton
+        onOpenOrcamento={abrirOrcamentoPorNotificacao}
+      />
 
-          <NotificationsButton
-            onOpenOrcamento={
-              abrirOrcamentoPorNotificacao
-            }
-          />
+      <UserProfileButton
+        onClick={() => setProfileOpen(true)}
+      />
+    </div>
 
-          <UserProfileButton
-            onClick={() =>
-              setProfileOpen(true)
-            }
-          />
+    <div className="orcamentos-hero-content">
 
-        </div>
+      <div className="orcamentos-eyebrow">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="m12 2 9 5-9 5-9-5 9-5Z" />
+          <path d="M3 7v10l9 5 9-5V7" />
+          <path d="M12 12v10" />
+        </svg>
 
+        <span>GESTÃO COMERCIAL</span>
+      </div>
 
-        <div className="orcamentos-hero-container">
+      <h1 className="orcamentos-hero-title">
+        Orçamentos
+      </h1>
 
-          <div className="orcamentos-eyebrow">
+      <p className="orcamentos-hero-description">
+        {role === "representante"
+          ? "Crie, organize e acompanhe seus orçamentos comerciais em um único lugar."
+          : "Acompanhe os orçamentos enviados pelos representantes e gerencie suas aprovações."}
+      </p>
 
-            <div className="orcamentos-eyebrow-icon">
+      <div className="orcamentos-hero-extra">
+        <div className="orcamentos-role">
+          <span className="orcamentos-role-label">
+            PERFIL DE ACESSO
+          </span>
 
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="m12 2 9 5-9 5-9-5 9-5Z" />
-                <path d="M3 7v10l9 5 9-5V7" />
-                <path d="M12 12v10" />
-              </svg>
-
-            </div>
-
-            <span>
-              GESTÃO COMERCIAL
-            </span>
-
-          </div>
-
-
-          <h1>
-            Orçamentos
-          </h1>
-
-
-          <p className="orcamentos-hero-description">
-
+          <strong>
             {role === "representante"
-              ? "Crie, organize e acompanhe seus orçamentos comerciais em um único lugar."
-              : "Acompanhe os orçamentos enviados pelos representantes e gerencie suas aprovações."}
-
-          </p>
-
-
-          <div className="orcamentos-hero-divider"></div>
-
-
-          <div className="orcamentos-role">
-
-            <span className="orcamentos-role-label">
-              PERFIL DE ACESSO
-            </span>
-
-            <strong>
-              {role === "representante"
-                ? "Representante"
-                : "Comercial"}
-            </strong>
-
-          </div>
-
+              ? "Representante"
+              : "Comercial"}
+          </strong>
         </div>
+      </div>
 
-      </section>
+    </div>
+  </div>
+</section>
 
 
       {/* ================================= */}

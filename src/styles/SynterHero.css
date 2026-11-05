@@ -1,0 +1,183 @@
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   DESIGN SYSTEM — HERO GLOBAL
+========================================== */
+
+:root {
+  --synter-hero-bg: #080808;
+  --synter-hero-title: #ffffff;
+  --synter-hero-muted: #b7b7c0;
+  --synter-hero-border: #242428;
+  --synter-hero-font: Inter, -apple-system,
+    BlinkMacSystemFont, "Segoe UI",
+    Arial, sans-serif;
+}
+
+/* ==========================================
+   ESTRUTURA PRINCIPAL
+========================================== */
+
+.synter-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  min-height: 320px;
+  height: auto;
+
+  margin: 0;
+  padding: 0;
+
+  background: var(--synter-hero-bg);
+  border-bottom: 1px solid var(--synter-hero-border);
+
+  font-family: var(--synter-hero-font);
+  box-sizing: border-box;
+}
+
+.synter-hero *,
+.synter-hero *::before,
+.synter-hero *::after {
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   CONTAINER
+========================================== */
+
+.synter-hero-container {
+  position: relative;
+  width: min(1440px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 76px 0 64px;
+}
+
+/* ==========================================
+   IDENTIFICAÇÃO SUPERIOR
+========================================== */
+
+.synter-hero-kicker {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  margin-bottom: 20px;
+
+  color: #b7b7bf;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.synter-hero-kicker svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  color: #b7b7bf;
+}
+
+/* ==========================================
+   TÍTULO PRINCIPAL
+========================================== */
+
+.synter-hero-title {
+  max-width: 1100px;
+  margin: 0 0 22px;
+
+  color: #ffffff;
+  font-family: var(--synter-hero-font);
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+/* ==========================================
+   DESCRIÇÃO
+========================================== */
+
+.synter-hero-description {
+  max-width: 810px;
+  margin: 0;
+
+  color: #b7b7c0;
+  font-family: var(--synter-hero-font);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+/* ==========================================
+   PERFIL E NOTIFICAÇÕES
+========================================== */
+
+.synter-hero-actions {
+  position: absolute;
+  top: 34px;
+  right: 0;
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* ==========================================
+   CONTEÚDO ADICIONAL
+========================================== */
+
+.synter-hero-extra {
+  max-width: 900px;
+  margin-top: 28px;
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+========================================== */
+
+@media (max-width: 768px) {
+  .synter-hero {
+    min-height: 0;
+  }
+
+  .synter-hero-container {
+    width: calc(100% - 40px);
+    padding: 110px 0 45px;
+  }
+
+  .synter-hero-actions {
+    top: 22px;
+    right: 0;
+  }
+
+  .synter-hero-kicker {
+    gap: 12px;
+    font-size: 10px;
+    letter-spacing: 1.4px;
+  }
+
+  .synter-hero-title {
+    font-size: clamp(38px, 8vw, 52px);
+    letter-spacing: -1.4px;
+  }
+
+  .synter-hero-description {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .synter-hero-container {
+    width: calc(100% - 32px);
+  }
+
+  .synter-hero-title {
+    font-size: 36px;
+  }
+}

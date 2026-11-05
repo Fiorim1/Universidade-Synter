@@ -1,461 +1,262 @@
-/* ======================================== */
-/* DASHBOARD                                */
-/* ======================================== */
-.dashboard-page {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    min-height: 100vh;
-    min-height: 100svh;
-    background: #080808;
-    color: #ffffff;
-    overflow-x: hidden;
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   DASHBOARD — HERO PADRONIZADO
+   REFERÊNCIA: PERGUNTAS FREQUENTES
+========================================== */
+
+.synter-dashboard {
+  background: #080808;
+  color: #ffffff;
 }
 
-/* ======================================== */
-/* HERO                                     */
-/* ======================================== */
-.dashboard-hero-area {
-    position: relative;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    min-height: 430px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: linear-gradient(90deg, #050505 0%, #080808 45%, #0b0b0b 100%);
-    overflow: hidden;
+/* ==========================================
+   HERO
+========================================== */
+
+.synter-dashboard .synter-db-hero {
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  height: auto;
+
+  margin: 0;
+  padding: 0;
+
+  display: block;
+
+  background: #080808;
+  border-bottom: 1px solid #242428;
 }
 
-.dashboard-hero-area::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.22));
-    pointer-events: none;
-    z-index: 0;
+.synter-dashboard .synter-db-hero-container {
+  position: relative;
+
+  width: min(1440px, calc(100% - 80px));
+  margin: 0 auto;
+
+  padding: 76px 0 64px;
+
+  box-sizing: border-box;
 }
 
-/* ======================================== */
-/* PERFIL                                   */
-/* ======================================== */
-.dashboard-profile {
-    position: absolute;
-    top: 28px;
-    right: 60px;
-    z-index: 5;
-    max-width: calc(100% - 40px);
+/* ==========================================
+   PERFIL DO USUÁRIO
+========================================== */
+
+.synter-dashboard .synter-db-profile {
+  position: absolute;
+  top: 34px;
+  right: 0;
+  z-index: 5;
 }
 
-/* ======================================== */
-/* CONTEÚDO HERO                            */
-/* ======================================== */
-.dashboard-hero-content {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 1400px;
-    min-width: 0;
-    margin: 0 auto;
-    padding: 75px 60px 70px;
-    box-sizing: border-box;
+/* ==========================================
+   CONTEÚDO
+========================================== */
+
+.synter-dashboard .synter-db-hero-content {
+  width: 100%;
+  max-width: 1100px;
+  min-width: 0;
 }
 
-/* ======================================== */
-/* ÁREA PRINCIPAL                           */
-/* ======================================== */
-.dashboard-content {
-    position: relative;
-    width: 100%;
-    max-width: 1400px;
-    min-width: 0;
-    margin: 0 auto;
-    padding: 38px 60px 70px;
-    box-sizing: border-box;
-    background: transparent;
+/* ==========================================
+   IDENTIFICAÇÃO SUPERIOR
+========================================== */
+
+.synter-dashboard .synter-db-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  margin: 0 0 20px;
+  padding: 0;
+
+  color: #b7b7bf;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  text-transform: uppercase;
 }
 
-/* ======================================== */
-/* ACESSO RÁPIDO                            */
-/* ======================================== */
-.dashboard-section-title {
-    display: flex;
-    align-items: center;
-    min-width: 0;
+.synter-dashboard .synter-db-eyebrow svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+
+  flex: 0 0 24px;
+  color: #b7b7bf;
+}
+
+/* ==========================================
+   TÍTULO
+========================================== */
+
+.synter-dashboard .synter-db-title {
+  max-width: 1100px;
+
+  margin: 0 0 22px;
+  padding: 0;
+
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+/* ==========================================
+   DESCRIÇÃO
+========================================== */
+
+.synter-dashboard .synter-db-description {
+  max-width: 810px;
+
+  margin: 0;
+  padding: 0;
+
+  color: #b7b7c0;
+
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+/* ==========================================
+   DESTAQUES
+========================================== */
+
+.synter-dashboard .synter-db-features {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 28px;
+
+  width: 100%;
+  max-width: 820px;
+
+  margin-top: 32px;
+  padding-top: 22px;
+
+  border-top: 1px solid #2c2c30;
+}
+
+.synter-dashboard .synter-db-feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.synter-dashboard .synter-db-feature-icon {
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #ffffff;
+
+  border: 1px solid #45454b;
+  border-radius: 50%;
+}
+
+.synter-dashboard .synter-db-feature-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.synter-dashboard .synter-db-feature-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  min-width: 0;
+}
+
+.synter-dashboard .synter-db-feature-text strong {
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.synter-dashboard .synter-db-feature-text span {
+  color: #95959e;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* ==========================================
+   RESPONSIVIDADE — TABLETS
+========================================== */
+
+@media (max-width: 768px) {
+  .synter-dashboard .synter-db-hero {
+    min-height: 0;
+  }
+
+  .synter-dashboard .synter-db-hero-container {
+    width: calc(100% - 40px);
+    padding: 110px 0 45px;
+  }
+
+  .synter-dashboard .synter-db-profile {
+    top: 22px;
+    right: 0;
+  }
+
+  .synter-dashboard .synter-db-eyebrow {
     gap: 12px;
-    margin-bottom: 26px;
+    font-size: 10px;
+    letter-spacing: 1.4px;
+  }
+
+  .synter-dashboard .synter-db-title {
+    font-size: clamp(38px, 8vw, 52px);
+    letter-spacing: -1.4px;
+  }
+
+  .synter-dashboard .synter-db-description {
+    font-size: 14px;
+  }
+
+  .synter-dashboard .synter-db-features {
+    gap: 18px;
+  }
 }
 
-.dashboard-section-title h4 {
-    min-width: 0;
-    margin: 0;
-    color: #ffffff;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    overflow-wrap: anywhere;
-}
+/* ==========================================
+   RESPONSIVIDADE — CELULARES
+========================================== */
 
-.dashboard-section-bar {
-    width: 3px;
-    height: 20px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    background: #ffffff;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.18);
-}
+@media (max-width: 480px) {
+  .synter-dashboard .synter-db-hero-container {
+    width: calc(100% - 32px);
+  }
 
-/* ======================================== */
-/* GRID DOS CARDS DO DASHBOARD              */
-/* ======================================== */
-.cards {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-}
+  .synter-dashboard .synter-db-title {
+    font-size: 36px;
+  }
 
-.cards > * {
-    min-width: 0;
-    max-width: 100%;
-}
-
-/* ======================================== */
-/* FUNDO DA ÁREA DOS CARDS                  */
-/* ======================================== */
-.dashboard-page::before {
-    content: "";
-    position: fixed;
-    width: 650px;
-    height: 650px;
-    right: -320px;
-    bottom: -320px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.025);
-    filter: blur(140px);
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* ======================================== */
-/* RESPONSIVO DASHBOARD                     */
-/* ======================================== */
-@media (max-width: 1150px) {
-    .dashboard-hero-content,
-    .dashboard-content {
-        padding-left: 40px;
-        padding-right: 40px;
-    }
-
-    .dashboard-profile {
-        right: 40px;
-    }
-
-    .cards {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-/* ======================================== */
-/* MOBILE                                   */
-/* ======================================== */
-@media (max-width: 750px) {
-    .dashboard-page {
-        width: 100%;
-        max-width: 100%;
-        overflow-x: hidden;
-    }
-
-    .dashboard-hero-area {
-        width: 100%;
-        min-height: auto;
-        background-position: 70% center;
-    }
-
-    .dashboard-profile {
-        position: relative;
-        top: auto;
-        right: auto;
-        width: 100%;
-        max-width: 100%;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        padding-top: 18px;
-        padding-left: max(16px, env(safe-area-inset-left));
-        padding-right: max(16px, env(safe-area-inset-right));
-        box-sizing: border-box;
-        z-index: 5;
-    }
-
-    .dashboard-hero-content {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        padding-top: 32px;
-        padding-bottom: 48px;
-        padding-left: max(18px, env(safe-area-inset-left));
-        padding-right: max(18px, env(safe-area-inset-right));
-    }
-
-    .dashboard-content {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        padding-top: 28px;
-        padding-bottom: 48px;
-        padding-left: max(18px, env(safe-area-inset-left));
-        padding-right: max(18px, env(safe-area-inset-right));
-    }
-
-    .dashboard-section-title {
-        width: 100%;
-        max-width: 100%;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    .dashboard-section-title h4 {
-        font-size: 11px;
-        line-height: 1.4;
-        letter-spacing: 2px;
-    }
-
-    .dashboard-section-bar {
-        height: 18px;
-    }
-
-    .cards {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        grid-template-columns: minmax(0, 1fr);
-        gap: 12px;
-    }
-
-    .dashboard-page::before {
-        width: 400px;
-        height: 400px;
-        right: -260px;
-        bottom: -240px;
-        filter: blur(100px);
-    }
-}
-
-@media (max-width: 420px) {
-    .dashboard-profile {
-        padding-top: 14px;
-        padding-left: max(14px, env(safe-area-inset-left));
-        padding-right: max(14px, env(safe-area-inset-right));
-    }
-
-    .dashboard-hero-content {
-        padding-top: 26px;
-        padding-bottom: 40px;
-        padding-left: max(14px, env(safe-area-inset-left));
-        padding-right: max(14px, env(safe-area-inset-right));
-    }
-
-    .dashboard-content {
-        padding-top: 24px;
-        padding-bottom: 42px;
-        padding-left: max(14px, env(safe-area-inset-left));
-        padding-right: max(14px, env(safe-area-inset-right));
-    }
-}
-
-/* ======================================== */
-/* MANUAIS                                  */
-/* ======================================== */
-.manuals-container {
-    display: flex;
+  .synter-dashboard .synter-db-features {
     flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    padding: 32px 45px 50px;
-    color: #ffffff;
-    box-sizing: border-box;
-    gap: 55px;
-    overflow-x: hidden;
-}
-
-.digials-products,
-.mechanical-products,
-.ironwork {
-    width: 100%;
-    max-width: 1260px;
-    min-width: 0;
-    margin: 0 auto;
-    box-sizing: border-box;
-}
-
-.title {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    gap: 12px;
-    margin-bottom: 24px;
-}
-
-.title::before {
-    content: "";
-    width: 3px;
-    height: 20px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    background: #ffffff;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.18);
-}
-
-.title h4 {
-    min-width: 0;
-    margin: 0;
-    color: #ffffff;
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1.2;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    overflow-wrap: anywhere;
-}
-
-.line {
-    display: none;
-}
-
-.cards-manuals {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    gap: 15px;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-.cards-manuals-1,
-.cards-manuals-2,
-.cards-manuals-3,
-.cards-manuals-4,
-.cards-manuals-5,
-.cards-manuals-6,
-.cards-manuals-7 {
-    display: flex;
-    align-items: stretch;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    gap: 15px;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-.cards-manuals-1 > *,
-.cards-manuals-2 > *,
-.cards-manuals-3 > *,
-.cards-manuals-4 > *,
-.cards-manuals-5 > *,
-.cards-manuals-6 > *,
-.cards-manuals-7 > * {
-    flex: 1 1 0;
-    min-width: 0;
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-@media (max-width: 1100px) {
-    .manuals-container {
-        padding-left: 30px;
-        padding-right: 30px;
-    }
-
-    .cards-manuals-1,
-    .cards-manuals-2,
-    .cards-manuals-3,
-    .cards-manuals-4,
-    .cards-manuals-5,
-    .cards-manuals-6,
-    .cards-manuals-7 {
-        flex-wrap: wrap;
-    }
-
-    .cards-manuals-1 > *,
-    .cards-manuals-2 > *,
-    .cards-manuals-3 > *,
-    .cards-manuals-4 > *,
-    .cards-manuals-5 > *,
-    .cards-manuals-6 > *,
-    .cards-manuals-7 > * {
-        flex: 1 1 calc(50% - 15px);
-    }
-}
-
-@media (max-width: 650px) {
-    .manuals-container {
-        width: 100%;
-        max-width: 100%;
-        padding-top: 25px;
-        padding-bottom: 35px;
-        padding-left: max(16px, env(safe-area-inset-left));
-        padding-right: max(16px, env(safe-area-inset-right));
-        gap: 40px;
-    }
-
-    .title {
-        width: 100%;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    .title::before {
-        width: 3px;
-        height: 18px;
-    }
-
-    .title h4 {
-        font-size: 11px;
-        line-height: 1.4;
-        letter-spacing: 2px;
-    }
-
-    .cards-manuals-1,
-    .cards-manuals-2,
-    .cards-manuals-3,
-    .cards-manuals-4,
-    .cards-manuals-5,
-    .cards-manuals-6,
-    .cards-manuals-7 {
-        flex-direction: column;
-        flex-wrap: nowrap;
-        width: 100%;
-        max-width: 100%;
-        gap: 12px;
-    }
-
-    .cards-manuals-1 > *,
-    .cards-manuals-2 > *,
-    .cards-manuals-3 > *,
-    .cards-manuals-4 > *,
-    .cards-manuals-5 > *,
-    .cards-manuals-6 > *,
-    .cards-manuals-7 > * {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-        flex: none;
-    }
-}
-
-@media (max-width: 420px) {
-    .manuals-container {
-        padding-left: max(14px, env(safe-area-inset-left));
-        padding-right: max(14px, env(safe-area-inset-right));
-        gap: 32px;
-    }
+    align-items: flex-start;
+    gap: 18px;
+  }
 }

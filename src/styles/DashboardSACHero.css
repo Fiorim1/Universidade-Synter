@@ -1,0 +1,212 @@
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   DASHBOARD SAC — HERO PADRONIZADO
+
+   REFERÊNCIA:
+   PÁGINA DE PERGUNTAS FREQUENTES
+========================================== */
+
+/* ==========================================
+   PÁGINA
+========================================== */
+
+.dashboard-sac-page {
+  min-height: 100vh;
+  background: #080808;
+  color: #ffffff;
+}
+
+/* ==========================================
+   HERO PRINCIPAL
+========================================== */
+
+.dashboard-sac-page .synter-sac-hero {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  min-height: 320px;
+  height: auto;
+
+  margin: 0;
+  padding: 0;
+
+  background: #080808;
+  border-bottom: 1px solid #242428;
+}
+
+/* ==========================================
+   CONTAINER DO HERO
+========================================== */
+
+.dashboard-sac-page .synter-sac-hero-container {
+  position: relative;
+
+  width: min(1440px, calc(100% - 80px));
+
+  margin: 0 auto;
+  padding: 76px 0 64px;
+
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   PERFIL
+========================================== */
+
+.dashboard-sac-page .synter-sac-profile {
+  position: absolute;
+
+  top: 34px;
+  right: 0;
+
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* ==========================================
+   CONTEÚDO
+========================================== */
+
+.dashboard-sac-page .synter-sac-hero-content {
+  width: 100%;
+  max-width: 1100px;
+  min-width: 0;
+}
+
+/* ==========================================
+   IDENTIFICAÇÃO SUPERIOR
+========================================== */
+
+.dashboard-sac-page .synter-sac-eyebrow {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  margin: 0 0 20px;
+  padding: 0;
+
+  color: #b7b7bf;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+  line-height: 1.5;
+
+  text-transform: uppercase;
+}
+
+/* ÍCONE GEOMÉTRICO */
+
+.dashboard-sac-page .synter-sac-eyebrow svg {
+  display: block;
+
+  width: 24px;
+  height: 24px;
+
+  flex: 0 0 24px;
+
+  color: #b7b7bf;
+}
+
+/* ==========================================
+   TÍTULO PRINCIPAL
+========================================== */
+
+.dashboard-sac-page .synter-sac-title {
+  max-width: 1100px;
+
+  margin: 0 0 22px;
+  padding: 0;
+
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 800;
+
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+/* ==========================================
+   DESCRIÇÃO
+========================================== */
+
+.dashboard-sac-page .synter-sac-description {
+  max-width: 810px;
+
+  margin: 0;
+  padding: 0;
+
+  color: #b7b7c0;
+
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+
+  line-height: 1.75;
+}
+
+/* ==========================================
+   RESPONSIVIDADE — TABLET
+========================================== */
+
+@media (max-width: 768px) {
+  .dashboard-sac-page .synter-sac-hero {
+    min-height: 0;
+  }
+
+  .dashboard-sac-page .synter-sac-hero-container {
+    width: calc(100% - 40px);
+    padding: 110px 0 45px;
+  }
+
+  .dashboard-sac-page .synter-sac-profile {
+    top: 22px;
+    right: 0;
+  }
+
+  .dashboard-sac-page .synter-sac-eyebrow {
+    gap: 12px;
+    font-size: 10px;
+    letter-spacing: 1.4px;
+  }
+
+  .dashboard-sac-page .synter-sac-title {
+    font-size: clamp(38px, 8vw, 52px);
+    letter-spacing: -1.4px;
+  }
+
+  .dashboard-sac-page .synter-sac-description {
+    font-size: 14px;
+  }
+}
+
+/* ==========================================
+   RESPONSIVIDADE — CELULAR
+========================================== */
+
+@media (max-width: 480px) {
+  .dashboard-sac-page .synter-sac-hero-container {
+    width: calc(100% - 32px);
+  }
+
+  .dashboard-sac-page .synter-sac-title {
+    font-size: 36px;
+    letter-spacing: -1.3px;
+  }
+
+  .dashboard-sac-page .synter-sac-description {
+    line-height: 1.7;
+  }
+}

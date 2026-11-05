@@ -12,12 +12,10 @@ import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 
 import { supabase } from "../services/supabaseClient";
-
-import {
-  baixarVisitaTecnicaPdf,
-} from "../utils/gerarVisitaTecnicaPdf";
+import { baixarVisitaTecnicaPdf } from "../utils/gerarVisitaTecnicaPdf";
 
 import "../styles/VisitasTecnicas.css";
+import "../styles/VisitasTecnicasHero.css";
 
 // ========================================
 // DADOS DA EMPRESA
@@ -77,7 +75,6 @@ function formatarData(valor) {
 
 function formatarHorario(valor) {
   if (!valor) return "-";
-
   return String(valor).slice(0, 5);
 }
 
@@ -146,7 +143,31 @@ const CAMPOS = [
 ];
 
 // ========================================
-// COMPONENTE DE CAMPO
+// ÍCONE PADRÃO DA UNIVERSIDADE SYNTER
+// ========================================
+
+function IconeSynter() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m12 2 9 5-9 5-9-5 9-5Z" />
+      <path d="M3 7v10l9 5 9-5V7" />
+      <path d="M12 12v10" />
+    </svg>
+  );
+}
+
+// ========================================
+// CAMPO DO FORMULÁRIO
 // ========================================
 
 function CampoFormulario({
@@ -200,7 +221,7 @@ function CampoFormulario({
 }
 
 // ========================================
-// COMPONENTE DE ASSINATURA
+// ASSINATURA DIGITAL
 // ========================================
 
 function CampoAssinatura({
@@ -215,13 +236,13 @@ function CampoAssinatura({
 
   useEffect(() => {
     const canvas = canvasRef.current;
-
     if (!canvas) return;
 
     canvas.width = 900;
     canvas.height = 300;
 
     const contexto = canvas.getContext("2d");
+    if (!contexto) return;
 
     contexto.fillStyle = "#ffffff";
     contexto.fillRect(
@@ -235,42 +256,42 @@ function CampoAssinatura({
     ponteiroRef.current = null;
   }, [resetKey]);
 
-  function obterPonto(event) {
+  function obterPonto(evento) {
     const canvas = canvasRef.current;
-
-    const retangulo =
-      canvas.getBoundingClientRect();
+    const retangulo = canvas.getBoundingClientRect();
 
     return {
       x:
-        ((event.clientX - retangulo.left) /
+        ((evento.clientX - retangulo.left) /
           retangulo.width) *
         canvas.width,
 
       y:
-        ((event.clientY - retangulo.top) /
+        ((evento.clientY - retangulo.top) /
           retangulo.height) *
         canvas.height,
     };
   }
 
-  function iniciarDesenho(event) {
+  function iniciarDesenho(evento) {
     if (
-      event.pointerType === "mouse" &&
-      event.button !== 0
+      evento.pointerType === "mouse" &&
+      evento.button !== 0
     ) {
       return;
     }
 
-    event.preventDefault();
+    evento.preventDefault();
 
     const canvas = canvasRef.current;
-    const contexto = canvas.getContext("2d");
-    const ponto = obterPonto(event);
+    const contexto = canvas?.getContext("2d");
+    if (!canvas || !contexto) return;
 
-    canvas.setPointerCapture(event.pointerId);
+    const ponto = obterPonto(evento);
 
-    ponteiroRef.current = event.pointerId;
+    canvas.setPointerCapture(evento.pointerId);
+
+    ponteiroRef.current = evento.pointerId;
     desenhandoRef.current = true;
 
     contexto.strokeStyle = "#111111";
@@ -287,52 +308,51 @@ function CampoAssinatura({
     contexto.stroke();
   }
 
-  function continuarDesenho(event) {
+  function continuarDesenho(evento) {
     if (
       !desenhandoRef.current ||
-      ponteiroRef.current !== event.pointerId
+      ponteiroRef.current !== evento.pointerId
     ) {
       return;
     }
 
-    event.preventDefault();
+    evento.preventDefault();
 
-    const ponto = obterPonto(event);
+    const canvas = canvasRef.current;
+    const contexto = canvas?.getContext("2d");
+    if (!contexto) return;
 
-    const contexto =
-      canvasRef.current.getContext("2d");
+    const ponto = obterPonto(evento);
 
     contexto.lineTo(ponto.x, ponto.y);
     contexto.stroke();
   }
 
-  function finalizarDesenho(event) {
+  function finalizarDesenho(evento) {
     if (
       !desenhandoRef.current ||
-      ponteiroRef.current !== event.pointerId
+      ponteiroRef.current !== evento.pointerId
     ) {
       return;
     }
 
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
     desenhandoRef.current = false;
     ponteiroRef.current = null;
 
-    const canvas = canvasRef.current;
-
     onChange(canvas.toDataURL("image/png"));
 
-    if (
-      canvas.hasPointerCapture(event.pointerId)
-    ) {
-      canvas.releasePointerCapture(
-        event.pointerId
-      );
+    if (canvas.hasPointerCapture(evento.pointerId)) {
+      canvas.releasePointerCapture(evento.pointerId);
     }
   }
 
   function limparAssinatura() {
     const canvas = canvasRef.current;
-    const contexto = canvas.getContext("2d");
+    const contexto = canvas?.getContext("2d");
+    if (!canvas || !contexto) return;
 
     contexto.fillStyle = "#ffffff";
     contexto.fillRect(
@@ -378,6 +398,7 @@ function CampoAssinatura({
           onPointerUp={finalizarDesenho}
           onPointerCancel={finalizarDesenho}
           aria-label={titulo}
+          style={{ touchAction: "none" }}
         />
       </div>
 
@@ -444,16 +465,14 @@ export default function VisitasTecnicas() {
 
   const gerarNumeroAtendimento =
     useCallback(async () => {
-      const geracao =
-        ++geracaoNumeroRef.current;
+      const geracao = ++geracaoNumeroRef.current;
 
       setGerandoNumero(true);
 
       try {
-        const { data, error } =
-          await supabase.rpc(
-            "proximo_numero_visita"
-          );
+        const { data, error } = await supabase.rpc(
+          "proximo_numero_visita"
+        );
 
         if (error) {
           throw error;
@@ -461,13 +480,11 @@ export default function VisitasTecnicas() {
 
         if (!data) {
           throw new Error(
-            "Não foi possível gerar o número do atendimento."
+            "Referência automática indisponível."
           );
         }
 
-        if (
-          geracao === geracaoNumeroRef.current
-        ) {
+        if (geracao === geracaoNumeroRef.current) {
           setFormulario((anterior) => ({
             ...anterior,
             numero_atendimento: String(data),
@@ -475,22 +492,17 @@ export default function VisitasTecnicas() {
         }
       } catch (error) {
         console.error(
-          "Erro ao gerar referência:",
+          "Erro ao gerar a referência:",
           error
         );
 
-        if (
-          geracao === geracaoNumeroRef.current
-        ) {
+        if (geracao === geracaoNumeroRef.current) {
           setErro(
-            error.message ||
-              "Erro ao gerar a referência."
+            "Não foi possível gerar o número do atendimento. Tente novamente."
           );
         }
       } finally {
-        if (
-          geracao === geracaoNumeroRef.current
-        ) {
+        if (geracao === geracaoNumeroRef.current) {
           setGerandoNumero(false);
         }
       }
@@ -505,13 +517,12 @@ export default function VisitasTecnicas() {
       try {
         setCarregando(true);
 
-        const { data, error } =
-          await supabase
-            .from("visitas_tecnicas")
-            .select("*")
-            .order("criado_em", {
-              ascending: false,
-            });
+        const { data, error } = await supabase
+          .from("visitas_tecnicas")
+          .select("*")
+          .order("criado_em", {
+            ascending: false,
+          });
 
         if (error) {
           throw error;
@@ -520,13 +531,12 @@ export default function VisitasTecnicas() {
         setVisitas(data || []);
       } catch (error) {
         console.error(
-          "Erro ao carregar visitas:",
+          "Erro ao carregar as visitas:",
           error
         );
 
         setErro(
-          error.message ||
-            "Não foi possível carregar o histórico."
+          "Não foi possível carregar o histórico de visitas. Tente novamente."
         );
       } finally {
         setCarregando(false);
@@ -549,8 +559,8 @@ export default function VisitasTecnicas() {
   // ALTERAR FORMULÁRIO
   // ========================================
 
-  function alterarCampo(event) {
-    const { name, value } = event.target;
+  function alterarCampo(evento) {
+    const { name, value } = evento.target;
 
     if (name === "numero_atendimento") {
       return;
@@ -593,7 +603,9 @@ export default function VisitasTecnicas() {
   // ========================================
 
   async function baixarPdf(visita) {
-    if (!visita || baixandoPdfId) return;
+    if (!visita || baixandoPdfId) {
+      return;
+    }
 
     try {
       setBaixandoPdfId(visita.id);
@@ -607,8 +619,7 @@ export default function VisitasTecnicas() {
       );
 
       setErro(
-        error?.message ||
-          "Não foi possível gerar o PDF."
+        "Não foi possível gerar o documento PDF. Tente novamente."
       );
     } finally {
       setBaixandoPdfId(null);
@@ -616,11 +627,11 @@ export default function VisitasTecnicas() {
   }
 
   // ========================================
-  // SALVAR VISITA NO SUPABASE
+  // SALVAR VISITA
   // ========================================
 
-  async function salvarVisita(event) {
-    event.preventDefault();
+  async function salvarVisita(evento) {
+    evento.preventDefault();
 
     if (salvandoRef.current) return;
 
@@ -638,16 +649,12 @@ export default function VisitasTecnicas() {
     }
 
     if (!formulario.relato_tecnico.trim()) {
-      setErro(
-        "Preencha o relatório técnico."
-      );
+      setErro("Preencha o relatório técnico.");
       return;
     }
 
     if (!assinaturaCliente) {
-      setErro(
-        "Solicite a assinatura do cliente."
-      );
+      setErro("Solicite a assinatura do cliente.");
       return;
     }
 
@@ -686,9 +693,7 @@ export default function VisitasTecnicas() {
       } = await supabase.auth.getUser();
 
       if (erroAutenticacao || !user) {
-        throw new Error(
-          "Sua sessão expirou. Faça login novamente."
-        );
+        throw new Error("SESSAO_EXPIRADA");
       }
 
       const dadosVisita = {
@@ -697,14 +702,9 @@ export default function VisitasTecnicas() {
         numero_atendimento:
           formulario.numero_atendimento.trim(),
 
-        data_visita:
-          formulario.data_visita,
-
-        inicio:
-          formulario.inicio,
-
-        termino:
-          formulario.termino || null,
+        data_visita: formulario.data_visita,
+        inicio: formulario.inicio,
+        termino: formulario.termino || null,
 
         tecnico_nome:
           formulario.tecnico_nome.trim(),
@@ -727,11 +727,8 @@ export default function VisitasTecnicas() {
         relato_tecnico:
           formulario.relato_tecnico.trim(),
 
-        assinatura_cliente:
-          assinaturaCliente,
-
-        assinatura_tecnico:
-          assinaturaTecnico,
+        assinatura_cliente: assinaturaCliente,
+        assinatura_tecnico: assinaturaTecnico,
 
         confirmado_cliente: true,
       };
@@ -761,9 +758,6 @@ export default function VisitasTecnicas() {
         `Visita ${numeroSalvo} finalizada e salva com sucesso. O PDF está disponível no histórico.`
       );
 
-      // Atualiza o formulário e o histórico
-      // sem perder a confirmação do cadastro.
-
       await Promise.allSettled([
         carregarVisitas(),
         gerarNumeroAtendimento(),
@@ -775,8 +769,9 @@ export default function VisitasTecnicas() {
       );
 
       setErro(
-        error?.message ||
-          "Não foi possível salvar a visita técnica."
+        error?.message === "SESSAO_EXPIRADA"
+          ? "Sua sessão expirou. Entre novamente para continuar."
+          : "Não foi possível salvar a visita técnica. Verifique as informações e tente novamente."
       );
     } finally {
       salvandoRef.current = false;
@@ -800,59 +795,42 @@ export default function VisitasTecnicas() {
   }
 
   // ========================================
-  // INTERFACE DA PÁGINA
+  // INTERFACE
   // ========================================
 
   return (
-    <div className="visitas-page">
+    <div className="visitas-page vt-standard-page">
       <Header />
 
-      <main className="visitas-main">
+      {/* =====================================
+          HERO — PADRÃO PERGUNTAS FREQUENTES
+      ===================================== */}
 
-        {/* ========================================
-            HERO
-        ======================================== */}
+      <section className="vt-standard-hero">
+        <div className="vt-standard-hero-container">
 
-        <section className="visitas-hero">
-          <div className="visitas-hero-top">
-            <div>
-              <div className="vt-hero-kicker">
-                <svg
-                  className="vt-hero-kicker-icon"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="m12 2 9 5-9 5-9-5 9-5Z" />
-                  <path d="M3 7v10l9 5 9-5V7" />
-                  <path d="M12 12v10" />
-                </svg>
-                <span>SUPORTE E ATENDIMENTO</span>
-              </div>
-
-              <h1>Visitas Técnicas</h1>
-
-              <p>
-                Registre atendimentos, documente
-                procedimentos e colete assinaturas
-                diretamente na plataforma.
-              </p>
-            </div>
-
+          <div className="vt-standard-profile">
             <UserProfileButton
-              onClick={() =>
-                setPerfilOpen(true)
-              }
+              onClick={() => setPerfilOpen(true)}
             />
           </div>
 
-          <div className="vt-hero-actions">
+          <div className="vt-standard-eyebrow">
+            <IconeSynter />
+            <span>SUPORTE E ATENDIMENTO</span>
+          </div>
+
+          <h1 className="vt-standard-title">
+            Visitas Técnicas
+          </h1>
+
+          <p className="vt-standard-description">
+            Registre atendimentos, documente
+            procedimentos e colete assinaturas
+            diretamente na plataforma.
+          </p>
+
+          <div className="vt-standard-actions">
             <button
               type="button"
               className="vt-btn vt-btn-primary"
@@ -862,11 +840,17 @@ export default function VisitasTecnicas() {
               + Nova visita técnica
             </button>
           </div>
-        </section>
 
-        {/* ========================================
-            ALERTAS
-        ======================================== */}
+        </div>
+      </section>
+
+      {/* =====================================
+          CONTEÚDO PRINCIPAL
+      ===================================== */}
+
+      <main className="visitas-main">
+
+        {/* ALERTAS */}
 
         {erro && (
           <div
@@ -886,9 +870,9 @@ export default function VisitasTecnicas() {
           </div>
         )}
 
-        {/* ========================================
-            VISUALIZAÇÃO DA VISITA FINALIZADA
-        ======================================== */}
+        {/* =====================================
+            VISITA FINALIZADA
+        ===================================== */}
 
         {visitaSelecionada ? (
           <section className="vt-card">
@@ -901,10 +885,7 @@ export default function VisitasTecnicas() {
 
                 <h2>
                   Atendimento{" "}
-                  {
-                    visitaSelecionada
-                      .numero_atendimento
-                  }
+                  {visitaSelecionada.numero_atendimento}
                 </h2>
               </div>
 
@@ -980,10 +961,7 @@ export default function VisitasTecnicas() {
               <h3>Relatório técnico</h3>
 
               <p>
-                {
-                  visitaSelecionada
-                    .relato_tecnico
-                }
+                {visitaSelecionada.relato_tecnico}
               </p>
             </div>
 
@@ -993,14 +971,11 @@ export default function VisitasTecnicas() {
 
             <div className="vt-assinaturas-grid">
               <div>
-                <p>
-                  Assinatura do cliente
-                </p>
+                <p>Assinatura do cliente</p>
 
                 <img
                   src={
-                    visitaSelecionada
-                      .assinatura_cliente
+                    visitaSelecionada.assinatura_cliente
                   }
                   alt="Assinatura do cliente"
                   className="vt-assinatura-imagem"
@@ -1008,14 +983,11 @@ export default function VisitasTecnicas() {
               </div>
 
               <div>
-                <p>
-                  Assinatura do técnico
-                </p>
+                <p>Assinatura do técnico</p>
 
                 <img
                   src={
-                    visitaSelecionada
-                      .assinatura_tecnico
+                    visitaSelecionada.assinatura_tecnico
                   }
                   alt="Assinatura do técnico"
                   className="vt-assinatura-imagem"
@@ -1032,8 +1004,7 @@ export default function VisitasTecnicas() {
                   baixarPdf(visitaSelecionada)
                 }
               >
-                {baixandoPdfId ===
-                visitaSelecionada.id
+                {baixandoPdfId === visitaSelecionada.id
                   ? "Gerando PDF..."
                   : "Baixar PDF"}
               </button>
@@ -1048,13 +1019,11 @@ export default function VisitasTecnicas() {
                 Voltar ao formulário
               </button>
             </div>
-
           </section>
         ) : (
-
-          /* ========================================
+          /* =====================================
               FORMULÁRIO DE VISITA TÉCNICA
-          ======================================== */
+          ===================================== */
 
           <form onSubmit={salvarVisita}>
 
@@ -1076,37 +1045,27 @@ export default function VisitasTecnicas() {
               <div className="vt-empresa-grid">
                 <div>
                   <span>Razão social</span>
-                  <strong>
-                    {EMPRESA.razao}
-                  </strong>
+                  <strong>{EMPRESA.razao}</strong>
                 </div>
 
                 <div>
                   <span>CNPJ</span>
-                  <strong>
-                    {EMPRESA.cnpj}
-                  </strong>
+                  <strong>{EMPRESA.cnpj}</strong>
                 </div>
 
                 <div>
                   <span>Telefone</span>
-                  <strong>
-                    {EMPRESA.telefone}
-                  </strong>
+                  <strong>{EMPRESA.telefone}</strong>
                 </div>
 
                 <div>
                   <span>E-mail</span>
-                  <strong>
-                    {EMPRESA.email}
-                  </strong>
+                  <strong>{EMPRESA.email}</strong>
                 </div>
 
                 <div className="vt-wide">
                   <span>Endereço</span>
-                  <strong>
-                    {EMPRESA.endereco}
-                  </strong>
+                  <strong>{EMPRESA.endereco}</strong>
                 </div>
               </div>
             </section>
@@ -1140,18 +1099,14 @@ export default function VisitasTecnicas() {
               </div>
 
               <div className="vt-form-grid">
-                {CAMPOS.slice(0, 5).map(
-                  (campo) => (
-                    <CampoFormulario
-                      key={campo.name}
-                      campo={campo}
-                      valor={
-                        formulario[campo.name]
-                      }
-                      onChange={alterarCampo}
-                    />
-                  )
-                )}
+                {CAMPOS.slice(0, 5).map((campo) => (
+                  <CampoFormulario
+                    key={campo.name}
+                    campo={campo}
+                    valor={formulario[campo.name]}
+                    onChange={alterarCampo}
+                  />
+                ))}
               </div>
             </section>
 
@@ -1176,18 +1131,14 @@ export default function VisitasTecnicas() {
               </div>
 
               <div className="vt-form-grid">
-                {CAMPOS.slice(5).map(
-                  (campo) => (
-                    <CampoFormulario
-                      key={campo.name}
-                      campo={campo}
-                      valor={
-                        formulario[campo.name]
-                      }
-                      onChange={alterarCampo}
-                    />
-                  )
-                )}
+                {CAMPOS.slice(5).map((campo) => (
+                  <CampoFormulario
+                    key={campo.name}
+                    campo={campo}
+                    valor={formulario[campo.name]}
+                    onChange={alterarCampo}
+                  />
+                ))}
               </div>
             </section>
 
@@ -1203,9 +1154,9 @@ export default function VisitasTecnicas() {
                   <h2>Dados da Visita</h2>
 
                   <p>
-                    Registre os problemas
-                    identificados, os testes
-                    realizados e a solução aplicada.
+                    Registre os problemas identificados,
+                    os testes realizados e a solução
+                    aplicada.
                   </p>
                 </div>
               </div>
@@ -1220,9 +1171,7 @@ export default function VisitasTecnicas() {
 
                 <textarea
                   name="relato_tecnico"
-                  value={
-                    formulario.relato_tecnico
-                  }
+                  value={formulario.relato_tecnico}
                   onChange={alterarCampo}
                   required
                   rows={9}
@@ -1243,9 +1192,9 @@ export default function VisitasTecnicas() {
                   <h2>Assinaturas</h2>
 
                   <p>
-                    As assinaturas do cliente
-                    e do técnico são obrigatórias
-                    para finalizar a visita.
+                    As assinaturas do cliente e do
+                    técnico são obrigatórias para
+                    finalizar a visita.
                   </p>
                 </div>
               </div>
@@ -1270,9 +1219,9 @@ export default function VisitasTecnicas() {
                 <input
                   type="checkbox"
                   checked={confirmadoCliente}
-                  onChange={(event) =>
+                  onChange={(evento) =>
                     setConfirmadoCliente(
-                      event.target.checked
+                      evento.target.checked
                     )
                   }
                 />
@@ -1309,13 +1258,12 @@ export default function VisitasTecnicas() {
                 </button>
               </div>
             </section>
-
           </form>
         )}
 
-        {/* ========================================
+        {/* =====================================
             HISTÓRICO DE VISITAS
-        ======================================== */}
+        ===================================== */}
 
         <section className="vt-card">
           <div className="vt-section-heading">
@@ -1329,8 +1277,8 @@ export default function VisitasTecnicas() {
               </h2>
 
               <p>
-                Consulte os atendimentos
-                registrados na Universidade Synter.
+                Consulte os atendimentos registrados
+                na Universidade Synter.
               </p>
             </div>
 
@@ -1376,13 +1324,8 @@ export default function VisitasTecnicas() {
                         )}
                       </td>
 
-                      <td>
-                        {visita.cliente_nome}
-                      </td>
-
-                      <td>
-                        {visita.tecnico_nome}
-                      </td>
+                      <td>{visita.cliente_nome}</td>
+                      <td>{visita.tecnico_nome}</td>
 
                       <td>
                         <span className="vt-tag">
@@ -1435,11 +1378,11 @@ export default function VisitasTecnicas() {
 
       <Footer />
 
+      {/* MODAL DO PERFIL */}
+
       {perfilOpen && (
         <Profile
-          onClose={() =>
-            setPerfilOpen(false)
-          }
+          onClose={() => setPerfilOpen(false)}
         />
       )}
     </div>

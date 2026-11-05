@@ -2,7 +2,6 @@
 import { useEffect, useMemo, useState } from "react";
 
 import Header from "../components/Header";
-import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
@@ -11,21 +10,16 @@ import tabelaPrecosData from "../data/tabelaPrecosData";
 import synterImagensMap from "../data/synterImagensMap.json";
 
 import "../styles/TabelaPrecos.css";
+import "../styles/TabelaPrecosHero.css";
 
-// =====================================================
+// ==========================================
 // UNIVERSIDADE SYNTER — TABELA DE PREÇOS
-// =====================================================
+// ==========================================
 
 // As imagens ficam em public/synter-produtos.
-// O mapeamento é feito por categoria e posição
-// original da linha no banco de dados local.
-//
-// Isso evita conflitos quando diferentes modelos
-// possuem referências iguais ou parecidas.
-
-// =====================================================
-// FUNÇÕES AUXILIARES
-// =====================================================
+// O mapeamento utiliza a categoria e a posição
+// original da linha, preservando as associações
+// entre produtos e imagens.
 
 function normalizarTexto(valor = "") {
   return String(valor ?? "")
@@ -37,7 +31,6 @@ function normalizarTexto(valor = "") {
 
 function encontrarImagemProduto(categoriaId, indice) {
   const chave = `${categoriaId}:${indice}`;
-
   const arquivo = synterImagensMap[chave];
 
   if (!arquivo) return null;
@@ -51,11 +44,39 @@ function obterColunaClasse(coluna) {
     : "";
 }
 
-// =====================================================
-// MINIATURA DO PRODUTO
-// =====================================================
+// ==========================================
+// ÍCONE GEOMÉTRICO — PADRÃO SYNTER
+// ==========================================
 
-function ImagemProduto({ imagem, alt, ampliada = false }) {
+function IconeSynter() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m12 2 9 5-9 5-9-5 9-5Z" />
+      <path d="M3 7v10l9 5 9-5V7" />
+      <path d="M12 12v10" />
+    </svg>
+  );
+}
+
+// ==========================================
+// IMAGEM DO PRODUTO
+// ==========================================
+
+function ImagemProduto({
+  imagem,
+  alt,
+  ampliada = false,
+}) {
   const [falhou, setFalhou] = useState(false);
 
   useEffect(() => {
@@ -107,15 +128,16 @@ function ImagemProduto({ imagem, alt, ampliada = false }) {
   );
 }
 
-// =====================================================
+// ==========================================
 // COMPONENTE PRINCIPAL
-// =====================================================
+// ==========================================
 
 function TabelaPrecos() {
   const [profileOpen, setProfileOpen] =
     useState(false);
 
-  const [pesquisa, setPesquisa] = useState("");
+  const [pesquisa, setPesquisa] =
+    useState("");
 
   const [
     categoriaSelecionada,
@@ -127,9 +149,9 @@ function TabelaPrecos() {
     setProdutoSelecionado,
   ] = useState(null);
 
-  // ===================================================
+  // ========================================
   // FILTRAR PRODUTOS
-  // ===================================================
+  // ========================================
 
   const categoriasFiltradas = useMemo(() => {
     const busca = normalizarTexto(pesquisa);
@@ -142,12 +164,13 @@ function TabelaPrecos() {
         );
       })
       .map((categoria) => {
-        // Preserva o índice original antes do filtro.
+        // Preservar o índice original é importante
+        // para localizar a imagem correta.
+
         const produtos = categoria.linhas
           .map((linha, indiceOriginal) => ({
             linha,
             indiceOriginal,
-
             imagem: encontrarImagemProduto(
               categoria.id,
               indiceOriginal
@@ -180,9 +203,9 @@ function TabelaPrecos() {
       });
   }, [pesquisa, categoriaSelecionada]);
 
-  // ===================================================
+  // ========================================
   // QUANTIDADE DE RESULTADOS
-  // ===================================================
+  // ========================================
 
   const totalResultados = useMemo(() => {
     return categoriasFiltradas.reduce(
@@ -192,9 +215,9 @@ function TabelaPrecos() {
     );
   }, [categoriasFiltradas]);
 
-  // ===================================================
+  // ========================================
   // CATEGORIA SELECIONADA
-  // ===================================================
+  // ========================================
 
   const nomeCategoriaSelecionada = useMemo(() => {
     if (categoriaSelecionada === "todos") {
@@ -210,9 +233,9 @@ function TabelaPrecos() {
     return categoria?.titulo || "";
   }, [categoriaSelecionada]);
 
-  // ===================================================
+  // ========================================
   // AÇÕES
-  // ===================================================
+  // ========================================
 
   function limparFiltros() {
     setPesquisa("");
@@ -232,7 +255,8 @@ function TabelaPrecos() {
     setProdutoSelecionado(null);
   }
 
-  // Fecha modal com ESC.
+  // Fechar visualização usando ESC.
+
   useEffect(() => {
     if (!produtoSelecionado) return;
 
@@ -255,72 +279,75 @@ function TabelaPrecos() {
     };
   }, [produtoSelecionado]);
 
-  // ===================================================
+  // ========================================
   // INTERFACE
-  // ===================================================
+  // ========================================
 
   return (
     <div className="tabela-precos-page">
-
-      {/* =======================================
-          HEADER
-      ======================================== */}
-
       <Header />
 
-      {/* =======================================
-          HERO
-      ======================================== */}
+      {/* =====================================
+          HERO — PADRÃO PERGUNTAS FREQUENTES
+      ===================================== */}
 
-      <section className="tabela-precos-hero-area">
+      <section className="tp-faq-hero">
+        <div className="tp-faq-hero-container">
 
-        <div className="tabela-precos-profile">
+          {/* PERFIL */}
 
-          <UserProfileButton
-            onClick={() =>
-              setProfileOpen(true)
-            }
-          />
+          <div className="tp-faq-profile">
+            <UserProfileButton
+              onClick={() =>
+                setProfileOpen(true)
+              }
+            />
+          </div>
+
+          {/* IDENTIFICAÇÃO SUPERIOR */}
+
+          <div className="tp-faq-eyebrow">
+            <IconeSynter />
+            <span>CONSULTA COMERCIAL</span>
+          </div>
+
+          {/* TÍTULO */}
+
+          <h1 className="tp-faq-title">
+            Tabela de Preços
+          </h1>
+
+          {/* DESCRIÇÃO */}
+
+          <p className="tp-faq-description">
+            Consulte produtos, referências,
+            acabamentos e valores da linha
+            Synter de forma rápida e organizada.
+          </p>
 
         </div>
-
-        <div className="tabela-precos-hero-content">
-
-          <Hero
-            variant="dashboard"
-            one="Consulta Comercial"
-            two="Tabela de Preços"
-            three="Consulte produtos, referências, acabamentos e valores da linha Synter de forma rápida e organizada."
-          />
-
-        </div>
-
       </section>
 
-      {/* =======================================
-          CONTEÚDO
-      ======================================== */}
+      {/* =====================================
+          CONTEÚDO PRINCIPAL
+      ===================================== */}
 
       <main className="tabela-precos-content">
 
-        {/* CABEÇALHO */}
+        {/* ===================================
+            CABEÇALHO
+        ==================================== */}
 
         <section className="tabela-precos-topo">
-
           <div className="tabela-precos-titulo-area">
 
             <div className="tabela-precos-section-title">
-
               <div className="tabela-precos-section-bar" />
 
-              <h4>
-                TABELA DE PREÇOS
-              </h4>
-
+              <h4>TABELA DE PREÇOS</h4>
             </div>
 
             <div className="tabela-precos-info">
-
               <span>
                 {tabelaPrecosData.titulo}
               </span>
@@ -329,19 +356,14 @@ function TabelaPrecos() {
                 Atualizada em{" "}
                 {tabelaPrecosData.atualizacao}
               </small>
-
             </div>
 
           </div>
 
           <div className="tabela-precos-total">
-
             <span>{totalResultados}</span>
-
             <small>resultados</small>
-
           </div>
-
         </section>
 
         {/* ===================================
@@ -349,7 +371,6 @@ function TabelaPrecos() {
         ==================================== */}
 
         <section className="tabela-precos-filtros">
-
           <div className="tabela-precos-pesquisa">
 
             <span className="tabela-precos-search-icon">
@@ -363,6 +384,7 @@ function TabelaPrecos() {
               onChange={(evento) =>
                 setPesquisa(evento.target.value)
               }
+              aria-label="Pesquisar produtos"
             />
 
             {pesquisa && (
@@ -377,7 +399,6 @@ function TabelaPrecos() {
             )}
 
           </div>
-
         </section>
 
         {/* ===================================
@@ -402,13 +423,11 @@ function TabelaPrecos() {
 
           {tabelaPrecosData.categorias.map(
             (categoria) => (
-
               <button
                 type="button"
                 key={categoria.id}
                 className={
-                  categoriaSelecionada ===
-                  categoria.id
+                  categoriaSelecionada === categoria.id
                     ? "categoria-button categoria-button-active"
                     : "categoria-button"
                 }
@@ -420,32 +439,27 @@ function TabelaPrecos() {
               >
                 {categoria.titulo}
               </button>
-
             )
           )}
 
         </section>
 
         {/* ===================================
-            IDENTIFICAÇÃO
+            IDENTIFICAÇÃO DOS RESULTADOS
         ==================================== */}
 
         {categoriasFiltradas.length > 0 && (
-
           <section className="tabela-precos-categoria">
 
             <div className="tabela-precos-categoria-header">
-
               <div>
 
                 <div className="tabela-precos-categoria-titulo">
-
                   <div className="tabela-precos-section-bar" />
 
                   <h2>
                     {nomeCategoriaSelecionada}
                   </h2>
-
                 </div>
 
                 <p>
@@ -456,11 +470,9 @@ function TabelaPrecos() {
                 </p>
 
               </div>
-
             </div>
 
           </section>
-
         )}
 
         {/* ===================================
@@ -470,10 +482,8 @@ function TabelaPrecos() {
         <section className="tabela-precos-resultados">
 
           {categoriasFiltradas.length > 0 ? (
-
             categoriasFiltradas.map(
               (categoria) => (
-
                 <section
                   key={categoria.id}
                   className="tabela-precos-categoria"
@@ -482,13 +492,12 @@ function TabelaPrecos() {
                   {/* TABELA */}
 
                   <div className="tabela-precos-table-wrapper">
-
                     <table className="tabela-precos-table">
 
                       <thead>
                         <tr>
 
-                          {/* NOVA COLUNA */}
+                          {/* COLUNA DE IMAGEM */}
 
                           <th
                             className="tabela-coluna-imagem"
@@ -500,9 +509,10 @@ function TabelaPrecos() {
                             Imagem
                           </th>
 
+                          {/* DEMAIS COLUNAS */}
+
                           {categoria.colunas.map(
                             (coluna, indice) => (
-
                               <th
                                 key={`${categoria.id}-coluna-${indice}`}
                                 className={obterColunaClasse(
@@ -511,7 +521,6 @@ function TabelaPrecos() {
                               >
                                 {coluna}
                               </th>
-
                             )
                           )}
 
@@ -522,7 +531,6 @@ function TabelaPrecos() {
 
                         {categoria.produtos.map(
                           (produto) => (
-
                             <tr
                               key={`${categoria.id}-${produto.indiceOriginal}`}
                               className="tabela-precos-produto-linha"
@@ -532,13 +540,26 @@ function TabelaPrecos() {
                                   produto
                                 )
                               }
+                              onKeyDown={(evento) => {
+                                if (
+                                  evento.key === "Enter" ||
+                                  evento.key === " "
+                                ) {
+                                  evento.preventDefault();
+                                  abrirProduto(
+                                    categoria,
+                                    produto
+                                  );
+                                }
+                              }}
+                              tabIndex={0}
                               title="Clique para visualizar o produto"
                               style={{
                                 cursor: "pointer",
                               }}
                             >
 
-                              {/* IMAGEM DO PRODUTO */}
+                              {/* IMAGEM */}
 
                               <td
                                 className="tabela-coluna-imagem"
@@ -547,7 +568,6 @@ function TabelaPrecos() {
                                   verticalAlign: "middle",
                                 }}
                               >
-
                                 <ImagemProduto
                                   imagem={produto.imagem}
                                   alt={
@@ -556,18 +576,14 @@ function TabelaPrecos() {
                                     "Produto Synter"
                                   }
                                 />
-
                               </td>
 
                               {/* INFORMAÇÕES ORIGINAIS */}
 
                               {produto.linha.map(
                                 (valor, indice) => {
-
                                   const nomeColuna =
-                                    categoria.colunas[
-                                      indice
-                                    ];
+                                    categoria.colunas[indice];
 
                                   const ehValor =
                                     String(valor ?? "")
@@ -592,84 +608,69 @@ function TabelaPrecos() {
                                     .join(" ");
 
                                   return (
-
                                     <td
                                       key={`${categoria.id}-${produto.indiceOriginal}-${indice}`}
                                       className={classe}
                                     >
                                       {valor}
                                     </td>
-
                                   );
                                 }
                               )}
 
                             </tr>
-
                           )
                         )}
 
                       </tbody>
-
                     </table>
-
                   </div>
 
-                  {/* OBSERVAÇÕES */}
+                  {/* =================================
+                      OBSERVAÇÕES
+                  ================================== */}
 
                   {categoria.observacoes?.length > 0 && (
-
                     <div className="tabela-precos-observacoes">
 
                       <div className="tabela-precos-observacoes-title">
-
                         <span>!</span>
 
                         <h4>
                           Informações importantes
                         </h4>
-
                       </div>
 
                       <ul>
-
                         {categoria.observacoes.map(
                           (observacao, indice) => (
-
                             <li
                               key={`${categoria.id}-obs-${indice}`}
                             >
                               {observacao}
                             </li>
-
                           )
                         )}
-
                       </ul>
 
                     </div>
-
                   )}
 
                 </section>
-
               )
             )
-
           ) : (
-
             <div className="tabela-precos-vazio">
 
               <div className="tabela-precos-vazio-icon">
                 ⌕
               </div>
 
-              <h3>
-                Nenhum produto encontrado
-              </h3>
+              <h3>Nenhum produto encontrado</h3>
 
               <p>
-                Não encontramos produtos correspondentes à sua pesquisa.
+                Não encontramos produtos correspondentes
+                à sua pesquisa.
               </p>
 
               <button
@@ -680,25 +681,21 @@ function TabelaPrecos() {
               </button>
 
             </div>
-
           )}
 
         </section>
-
       </main>
 
-      {/* =======================================
-          MODAL DE VISUALIZAÇÃO
-      ======================================== */}
+      {/* =====================================
+          MODAL DE VISUALIZAÇÃO DO PRODUTO
+      ===================================== */}
 
       {produtoSelecionado && (
-
         <div
           className="produto-modal-fundo"
           onClick={fecharProduto}
           role="presentation"
         >
-
           <div
             className="produto-modal"
             role="dialog"
@@ -723,13 +720,14 @@ function TabelaPrecos() {
             {/* IMAGEM AMPLIADA */}
 
             <div className="produto-modal-imagem-area">
-
               <ImagemProduto
                 imagem={produtoSelecionado.imagem}
-                alt={`Produto ${produtoSelecionado.linha[1] || produtoSelecionado.linha[0]}`}
+                alt={`Produto ${
+                  produtoSelecionado.linha[1] ||
+                  produtoSelecionado.linha[0]
+                }`}
                 ampliada
               />
-
             </div>
 
             {/* DADOS DO PRODUTO */}
@@ -748,12 +746,10 @@ function TabelaPrecos() {
 
                 {produtoSelecionado.linha.map(
                   (valor, indice) => (
-
                     <div
                       className="produto-modal-dado"
                       key={indice}
                     >
-
                       <span>
                         {
                           produtoSelecionado.categoria
@@ -764,31 +760,26 @@ function TabelaPrecos() {
                       <strong>
                         {valor}
                       </strong>
-
                     </div>
-
                   )
                 )}
 
               </div>
-
             </div>
 
           </div>
-
         </div>
-
       )}
 
-      {/* =======================================
+      {/* =====================================
           FOOTER
-      ======================================== */}
+      ===================================== */}
 
       <Footer />
 
-      {/* =======================================
-          PERFIL
-      ======================================== */}
+      {/* =====================================
+          PERFIL DO USUÁRIO
+      ===================================== */}
 
       {profileOpen && (
         <Profile

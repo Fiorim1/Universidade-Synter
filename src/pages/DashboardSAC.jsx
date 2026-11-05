@@ -7,12 +7,49 @@ import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 import CardsDashboard from "../components/CardsDashboard";
 
+// ========================================
+// ÍCONES DOS CARTÕES
+// ========================================
+
 import AppIcon from "../assets/app-icon.png";
 import AstIcon from "../assets/ast-icon.png";
 import TabelaIcon from "../assets/tabela-icon.png";
 
+// ========================================
+// ESTILOS
+// ========================================
+
 import "../styles/Dashboard.css";
 import "../styles/DashboardSAC.css";
+import "../styles/DashboardSACHero.css";
+
+// ========================================
+// ÍCONE GEOMÉTRICO — PADRÃO SYNTER
+// ========================================
+
+function IconeSynter() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m12 2 9 5-9 5-9-5 9-5Z" />
+      <path d="M3 7v10l9 5 9-5V7" />
+      <path d="M12 12v10" />
+    </svg>
+  );
+}
+
+// ========================================
+// DASHBOARD SAC
+// ========================================
 
 function DashboardSAC() {
   const [profileOpen, setProfileOpen] = useState(false);
@@ -27,55 +64,43 @@ function DashboardSAC() {
       <Header />
 
       {/* ========================================
-          HERO — PADRÃO SYNTER
+          HERO — PADRÃO UNIVERSIDADE SYNTER
       ======================================== */}
 
-      <section className="dashboard-sac-hero">
-        <div className="dashboard-sac-hero-inner">
+      <section className="synter-sac-hero">
+        <div className="synter-sac-hero-container">
 
-          <div className="dashboard-sac-profile">
+          {/* PERFIL DO USUÁRIO */}
+
+          <div className="synter-sac-profile">
             <UserProfileButton
               onClick={() => setProfileOpen(true)}
             />
           </div>
 
-          <div className="dashboard-sac-hero-text">
+          {/* CONTEÚDO DO HERO */}
 
-            <div className="dashboard-sac-eyebrow">
-              <svg
-                width="23"
-                height="23"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <rect
-                  x="3"
-                  y="3"
-                  width="18"
-                  height="18"
-                  rx="4"
-                />
-                <path d="M3 9h18M9 3v18" />
-              </svg>
+          <div className="synter-sac-hero-content">
 
-              <span>SUPORTE E ATENDIMENTO</span>
+            <div className="synter-sac-eyebrow">
+              <IconeSynter />
+
+              <span>
+                SUPORTE E ATENDIMENTO
+              </span>
             </div>
 
-            <h1>Gestão de Atendimento</h1>
+            <h1 className="synter-sac-title">
+              Gestão de Atendimento
+            </h1>
 
-            <p>
+            <p className="synter-sac-description">
               Centralize os chamados técnicos, registre
               visitas e acompanhe os indicadores de
               qualidade e desempenho do SAC Synter.
             </p>
 
           </div>
-
         </div>
       </section>
 
@@ -85,12 +110,23 @@ function DashboardSAC() {
 
       <main className="dashboard-content">
 
+        {/* TÍTULO DA SEÇÃO */}
+
         <div className="dashboard-section-title">
-          <div className="dashboard-section-bar"></div>
-          <h4>ACESSO RÁPIDO</h4>
+          <div className="dashboard-section-bar" />
+
+          <h4>
+            ACESSO RÁPIDO
+          </h4>
         </div>
 
+        {/* CARTÕES */}
+
         <div className="cards">
+
+          {/* ====================================
+              CHAMADOS TÉCNICOS
+          ==================================== */}
 
           <CardsDashboard
             image={AppIcon}
@@ -99,12 +135,20 @@ function DashboardSAC() {
             route="/assistencia-tecnica"
           />
 
+          {/* ====================================
+              VISITAS TÉCNICAS
+          ==================================== */}
+
           <CardsDashboard
             image={AstIcon}
             title="Documentos de Visita Técnica"
             desc="Registre visitas, colete assinaturas e gere formulários em PDF."
             route="/visitas-tecnicas"
           />
+
+          {/* ====================================
+              SYNTER ANALYTICS
+          ==================================== */}
 
           <CardsDashboard
             image={TabelaIcon}
@@ -123,7 +167,7 @@ function DashboardSAC() {
       <Footer />
 
       {/* ========================================
-          PERFIL
+          PERFIL DO USUÁRIO
       ======================================== */}
 
       {profileOpen && (

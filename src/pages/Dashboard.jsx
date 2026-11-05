@@ -1,12 +1,15 @@
+
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import Header from "../components/Header";
-import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 import CardsDashboard from "../components/CardsDashboard";
+
+// ========================================
+// ÍCONES DOS CARTÕES
+// ========================================
 
 import ManualIcon from "../assets/manual-icon.png";
 import YtIcon from "../assets/Yt-Icon.png";
@@ -18,82 +21,215 @@ import TcIcon from "../assets/tc-icon.png";
 import MktIcon from "../assets/mkt-icon.png";
 import AppIcon from "../assets/app-icon.png";
 import QuestionIcon from "../assets/perguntas-icon.png";
-import AstIcon from "../assets/ast-icon.png";
 import NvdIcon from "../assets/nvd-icon.png";
 
-import "../styles/Dashboard.css";
+// ========================================
+// ESTILOS
+// ========================================
 
+import "../styles/Dashboard.css";
+import "../styles/DashboardHero.css";
+
+// ========================================
+// ÍCONE GEOMÉTRICO SYNTER
+// ========================================
+
+function IconeSynter() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m12 2 9 5-9 5-9-5 9-5Z" />
+      <path d="M3 7v10l9 5 9-5V7" />
+      <path d="M12 12v10" />
+    </svg>
+  );
+}
+
+// ========================================
+// ÍCONES DOS DESTAQUES
+// ========================================
+
+function IconeAtualizado() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m12 2 3 2 3.5.3.7 3.5L21 11l-1.8 3.2-.7 3.5-3.5.3-3 2-3-2-3.5-.3-.7-3.5L3 11l1.8-3.2.7-3.5L9 4l3-2Z" />
+      <path d="m9 11 2 2 4-4" />
+    </svg>
+  );
+}
+
+function IconeTreinamento() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="9" />
+      <path d="m10 8 6 4-6 4V8Z" />
+    </svg>
+  );
+}
+
+function IconeAcesso() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m13 2-8 11h6l-1 9 9-12h-6V2Z" />
+    </svg>
+  );
+}
+
+// ========================================
+// COMPONENTE DE DESTAQUE
+// ========================================
+
+function DestaqueDashboard({
+  icone,
+  titulo,
+  descricao,
+}) {
+  return (
+    <div className="synter-db-feature">
+      <span className="synter-db-feature-icon">
+        {icone}
+      </span>
+
+      <div className="synter-db-feature-text">
+        <strong>{titulo}</strong>
+        <span>{descricao}</span>
+      </div>
+    </div>
+  );
+}
+
+// ========================================
+// DASHBOARD PRINCIPAL
+// ========================================
 
 function Dashboard() {
-
-  const navigate = useNavigate();
-
   const [profileOpen, setProfileOpen] =
     useState(false);
 
-
   return (
+    <div className="dashboard-page synter-dashboard">
 
-    <div className="dashboard-page">
+      {/* =====================================
+          HEADER
+      ===================================== */}
 
       <Header />
 
+      {/* =====================================
+          HERO PADRÃO UNIVERSIDADE SYNTER
+      ===================================== */}
 
-      {/* ================================= */}
-      {/* HERO                              */}
-      {/* ================================= */}
+      <section className="synter-db-hero">
+        <div className="synter-db-hero-container">
 
-      <section className="dashboard-hero-area">
+          {/* PERFIL */}
 
-        <div className="dashboard-profile">
+          <div className="synter-db-profile">
+            <UserProfileButton
+              onClick={() => setProfileOpen(true)}
+            />
+          </div>
 
-          <UserProfileButton
-            onClick={() =>
-              setProfileOpen(true)
-            }
-          />
+          {/* CONTEÚDO DO HERO */}
 
+          <div className="synter-db-hero-content">
+
+            <div className="synter-db-eyebrow">
+              <IconeSynter />
+
+              <span>
+                PLATAFORMA DE CONHECIMENTO
+              </span>
+            </div>
+
+            <h1 className="synter-db-title">
+              Universidade Synter
+            </h1>
+
+            <p className="synter-db-description">
+              Aqui você encontra tudo sobre nossos
+              produtos, treinamentos e materiais de
+              apoio para o seu dia a dia.
+            </p>
+
+            {/* DESTAQUES */}
+
+            <div className="synter-db-features">
+
+              <DestaqueDashboard
+                icone={<IconeAtualizado />}
+                titulo="Conteúdo Atualizado"
+                descricao="Materiais sempre disponíveis"
+              />
+
+              <DestaqueDashboard
+                icone={<IconeTreinamento />}
+                titulo="Treinamentos"
+                descricao="Conteúdo técnico e comercial"
+              />
+
+              <DestaqueDashboard
+                icone={<IconeAcesso />}
+                titulo="Acesso Rápido"
+                descricao="Tudo em um único lugar"
+              />
+
+            </div>
+
+          </div>
         </div>
-
-
-        <div className="dashboard-hero-content">
-
-          <Hero
-            variant="dashboard"
-            one="Plataforma de Conhecimento"
-            two="Universidade Synter"
-            three="Aqui você encontra tudo sobre nossos produtos, treinamentos e materiais de apoio para o seu dia a dia."
-            showFeatures
-          />
-
-        </div>
-
       </section>
 
-
-      {/* ================================= */}
-      {/* ACESSO RÁPIDO                     */}
-      {/* ================================= */}
+      {/* =====================================
+          ACESSO RÁPIDO
+      ===================================== */}
 
       <main className="dashboard-content">
 
         <div className="dashboard-section-title">
-
-          <div className="dashboard-section-bar"></div>
+          <div className="dashboard-section-bar" />
 
           <h4>
             ACESSO RÁPIDO
           </h4>
-
         </div>
-
 
         <div className="cards">
 
-
-          {/* ================================= */}
-          {/* APLICATIVO SYNTER                 */}
-          {/* ================================= */}
+          {/* APLICATIVO SYNTER */}
 
           <CardsDashboard
             image={AppIcon}
@@ -102,22 +238,16 @@ function Dashboard() {
             enabled={false}
           />
 
+          {/* ASSISTÊNCIA / SUPORTE */}
 
-          {/* ================================= */}
-          {/* ASSISTÊNCIA TÉCNICA               */}
-          {/* ================================= */}
-
-           <CardsDashboard
+          <CardsDashboard
             image={FtIcon}
             title="Assistência / Suporte Técnico"
             desc="Acesse nosso SAC"
             route="/dashsac"
           />
 
-
-          {/* ================================= */}
-          {/* FICHAS TÉCNICAS                   */}
-          {/* ================================= */}
+          {/* FICHAS TÉCNICAS */}
 
           <CardsDashboard
             image={FtIcon}
@@ -126,10 +256,7 @@ function Dashboard() {
             route="/fichas-tecnicas"
           />
 
-
-          {/* ================================= */}
-          {/* ORÇAMENTOS                        */}
-          {/* ================================= */}
+          {/* ORÇAMENTOS */}
 
           <CardsDashboard
             image={ImgIcon}
@@ -138,10 +265,7 @@ function Dashboard() {
             route="/orcamentos"
           />
 
-
-          {/* ================================= */}
-          {/* MANUAL DE PRODUTOS                */}
-          {/* ================================= */}
+          {/* MANUAIS */}
 
           <CardsDashboard
             image={ManualIcon}
@@ -150,10 +274,7 @@ function Dashboard() {
             route="/manuals"
           />
 
-
-          {/* ================================= */}
-          {/* MATERIAIS DE MARKETING            */}
-          {/* ================================= */}
+          {/* MARKETING */}
 
           <CardsDashboard
             image={MktIcon}
@@ -162,10 +283,7 @@ function Dashboard() {
             route="/marketing"
           />
 
-
-          {/* ================================= */}
-          {/* NOVIDADES SYNTER                  */}
-          {/* ================================= */}
+          {/* NOVIDADES */}
 
           <CardsDashboard
             image={NvdIcon}
@@ -174,22 +292,16 @@ function Dashboard() {
             enabled={false}
           />
 
-
-          {/* ================================= */}
-          {/* PERGUNTAS FREQUENTES              */}
-          {/* ================================= */}
+          {/* PERGUNTAS FREQUENTES */}
 
           <CardsDashboard
             image={QuestionIcon}
             title="Perguntas Frequentes"
-            desc="Caso tenha uma pergunta, acesse aqui"
+            desc="Encontre respostas e orientações sobre os produtos Synter."
             route="/perguntas-frequentes"
           />
 
-
-          {/* ================================= */}
-          {/* TABELA DE PREÇOS                  */}
-          {/* ================================= */}
+          {/* TABELA DE PREÇOS */}
 
           <CardsDashboard
             image={TabelaIcon}
@@ -198,10 +310,7 @@ function Dashboard() {
             route="/tabela-precos"
           />
 
-
-          {/* ================================= */}
-          {/* TREINAMENTO COMERCIAL             */}
-          {/* ================================= */}
+          {/* TREINAMENTO COMERCIAL */}
 
           <CardsDashboard
             image={TcIcon}
@@ -210,10 +319,7 @@ function Dashboard() {
             enabled={false}
           />
 
-
-          {/* ================================= */}
-          {/* TREINAMENTOS TÉCNICOS             */}
-          {/* ================================= */}
+          {/* TREINAMENTOS TÉCNICOS */}
 
           <CardsDashboard
             image={TreinamentoIcon}
@@ -222,10 +328,7 @@ function Dashboard() {
             enabled={false}
           />
 
-
-          {/* ================================= */}
-          {/* VÍDEOS DE INSTALAÇÃO              */}
-          {/* ================================= */}
+          {/* VÍDEOS DE INSTALAÇÃO */}
 
           <CardsDashboard
             image={YtIcon}
@@ -234,38 +337,29 @@ function Dashboard() {
             route="/videos"
           />
 
-
         </div>
-
       </main>
 
-
-      {/* ================================= */}
-      {/* FOOTER                            */}
-      {/* ================================= */}
+      {/* =====================================
+          FOOTER
+      ===================================== */}
 
       <Footer />
 
-
-      {/* ================================= */}
-      {/* PERFIL                            */}
-      {/* ================================= */}
+      {/* =====================================
+          PERFIL
+      ===================================== */}
 
       {profileOpen && (
-
         <Profile
           onClose={() =>
             setProfileOpen(false)
           }
         />
-
       )}
 
     </div>
-
   );
-
 }
-
 
 export default Dashboard;

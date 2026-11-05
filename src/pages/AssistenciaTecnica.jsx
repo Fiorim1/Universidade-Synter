@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 import Header from "../components/Header";
-import Hero from "../components/Hero";
 import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 
 import "../styles/AssistenciaTecnica.css";
+import "../styles/AssistenciaHero.css";
 
 
 function AssistenciaTecnica() {
@@ -209,30 +209,40 @@ function AssistenciaTecnica() {
     HERO
 ====================================== */}
 
-            <section className="assistencia-hero-area">
+            <section className="synter-hero assistencia-synter-hero">
+                <div className="synter-hero-container">
+                    <div className="synter-hero-actions">
+                        <UserProfileButton
+                            onClick={() => setProfileOpen(true)}
+                        />
+                    </div>
 
-                <div className="assistencia-profile">
+                    <div className="synter-hero-kicker">
+                        <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                        >
+                            <path d="m12 2 9 5-9 5-9-5 9-5Z" />
+                            <path d="M3 7v10l9 5 9-5V7" />
+                            <path d="M12 12v10" />
+                        </svg>
+                        <span>SUPORTE E ATENDIMENTO</span>
+                    </div>
 
-                    <UserProfileButton
-                        onClick={() =>
-                            setProfileOpen(true)
-                        }
-                    />
-
+                    <h1 className="synter-hero-title">
+                        Assistência Técnica
+                    </h1>
+                    <p className="synter-hero-description">
+                        Consulte seus chamados de assistência técnica e suporte Synter.
+                    </p>
                 </div>
-
-
-                <div className="assistencia-hero-content">
-
-                    <Hero
-                        variant="dashboard"
-                        one="SUPORTE E ATENDIMENTO"
-                        two="Assistência Técnica"
-                        three="Consulte seus chamados de assistência técnica e suporte Synter."
-                    />
-
-                </div>
-
             </section>
 
 
