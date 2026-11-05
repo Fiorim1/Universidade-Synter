@@ -1,899 +1,723 @@
-/* ======================================== */
-/* CARD PRINCIPAL                           */
-/* ======================================== */
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   CARDS DASHBOARD — PADRÃO OFICIAL
+========================================== */
+
+/* ==========================================
+   CARD PRINCIPAL
+========================================== */
 
 .cads-container {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
+  position: relative;
 
-    min-height: 115px;
+  display: flex;
+  align-items: center;
 
-    display: flex;
-    align-items: center;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 115px;
 
-    gap: 18px;
+  gap: 18px;
+  padding: 16px 18px;
 
-    padding: 16px 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(18, 18, 18, 0.98),
+    rgba(10, 10, 10, 0.98)
+  );
 
-    position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(18, 18, 18, 0.98),
-            rgba(10, 10, 10, 0.98)
-        );
+  box-sizing: border-box;
 
-    border:
-        1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  text-align: left;
+  cursor: pointer;
 
-    border-radius: 12px;
+  overflow: hidden;
 
-    box-sizing: border-box;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
 
-    color: #ffffff;
-
-    text-align: left;
-
-    cursor: pointer;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.18);
-
-    transition:
-        transform 0.25s ease,
-        border-color 0.25s ease,
-        background 0.25s ease,
-        box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-
-/* ======================================== */
-/* BRILHO SUTIL                             */
-/* ======================================== */
+/* ==========================================
+   BRILHO SUTIL
+========================================== */
 
 .cads-container::before {
-    content: "";
+  content: "";
 
-    position: absolute;
+  position: absolute;
+  inset: 0;
 
-    inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.035),
+    transparent 42%
+  );
 
-    background:
-        linear-gradient(
-            120deg,
-            rgba(255, 255, 255, 0.035),
-            transparent 42%
-        );
+  opacity: 0;
+  pointer-events: none;
 
-    opacity: 0;
-
-    transition:
-        opacity 0.3s ease;
-
-    pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
-
-/* ======================================== */
-/* HOVER                                    */
-/* ======================================== */
+/* ==========================================
+   HOVER
+========================================== */
 
 .cads-container:hover {
-    transform:
-        translateY(-3px);
+  transform: translateY(-3px);
 
-    border-color:
-        rgba(255, 255, 255, 0.32);
+  border-color: rgba(255, 255, 255, 0.32);
 
-    background:
-        linear-gradient(
-            135deg,
-            #1a1a1a,
-            #101010
-        );
+  background: linear-gradient(
+    135deg,
+    #1a1a1a,
+    #101010
+  );
 
-    box-shadow:
-        0 12px 30px rgba(0, 0, 0, 0.32);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
 }
-
 
 .cads-container:hover::before {
-    opacity: 1;
+  opacity: 1;
 }
 
+/* ==========================================
+   INDICADOR VERDE — DISPONÍVEL
+========================================== */
 
-/* ======================================== */
-/* ÁREA DO ÍCONE                            */
-/* ======================================== */
+/*
+  A classe card-available deve ser adicionada
+  somente aos cartões disponíveis.
 
-.card-image {
-    width: 76px;
-    height: 76px;
+  Exemplo:
+  className="cads-container card-available"
+*/
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.cads-container.card-available::after {
+  content: "";
 
-    flex-shrink: 0;
+  position: absolute;
+  top: 10px;
+  right: 12px;
 
-    background:
-        rgba(255, 255, 255, 0.025);
+  width: 9px;
+  height: 9px;
 
-    border:
-        1px solid rgba(255, 255, 255, 0.16);
+  background: #22c55e;
 
-    border-radius: 11px;
+  border: 1px solid #4ade80;
+  border-radius: 50%;
 
-    transition:
-        border-color 0.25s ease,
-        background-color 0.25s ease;
+  box-shadow:
+    0 0 5px rgba(34, 197, 94, 0.65),
+    0 0 10px rgba(34, 197, 94, 0.25);
+
+  z-index: 3;
+  pointer-events: none;
+
+  animation:
+    synterDisponivelPulse 3s ease-in-out infinite;
 }
 
-
-.cads-container:hover .card-image {
-    border-color:
-        rgba(255, 255, 255, 0.30);
-
-    background:
-        rgba(255, 255, 255, 0.045);
-}
-
-
-/* Imagem */
-
-.card-image img {
-    width: 52px;
-    height: 52px;
-
-    max-width: 100%;
-
-    object-fit: contain;
-}
-
-
-/* ======================================== */
-/* TEXTOS                                   */
-/* ======================================== */
-
-.content-text-cards {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    flex: 1;
-
-    min-width: 0;
-    max-width: 100%;
-
-    color: #ffffff;
-}
-
-
-.content-text-cards h3 {
-    min-width: 0;
-
-    margin: 0 0 6px 0;
-
-    color: #ffffff;
-
-    font-size: 16px;
-    font-weight: 600;
-
-    line-height: 1.2;
-
-    overflow-wrap: anywhere;
-}
-
-
-.content-text-cards p {
-    min-width: 0;
-    max-width: 230px;
-
-    margin: 0;
-
-    color: #8f8f8f;
-
-    font-size: 12px;
-    font-weight: 400;
-
-    line-height: 1.45;
-
-    overflow-wrap: anywhere;
-}
-
-
-/* ======================================== */
-/* SETA                                     */
-/* ======================================== */
-
-.card-arrow {
-    width: 34px;
-    height: 34px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-
-    margin-left: auto;
-
-    border:
-        1px solid rgba(255, 255, 255, 0.10);
-
-    border-radius: 50%;
-
-    background:
-        rgba(255, 255, 255, 0.04);
-
-    color: #ffffff;
-
-    font-size: 18px;
-
-    transition:
-        transform 0.25s ease,
-        background-color 0.25s ease,
-        border-color 0.25s ease;
-}
-
-
-.cads-container:hover .card-arrow {
-    transform:
-        translateX(3px);
-
-    background: #ffffff;
-
-    border-color: #ffffff;
-
-    color: #111111;
-}
-
-
-/* ======================================== */
-/* CARD DESABILITADO                        */
-/* ======================================== */
-
-.card-disabled {
-    cursor: pointer;
-}
-
-
-/* ======================================== */
-/* OVERLAY                                  */
-/* ======================================== */
-
-.card-production-overlay {
-    position: fixed;
-
-    inset: 0;
-
-    width: 100%;
-    max-width: 100%;
-
-    min-height: 100vh;
-    min-height: 100svh;
-
-    background:
-        rgba(0, 0, 0, 0.78);
-
-    backdrop-filter: blur(7px);
-    -webkit-backdrop-filter: blur(7px);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding:
-        max(
-            20px,
-            env(safe-area-inset-top)
-        )
-        max(
-            20px,
-            env(safe-area-inset-right)
-        )
-        max(
-            20px,
-            env(safe-area-inset-bottom)
-        )
-        max(
-            20px,
-            env(safe-area-inset-left)
-        );
-
-    box-sizing: border-box;
-
-    overflow-y: auto;
-
-    z-index: 99999;
-}
-
-
-/* ======================================== */
-/* MODAL                                    */
-/* ======================================== */
-
-.card-production-modal {
-    position: relative;
-
-    width: 100%;
-    max-width: 460px;
-    min-width: 0;
-
-    max-height:
-        calc(
-            100svh -
-            max(40px, env(safe-area-inset-top)) -
-            max(40px, env(safe-area-inset-bottom))
-        );
-
-    overflow-y: auto;
-    overscroll-behavior: contain;
-
-    background:
-        linear-gradient(
-            145deg,
-            #111111 0%,
-            #090909 100%
-        );
-
-    border:
-        1px solid #292929;
-
-    border-radius: 18px;
-
-    padding:
-        38px
-        34px
-        32px;
-
-    box-sizing: border-box;
+/* ==========================================
+   ANIMAÇÃO LENTA DA BOLINHA
+========================================== */
+
+@keyframes synterDisponivelPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.9);
 
     box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.6);
+      0 0 3px rgba(34, 197, 94, 0.3),
+      0 0 6px rgba(34, 197, 94, 0.15);
+  }
 
-    animation:
-        productionModalOpen 0.25s ease;
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+
+    box-shadow:
+      0 0 8px rgba(34, 197, 94, 0.8),
+      0 0 15px rgba(34, 197, 94, 0.35);
+  }
 }
 
+/* ==========================================
+   ÁREA DO ÍCONE
+========================================== */
 
-/* ======================================== */
-/* BOTÃO X                                  */
-/* ======================================== */
+.card-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-.card-production-close {
-    position: absolute;
+  flex-shrink: 0;
 
-    top: 16px;
-    right: 16px;
+  width: 76px;
+  height: 76px;
 
-    width: 36px;
-    height: 36px;
+  background: rgba(255, 255, 255, 0.025);
 
-    border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 11px;
 
-    border: none;
-
-    background: none;
-
-    color: #999999;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    cursor: pointer;
-
-    transition:
-        color 0.2s ease,
-        background-color 0.2s ease;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
 }
 
-
-.card-production-close:hover {
-    color: #ff5a5a;
-
-    background:
-        rgba(255, 255, 255, 0.04);
+.cads-container:hover .card-image {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.045);
 }
 
+.card-image img {
+  display: block;
 
-.card-production-close svg {
-    width: 18px;
-    height: 18px;
+  width: 52px;
+  height: 52px;
+  max-width: 100%;
+
+  object-fit: contain;
 }
 
+/* ==========================================
+   TEXTOS
+========================================== */
 
-/* ======================================== */
-/* ÍCONE                                    */
-/* ======================================== */
+.content-text-cards {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-.card-production-icon {
-    width: 52px;
-    height: 52px;
+  flex: 1;
 
-    flex-shrink: 0;
+  min-width: 0;
+  max-width: 100%;
 
-    border:
-        1px solid #333333;
-
-    border-radius: 14px;
-
-    background: #151515;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin-bottom: 24px;
+  color: #ffffff;
 }
 
+.content-text-cards h3 {
+  min-width: 0;
 
-.card-production-icon span {
-    color: #ffffff;
+  margin: 0 0 6px;
 
-    font-size: 22px;
-    font-weight: 700;
+  color: #ffffff;
+
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+
+  overflow-wrap: break-word;
 }
 
+.content-text-cards p {
+  min-width: 0;
+  max-width: 230px;
 
-/* ======================================== */
-/* CONTEÚDO                                 */
-/* ======================================== */
+  margin: 0;
 
-.card-production-content {
-    min-width: 0;
-    max-width: 100%;
+  color: #8f8f8f;
 
-    display: flex;
-    flex-direction: column;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.45;
+
+  overflow-wrap: break-word;
 }
 
+/* ==========================================
+   SETA DO CARD
+========================================== */
 
-.card-production-label {
-    margin-bottom: 10px;
+.card-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    color: #818181;
+  flex-shrink: 0;
 
-    font-size: 10px;
-    font-weight: 700;
+  width: 34px;
+  height: 34px;
 
-    letter-spacing: 2px;
+  margin-left: auto;
 
-    text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  color: #ffffff;
+  font-size: 18px;
+
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
 }
 
+.cads-container:hover .card-arrow {
+  transform: translateX(3px);
 
-.card-production-content h2 {
-    min-width: 0;
-
-    margin: 0 0 12px;
-
-    color: #ffffff;
-
-    font-size: 25px;
-    font-weight: 700;
-
-    overflow-wrap: anywhere;
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #111111;
 }
 
+/* ==========================================
+   CARTÕES DESABILITADOS
+========================================== */
 
-.card-production-content p {
-    min-width: 0;
-    max-width: 360px;
-
-    margin: 0;
-
-    color: #999999;
-
-    font-size: 14px;
-    line-height: 1.6;
-
-    overflow-wrap: anywhere;
+.card-disabled {
+  cursor: pointer;
 }
 
+/*
+  Os cartões desabilitados não recebem
+  a bolinha verde de disponibilidade.
+*/
 
-/* ======================================== */
-/* BOTÃO ENTENDI                            */
-/* ======================================== */
-
-.card-production-button {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-
-    margin-top: 28px;
-
-    padding:
-        13px
-        18px;
-
-    border:
-        1px solid #ffffff29;
-
-    border-radius: 10px;
-
-    color: #ffffff;
-
-    font-size: 13px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition:
-        background-color 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease;
-
-    background: none;
+.cads-container.card-disabled::after {
+  display: none;
 }
 
-
-.card-production-button:hover {
-    background:
-        rgba(255, 255, 255, 0.06);
-
-    border-color:
-        rgba(255, 255, 255, 0.24);
-}
-
-
-/* ======================================== */
-/* ANIMAÇÃO                                 */
-/* ======================================== */
-
-@keyframes productionModalOpen {
-
-    from {
-        opacity: 0;
-
-        transform:
-            translateY(10px)
-            scale(0.98);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-    }
-
-}
-
-
-/* ======================================== */
-/* RESPONSIVO                               */
-/* ======================================== */
-
-@media (max-width: 650px) {
-
-    .cads-container {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-
-        min-height: 105px;
-
-        gap: 14px;
-
-        padding: 14px;
-    }
-
-
-    .card-image {
-        width: 65px;
-        height: 65px;
-    }
-
-
-    .card-image img {
-        width: 44px;
-        height: 44px;
-    }
-
-
-    .content-text-cards {
-        min-width: 0;
-    }
-
-
-    .content-text-cards h3 {
-        font-size: 15px;
-    }
-
-
-    .content-text-cards p {
-        max-width: 100%;
-
-        font-size: 11px;
-    }
-
-
-    .card-arrow {
-        width: 31px;
-        height: 31px;
-
-        font-size: 16px;
-    }
-
-
-    .card-production-overlay {
-        align-items: flex-start;
-
-        padding-top:
-            max(
-                14px,
-                env(safe-area-inset-top)
-            );
-
-        padding-right:
-            max(
-                14px,
-                env(safe-area-inset-right)
-            );
-
-        padding-bottom:
-            max(
-                14px,
-                env(safe-area-inset-bottom)
-            );
-
-        padding-left:
-            max(
-                14px,
-                env(safe-area-inset-left)
-            );
-    }
-
-
-    .card-production-modal {
-        max-width: 100%;
-
-        max-height:
-            calc(
-                100svh -
-                max(28px, env(safe-area-inset-top)) -
-                max(28px, env(safe-area-inset-bottom))
-            );
-
-        padding:
-            34px
-            24px
-            26px;
-
-        border-radius: 16px;
-    }
-
-
-    .card-production-content h2 {
-        font-size: 22px;
-    }
-
-}
-
-
-/* ======================================== */
-/* CELULARES PEQUENOS                       */
-/* ======================================== */
-
-@media (max-width: 420px) {
-
-    .cads-container {
-        min-height: 96px;
-
-        gap: 12px;
-
-        padding: 12px;
-    }
-
-
-    .card-image {
-        width: 58px;
-        height: 58px;
-
-        border-radius: 10px;
-    }
-
-
-    .card-image img {
-        width: 40px;
-        height: 40px;
-    }
-
-
-    .content-text-cards h3 {
-        margin-bottom: 4px;
-
-        font-size: 14px;
-    }
-
-
-    .content-text-cards p {
-        font-size: 10.5px;
-
-        line-height: 1.4;
-    }
-
-
-    .card-arrow {
-        width: 29px;
-        height: 29px;
-
-        font-size: 15px;
-    }
-
-
-    .card-production-modal {
-        padding:
-            32px
-            18px
-            22px;
-    }
-
-
-    .card-production-close {
-        top: 12px;
-        right: 12px;
-    }
-
-
-    .card-production-icon {
-        width: 48px;
-        height: 48px;
-
-        margin-bottom: 20px;
-    }
-
-
-    .card-production-content h2 {
-        font-size: 20px;
-    }
-
-
-    .card-production-content p {
-        font-size: 13px;
-    }
-
-}
-
-
-/* ======================================== */
-/* CELULARES MUITO PEQUENOS                 */
-/* ======================================== */
-
-@media (max-width: 360px) {
-
-    .cads-container {
-        align-items: flex-start;
-    }
-
-
-    .card-image {
-        width: 54px;
-        height: 54px;
-    }
-
-
-    .card-image img {
-        width: 36px;
-        height: 36px;
-    }
-
-
-    .card-arrow {
-        width: 28px;
-        height: 28px;
-
-        margin-top: 2px;
-    }
-
-
-    .card-production-overlay {
-        padding:
-            10px;
-    }
-
-
-    .card-production-modal {
-        padding:
-            30px
-            15px
-            20px;
-    }
-
-}
-
-/* ======================================== */
-/* CENTRALIZAR MODAL PROJETO EM PRODUÇÃO    */
-/* ======================================== */
+/* ==========================================
+   OVERLAY — PROJETO EM PRODUÇÃO
+========================================== */
 
 .card-production-overlay {
-    position: fixed !important;
+  position: fixed;
 
-    inset: 0 !important;
+  inset: 0;
 
-    width: 100% !important;
-    height: 100dvh !important;
-    min-height: 100dvh !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    display: flex !important;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
 
-    align-items: center !important;
-    justify-content: center !important;
+  padding:
+    max(16px, env(safe-area-inset-top))
+    max(16px, env(safe-area-inset-right))
+    max(16px, env(safe-area-inset-bottom))
+    max(16px, env(safe-area-inset-left));
 
-    padding:
-        max(16px, env(safe-area-inset-top))
-        max(16px, env(safe-area-inset-right))
-        max(16px, env(safe-area-inset-bottom))
-        max(16px, env(safe-area-inset-left)) !important;
+  background: rgba(0, 0, 0, 0.78);
 
-    box-sizing: border-box;
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
 
-    overflow-x: hidden;
-    overflow-y: auto;
+  box-sizing: border-box;
 
-    z-index: 99999;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  z-index: 99999;
 }
 
+/* ==========================================
+   MODAL
+========================================== */
 
 .card-production-modal {
-    position: relative !important;
+  position: relative;
 
-    top: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-    left: auto !important;
+  width: 100%;
+  max-width: 460px;
+  min-width: 0;
 
-    width: 100%;
-    max-width: 460px;
+  max-height: calc(100dvh - 32px);
 
-    max-height:
-        calc(
-            100dvh - 32px
-        );
+  margin: auto;
 
-    margin: auto !important;
+  padding: 38px 34px 32px;
 
-    overflow-y: auto;
+  background: linear-gradient(
+    145deg,
+    #111111 0%,
+    #090909 100%
+  );
 
-    box-sizing: border-box;
+  border: 1px solid #292929;
+  border-radius: 18px;
+
+  box-sizing: border-box;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+
+  animation: productionModalOpen 0.25s ease;
 }
 
+/* ==========================================
+   BOTÃO FECHAR
+========================================== */
 
-/* ======================================== */
-/* MOBILE                                   */
-/* ======================================== */
+.card-production-close {
+  position: absolute;
 
-@media (max-width: 600px) {
+  top: 16px;
+  right: 16px;
 
-    .card-production-overlay {
-        align-items: center !important;
-        justify-content: center !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-        padding:
-            max(14px, env(safe-area-inset-top))
-            max(14px, env(safe-area-inset-right))
-            max(14px, env(safe-area-inset-bottom))
-            max(14px, env(safe-area-inset-left)) !important;
-    }
+  width: 36px;
+  height: 36px;
 
+  background: transparent;
 
-    .card-production-modal {
-        width: 100%;
-        max-width: 420px;
+  border: none;
+  border-radius: 10px;
 
-        margin: auto !important;
+  color: #999999;
+  cursor: pointer;
 
-        max-height:
-            calc(
-                100dvh - 28px
-            );
-    }
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
 
+.card-production-close:hover {
+  color: #ff5a5a;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.card-production-close svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ==========================================
+   ÍCONE DO MODAL
+========================================== */
+
+.card-production-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 52px;
+  height: 52px;
+
+  margin-bottom: 24px;
+
+  background: #151515;
+
+  border: 1px solid #333333;
+  border-radius: 14px;
+}
+
+.card-production-icon span {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* ==========================================
+   CONTEÚDO DO MODAL
+========================================== */
+
+.card-production-content {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  max-width: 100%;
+}
+
+.card-production-label {
+  margin-bottom: 10px;
+
+  color: #818181;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.card-production-content h2 {
+  min-width: 0;
+
+  margin: 0 0 12px;
+
+  color: #ffffff;
+
+  font-size: 25px;
+  font-weight: 700;
+
+  overflow-wrap: break-word;
+}
+
+.card-production-content p {
+  min-width: 0;
+  max-width: 360px;
+
+  margin: 0;
+
+  color: #999999;
+
+  font-size: 14px;
+  line-height: 1.6;
+
+  overflow-wrap: break-word;
+}
+
+/* ==========================================
+   BOTÃO ENTENDI
+========================================== */
+
+.card-production-button {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  margin-top: 28px;
+  padding: 13px 18px;
+
+  color: #ffffff;
+
+  background: transparent;
+
+  border: 1px solid #ffffff29;
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.card-production-button:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+/* ==========================================
+   ANIMAÇÃO DO MODAL
+========================================== */
+
+@keyframes productionModalOpen {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================================
+   RESPONSIVIDADE — TABLET / CELULAR
+========================================== */
+
+@media (max-width: 650px) {
+  .cads-container {
+    min-height: 105px;
+    gap: 14px;
+    padding: 14px;
+  }
+
+  .card-image {
+    width: 65px;
+    height: 65px;
+  }
+
+  .card-image img {
+    width: 44px;
+    height: 44px;
+  }
+
+  .content-text-cards h3 {
+    font-size: 15px;
+  }
+
+  .content-text-cards p {
+    max-width: 100%;
+    font-size: 11px;
+  }
+
+  .card-arrow {
+    width: 31px;
+    height: 31px;
+    font-size: 16px;
+  }
+
+  .card-production-overlay {
+    padding:
+      max(14px, env(safe-area-inset-top))
+      max(14px, env(safe-area-inset-right))
+      max(14px, env(safe-area-inset-bottom))
+      max(14px, env(safe-area-inset-left));
+  }
+
+  .card-production-modal {
+    max-width: 420px;
+    max-height: calc(100dvh - 28px);
+
+    padding: 34px 24px 26px;
+    border-radius: 16px;
+  }
+
+  .card-production-content h2 {
+    font-size: 22px;
+  }
+}
+
+/* ==========================================
+   CELULARES PEQUENOS
+========================================== */
+
+@media (max-width: 420px) {
+  .cads-container {
+    min-height: 96px;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .card-image {
+    width: 58px;
+    height: 58px;
+    border-radius: 10px;
+  }
+
+  .card-image img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .content-text-cards h3 {
+    margin-bottom: 4px;
+    font-size: 14px;
+  }
+
+  .content-text-cards p {
+    font-size: 10.5px;
+    line-height: 1.4;
+  }
+
+  .card-arrow {
+    width: 29px;
+    height: 29px;
+    font-size: 15px;
+  }
+
+  .card-production-modal {
+    padding: 32px 18px 22px;
+  }
+
+  .card-production-close {
+    top: 12px;
+    right: 12px;
+  }
+
+  .card-production-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 20px;
+  }
+
+  .card-production-content h2 {
+    font-size: 20px;
+  }
+
+  .card-production-content p {
+    font-size: 13px;
+  }
+}
+
+/* ==========================================
+   CELULARES MUITO PEQUENOS
+========================================== */
+
+@media (max-width: 360px) {
+  .cads-container {
+    align-items: flex-start;
+  }
+
+  .card-image {
+    width: 54px;
+    height: 54px;
+  }
+
+  .card-image img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .card-arrow {
+    width: 28px;
+    height: 28px;
+    margin-top: 2px;
+  }
+
+  .card-production-overlay {
+    padding: 10px;
+  }
+
+  .card-production-modal {
+    padding: 30px 15px 20px;
+  }
+}
+
+/* ==========================================
+   ACESSIBILIDADE
+========================================== */
+
+.cads-container:focus-visible,
+.card-production-button:focus-visible,
+.card-production-close:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cads-container,
+  .cads-container::before,
+  .card-arrow,
+  .card-image,
+  .card-production-button {
+    transition: none;
+  }
+
+  .cads-container.card-available::after {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .card-production-modal {
+    animation: none;
+  }
 }
