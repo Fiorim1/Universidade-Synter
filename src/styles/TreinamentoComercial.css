@@ -1,588 +1,540 @@
-/* ======================================== */
-/* PÁGINA                                   */
-/* ======================================== */
 
-.treinamento-comercial-page {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
+/* ==============================================
+   UNIVERSIDADE SYNTER
+   TREINAMENTO COMERCIAL
+   PADRÃO PRETO E BRANCO
+================================================ */
 
-    min-height: 100vh;
-    min-height: 100svh;
+/* PÁGINA */
 
-    background: #080808;
-    color: #ffffff;
+.tc-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 
-    overflow-x: hidden;
+  background: #080808;
+  color: #ffffff;
+
+  font-family: inherit;
 }
 
-
-/* ======================================== */
-/* HERO                                     */
-/* ======================================== */
-
-.treinamento-comercial-hero {
-    position: relative;
-
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-
-    min-height: 430px;
-
-    border-bottom:
-        1px solid rgba(255, 255, 255, 0.08);
-
-    background:
-        linear-gradient(
-            90deg,
-            #050505 0%,
-            #080808 45%,
-            #0b0b0b 100%
-        );
-
-    overflow: hidden;
+.tc-page *,
+.tc-page *::before,
+.tc-page *::after {
+  box-sizing: border-box;
 }
 
+/* CONTAINER CENTRAL */
 
-.treinamento-comercial-hero::after {
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(0, 0, 0, 0.05),
-            rgba(0, 0, 0, 0.22)
-        );
-
-    pointer-events: none;
-
-    z-index: 0;
+.tc-container {
+  width: min(1440px, calc(100% - 80px));
+  margin-inline: auto;
 }
 
+/* ==========================================
+   HERO
+========================================== */
 
-/* ======================================== */
-/* PERFIL                                   */
-/* ======================================== */
+.tc-page .tc-hero {
+  width: 100%;
+  min-height: 320px;
 
-.treinamento-comercial-profile {
-    position: absolute;
-
-    top: 28px;
-    right: 60px;
-
-    max-width:
-        calc(
-            100% - 40px
-        );
-
-    z-index: 5;
+  background: #080808;
+  border-bottom: 1px solid #242428;
 }
 
-
-/* ======================================== */
-/* HERO CONTENT                             */
-/* ======================================== */
-
-.treinamento-comercial-hero-content {
-    position: relative;
-
-    z-index: 2;
-
-    width: 100%;
-    max-width: 1400px;
-    min-width: 0;
-
-    margin:
-        0
-        auto;
-
-    padding:
-        75px
-        60px
-        70px;
-
-    box-sizing: border-box;
+.tc-page .tc-hero-inner {
+  position: relative;
+  padding: 76px 0 64px;
 }
 
+/* PERFIL */
 
-/* ======================================== */
-/* CONTEÚDO                                 */
-/* ======================================== */
-
-.treinamento-comercial-content {
-    width: 100%;
-    max-width: 1400px;
-    min-width: 0;
-
-    margin:
-        0
-        auto;
-
-    padding:
-        45px
-        60px
-        90px;
-
-    box-sizing: border-box;
+.tc-page .tc-profile {
+  position: absolute;
+  top: 34px;
+  right: 0;
+  z-index: 5;
 }
 
+/* IDENTIFICAÇÃO */
 
-/* ======================================== */
-/* TÍTULO                                   */
-/* ======================================== */
+.tc-page .tc-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 
-.treinamento-comercial-title {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
+  margin: 0 0 20px;
 
-    display: flex;
-    align-items: center;
+  color: #b7b7bf;
 
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.5;
+
+  text-transform: uppercase;
+}
+
+.tc-page .tc-eyebrow svg {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+}
+
+/* TÍTULO */
+
+.tc-page .tc-hero h1 {
+  max-width: 1100px;
+
+  margin: 0 0 22px;
+
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 800;
+
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+/* DESCRIÇÃO */
+
+.tc-page .tc-hero p {
+  max-width: 810px;
+
+  margin: 0;
+
+  color: #b7b7c0;
+
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+/* ==========================================
+   CONTEÚDO PRINCIPAL
+========================================== */
+
+.tc-page .tc-main {
+  flex: 1;
+  padding: 48px 0 90px;
+}
+
+/* ==========================================
+   TÍTULO DA SEÇÃO
+========================================== */
+
+.tc-page .tc-section-heading {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.tc-page .tc-section-bar {
+  display: block;
+
+  flex: 0 0 3px;
+
+  width: 3px;
+  height: 20px;
+
+  background: #ffffff;
+  border-radius: 3px;
+}
+
+.tc-page .tc-section-heading h2 {
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  line-height: 1.65;
+}
+
+.tc-page .tc-section-heading p {
+  margin: 8px 0 0;
+
+  color: #93939c;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.tc-page .tc-total {
+  margin-left: auto;
+  padding: 6px 12px;
+
+  border: 1px solid #38383b;
+  border-radius: 999px;
+
+  white-space: nowrap;
+
+  color: #b3b3bb;
+  font-size: 11px;
+}
+
+/* ==========================================
+   GRID — 4 CARTÕES POR LINHA
+========================================== */
+
+.tc-page .tc-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+  align-items: stretch;
+}
+
+/* ==========================================
+   CARTÃO DE TREINAMENTO
+========================================== */
+
+.tc-page .tc-material-card {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  min-height: 310px;
+
+  padding: 23px;
+
+  background: linear-gradient(
+    145deg,
+    #141415,
+    #0d0d0e
+  );
+
+  border: 1px solid #303034;
+  border-radius: 15px;
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* HOVER */
+
+.tc-page .tc-material-card:hover {
+  border-color: #65656b;
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.24);
+}
+
+/* ==========================================
+   TOPO DO CARTÃO
+========================================== */
+
+.tc-page .tc-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+/* ÍCONE */
+
+.tc-page .tc-material-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
+
+  background: #1b1b1d;
+
+  border: 1px solid #3c3c42;
+  border-radius: 12px;
+}
+
+.tc-page .tc-material-icon svg {
+  width: 34px;
+  height: 34px;
+
+  color: #ffffff;
+}
+
+/* IDENTIFICAÇÃO PDF */
+
+.tc-page .tc-file-type {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+  padding: 6px 8px;
+
+  border: 1px solid #38383d;
+  border-radius: 7px;
+
+  color: #babac2;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* ==========================================
+   CONTEÚDO DO CARTÃO
+========================================== */
+
+.tc-page .tc-material-category {
+  color: #92929c;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+  line-height: 1.5;
+}
+
+.tc-page .tc-material-card h3 {
+  margin: 11px 0 10px;
+
+  color: #ffffff;
+
+  font-size: 17px;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.tc-page .tc-material-description {
+  margin: 0 0 20px;
+
+  color: #a5a5af;
+
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* ==========================================
+   INFORMAÇÕES DO MATERIAL
+========================================== */
+
+.tc-page .tc-material-meta {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 8px 12px;
+
+  margin-top: auto;
+  padding-top: 17px;
+
+  border-top: 1px solid #2c2c30;
+
+  color: #92929c;
+  font-size: 11px;
+}
+
+/* ==========================================
+   BOTÕES — VISUALIZAR E BAIXAR
+========================================== */
+
+.tc-page .tc-material-actions {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 9px;
+  margin-top: 17px;
+}
+
+.tc-page .tc-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  min-width: 0;
+  min-height: 43px;
+
+  padding: 9px 8px;
+
+  border-radius: 9px;
+
+  font-size: 11px;
+  font-weight: 750;
+  text-decoration: none;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* VISUALIZAR */
+
+.tc-page .tc-action-view {
+  border: 1px solid #414148;
+
+  background: #1c1c20;
+  color: #ffffff;
+}
+
+.tc-page .tc-action-view:hover {
+  background: #2a2a2e;
+  color: #ffffff;
+}
+
+/* DOWNLOAD */
+
+.tc-page .tc-action-download {
+  border: 1px solid #ffffff;
+
+  background: #ffffff;
+  color: #111111;
+}
+
+.tc-page .tc-action-download:hover {
+  background: #e8e8ec;
+  border-color: #e8e8ec;
+  color: #111111;
+}
+
+.tc-page .tc-action svg {
+  flex: 0 0 auto;
+}
+
+/* ACESSIBILIDADE */
+
+.tc-page .tc-action:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* ==========================================
+   AVISO INFERIOR
+========================================== */
+
+.tc-page .tc-info {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  margin-top: 26px;
+  padding: 16px 18px;
+
+  background: #111113;
+
+  border: 1px solid #2b2b30;
+  border-radius: 12px;
+
+  color: #9999a2;
+
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.tc-page .tc-info svg {
+  flex: 0 0 16px;
+  margin-top: 2px;
+}
+
+/* ==========================================
+   RESPONSIVIDADE — NOTEBOOKS
+========================================== */
+
+@media (max-width: 1150px) {
+  .tc-page .tc-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ==========================================
+   RESPONSIVIDADE — TABLETS
+========================================== */
+
+@media (max-width: 768px) {
+  .tc-container {
+    width: calc(100% - 40px);
+  }
+
+  .tc-page .tc-hero {
+    min-height: 0;
+  }
+
+  .tc-page .tc-hero-inner {
+    padding: 110px 0 45px;
+  }
+
+  .tc-page .tc-profile {
+    top: 22px;
+  }
+
+  .tc-page .tc-eyebrow {
     gap: 12px;
 
-    margin-bottom: 25px;
+    font-size: 10px;
+    letter-spacing: 1.4px;
+  }
+
+  .tc-page .tc-hero h1 {
+    font-size: clamp(38px, 8vw, 52px);
+    letter-spacing: -1.4px;
+  }
+
+  .tc-page .tc-hero p {
+    font-size: 14px;
+  }
+
+  .tc-page .tc-main {
+    padding: 35px 0 65px;
+  }
 }
 
+/* ==========================================
+   RESPONSIVIDADE — CELULARES
+========================================== */
 
-.treinamento-comercial-title h4 {
-    min-width: 0;
-    max-width: 100%;
+@media (max-width: 600px) {
+  .tc-container {
+    width: calc(100% - 32px);
+  }
 
-    margin: 0;
+  .tc-page .tc-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 
-    color: #ffffff;
+  .tc-page .tc-material-card {
+    min-height: 285px;
+  }
 
-    font-size: 13px;
-    font-weight: 600;
+  .tc-page .tc-hero h1 {
+    font-size: 36px;
+    letter-spacing: -1.3px;
+  }
 
-    line-height: 1.4;
-
-    letter-spacing: 3px;
-
-    overflow-wrap: anywhere;
+  .tc-page .tc-total {
+    display: none;
+  }
 }
 
-
-.treinamento-comercial-bar {
-    width: 3px;
-    height: 20px;
-
-    flex-shrink: 0;
-
-    border-radius: 10px;
-
-    background: #ffffff;
-
-    box-shadow:
-        0 0 8px
-        rgba(255, 255, 255, 0.18);
-}
-
-
-/* ======================================== */
-/* INTRODUÇÃO                               */
-/* ======================================== */
-
-.treinamento-comercial-intro {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-
-    margin-bottom: 35px;
-}
-
-
-.treinamento-comercial-intro h2 {
-    min-width: 0;
-    max-width: 100%;
-
-    margin:
-        0
-        0
-        8px;
-
-    color: #ffffff;
-
-    font-size: 24px;
-    font-weight: 600;
-
-    line-height: 1.2;
-
-    overflow-wrap: anywhere;
-}
-
-
-.treinamento-comercial-intro p {
-    max-width: 650px;
-    min-width: 0;
-
-    margin: 0;
-
-    color: #777777;
-
-    font-size: 13px;
-
-    line-height: 1.7;
-
-    overflow-wrap: anywhere;
-}
-
-
-/* ======================================== */
-/* GRID DOS CARDS                           */
-/* ======================================== */
-
-.treinamento-comercial-grid {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            4,
-            minmax(0, 1fr)
-        );
-
-    gap: 22px;
-
-    align-items: stretch;
-}
-
-
-/* ======================================== */
-/* CARD                                     */
-/* ======================================== */
-
-.treinamento-comercial-grid > *,
-.treinamento-comercial-grid .cads-container {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-
-    height: 100%;
-
-    box-sizing: border-box;
-}
-
-
-/* ======================================== */
-/* TABLET                                   */
-/* ======================================== */
-
-@media (max-width: 1100px) {
-
-    .treinamento-comercial-hero-content,
-    .treinamento-comercial-content {
-        padding-left: 35px;
-        padding-right: 35px;
-    }
-
-
-    .treinamento-comercial-content {
-        padding-top: 40px;
-        padding-bottom: 70px;
-    }
-
-
-    .treinamento-comercial-profile {
-        right: 35px;
-    }
-
-
-    .treinamento-comercial-grid {
-        grid-template-columns:
-            repeat(
-                2,
-                minmax(0, 1fr)
-            );
-
-        gap: 20px;
-    }
-
-}
-
-
-/* ======================================== */
-/* MOBILE                                   */
-/* ======================================== */
-
-@media (max-width: 750px) {
-
-    .treinamento-comercial-page {
-        width: 100%;
-        max-width: 100%;
-
-        overflow-x: hidden;
-    }
-
-
-    .treinamento-comercial-hero {
-        width: 100%;
-        max-width: 100%;
-
-        min-height: auto;
-    }
-
-
-    .treinamento-comercial-profile {
-        position: relative;
-
-        top: auto;
-        right: auto;
-
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-
-        padding-top: 18px;
-
-        padding-left:
-            max(
-                16px,
-                env(safe-area-inset-left)
-            );
-
-        padding-right:
-            max(
-                16px,
-                env(safe-area-inset-right)
-            );
-
-        box-sizing: border-box;
-
-        z-index: 5;
-    }
-
-
-    .treinamento-comercial-hero-content {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-
-        padding-top: 30px;
-        padding-bottom: 48px;
-
-        padding-left:
-            max(
-                18px,
-                env(safe-area-inset-left)
-            );
-
-        padding-right:
-            max(
-                18px,
-                env(safe-area-inset-right)
-            );
-    }
-
-
-    .treinamento-comercial-content {
-        width: 100%;
-        max-width: 100%;
-        min-width: 0;
-
-        padding-top: 30px;
-        padding-bottom: 58px;
-
-        padding-left:
-            max(
-                18px,
-                env(safe-area-inset-left)
-            );
-
-        padding-right:
-            max(
-                18px,
-                env(safe-area-inset-right)
-            );
-    }
-
-
-    .treinamento-comercial-title {
-        gap: 10px;
-
-        margin-bottom: 22px;
-    }
-
-
-    .treinamento-comercial-title h4 {
-        font-size: 11px;
-
-        letter-spacing: 2px;
-    }
-
-
-    .treinamento-comercial-bar {
-        height: 18px;
-    }
-
-
-    .treinamento-comercial-intro {
-        margin-bottom: 28px;
-    }
-
-
-    .treinamento-comercial-intro h2 {
-        font-size: 21px;
-    }
-
-
-    .treinamento-comercial-intro p {
-        max-width: 100%;
-
-        font-size: 13px;
-    }
-
-
-    .treinamento-comercial-grid {
-        grid-template-columns:
-            minmax(0, 1fr);
-
-        gap: 18px;
-    }
-
-}
-
-
-/* ======================================== */
-/* CELULAR PEQUENO                          */
-/* ======================================== */
-
-@media (max-width: 500px) {
-
-    .treinamento-comercial-profile {
-        padding-top: 14px;
-
-        padding-left:
-            max(
-                14px,
-                env(safe-area-inset-left)
-            );
-
-        padding-right:
-            max(
-                14px,
-                env(safe-area-inset-right)
-            );
-    }
-
-
-    .treinamento-comercial-hero-content {
-        padding-top: 26px;
-        padding-bottom: 40px;
-
-        padding-left:
-            max(
-                14px,
-                env(safe-area-inset-left)
-            );
-
-        padding-right:
-            max(
-                14px,
-                env(safe-area-inset-right)
-            );
-    }
-
-
-    .treinamento-comercial-content {
-        padding-top: 24px;
-        padding-bottom: 48px;
-
-        padding-left:
-            max(
-                14px,
-                env(safe-area-inset-left)
-            );
-
-        padding-right:
-            max(
-                14px,
-                env(safe-area-inset-right)
-            );
-    }
-
-
-    .treinamento-comercial-title h4 {
-        font-size: 11px;
-
-        letter-spacing: 2px;
-    }
-
-
-    .treinamento-comercial-intro {
-        margin-bottom: 24px;
-    }
-
-
-    .treinamento-comercial-intro h2 {
-        font-size: 20px;
-    }
-
-
-    .treinamento-comercial-intro p {
-        font-size: 12.5px;
-
-        line-height: 1.6;
-    }
-
-
-    .treinamento-comercial-grid {
-        gap: 16px;
-    }
-
-}
-
-
-/* ======================================== */
-/* CELULAR MUITO PEQUENO                    */
-/* ======================================== */
-
-@media (max-width: 380px) {
-
-    .treinamento-comercial-profile,
-    .treinamento-comercial-hero-content,
-    .treinamento-comercial-content {
-        padding-left:
-            max(
-                12px,
-                env(safe-area-inset-left)
-            );
-
-        padding-right:
-            max(
-                12px,
-                env(safe-area-inset-right)
-            );
-    }
-
-
-    .treinamento-comercial-title h4 {
-        font-size: 10.5px;
-
-        letter-spacing: 1.6px;
-    }
-
-
-    .treinamento-comercial-intro h2 {
-        font-size: 19px;
-    }
-
-
-    .treinamento-comercial-grid {
-        gap: 14px;
-    }
-
+/* ==========================================
+   MOVIMENTO REDUZIDO
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .tc-page .tc-material-card,
+  .tc-page .tc-action {
+    transition: none;
+  }
+
+  .tc-page .tc-material-card:hover {
+    transform: none;
+  }
 }

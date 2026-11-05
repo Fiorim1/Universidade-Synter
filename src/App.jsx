@@ -18,38 +18,62 @@ import ForgotPassword from "./components/ForgotPassword.jsx";
 import UpdatePassword from "./components/UpdatePassword.jsx";
 
 // ========================================
-// PÁGINAS
+// CONTROLE DE ACESSO
 // ========================================
 
-import Manuals from "./routes/Manuals.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import PublicRoute from "./components/PublicRoute.jsx";
+
+// ========================================
+// DASHBOARDS
+// ========================================
 
 import Dashboard from "./pages/Dashboard.jsx";
 import DashboardSAC from "./pages/DashboardSAC.jsx";
 
+// ========================================
+// CONTEÚDOS E DOCUMENTAÇÃO
+// ========================================
+
+import Manuals from "./routes/Manuals.jsx";
+import FichaTec from "./pages/FichaTec.jsx";
 import Videos from "./pages/Videos.jsx";
 import TabelaPrecos from "./pages/TabelaPrecos.jsx";
-import AssistenciaTecnica from "./pages/AssistenciaTecnica.jsx";
-import VisitasTecnicas from "./pages/VisitasTecnicas.jsx";
-
-import ImageToPdf from "./pages/ImageToPdf.jsx";
-import TreinamentoComercial from "./pages/TreinamentoComercial.jsx";
-import Marketing from "./pages/Marketing.jsx";
-import DigMarketing from "./pages/DigMarketing.jsx";
-
-import Orcamentos from "./pages/Orcamentos.jsx";
-import FichaTec from "./pages/FichaTec.jsx";
-
-// ========================================
-// PERGUNTAS FREQUENTES
-// ========================================
-
 import PerguntasFrequentes from "./pages/PerguntasFrequentes.jsx";
 
 // ========================================
-// SYNTER ANALYTICS
+// TREINAMENTOS
 // ========================================
 
+import TreinamentoComercial from "./pages/TreinamentoComercial.jsx";
+
+// ========================================
+// GESTÃO COMERCIAL
+// ========================================
+
+import Orcamentos from "./pages/Orcamentos.jsx";
+import Marketing from "./pages/Marketing.jsx";
+import DigMarketing from "./pages/DigMarketing.jsx";
+
+// ========================================
+// ASSISTÊNCIA E ATENDIMENTO
+// ========================================
+
+import AssistenciaTecnica from "./pages/AssistenciaTecnica.jsx";
+import VisitasTecnicas from "./pages/VisitasTecnicas.jsx";
 import SynterAnalytics from "./pages/SynterAnalytics.jsx";
+
+// ========================================
+// FERRAMENTAS
+// ========================================
+
+import ImageToPdf from "./pages/ImageToPdf.jsx";
+
+// ========================================
+// ASSISTENTE SYNTER
+// ========================================
+
+import SynterAssistant from "./components/SynterAssistant.jsx";
 
 // ========================================
 // PÁGINA NÃO ENCONTRADA
@@ -58,19 +82,16 @@ import SynterAnalytics from "./pages/SynterAnalytics.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
 // ========================================
-// CONTROLE DE ACESSO
+// ROTAS DE AUTENTICAÇÃO
 // ========================================
 
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import PublicRoute from "./components/PublicRoute.jsx";
-
-// ========================================
-// ASSISTENTE SYNTER
-// ========================================
-
-import SynterAssistant from "./components/SynterAssistant.jsx";
-
-import "./styles/SynterHero.css";
+const ROTAS_SEM_ASSISTENTE = [
+  "/",
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/update-password",
+];
 
 // ========================================
 // COMPONENTE PRINCIPAL
@@ -80,7 +101,7 @@ function App() {
   const location = useLocation();
 
   // ========================================
-  // VOLTAR AO TOPO AO TROCAR DE ROTA
+  // VOLTAR AO TOPO AO MUDAR DE PÁGINA
   // ========================================
 
   useEffect(() => {
@@ -95,31 +116,21 @@ function App() {
   }, [location.pathname]);
 
   // ========================================
-  // PÁGINAS SEM ASSISTENTE
+  // CONTROLE DE EXIBIÇÃO DO ASSISTENTE
   // ========================================
 
-  const paginasPublicas = [
-    "/",
-    "/login",
-    "/register",
-    "/forgot-password",
-    "/update-password",
-  ];
-
   const mostrarAssistente =
-    !paginasPublicas.includes(location.pathname);
+    !ROTAS_SEM_ASSISTENTE.includes(
+      location.pathname
+    );
 
   return (
     <>
-      {/* ========================================
-          ROTAS
-      ======================================== */}
-
       <Routes>
 
-        {/* ========================================
+        {/* ====================================
             LOGIN
-        ======================================== */}
+        ==================================== */}
 
         <Route
           path="/"
@@ -139,9 +150,9 @@ function App() {
           }
         />
 
-        {/* ========================================
+        {/* ====================================
             CADASTRO
-        ======================================== */}
+        ==================================== */}
 
         <Route
           path="/register"
@@ -152,9 +163,9 @@ function App() {
           }
         />
 
-        {/* ========================================
-            RECUPERAÇÃO DE SENHA
-        ======================================== */}
+        {/* ====================================
+            RECUPERAR SENHA
+        ==================================== */}
 
         <Route
           path="/forgot-password"
@@ -165,18 +176,18 @@ function App() {
           }
         />
 
-        {/* ========================================
-            ATUALIZAÇÃO DE SENHA
-        ======================================== */}
+        {/* ====================================
+            ATUALIZAR SENHA
+        ==================================== */}
 
         <Route
           path="/update-password"
           element={<UpdatePassword />}
         />
 
-        {/* ========================================
+        {/* ====================================
             DASHBOARD PRINCIPAL
-        ======================================== */}
+        ==================================== */}
 
         <Route
           path="/dashboard"
@@ -187,9 +198,9 @@ function App() {
           }
         />
 
-        {/* ========================================
+        {/* ====================================
             DASHBOARD SAC
-        ======================================== */}
+        ==================================== */}
 
         <Route
           path="/dashsac"
@@ -200,35 +211,9 @@ function App() {
           }
         />
 
-        {/* ========================================
-            SYNTER ANALYTICS
-        ======================================== */}
-
-        <Route
-          path="/synter-analytics"
-          element={
-            <ProtectedRoute>
-              <SynterAnalytics />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ========================================
-            PERGUNTAS FREQUENTES
-        ======================================== */}
-
-        <Route
-          path="/perguntas-frequentes"
-          element={
-            <ProtectedRoute>
-              <PerguntasFrequentes />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ========================================
+        {/* ====================================
             MANUAIS DE PRODUTOS
-        ======================================== */}
+        ==================================== */}
 
         <Route
           path="/manuals"
@@ -239,9 +224,9 @@ function App() {
           }
         />
 
-        {/* ========================================
+        {/* ====================================
             FICHAS TÉCNICAS
-        ======================================== */}
+        ==================================== */}
 
         <Route
           path="/fichas-tecnicas"
@@ -252,9 +237,7 @@ function App() {
           }
         />
 
-        {/* ========================================
-            REDIRECIONAMENTO DA ROTA ANTIGA
-        ======================================== */}
+        {/* ROTA ANTIGA — FICHAS TÉCNICAS */}
 
         <Route
           path="/ficha-tecnica"
@@ -266,9 +249,9 @@ function App() {
           }
         />
 
-        {/* ========================================
-            VÍDEOS
-        ======================================== */}
+        {/* ====================================
+            VÍDEOS EDUCATIVOS
+        ==================================== */}
 
         <Route
           path="/videos"
@@ -279,9 +262,9 @@ function App() {
           }
         />
 
-        {/* ========================================
+        {/* ====================================
             TABELA DE PREÇOS
-        ======================================== */}
+        ==================================== */}
 
         <Route
           path="/tabela-precos"
@@ -292,61 +275,23 @@ function App() {
           }
         />
 
-        {/* ========================================
-            ORÇAMENTOS
-        ======================================== */}
+        {/* ====================================
+            PERGUNTAS FREQUENTES
+        ==================================== */}
 
         <Route
-          path="/orcamentos"
+          path="/perguntas-frequentes"
           element={
             <ProtectedRoute>
-              <Orcamentos />
+              <PerguntasFrequentes />
             </ProtectedRoute>
           }
         />
 
-        {/* ========================================
-            ASSISTÊNCIA TÉCNICA
-        ======================================== */}
-
-        <Route
-          path="/assistencia-tecnica"
-          element={
-            <ProtectedRoute>
-              <AssistenciaTecnica />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ========================================
-            VISITAS TÉCNICAS
-        ======================================== */}
-
-        <Route
-          path="/visitas-tecnicas"
-          element={
-            <ProtectedRoute>
-              <VisitasTecnicas />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ========================================
-            CONVERSOR IMAGEM PARA PDF
-        ======================================== */}
-
-        <Route
-          path="/imagem-para-pdf"
-          element={
-            <ProtectedRoute>
-              <ImageToPdf />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ========================================
+        {/* ====================================
             TREINAMENTO COMERCIAL
-        ======================================== */}
+            QUATRO MATERIAIS EM PDF
+        ==================================== */}
 
         <Route
           path="/treinamento-comercial"
@@ -357,9 +302,61 @@ function App() {
           }
         />
 
-        {/* ========================================
-            MARKETING
-        ======================================== */}
+        {/* ====================================
+            ORÇAMENTOS
+        ==================================== */}
+
+        <Route
+          path="/orcamentos"
+          element={
+            <ProtectedRoute>
+              <Orcamentos />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ====================================
+            ASSISTÊNCIA TÉCNICA
+        ==================================== */}
+
+        <Route
+          path="/assistencia-tecnica"
+          element={
+            <ProtectedRoute>
+              <AssistenciaTecnica />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ====================================
+            VISITAS TÉCNICAS
+        ==================================== */}
+
+        <Route
+          path="/visitas-tecnicas"
+          element={
+            <ProtectedRoute>
+              <VisitasTecnicas />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ====================================
+            SYNTER ANALYTICS
+        ==================================== */}
+
+        <Route
+          path="/synter-analytics"
+          element={
+            <ProtectedRoute>
+              <SynterAnalytics />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ====================================
+            MATERIAIS DE MARKETING
+        ==================================== */}
 
         <Route
           path="/marketing"
@@ -370,9 +367,9 @@ function App() {
           }
         />
 
-        {/* ========================================
+        {/* ====================================
             MARKETING DIGITAL
-        ======================================== */}
+        ==================================== */}
 
         <Route
           path="/digmarketing"
@@ -383,9 +380,22 @@ function App() {
           }
         />
 
-        {/* ========================================
-            ROTAS ANTIGAS DO GOOGLE AUTHENTICATOR
-        ======================================== */}
+        {/* ====================================
+            CONVERSOR DE IMAGEM PARA PDF
+        ==================================== */}
+
+        <Route
+          path="/imagem-para-pdf"
+          element={
+            <ProtectedRoute>
+              <ImageToPdf />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ====================================
+            ROTAS ANTIGAS DE AUTENTICAÇÃO
+        ==================================== */}
 
         <Route
           path="/mfa/setup"
@@ -407,9 +417,9 @@ function App() {
           }
         />
 
-        {/* ========================================
+        {/* ====================================
             PÁGINA NÃO ENCONTRADA
-        ======================================== */}
+        ==================================== */}
 
         <Route
           path="*"
@@ -418,9 +428,9 @@ function App() {
 
       </Routes>
 
-      {/* ========================================
+      {/* ====================================
           ASSISTENTE SYNTER
-      ======================================== */}
+      ==================================== */}
 
       {mostrarAssistente && (
         <SynterAssistant />
