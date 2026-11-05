@@ -7,9 +7,7 @@ import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 import CardsDashboard from "../components/CardsDashboard";
 
-// ========================================
-// ÍCONES DOS CARTÕES
-// ========================================
+// ÍCONES
 
 import ManualIcon from "../assets/manual-icon.png";
 import YtIcon from "../assets/Yt-Icon.png";
@@ -23,16 +21,15 @@ import AppIcon from "../assets/app-icon.png";
 import QuestionIcon from "../assets/perguntas-icon.png";
 import NvdIcon from "../assets/nvd-icon.png";
 
-// ========================================
 // ESTILOS
-// ========================================
 
 import "../styles/Dashboard.css";
 import "../styles/DashboardHero.css";
+import "../styles/DashboardGrid.css";
 
-// ========================================
-// ÍCONE GEOMÉTRICO SYNTER
-// ========================================
+// ==========================================
+// ÍCONE SYNTER
+// ==========================================
 
 function IconeSynter() {
   return (
@@ -54,9 +51,9 @@ function IconeSynter() {
   );
 }
 
-// ========================================
+// ==========================================
 // ÍCONES DOS DESTAQUES
-// ========================================
+// ==========================================
 
 function IconeAtualizado() {
   return (
@@ -108,9 +105,9 @@ function IconeAcesso() {
   );
 }
 
-// ========================================
-// COMPONENTE DE DESTAQUE
-// ========================================
+// ==========================================
+// DESTAQUE DO HERO
+// ==========================================
 
 function DestaqueDashboard({
   icone,
@@ -131,31 +128,23 @@ function DestaqueDashboard({
   );
 }
 
-// ========================================
+// ==========================================
 // DASHBOARD PRINCIPAL
-// ========================================
+// ==========================================
 
 function Dashboard() {
-  const [profileOpen, setProfileOpen] =
-    useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   return (
     <div className="dashboard-page synter-dashboard">
-
-      {/* =====================================
-          HEADER
-      ===================================== */}
-
       <Header />
 
       {/* =====================================
-          HERO PADRÃO UNIVERSIDADE SYNTER
+          HERO PADRÃO SYNTER
       ===================================== */}
 
       <section className="synter-db-hero">
         <div className="synter-db-hero-container">
-
-          {/* PERFIL */}
 
           <div className="synter-db-profile">
             <UserProfileButton
@@ -163,16 +152,11 @@ function Dashboard() {
             />
           </div>
 
-          {/* CONTEÚDO DO HERO */}
-
           <div className="synter-db-hero-content">
 
             <div className="synter-db-eyebrow">
               <IconeSynter />
-
-              <span>
-                PLATAFORMA DE CONHECIMENTO
-              </span>
+              <span>PLATAFORMA DE CONHECIMENTO</span>
             </div>
 
             <h1 className="synter-db-title">
@@ -184,8 +168,6 @@ function Dashboard() {
               produtos, treinamentos e materiais de
               apoio para o seu dia a dia.
             </p>
-
-            {/* DESTAQUES */}
 
             <div className="synter-db-features">
 
@@ -208,28 +190,22 @@ function Dashboard() {
               />
 
             </div>
-
           </div>
         </div>
       </section>
 
       {/* =====================================
-          ACESSO RÁPIDO
+          ACESSO RÁPIDO — 4 CARTÕES POR LINHA
       ===================================== */}
 
       <main className="dashboard-content">
 
         <div className="dashboard-section-title">
           <div className="dashboard-section-bar" />
-
-          <h4>
-            ACESSO RÁPIDO
-          </h4>
+          <h4>ACESSO RÁPIDO</h4>
         </div>
 
         <div className="cards">
-
-          {/* APLICATIVO SYNTER */}
 
           <CardsDashboard
             image={AppIcon}
@@ -238,16 +214,12 @@ function Dashboard() {
             enabled={false}
           />
 
-          {/* ASSISTÊNCIA / SUPORTE */}
-
           <CardsDashboard
             image={FtIcon}
             title="Assistência / Suporte Técnico"
             desc="Acesse nosso SAC"
             route="/dashsac"
           />
-
-          {/* FICHAS TÉCNICAS */}
 
           <CardsDashboard
             image={FtIcon}
@@ -256,16 +228,12 @@ function Dashboard() {
             route="/fichas-tecnicas"
           />
 
-          {/* ORÇAMENTOS */}
-
           <CardsDashboard
             image={ImgIcon}
             title="Orçamentos"
             desc="Crie e acompanhe seus orçamentos"
             route="/orcamentos"
           />
-
-          {/* MANUAIS */}
 
           <CardsDashboard
             image={ManualIcon}
@@ -274,16 +242,12 @@ function Dashboard() {
             route="/manuals"
           />
 
-          {/* MARKETING */}
-
           <CardsDashboard
             image={MktIcon}
             title="Materiais de Marketing"
             desc="Acesse nossos materiais de marketing"
             route="/marketing"
           />
-
-          {/* NOVIDADES */}
 
           <CardsDashboard
             image={NvdIcon}
@@ -292,16 +256,12 @@ function Dashboard() {
             enabled={false}
           />
 
-          {/* PERGUNTAS FREQUENTES */}
-
           <CardsDashboard
             image={QuestionIcon}
             title="Perguntas Frequentes"
             desc="Encontre respostas e orientações sobre os produtos Synter."
             route="/perguntas-frequentes"
           />
-
-          {/* TABELA DE PREÇOS */}
 
           <CardsDashboard
             image={TabelaIcon}
@@ -310,8 +270,6 @@ function Dashboard() {
             route="/tabela-precos"
           />
 
-          {/* TREINAMENTO COMERCIAL */}
-
           <CardsDashboard
             image={TcIcon}
             title="Treinamento Comercial"
@@ -319,16 +277,12 @@ function Dashboard() {
             enabled={false}
           />
 
-          {/* TREINAMENTOS TÉCNICOS */}
-
           <CardsDashboard
             image={TreinamentoIcon}
             title="Treinamentos Técnicos"
             desc="Acesse nossos treinamentos técnicos"
             enabled={false}
           />
-
-          {/* VÍDEOS DE INSTALAÇÃO */}
 
           <CardsDashboard
             image={YtIcon}
@@ -340,24 +294,13 @@ function Dashboard() {
         </div>
       </main>
 
-      {/* =====================================
-          FOOTER
-      ===================================== */}
-
       <Footer />
-
-      {/* =====================================
-          PERFIL
-      ===================================== */}
 
       {profileOpen && (
         <Profile
-          onClose={() =>
-            setProfileOpen(false)
-          }
+          onClose={() => setProfileOpen(false)}
         />
       )}
-
     </div>
   );
 }

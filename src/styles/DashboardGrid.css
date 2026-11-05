@@ -1,0 +1,183 @@
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   DASHBOARD — GRID DE ACESSO RÁPIDO
+   4 CARTÕES POR LINHA
+========================================== */
+
+/* CONTAINER PRINCIPAL */
+
+.synter-dashboard .dashboard-content {
+  display: block !important;
+
+  width: min(1440px, calc(100% - 80px)) !important;
+  max-width: 1440px !important;
+
+  margin: 0 auto !important;
+  padding: 48px 0 90px !important;
+
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   TÍTULO DA SEÇÃO
+========================================== */
+
+.synter-dashboard .dashboard-section-title {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  gap: 12px;
+
+  margin: 0 0 26px;
+  padding: 0;
+}
+
+.synter-dashboard .dashboard-section-bar {
+  display: block;
+  flex: 0 0 3px;
+
+  width: 3px;
+  height: 20px;
+
+  background: #ffffff;
+  border-radius: 3px;
+}
+
+.synter-dashboard .dashboard-section-title h4 {
+  margin: 0;
+  padding: 0;
+
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 1.8px;
+  line-height: 1.5;
+}
+
+/* ==========================================
+   GRID — DESKTOP
+========================================== */
+
+.synter-dashboard .dashboard-content .cards {
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr)) !important;
+
+  grid-auto-flow: row;
+  grid-auto-rows: auto;
+
+  align-items: stretch !important;
+  justify-content: center !important;
+  justify-items: stretch !important;
+
+  gap: 16px !important;
+
+  width: 100% !important;
+  max-width: 100% !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  box-sizing: border-box;
+}
+
+/* ==========================================
+   CADA CARTÃO
+========================================== */
+
+.synter-dashboard .dashboard-content .cards > * {
+  display: flex;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+
+  height: 100%;
+  min-height: 106px;
+
+  margin: 0 !important;
+
+  flex: initial !important;
+  grid-column: auto !important;
+  grid-row: auto !important;
+
+  box-sizing: border-box;
+
+  border-radius: 14px;
+}
+
+/* EVITA QUE TEXTOS GRANDES ESTOUREM O CARD */
+
+.synter-dashboard .dashboard-content .cards > * * {
+  min-width: 0;
+}
+
+.synter-dashboard .dashboard-content .cards h3,
+.synter-dashboard .dashboard-content .cards h4,
+.synter-dashboard .dashboard-content .cards p {
+  overflow-wrap: anywhere;
+}
+
+/* ==========================================
+   NOTEBOOKS E TABLETS
+   3 CARTÕES POR LINHA
+========================================== */
+
+@media (max-width: 1200px) {
+  .synter-dashboard .dashboard-content .cards {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* ==========================================
+   TABLETS MENORES
+   2 CARTÕES POR LINHA
+========================================== */
+
+@media (max-width: 850px) {
+  .synter-dashboard .dashboard-content {
+    width: calc(100% - 40px) !important;
+    padding: 35px 0 65px !important;
+  }
+
+  .synter-dashboard .dashboard-content .cards {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr)) !important;
+
+    gap: 14px !important;
+  }
+}
+
+/* ==========================================
+   CELULARES
+   1 CARTÃO POR LINHA
+========================================== */
+
+@media (max-width: 520px) {
+  .synter-dashboard .dashboard-content {
+    width: calc(100% - 32px) !important;
+    padding: 30px 0 55px !important;
+  }
+
+  .synter-dashboard .dashboard-content .cards {
+    grid-template-columns:
+      minmax(0, 1fr) !important;
+
+    gap: 12px !important;
+  }
+
+  .synter-dashboard .dashboard-content .cards > * {
+    min-height: 94px;
+  }
+
+  .synter-dashboard .dashboard-section-title {
+    margin-bottom: 22px;
+  }
+}
