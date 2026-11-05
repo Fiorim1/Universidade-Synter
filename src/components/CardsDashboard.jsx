@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "./CardsDashboard.css";
+import "../styles/CardsDashboard.css";
 
 function CardsDashboard({
   image,
