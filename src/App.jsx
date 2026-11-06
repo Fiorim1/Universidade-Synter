@@ -62,6 +62,12 @@ import Marketing from "./pages/Marketing.jsx";
 import DigMarketing from "./pages/DigMarketing.jsx";
 
 // ========================================
+// COMPARADOR DE FECHADURAS
+// ========================================
+
+import ComparadorFechaduras from "./pages/ComparadorFechaduras.jsx";
+
+// ========================================
 // ASSISTÊNCIA E ATENDIMENTO
 // ========================================
 
@@ -219,7 +225,6 @@ function App() {
 
         {/* ====================================
             APLICATIVO SYNTER
-            GUIA DE UTILIZAÇÃO SYNTER SMART
         ==================================== */}
 
         <Route
@@ -330,6 +335,20 @@ function App() {
           element={
             <ProtectedRoute>
               <Orcamentos />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ====================================
+            COMPARADOR DE FECHADURAS
+            NOVA FUNCIONALIDADE
+        ==================================== */}
+
+        <Route
+          path="/comparador-fechaduras"
+          element={
+            <ProtectedRoute>
+              <ComparadorFechaduras />
             </ProtectedRoute>
           }
         />

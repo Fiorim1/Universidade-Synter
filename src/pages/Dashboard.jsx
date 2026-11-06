@@ -303,9 +303,10 @@ function Dashboard() {
 
           <CardsDashboard
             image={NvdIcon}
-            title="Novidades Synter"
-            desc="Acompanhe as novidades da Synter"
-            enabled={false}
+            title="Comparador de Fechaduras"
+            desc="Compare modelos, recursos e especificações das fechaduras Synter."
+            route="/comparador-fechaduras"
+            enabled={true}
           />
 
           {/* =================================
