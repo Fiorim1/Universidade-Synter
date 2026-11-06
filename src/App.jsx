@@ -38,7 +38,7 @@ import DashboardSAC from "./pages/DashboardSAC.jsx";
 import AplicativoSynter from "./pages/AplicativoSynter.jsx";
 
 // ========================================
-// CONTEÚDOS E DOCUMENTAÇÃO
+// DOCUMENTAÇÃO E CONTEÚDOS
 // ========================================
 
 import Manuals from "./routes/Manuals.jsx";
@@ -62,10 +62,10 @@ import Marketing from "./pages/Marketing.jsx";
 import DigMarketing from "./pages/DigMarketing.jsx";
 
 // ========================================
-// COMPARADOR DE FECHADURAS
+// SELETOR DE FECHADURAS
 // ========================================
 
-import ComparadorFechaduras from "./pages/ComparadorFechaduras.jsx";
+import SeletorFechaduras from "./pages/SeletorFechaduras.jsx";
 
 // ========================================
 // ASSISTÊNCIA E ATENDIMENTO
@@ -128,7 +128,7 @@ function App() {
   }, [location.pathname]);
 
   // ========================================
-  // CONTROLE DE EXIBIÇÃO DO ASSISTENTE
+  // EXIBIÇÃO DO ASSISTENTE
   // ========================================
 
   const mostrarAssistente =
@@ -176,7 +176,7 @@ function App() {
         />
 
         {/* ====================================
-            RECUPERAR SENHA
+            RECUPERAÇÃO DE SENHA
         ==================================== */}
 
         <Route
@@ -187,10 +187,6 @@ function App() {
             </PublicRoute>
           }
         />
-
-        {/* ====================================
-            ATUALIZAR SENHA
-        ==================================== */}
 
         <Route
           path="/update-password"
@@ -237,7 +233,7 @@ function App() {
         />
 
         {/* ====================================
-            MANUAIS DE PRODUTOS
+            MANUAIS
         ==================================== */}
 
         <Route
@@ -262,8 +258,6 @@ function App() {
           }
         />
 
-        {/* ROTA ANTIGA — FICHAS TÉCNICAS */}
-
         <Route
           path="/ficha-tecnica"
           element={
@@ -275,7 +269,7 @@ function App() {
         />
 
         {/* ====================================
-            VÍDEOS EDUCATIVOS
+            VÍDEOS DE INSTALAÇÃO
         ==================================== */}
 
         <Route
@@ -340,16 +334,30 @@ function App() {
         />
 
         {/* ====================================
-            COMPARADOR DE FECHADURAS
+            SELETOR DE FECHADURAS
             NOVA FUNCIONALIDADE
+        ==================================== */}
+
+        <Route
+          path="/seletor-fechaduras"
+          element={
+            <ProtectedRoute>
+              <SeletorFechaduras />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ====================================
+            REDIRECIONAMENTO DA ROTA ANTIGA
         ==================================== */}
 
         <Route
           path="/comparador-fechaduras"
           element={
-            <ProtectedRoute>
-              <ComparadorFechaduras />
-            </ProtectedRoute>
+            <Navigate
+              to="/seletor-fechaduras"
+              replace
+            />
           }
         />
 
@@ -393,7 +401,7 @@ function App() {
         />
 
         {/* ====================================
-            MATERIAIS DE MARKETING
+            MARKETING
         ==================================== */}
 
         <Route
@@ -473,7 +481,6 @@ function App() {
       {mostrarAssistente && (
         <SynterAssistant />
       )}
-
     </>
   );
 }

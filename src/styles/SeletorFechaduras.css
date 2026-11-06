@@ -1,0 +1,675 @@
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   SELETOR DE FECHADURAS
+========================================== */
+
+.sf-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  background: #080808;
+  color: #ffffff;
+  font-family: inherit;
+}
+
+.sf-page *,
+.sf-page *::before,
+.sf-page *::after {
+  box-sizing: border-box;
+}
+
+.sf-container {
+  width: min(1400px, calc(100% - 80px));
+  margin: 0 auto;
+}
+
+/* ==========================================
+   HERO
+========================================== */
+
+.sf-page .sf-hero {
+  width: 100%;
+  background: #080808;
+  border-bottom: 1px solid #252529;
+}
+
+.sf-page .sf-hero-inner {
+  position: relative;
+  min-height: 310px;
+  padding: 76px 0 62px;
+}
+
+.sf-page .sf-profile {
+  position: absolute;
+  top: 34px;
+  right: 0;
+  z-index: 5;
+}
+
+.sf-page .sf-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+  color: #b7b7bf;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.5;
+}
+
+.sf-page .sf-eyebrow svg {
+  flex-shrink: 0;
+}
+
+.sf-page .sf-hero h1 {
+  margin: 0 0 22px;
+  color: #ffffff;
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+.sf-page .sf-hero-description {
+  max-width: 800px;
+  margin: 0;
+  color: #b7b7c0;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+/* ==========================================
+   CONTEÚDO
+========================================== */
+
+.sf-page .sf-main {
+  flex: 1;
+  padding: 48px 0 90px;
+}
+
+.sf-page .sf-section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.sf-page .sf-section-bar {
+  width: 3px;
+  height: 20px;
+  flex: 0 0 3px;
+  background: #ffffff;
+  border-radius: 3px;
+}
+
+.sf-page .sf-section-heading h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  line-height: 1.65;
+}
+
+.sf-page .sf-section-heading p {
+  margin: 7px 0 0;
+  color: #a0a0a9;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ==========================================
+   ASSISTENTE DE SELEÇÃO
+========================================== */
+
+.sf-page .sf-wizard {
+  width: 100%;
+  padding: 32px;
+  background: linear-gradient(
+    140deg,
+    #151517,
+    #0e0e10
+  );
+  border: 1px solid #343439;
+  border-radius: 16px;
+}
+
+.sf-page .sf-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: #aaaab2;
+  font-size: 12px;
+}
+
+.sf-page .sf-progress-header strong {
+  color: #ffffff;
+}
+
+.sf-page .sf-progress-track {
+  width: 100%;
+  height: 5px;
+  overflow: hidden;
+  background: #343438;
+  border-radius: 999px;
+}
+
+.sf-page .sf-progress-fill {
+  height: 100%;
+  background: #ffffff;
+  border-radius: inherit;
+  transition: width 0.25s ease;
+}
+
+/* ==========================================
+   PERGUNTAS
+========================================== */
+
+.sf-page .sf-question,
+.sf-page .sf-result-title {
+  padding: 36px 0 26px;
+}
+
+.sf-page .sf-step-label {
+  color: #9d9da7;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+.sf-page .sf-question h3,
+.sf-page .sf-result-title h3 {
+  margin: 12px 0 10px;
+  color: #ffffff;
+  font-size: clamp(23px, 3vw, 32px);
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: -0.7px;
+}
+
+.sf-page .sf-question p,
+.sf-page .sf-result-title p {
+  max-width: 800px;
+  margin: 0;
+  color: #aaaab4;
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+/* ==========================================
+   OPÇÕES DE RESPOSTA
+========================================== */
+
+.sf-page .sf-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.sf-page .sf-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  min-width: 0;
+  min-height: 105px;
+  padding: 22px;
+  background: #19191b;
+  border: 1px solid #39393f;
+  border-radius: 12px;
+  color: #ffffff;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sf-page .sf-option:hover {
+  background: #232326;
+  border-color: #74747b;
+}
+
+.sf-page .sf-option-selected {
+  background: #262629;
+  border-color: #ffffff;
+}
+
+.sf-page .sf-option-radio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  border: 1px solid #aaaab3;
+  border-radius: 50%;
+}
+
+.sf-page .sf-option-selected .sf-option-radio {
+  border-color: #ffffff;
+}
+
+.sf-page .sf-option-radio > span {
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
+  border-radius: 50%;
+}
+
+.sf-page .sf-option-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.sf-page .sf-option-content strong {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.sf-page .sf-option-content small {
+  color: #aaaab4;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* ==========================================
+   BOTÕES
+========================================== */
+
+.sf-page .sf-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 30px;
+  padding-top: 24px;
+  border-top: 1px solid #34343a;
+}
+
+.sf-page .sf-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  min-height: 45px;
+  padding: 11px 20px;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.sf-page .sf-button-secondary {
+  color: #ffffff;
+  background: #232326;
+  border: 1px solid #49494e;
+}
+
+.sf-page .sf-button-secondary:hover:not(:disabled) {
+  background: #303035;
+}
+
+.sf-page .sf-button-primary {
+  color: #111111;
+  background: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+.sf-page .sf-button-primary:hover:not(:disabled) {
+  background: #e8e8ea;
+}
+
+.sf-page .sf-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ==========================================
+   RESUMO DAS RESPOSTAS
+========================================== */
+
+.sf-page .sf-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.sf-page .sf-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+  background: #202023;
+  border: 1px solid #3b3b41;
+  border-radius: 10px;
+}
+
+.sf-page .sf-summary-item span {
+  color: #aaaab3;
+  font-size: 11px;
+}
+
+.sf-page .sf-summary-item strong {
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ==========================================
+   ORIENTAÇÃO TÉCNICA
+========================================== */
+
+.sf-page .sf-notice {
+  margin-bottom: 26px;
+  padding: 18px 20px;
+  background: #202023;
+  border: 1px solid #45454b;
+  border-radius: 11px;
+}
+
+.sf-page .sf-notice strong {
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.sf-page .sf-notice p {
+  margin: 8px 0 0;
+  color: #b7b7bf;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+/* ==========================================
+   RESULTADOS
+========================================== */
+
+.sf-page .sf-result-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.sf-page .sf-result-tools h4 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+}
+
+.sf-page .sf-result-tools input {
+  width: min(100%, 340px);
+  min-height: 44px;
+  padding: 0 14px;
+  background: #19191c;
+  border: 1px solid #44444a;
+  border-radius: 9px;
+  color: #ffffff;
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.sf-page .sf-result-tools input:focus {
+  border-color: #ffffff;
+}
+
+.sf-page .sf-product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.sf-page .sf-product-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  min-height: 105px;
+  padding: 15px;
+  background: #19191b;
+  border: 1px solid #39393e;
+  border-radius: 12px;
+}
+
+.sf-page .sf-product-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 43px;
+  width: 43px;
+  height: 43px;
+  background: #252528;
+  border: 1px solid #47474d;
+  border-radius: 9px;
+}
+
+.sf-page .sf-product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.sf-page .sf-product-info small {
+  color: #a3a3ac;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+}
+
+.sf-page .sf-product-info strong {
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.sf-page .sf-product-info > span {
+  color: #aaaab3;
+  font-size: 11px;
+}
+
+.sf-page .sf-show-more {
+  display: block;
+  margin: 20px auto 0;
+  padding: 11px 20px;
+  background: #242427;
+  border: 1px solid #4b4b51;
+  border-radius: 9px;
+  color: #ffffff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sf-page .sf-show-more:hover {
+  background: #303034;
+}
+
+.sf-page .sf-empty {
+  padding: 26px;
+  color: #b3b3bc;
+  text-align: center;
+  border: 1px dashed #44444a;
+  border-radius: 10px;
+}
+
+/* ==========================================
+   LINKS DE REFERÊNCIA
+========================================== */
+
+.sf-page .sf-reference-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.sf-page .sf-reference-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 43px;
+  padding: 10px 16px;
+  background: #242427;
+  border: 1px solid #49494f;
+  border-radius: 9px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.sf-page .sf-reference-links a:hover {
+  background: #303035;
+  color: #ffffff;
+}
+
+/* ==========================================
+   ACESSIBILIDADE
+========================================== */
+
+.sf-page button:focus-visible,
+.sf-page a:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+========================================== */
+
+@media (max-width: 1100px) {
+  .sf-page .sf-product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sf-page .sf-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 850px) {
+  .sf-page .sf-product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .sf-container {
+    width: calc(100% - 40px);
+  }
+
+  .sf-page .sf-hero-inner {
+    min-height: auto;
+    padding: 110px 0 48px;
+  }
+
+  .sf-page .sf-profile {
+    top: 24px;
+  }
+
+  .sf-page .sf-eyebrow {
+    font-size: 10px;
+    letter-spacing: 1.4px;
+  }
+
+  .sf-page .sf-hero h1 {
+    font-size: clamp(38px, 8vw, 52px);
+    letter-spacing: -1.4px;
+  }
+
+  .sf-page .sf-hero-description {
+    font-size: 14px;
+  }
+
+  .sf-page .sf-main {
+    padding: 35px 0 65px;
+  }
+
+  .sf-page .sf-wizard {
+    padding: 22px;
+  }
+
+  .sf-page .sf-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .sf-container {
+    width: calc(100% - 32px);
+  }
+
+  .sf-page .sf-hero h1 {
+    font-size: 36px;
+  }
+
+  .sf-page .sf-wizard {
+    padding: 16px;
+  }
+
+  .sf-page .sf-question,
+  .sf-page .sf-result-title {
+    padding: 28px 0 22px;
+  }
+
+  .sf-page .sf-option {
+    padding: 17px;
+    min-height: 90px;
+  }
+
+  .sf-page .sf-summary,
+  .sf-page .sf-product-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sf-page .sf-result-tools input {
+    width: 100%;
+  }
+
+  .sf-page .sf-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .sf-page .sf-button {
+    width: 100%;
+  }
+
+  .sf-page .sf-reference-links a {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sf-page *,
+  .sf-page *::before,
+  .sf-page *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

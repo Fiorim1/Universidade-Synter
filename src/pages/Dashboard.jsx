@@ -110,7 +110,7 @@ function IconeAcesso() {
 }
 
 // ==========================================
-// DESTAQUE DO HERO
+// DESTAQUES DO HERO
 // ==========================================
 
 function DestaqueDashboard({
@@ -143,9 +143,7 @@ function Dashboard() {
   return (
     <div className="dashboard-page synter-dashboard">
 
-      {/* =====================================
-          HEADER
-      ===================================== */}
+      {/* HEADER */}
 
       <Header />
 
@@ -160,9 +158,7 @@ function Dashboard() {
 
           <div className="synter-db-profile">
             <UserProfileButton
-              onClick={() =>
-                setProfileOpen(true)
-              }
+              onClick={() => setProfileOpen(true)}
             />
           </div>
 
@@ -229,10 +225,7 @@ function Dashboard() {
 
         <div className="cards">
 
-          {/* =================================
-              APLICATIVO SYNTER
-              ACESSO LIBERADO
-          ================================= */}
+          {/* APLICATIVO SYNTER */}
 
           <CardsDashboard
             image={AppIcon}
@@ -242,9 +235,7 @@ function Dashboard() {
             enabled={true}
           />
 
-          {/* =================================
-              ASSISTÊNCIA TÉCNICA
-          ================================= */}
+          {/* ASSISTÊNCIA TÉCNICA */}
 
           <CardsDashboard
             image={FtIcon}
@@ -253,9 +244,7 @@ function Dashboard() {
             route="/dashsac"
           />
 
-          {/* =================================
-              FICHAS TÉCNICAS
-          ================================= */}
+          {/* FICHAS TÉCNICAS */}
 
           <CardsDashboard
             image={FtIcon}
@@ -264,9 +253,7 @@ function Dashboard() {
             route="/fichas-tecnicas"
           />
 
-          {/* =================================
-              ORÇAMENTOS
-          ================================= */}
+          {/* ORÇAMENTOS */}
 
           <CardsDashboard
             image={ImgIcon}
@@ -275,9 +262,7 @@ function Dashboard() {
             route="/orcamentos"
           />
 
-          {/* =================================
-              MANUAIS
-          ================================= */}
+          {/* MANUAIS */}
 
           <CardsDashboard
             image={ManualIcon}
@@ -286,9 +271,7 @@ function Dashboard() {
             route="/manuals"
           />
 
-          {/* =================================
-              MARKETING
-          ================================= */}
+          {/* MARKETING */}
 
           <CardsDashboard
             image={MktIcon}
@@ -298,20 +281,19 @@ function Dashboard() {
           />
 
           {/* =================================
-              NOVIDADES
+              SELETOR DE FECHADURAS
+              NOVA FUNCIONALIDADE
           ================================= */}
 
           <CardsDashboard
             image={NvdIcon}
-            title="Comparador de Fechaduras"
-            desc="Compare modelos, recursos e especificações das fechaduras Synter."
-            route="/comparador-fechaduras"
+            title="Seletor de Fechaduras"
+            desc="Encontre modelos Synter conforme a necessidade do cliente."
+            route="/seletor-fechaduras"
             enabled={true}
           />
 
-          {/* =================================
-              PERGUNTAS FREQUENTES
-          ================================= */}
+          {/* PERGUNTAS FREQUENTES */}
 
           <CardsDashboard
             image={QuestionIcon}
@@ -320,9 +302,7 @@ function Dashboard() {
             route="/perguntas-frequentes"
           />
 
-          {/* =================================
-              TABELA DE PREÇOS
-          ================================= */}
+          {/* TABELA DE PREÇOS */}
 
           <CardsDashboard
             image={TabelaIcon}
@@ -331,9 +311,7 @@ function Dashboard() {
             route="/tabela-precos"
           />
 
-          {/* =================================
-              TREINAMENTO COMERCIAL
-          ================================= */}
+          {/* TREINAMENTO COMERCIAL */}
 
           <CardsDashboard
             image={TcIcon}
@@ -343,9 +321,7 @@ function Dashboard() {
             enabled={true}
           />
 
-          {/* =================================
-              TREINAMENTOS TÉCNICOS
-          ================================= */}
+          {/* TREINAMENTOS TÉCNICOS */}
 
           <CardsDashboard
             image={TreinamentoIcon}
@@ -354,9 +330,7 @@ function Dashboard() {
             enabled={false}
           />
 
-          {/* =================================
-              VÍDEOS DE INSTALAÇÃO
-          ================================= */}
+          {/* VÍDEOS DE INSTALAÇÃO */}
 
           <CardsDashboard
             image={YtIcon}
@@ -368,9 +342,7 @@ function Dashboard() {
         </div>
       </main>
 
-      {/* =====================================
-          FOOTER
-      ===================================== */}
+      {/* FOOTER */}
 
       <Footer />
 
@@ -380,9 +352,7 @@ function Dashboard() {
 
       {profileOpen && (
         <Profile
-          onClose={() =>
-            setProfileOpen(false)
-          }
+          onClose={() => setProfileOpen(false)}
         />
       )}
 
