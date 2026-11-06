@@ -1,3 +1,4 @@
+
 import "../styles/Footer.css";
 
 import { Call } from "reicon-react";
@@ -8,159 +9,181 @@ import instagramIcon from "../assets/icone-instagram.png";
 import linkedinIcon from "../assets/icone-linkedin.png";
 import youtubeIcon from "../assets/icone-youtube.png";
 
+// ==========================================
+// CONTATO OFICIAL SYNTER
+// ==========================================
+
+const TELEFONE_SYNTER = "+55 49 9166-4297";
+
+const MENSAGEM_WHATSAPP =
+  "Olá! Gostaria de entrar em contato com a equipe Synter.";
+
+const LINK_WHATSAPP =
+  "https://wa.me/554991664297?text=" +
+  encodeURIComponent(MENSAGEM_WHATSAPP);
+
+// ==========================================
+// FOOTER — UNIVERSIDADE SYNTER
+// ==========================================
 
 function Footer() {
+  return (
+    <footer className="footer">
 
-    return (
+      <div className="footer-container">
 
-        <footer className="footer">
+        {/* ===================================
+            MARCA SYNTER
+        =================================== */}
 
-            <div className="footer-container">
+        <div className="footer-brand">
 
+          <img
+            src={logo}
+            alt="Synter"
+            className="footer-logo"
+          />
 
-                {/* Lado esquerdo */}
-                <div className="footer-brand">
+          <div className="footer-divider" />
 
-                    <img
-                        src={logo}
-                        alt="Synter"
-                        className="footer-logo"
-                    />
+          <p>
+            Tecnologia que abre novas possibilidades.
+          </p>
 
-                    <div className="footer-divider"></div>
+        </div>
 
-                    <p>
-                        Tecnologia que abre novas possibilidades.
-                    </p>
+        {/* ===================================
+            LINKS E REDES SOCIAIS
+        =================================== */}
 
-                </div>
+        <div className="footer-center">
 
+          {/* LINKS */}
 
-                {/* Centro */}
-                <div className="footer-center">
+          <div className="footer-links">
 
-                    <div className="footer-links">
+            <a href="#">
+              Termos de Uso
+            </a>
 
-                        <a href="#">
-                            Termos de Uso
-                        </a>
+            <span>|</span>
 
-                        <span>|</span>
+            <a href="#">
+              Política de Privacidade
+            </a>
 
-                        <a href="#">
-                            Política de Privacidade
-                        </a>
+          </div>
 
-                    </div>
+          {/* REDES SOCIAIS */}
 
+          <div className="footer-social">
 
-                    {/* ========================= */}
-                    {/* REDES SOCIAIS             */}
-                    {/* ========================= */}
+            {/* INSTAGRAM */}
 
-                    <div className="footer-social">
+            <a
+              href="https://www.instagram.com/synter_fechaduras/reels/?hl=fr"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram da Synter"
+            >
+              <img
+                src={instagramIcon}
+                alt="Instagram"
+              />
+            </a>
 
+            {/* LINKEDIN */}
 
-                        {/* INSTAGRAM */}
+            <a
+              href="https://br.linkedin.com/company/synter-fabrica"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn da Synter"
+            >
+              <img
+                src={linkedinIcon}
+                alt="LinkedIn"
+              />
+            </a>
 
-                        <a
-                            href="https://www.instagram.com/synter_fechaduras/reels/?hl=fr"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Instagram da Synter"
-                        >
-                            <img
-                                src={instagramIcon}
-                                alt="Instagram"
-                            />
-                        </a>
+            {/* YOUTUBE */}
 
+            <a
+              href="https://www.youtube.com/@synter_fechaduras"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube da Synter"
+            >
+              <img
+                src={youtubeIcon}
+                alt="YouTube"
+              />
+            </a>
 
-                        {/* LINKEDIN */}
+          </div>
 
-                        <a
-                            href="https://br.linkedin.com/company/synter-fabrica"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="LinkedIn da Synter"
-                        >
-                            <img
-                                src={linkedinIcon}
-                                alt="LinkedIn"
-                            />
-                        </a>
+        </div>
 
+        {/* ===================================
+            CONTATO — WHATSAPP
+        =================================== */}
 
-                        {/* YOUTUBE */}
+        <a
+          href={LINK_WHATSAPP}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="footer-contact"
+          aria-label={`Falar com a Synter pelo WhatsApp: ${TELEFONE_SYNTER}`}
+          title="Conversar com a Synter no WhatsApp"
+        >
 
-                        <a
-                            href="https://www.youtube.com/@synter_fechaduras"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="YouTube da Synter"
-                        >
-                            <img
-                                src={youtubeIcon}
-                                alt="YouTube"
-                            />
-                        </a>
+          <span className="footer-phone-icon">
+            <Call />
+          </span>
 
-                    </div>
+          <div className="footer-contact-info">
 
-                </div>
+            <p>
+              {TELEFONE_SYNTER}
+            </p>
 
+            <strong>
+              Fale Conosco
+            </strong>
 
-                {/* Lado direito */}
-                <div className="footer-contact">
+          </div>
 
-                    <span className="footer-phone-icon">
-                        <Call />
-                    </span>
+        </a>
 
-                    <div>
+      </div>
 
-                        <p>
-                            (48) 3941-1192
-                        </p>
+      {/* =====================================
+          PARTE INFERIOR
+      ===================================== */}
 
-                        <strong>
-                            Fale Conosco
-                        </strong>
+      <div className="footer-bottom">
 
-                    </div>
+        <span>
+          © {new Date().getFullYear()} Synter.
+          Todos os direitos reservados.
+        </span>
 
-                </div>
+        <div className="footer-bottom-tags">
 
-            </div>
+          <span>SEGURANÇA</span>
+          <span>|</span>
+          <span>TECNOLOGIA</span>
+          <span>|</span>
+          <span>PESSOAS</span>
+          <span>|</span>
+          <span>SEMPRE MAIS LONGE</span>
 
+        </div>
 
-            {/* Parte inferior */}
+      </div>
 
-            <div className="footer-bottom">
-
-                <span>
-                    © {new Date().getFullYear()} Synter. Todos os direitos reservados.
-                </span>
-
-                <div className="footer-bottom-tags">
-
-                    <span>SEGURANÇA</span>
-                    <span>|</span>
-                    <span>TECNOLOGIA</span>
-                    <span>|</span>
-                    <span>PESSOAS</span>
-                    <span>|</span>
-                    <span>SEMPRE MAIS LONGE</span>
-
-                </div>
-
-            </div>
-
-        </footer>
-
-    );
-
+    </footer>
+  );
 }
-
 
 export default Footer;
