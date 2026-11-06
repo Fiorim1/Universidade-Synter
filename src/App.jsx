@@ -32,6 +32,12 @@ import Dashboard from "./pages/Dashboard.jsx";
 import DashboardSAC from "./pages/DashboardSAC.jsx";
 
 // ========================================
+// APLICATIVO SYNTER
+// ========================================
+
+import AplicativoSynter from "./pages/AplicativoSynter.jsx";
+
+// ========================================
 // CONTEÚDOS E DOCUMENTAÇÃO
 // ========================================
 
@@ -82,7 +88,7 @@ import SynterAssistant from "./components/SynterAssistant.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
 // ========================================
-// ROTAS DE AUTENTICAÇÃO
+// ROTAS SEM ASSISTENTE
 // ========================================
 
 const ROTAS_SEM_ASSISTENTE = [
@@ -212,6 +218,20 @@ function App() {
         />
 
         {/* ====================================
+            APLICATIVO SYNTER
+            GUIA DE UTILIZAÇÃO SYNTER SMART
+        ==================================== */}
+
+        <Route
+          path="/aplicativo-synter"
+          element={
+            <ProtectedRoute>
+              <AplicativoSynter />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ====================================
             MANUAIS DE PRODUTOS
         ==================================== */}
 
@@ -290,7 +310,6 @@ function App() {
 
         {/* ====================================
             TREINAMENTO COMERCIAL
-            QUATRO MATERIAIS EM PDF
         ==================================== */}
 
         <Route
@@ -435,6 +454,7 @@ function App() {
       {mostrarAssistente && (
         <SynterAssistant />
       )}
+
     </>
   );
 }

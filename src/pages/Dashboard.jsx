@@ -133,7 +133,7 @@ function DestaqueDashboard({
 }
 
 // ==========================================
-// DASHBOARD
+// DASHBOARD PRINCIPAL
 // ==========================================
 
 function Dashboard() {
@@ -142,6 +142,10 @@ function Dashboard() {
 
   return (
     <div className="dashboard-page synter-dashboard">
+
+      {/* =====================================
+          HEADER
+      ===================================== */}
 
       <Header />
 
@@ -152,6 +156,8 @@ function Dashboard() {
       <section className="synter-db-hero">
         <div className="synter-db-hero-container">
 
+          {/* PERFIL */}
+
           <div className="synter-db-profile">
             <UserProfileButton
               onClick={() =>
@@ -160,10 +166,13 @@ function Dashboard() {
             />
           </div>
 
+          {/* INFORMAÇÕES PRINCIPAIS */}
+
           <div className="synter-db-hero-content">
 
             <div className="synter-db-eyebrow">
               <IconeSynter />
+
               <span>
                 PLATAFORMA DE CONHECIMENTO
               </span>
@@ -178,6 +187,8 @@ function Dashboard() {
               produtos, treinamentos e materiais de
               apoio para o seu dia a dia.
             </p>
+
+            {/* DESTAQUES */}
 
             <div className="synter-db-features">
 
@@ -200,6 +211,7 @@ function Dashboard() {
               />
 
             </div>
+
           </div>
         </div>
       </section>
@@ -217,16 +229,22 @@ function Dashboard() {
 
         <div className="cards">
 
-          {/* APLICATIVO SYNTER */}
+          {/* =================================
+              APLICATIVO SYNTER
+              ACESSO LIBERADO
+          ================================= */}
 
           <CardsDashboard
             image={AppIcon}
             title="Aplicativo Synter"
-            desc="Desbrave mais sobre o aplicativo Synter"
-            enabled={false}
+            desc="Aprenda a utilizar o aplicativo Synter Smart"
+            route="/aplicativo-synter"
+            enabled={true}
           />
 
-          {/* ASSISTÊNCIA TÉCNICA */}
+          {/* =================================
+              ASSISTÊNCIA TÉCNICA
+          ================================= */}
 
           <CardsDashboard
             image={FtIcon}
@@ -235,7 +253,9 @@ function Dashboard() {
             route="/dashsac"
           />
 
-          {/* FICHAS TÉCNICAS */}
+          {/* =================================
+              FICHAS TÉCNICAS
+          ================================= */}
 
           <CardsDashboard
             image={FtIcon}
@@ -244,7 +264,9 @@ function Dashboard() {
             route="/fichas-tecnicas"
           />
 
-          {/* ORÇAMENTOS */}
+          {/* =================================
+              ORÇAMENTOS
+          ================================= */}
 
           <CardsDashboard
             image={ImgIcon}
@@ -253,7 +275,9 @@ function Dashboard() {
             route="/orcamentos"
           />
 
-          {/* MANUAIS */}
+          {/* =================================
+              MANUAIS
+          ================================= */}
 
           <CardsDashboard
             image={ManualIcon}
@@ -262,7 +286,9 @@ function Dashboard() {
             route="/manuals"
           />
 
-          {/* MARKETING */}
+          {/* =================================
+              MARKETING
+          ================================= */}
 
           <CardsDashboard
             image={MktIcon}
@@ -271,7 +297,9 @@ function Dashboard() {
             route="/marketing"
           />
 
-          {/* NOVIDADES */}
+          {/* =================================
+              NOVIDADES
+          ================================= */}
 
           <CardsDashboard
             image={NvdIcon}
@@ -280,7 +308,9 @@ function Dashboard() {
             enabled={false}
           />
 
-          {/* PERGUNTAS FREQUENTES */}
+          {/* =================================
+              PERGUNTAS FREQUENTES
+          ================================= */}
 
           <CardsDashboard
             image={QuestionIcon}
@@ -289,7 +319,9 @@ function Dashboard() {
             route="/perguntas-frequentes"
           />
 
-          {/* TABELA DE PREÇOS */}
+          {/* =================================
+              TABELA DE PREÇOS
+          ================================= */}
 
           <CardsDashboard
             image={TabelaIcon}
@@ -300,7 +332,6 @@ function Dashboard() {
 
           {/* =================================
               TREINAMENTO COMERCIAL
-              ACESSO LIBERADO
           ================================= */}
 
           <CardsDashboard
@@ -311,7 +342,9 @@ function Dashboard() {
             enabled={true}
           />
 
-          {/* TREINAMENTOS TÉCNICOS */}
+          {/* =================================
+              TREINAMENTOS TÉCNICOS
+          ================================= */}
 
           <CardsDashboard
             image={TreinamentoIcon}
@@ -320,7 +353,9 @@ function Dashboard() {
             enabled={false}
           />
 
-          {/* VÍDEOS DE INSTALAÇÃO */}
+          {/* =================================
+              VÍDEOS DE INSTALAÇÃO
+          ================================= */}
 
           <CardsDashboard
             image={YtIcon}
@@ -332,10 +367,14 @@ function Dashboard() {
         </div>
       </main>
 
+      {/* =====================================
+          FOOTER
+      ===================================== */}
+
       <Footer />
 
       {/* =====================================
-          PERFIL
+          MODAL DO PERFIL
       ===================================== */}
 
       {profileOpen && (
