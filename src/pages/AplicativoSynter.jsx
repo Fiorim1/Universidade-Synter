@@ -36,6 +36,7 @@ const WHATSAPP_URL =
 const GUIAS = [
   {
     id: "cadastro",
+    categoria: "primeiros",
     titulo: "Realizar cadastro no aplicativo",
     resumo: "Crie e confirme sua conta Synter Smart.",
     icone: "usuario",
@@ -52,6 +53,7 @@ const GUIAS = [
   },
   {
     id: "recuperacao",
+    categoria: "primeiros",
     titulo: "Recuperação de senha",
     resumo: "Recupere o acesso à sua conta.",
     icone: "usuario",
@@ -67,6 +69,7 @@ const GUIAS = [
   },
   {
     id: "inicio",
+    categoria: "primeiros",
     titulo: "Conhecer a tela inicial",
     resumo: "Entenda os menus e as funções principais.",
     icone: "controle",
@@ -85,6 +88,7 @@ const GUIAS = [
   },
   {
     id: "dispositivo",
+    categoria: "primeiros",
     titulo: "Cadastrar uma fechadura",
     resumo: "Adicione e sincronize seu dispositivo.",
     icone: "fechadura",
@@ -103,6 +107,7 @@ const GUIAS = [
   },
   {
     id: "acionamento",
+    categoria: "controle",
     titulo: "Abertura e fechamento",
     resumo: "Utilize a tela de acionamento da fechadura.",
     icone: "controle",
@@ -120,6 +125,7 @@ const GUIAS = [
   },
   {
     id: "configuracoes",
+    categoria: "controle",
     titulo: "Configurações do dispositivo",
     resumo: "Acesse os recursos de cada modelo.",
     icone: "ajustes",
@@ -135,6 +141,7 @@ const GUIAS = [
   },
   {
     id: "senha",
+    categoria: "acessos",
     titulo: "Cadastrar senha numérica",
     resumo: "Crie senhas de acesso pelo aplicativo.",
     icone: "senha",
@@ -151,6 +158,7 @@ const GUIAS = [
   },
   {
     id: "tag",
+    categoria: "acessos",
     titulo: "Cadastrar Tag",
     resumo: "Vincule uma tag de acesso à fechadura.",
     icone: "tag",
@@ -168,6 +176,7 @@ const GUIAS = [
   },
   {
     id: "digital",
+    categoria: "acessos",
     titulo: "Cadastrar impressão digital",
     resumo: "Adicione biometria em modelos compatíveis.",
     icone: "digital",
@@ -185,6 +194,7 @@ const GUIAS = [
   },
   {
     id: "faceid",
+    categoria: "acessos",
     titulo: "Cadastrar Face ID",
     resumo: "Configure o reconhecimento facial.",
     icone: "face",
@@ -201,6 +211,7 @@ const GUIAS = [
   },
   {
     id: "qrcode",
+    categoria: "acessos",
     titulo: "Cadastrar QR Code",
     resumo: "Gere e compartilhe um código de acesso.",
     icone: "qr",
@@ -218,6 +229,7 @@ const GUIAS = [
   },
   {
     id: "convites",
+    categoria: "conexao",
     titulo: "Compartilhamento por convites",
     resumo: "Autorize outras pessoas a acessar a fechadura.",
     icone: "pessoas",
@@ -235,6 +247,7 @@ const GUIAS = [
   },
   {
     id: "excluir-dispositivo",
+    categoria: "controle",
     titulo: "Excluir dispositivo",
     resumo: "Remova um equipamento do aplicativo.",
     icone: "lixeira",
@@ -249,6 +262,7 @@ const GUIAS = [
   },
   {
     id: "excluir-conta",
+    categoria: "controle",
     titulo: "Excluir conta",
     resumo: "Saiba como encerrar sua conta Synter Smart.",
     icone: "lixeira",
@@ -264,6 +278,7 @@ const GUIAS = [
   },
   {
     id: "gateway",
+    categoria: "conexao",
     titulo: "Configurar Gateway Synter",
     resumo: "Adicione um Gateway à rede Wi-Fi.",
     icone: "wifi",
@@ -281,6 +296,7 @@ const GUIAS = [
   },
   {
     id: "controladora",
+    categoria: "conexao",
     titulo: "Cadastrar controladora Face ID",
     resumo: "Adicione uma controladora de acesso compatível.",
     icone: "face",
@@ -297,6 +313,7 @@ const GUIAS = [
   },
   {
     id: "usuarios-controladora",
+    categoria: "conexao",
     titulo: "Cadastrar usuário na controladora",
     resumo: "Gerencie usuários da controladora Face ID.",
     icone: "pessoas",
@@ -311,6 +328,17 @@ const GUIAS = [
     observacao:
       "Consulte as orientações do manual oficial para os recursos disponíveis na controladora.",
   },
+];
+
+// ==========================================
+// CATEGORIAS COMPACTAS DO CELULAR
+// ==========================================
+
+const CATEGORIAS = [
+  { id: "primeiros", titulo: "Primeiros passos", icone: "usuario" },
+  { id: "controle", titulo: "Controle e configurações", icone: "ajustes" },
+  { id: "acessos", titulo: "Métodos de acesso", icone: "digital" },
+  { id: "conexao", titulo: "Compartilhamento e conexão", icone: "wifi" },
 ];
 
 // ==========================================
@@ -566,6 +594,9 @@ export default function AplicativoSynter() {
   const [guiaAberto, setGuiaAberto] =
     useState(null);
 
+  const [categoriaAberta, setCategoriaAberta] = useState(null);
+  const [videoMobileAberto, setVideoMobileAberto] = useState(false);
+
   const guiasFiltrados = useMemo(() => {
     const termo = normalizar(pesquisa.trim());
 
@@ -589,6 +620,11 @@ export default function AplicativoSynter() {
     setGuiaAberto((atual) =>
       atual === id ? null : id
     );
+  }
+
+  function alternarCategoria(id) {
+    setCategoriaAberta((atual) => atual === id ? null : id);
+    setGuiaAberto(null);
   }
 
   return (
@@ -678,6 +714,20 @@ export default function AplicativoSynter() {
           </div>
         </section>
 
+        {/* MANUAL EM DOIS BOTÕES NO CELULAR */}
+        <nav className="appsynter-mobile-manual" aria-label="Manual Synter Smart">
+          <a href={MANUAL_PDF} target="_blank" rel="noopener noreferrer"
+             className="appsynter-mobile-manual-link">
+            <Icone tipo="arquivo" tamanho={22} />
+            <span>Visualizar manual</span>
+          </a>
+          <a href={MANUAL_PDF} download="Manual-Synter-Smart.pdf"
+             className="appsynter-mobile-manual-link">
+            <Icone tipo="download" tamanho={22} />
+            <span>Baixar PDF</span>
+          </a>
+        </nav>
+
         {/* TÍTULO DO GUIA */}
 
         <div className="appsynter-section-title">
@@ -707,7 +757,9 @@ export default function AplicativoSynter() {
           />
         </div>
 
-        {/* GRID DOS GUIAS */}
+        {/* DESKTOP: CARDS INDIVIDUAIS */}
+        <div className="appsynter-desktop-guides">
+
 
         {guiasFiltrados.length > 0 ? (
           <div className="appsynter-guide-grid">
@@ -742,6 +794,80 @@ export default function AplicativoSynter() {
           </div>
         )}
 
+        </div>
+
+        {/* CELULAR: QUATRO CATEGORIAS FECHADAS */}
+        <div className="appsynter-mobile-guides">
+          {pesquisa.trim() ? (
+            <div className="appsynter-mobile-results">
+              <p className="appsynter-mobile-result-count">
+                {guiasFiltrados.length} {guiasFiltrados.length === 1 ? "assunto encontrado" : "assuntos encontrados"}
+              </p>
+              {guiasFiltrados.map((guia) => (
+                <CardGuia
+                  key={guia.id}
+                  guia={guia}
+                  numero={GUIAS.indexOf(guia) + 1}
+                  aberto={guiaAberto === guia.id}
+                  onToggle={() => alternarGuia(guia.id)}
+                />
+              ))}
+              {guiasFiltrados.length === 0 && (
+                <div className="appsynter-empty">
+                  <strong>Nenhum assunto encontrado.</strong>
+                  <p>Tente outra palavra na pesquisa.</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="appsynter-mobile-categories">
+              {CATEGORIAS.map((categoria) => {
+                const aberta = categoriaAberta === categoria.id;
+                const guiasDaCategoria = GUIAS.filter(
+                  (guia) => guia.categoria === categoria.id
+                );
+                return (
+                  <section key={categoria.id}
+                    className={`appsynter-category ${aberta ? "is-open" : ""}`}>
+                    <button
+                      type="button"
+                      className="appsynter-category-trigger"
+                      aria-expanded={aberta}
+                      aria-controls={`appsynter-cat-${categoria.id}`}
+                      onClick={() => alternarCategoria(categoria.id)}
+                    >
+                      <span className="appsynter-category-icon">
+                        <Icone tipo={categoria.icone} tamanho={22} />
+                      </span>
+                      <span className="appsynter-category-text">
+                        <strong>{categoria.titulo}</strong>
+                        <small>{guiasDaCategoria.length} procedimentos</small>
+                      </span>
+                      <span className="appsynter-category-chevron">
+                        <Icone tipo="seta" tamanho={18} />
+                      </span>
+                    </button>
+                    {aberta && (
+                      <div id={`appsynter-cat-${categoria.id}`}
+                           className="appsynter-category-content">
+                        {guiasDaCategoria.map((guia) => (
+                          <CardGuia
+                            key={guia.id}
+                            guia={guia}
+                            numero={GUIAS.indexOf(guia) + 1}
+                            aberto={guiaAberto === guia.id}
+                            onToggle={() => alternarGuia(guia.id)}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </section>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
         {/* VÍDEO DEMONSTRATIVO */}
 
         <section className="appsynter-video-section">
@@ -756,6 +882,7 @@ export default function AplicativoSynter() {
             </div>
           </div>
 
+          <div className="appsynter-desktop-video">
           <div className="appsynter-video-card">
             <div className="appsynter-video-frame">
               <iframe
@@ -795,6 +922,35 @@ export default function AplicativoSynter() {
                 Abrir no YouTube
               </a>
             </div>
+          </div>
+          </div>
+
+          <div className="appsynter-mobile-video">
+            <button type="button" className="appsynter-mobile-video-trigger"
+                    aria-expanded={videoMobileAberto}
+                    aria-controls="appsynter-video-mobile-painel"
+                    onClick={() => setVideoMobileAberto((atual) => !atual)}>
+              <Icone tipo="video" tamanho={20} />
+              <span>Assistir tutorial demonstrativo</span>
+              <Icone tipo="seta" tamanho={18} />
+            </button>
+            {videoMobileAberto && (
+              <div className="appsynter-mobile-video-panel"
+                   id="appsynter-video-mobile-painel">
+                <div className="appsynter-video-frame">
+                  <iframe
+                    src={VIDEO_EMBED}
+                    title="Tutorial Synter Smart no celular"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
+                <a href={VIDEO_URL} target="_blank" rel="noopener noreferrer"
+                   className="appsynter-video-link">Abrir no YouTube</a>
+              </div>
+            )}
           </div>
         </section>
 
