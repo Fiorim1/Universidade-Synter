@@ -1,5 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -460,11 +461,46 @@ export default function TecnicosHomologados() {
   const [pesquisaConcluida, setPesquisaConcluida] =
     useState(false);
 
+  const [podeGerenciar, setPodeGerenciar] = useState(false);
+
   const controladorRef = useRef(null);
 
   useEffect(() => {
     return () => {
       controladorRef.current?.abort();
+    };
+  }, []);
+
+  // ========================================
+  // ACESSO ADMINISTRATIVO
+  // ========================================
+
+  useEffect(() => {
+    let montado = true;
+
+    async function verificarPermissao() {
+      try {
+        const { data: usuario, error: erroUsuario } =
+          await tecnicosClient.auth.getUser();
+
+        if (erroUsuario || !usuario?.user) return;
+
+        const { data, error } = await tecnicosClient.rpc(
+          "pode_gerenciar_tecnicos"
+        );
+
+        if (montado && !error) {
+          setPodeGerenciar(data === true);
+        }
+      } catch {
+        if (montado) setPodeGerenciar(false);
+      }
+    }
+
+    verificarPermissao();
+
+    return () => {
+      montado = false;
     };
   }, []);
 
@@ -576,6 +612,32 @@ export default function TecnicosHomologados() {
             </p>
           </div>
         </div>
+
+        {/* ACESSO EXCLUSIVO PARA ADM */}
+
+        {podeGerenciar && (
+          <div style={{ marginBottom: 22 }}>
+            <Link
+              to="/tecnicos-homologados/gerenciar"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                minHeight: 45,
+                padding: "12px 20px",
+                color: "#111111",
+                background: "#ffffff",
+                border: "1px solid #ffffff",
+                borderRadius: 9,
+                fontSize: 12,
+                fontWeight: 700,
+                textDecoration: "none",
+              }}
+            >
+              Gerenciar Técnicos
+            </Link>
+          </div>
+        )}
 
         {/* FORMULÁRIO */}
 
