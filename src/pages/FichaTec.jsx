@@ -858,6 +858,173 @@ function IconeSynter() {
 }
 
 // ==========================================
+// CATÁLOGO MOBILE — FILTROS E RESULTADOS
+// ==========================================
+
+const CATALOGO_FICHAS = [
+  ...PRODUTOS_DIGITAIS.map((produto) => ({ ...produto, categoria: "digitais" })),
+  ...PRODUTOS_MECANICOS.map((produto) => ({ ...produto, categoria: "mecanicos" })),
+  ...FERRAGENS.map((produto) => ({ ...produto, categoria: "ferragens" })),
+];
+
+function normalizarFiltro(valor) {
+  return String(valor || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+function descobrirLinha(produto) {
+  if (produto.categoria === "ferragens") return "Ferragens";
+  const nome = produto.title;
+  if (/^Controladora/i.test(nome)) return "Controladoras";
+  if (/^Fechadura/i.test(nome)) return "Fechaduras especiais";
+  if (/^Barra/i.test(nome)) return "Barras de apoio";
+  return nome.split(" ")[0];
+}
+
+function FiltroFichasMobile({ abrirFicha }) {
+  const [busca, setBusca] = useState("");
+  const [categoria, setCategoria] = useState("todas");
+  const [linha, setLinha] = useState("todas");
+  const [disponibilidade, setDisponibilidade] = useState("todas");
+  const [quantidadeVisivel, setQuantidadeVisivel] = useState(3);
+
+  const listaCategoria = CATALOGO_FICHAS.filter(
+    (produto) => categoria === "todas" || produto.categoria === categoria
+  );
+
+  const linhas = [...new Set(listaCategoria.map(descobrirLinha))]
+    .sort((a, b) => a.localeCompare(b, "pt-BR"));
+
+  const produtosFiltrados = listaCategoria.filter((produto) => {
+    if (linha !== "todas" && descobrirLinha(produto) !== linha) return false;
+    if (disponibilidade === "pdf" && !produto.ficha) return false;
+    if (disponibilidade === "breve" && produto.ficha) return false;
+    if (busca.trim() && !normalizarFiltro(produto.title).includes(normalizarFiltro(busca.trim()))) return false;
+    return true;
+  });
+
+  function reiniciarResultados() { setQuantidadeVisivel(3); }
+
+  function limparFiltros() {
+    setBusca("");
+    setCategoria("todas");
+    setLinha("todas");
+    setDisponibilidade("todas");
+    reiniciarResultados();
+  }
+
+  return (
+    <section className="ficha-mobile" aria-label="Pesquisar fichas técnicas">
+      <div className="ficha-mobile-cabecalho">
+        <span className="ficha-mobile-marcador" />
+        <div>
+          <h2>ENCONTRE SUA FICHA TÉCNICA</h2>
+          <p>Filtre por modelo, categoria, linha ou disponibilidade.</p>
+        </div>
+      </div>
+
+      <label className="ficha-mobile-busca">
+        <span className="ficha-mobile-sr">Pesquisar por nome</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
+          <circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>
+        </svg>
+        <input
+          type="search"
+          value={busca}
+          onChange={(evento) => { setBusca(evento.target.value); reiniciarResultados(); }}
+          placeholder="Pesquisar produto ou modelo..."
+        />
+      </label>
+
+      <div className="ficha-mobile-categorias" aria-label="Categoria de produtos">
+        {[
+          ["todas", "Todas"],
+          ["digitais", "Digitais"],
+          ["mecanicos", "Mecânicos"],
+          ["ferragens", "Ferragens"],
+        ].map(([valor, nome]) => (
+          <button
+            key={valor}
+            type="button"
+            className={categoria === valor ? "is-selected" : ""}
+            aria-pressed={categoria === valor}
+            onClick={() => {
+              setCategoria(valor);
+              setLinha("todas");
+              reiniciarResultados();
+            }}
+          >
+            {nome}
+          </button>
+        ))}
+      </div>
+
+      <div className="ficha-mobile-filtros">
+        <label>
+          <span>Linha ou família</span>
+          <select value={linha} onChange={(evento) => { setLinha(evento.target.value); reiniciarResultados(); }}>
+            <option value="todas">Todas as linhas</option>
+            {linhas.map((nome) => <option key={nome} value={nome}>{nome}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Disponibilidade</span>
+          <select value={disponibilidade} onChange={(evento) => { setDisponibilidade(evento.target.value); reiniciarResultados(); }}>
+            <option value="todas">Todos</option>
+            <option value="pdf">Com PDF</option>
+            <option value="breve">Em breve</option>
+          </select>
+        </label>
+      </div>
+
+      <div className="ficha-mobile-contador">
+        <span>{produtosFiltrados.length} {produtosFiltrados.length === 1 ? "resultado" : "resultados"}</span>
+        <button type="button" onClick={limparFiltros}>Limpar filtros</button>
+      </div>
+
+      <div className="ficha-mobile-lista">
+        {produtosFiltrados.slice(0, quantidadeVisivel).map((produto) => {
+          const disponivel = Boolean(produto.ficha);
+          return (
+            <div key={`${produto.categoria}-${produto.title}`} className="ficha-mobile-item">
+              <span className="ficha-mobile-foto"><img src={produto.image} alt="" loading="lazy" /></span>
+              <span className="ficha-mobile-item-texto">
+                <strong>{produto.title}</strong>
+                <small>{descobrirLinha(produto)} · {disponivel ? "PDF disponível" : "Ficha em breve"}</small>
+              </span>
+              {disponivel ? (
+                <button type="button" className="ficha-mobile-abrir" onClick={() => abrirFicha(produto.ficha)} aria-label={`Selecionar ficha de ${produto.title}`}>
+                  <IconeSeta />
+                </button>
+              ) : <span className="ficha-mobile-indisponivel" aria-label="Ficha indisponível">Em breve</span>}
+            </div>
+          );
+        })}
+        {!produtosFiltrados.length && (
+          <div className="ficha-mobile-vazio">
+            <strong>Nenhum produto encontrado.</strong>
+            <p>Tente alterar os filtros ou limpar a pesquisa.</p>
+          </div>
+        )}
+      </div>
+
+      {quantidadeVisivel < produtosFiltrados.length && (
+        <button type="button" className="ficha-mobile-ver-mais" onClick={() => setQuantidadeVisivel((atual) => atual + 3)}>
+          Ver mais produtos ({produtosFiltrados.length - quantidadeVisivel} restantes)
+        </button>
+      )}
+      {quantidadeVisivel > 3 && (
+        <button type="button" className="ficha-mobile-mostrar-menos" onClick={() => reiniciarResultados()}>
+          Mostrar menos
+        </button>
+      )}
+    </section>
+  );
+}
+
+// ==========================================
 // PÁGINA FICHAS TÉCNICAS
 // ==========================================
 
@@ -900,7 +1067,7 @@ function FichaTec() {
   }
 
   return (
-    <>
+    <div className="ficha-tec-page">
       <Header />
 
       {/* =====================================
@@ -948,7 +1115,9 @@ function FichaTec() {
 
       <main>
         <div className="manuals-container">
+          <FiltroFichasMobile abrirFicha={setModalSelecionado} />
 
+          <div className="ficha-desktop-lista">
           <SecaoProdutos
             titulo="Produtos Digitais"
             classe="digials-products"
@@ -976,6 +1145,7 @@ function FichaTec() {
             }
           />
 
+          </div>
         </div>
       </main>
 
@@ -1007,7 +1177,7 @@ function FichaTec() {
           }
         />
       )}
-    </>
+    </div>
   );
 }
 
