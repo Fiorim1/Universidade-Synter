@@ -1,0 +1,21 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Porta -->
+  <rect x="9" y="7" width="30" height="49" rx="3"></rect>
+
+  <!-- Detalhes da porta -->
+  <path d="M16 14H32"></path>
+  <path d="M17 47H24"></path>
+
+  <!-- Fechadura -->
+  <circle cx="31" cy="31" r="2"></circle>
+
+  <!-- Lupa de seleção -->
+  <circle cx="44" cy="42" r="11"></circle>
+
+  <!-- Cabo da lupa -->
+  <path d="M52 50L60 58"></path>
+
+  <!-- Verificação -->
+  <path d="M40 42L43 45L48 39"></path>
+</svg>

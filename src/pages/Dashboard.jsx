@@ -22,6 +22,7 @@ import MktIcon from "../assets/mkt-icon.png";
 import AppIcon from "../assets/app-icon.png";
 import QuestionIcon from "../assets/perguntas-icon.png";
 import NvdIcon from "../assets/nvd-icon.png";
+import SeletorIcon from "../assets/seletor-icon.svg";
 
 // ==========================================
 // ESTILOS
@@ -286,7 +287,7 @@ function Dashboard() {
           ================================= */}
 
           <CardsDashboard
-            image={NvdIcon}
+            image={SeletorIcon}
             title="Seletor de Fechaduras"
             desc="Encontre modelos Synter conforme a necessidade do cliente."
             route="/seletor-fechaduras"
