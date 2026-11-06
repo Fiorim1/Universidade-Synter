@@ -372,7 +372,7 @@ function AplicativoSynter() {
     useState("");
 
   const [guiaAberto, setGuiaAberto] =
-    useState("cadastro");
+    useState(null);
 
   const guiasFiltrados = useMemo(() => {
     const normalizar = (texto) =>
