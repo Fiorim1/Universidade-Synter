@@ -21,7 +21,6 @@ import TcIcon from "../assets/tc-icon.png";
 import MktIcon from "../assets/mkt-icon.png";
 import AppIcon from "../assets/app-icon.png";
 import QuestionIcon from "../assets/perguntas-icon.png";
-import NvdIcon from "../assets/nvd-icon.png";
 import SeletorIcon from "../assets/seletor-icon.svg";
 
 // ==========================================
@@ -111,7 +110,32 @@ function IconeAcesso() {
 }
 
 // ==========================================
-// DESTAQUES DO HERO
+// ÍCONE PARA TÉCNICOS HOMOLOGADOS
+// ==========================================
+
+function IconeTecnicos() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 64 64"
+      width="44"
+      height="44"
+      fill="none"
+      stroke="#ffffff"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M32 6 12 16v15c0 13 7 21 20 27 13-6 20-14 20-27V16L32 6Z" />
+      <path d="M23 34l6 6 13-15" />
+      <path d="M25 19h14" opacity="0.45" />
+    </svg>
+  );
+}
+
+// ==========================================
+// DESTAQUE DO HERO
 // ==========================================
 
 function DestaqueDashboard({
@@ -155,15 +179,11 @@ function Dashboard() {
       <section className="synter-db-hero">
         <div className="synter-db-hero-container">
 
-          {/* PERFIL */}
-
           <div className="synter-db-profile">
             <UserProfileButton
               onClick={() => setProfileOpen(true)}
             />
           </div>
-
-          {/* INFORMAÇÕES PRINCIPAIS */}
 
           <div className="synter-db-hero-content">
 
@@ -184,8 +204,6 @@ function Dashboard() {
               produtos, treinamentos e materiais de
               apoio para o seu dia a dia.
             </p>
-
-            {/* DESTAQUES */}
 
             <div className="synter-db-features">
 
@@ -208,7 +226,6 @@ function Dashboard() {
               />
 
             </div>
-
           </div>
         </div>
       </section>
@@ -281,10 +298,7 @@ function Dashboard() {
             route="/marketing"
           />
 
-          {/* =================================
-              SELETOR DE FECHADURAS
-              NOVA FUNCIONALIDADE
-          ================================= */}
+          {/* SELETOR DE FECHADURAS */}
 
           <CardsDashboard
             image={SeletorIcon}
@@ -322,13 +336,17 @@ function Dashboard() {
             enabled={true}
           />
 
-          {/* TREINAMENTOS TÉCNICOS */}
+          {/* =================================
+              TÉCNICOS HOMOLOGADOS
+              SUBSTITUI TREINAMENTOS TÉCNICOS
+          ================================= */}
 
           <CardsDashboard
             image={TreinamentoIcon}
-            title="Treinamentos Técnicos"
-            desc="Acesse nossos treinamentos técnicos"
-            enabled={false}
+            title="Técnicos Homologados"
+            desc="Encontre profissionais Synter próximos ao endereço informado."
+            route="/tecnicos-homologados"
+            enabled={true}
           />
 
           {/* VÍDEOS DE INSTALAÇÃO */}
@@ -347,16 +365,13 @@ function Dashboard() {
 
       <Footer />
 
-      {/* =====================================
-          MODAL DO PERFIL
-      ===================================== */}
+      {/* PERFIL */}
 
       {profileOpen && (
         <Profile
           onClose={() => setProfileOpen(false)}
         />
       )}
-
     </div>
   );
 }

@@ -68,6 +68,13 @@ import DigMarketing from "./pages/DigMarketing.jsx";
 import SeletorFechaduras from "./pages/SeletorFechaduras.jsx";
 
 // ========================================
+// TÉCNICOS HOMOLOGADOS
+// ========================================
+
+import TecnicosHomologados from "./pages/TecnicosHomologados.jsx";
+import GerenciarTecnicos from "./pages/GerenciarTecnicos.jsx";
+
+// ========================================
 // ASSISTÊNCIA E ATENDIMENTO
 // ========================================
 
@@ -335,7 +342,6 @@ function App() {
 
         {/* ====================================
             SELETOR DE FECHADURAS
-            NOVA FUNCIONALIDADE
         ==================================== */}
 
         <Route
@@ -347,9 +353,7 @@ function App() {
           }
         />
 
-        {/* ====================================
-            REDIRECIONAMENTO DA ROTA ANTIGA
-        ==================================== */}
+        {/* ROTA ANTIGA DO COMPARADOR */}
 
         <Route
           path="/comparador-fechaduras"
@@ -358,6 +362,34 @@ function App() {
               to="/seletor-fechaduras"
               replace
             />
+          }
+        />
+
+        {/* ====================================
+            TÉCNICOS HOMOLOGADOS
+            BUSCA DE PROFISSIONAIS
+        ==================================== */}
+
+        <Route
+          path="/tecnicos-homologados"
+          element={
+            <ProtectedRoute>
+              <TecnicosHomologados />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ====================================
+            GERENCIAMENTO DE TÉCNICOS
+            PERMISSÃO ADM
+        ==================================== */}
+
+        <Route
+          path="/tecnicos-homologados/gerenciar"
+          element={
+            <ProtectedRoute>
+              <GerenciarTecnicos />
+            </ProtectedRoute>
           }
         />
 
@@ -481,6 +513,7 @@ function App() {
       {mostrarAssistente && (
         <SynterAssistant />
       )}
+
     </>
   );
 }
