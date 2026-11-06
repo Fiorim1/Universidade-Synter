@@ -538,3 +538,18 @@
     transform: none;
   }
 }
+/* ==========================================
+   BOTÕES VISUALIZAR E BAIXAR PDF
+========================================== */
+
+.tc-page button.tc-action {
+  font-family: inherit;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.tc-page button.tc-action:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}

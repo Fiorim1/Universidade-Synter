@@ -9,7 +9,7 @@ import Profile from "../components/Profile";
 import "../styles/TreinamentoComercial.css";
 
 // ==========================================
-// CAMINHO DOS DOCUMENTOS
+// ENDEREÇO DOS DOCUMENTOS
 // ==========================================
 
 const BASE = `${
@@ -70,6 +70,135 @@ const materiais = [
     icone: "playbook",
   },
 ];
+
+// ==========================================
+// VALIDAR E CARREGAR PDF ORIGINAL
+// ==========================================
+
+async function carregarPdf(material) {
+  const url = `${BASE}${material.arquivo}`;
+
+  const resposta = await fetch(url, {
+    method: "GET",
+    cache: "no-store",
+    credentials: "same-origin",
+  });
+
+  if (!resposta.ok) {
+    throw new Error(
+      `O documento não está disponível (${resposta.status}).`
+    );
+  }
+
+  const dados = await resposta.arrayBuffer();
+
+  if (dados.byteLength < 5) {
+    throw new Error(
+      "O arquivo recebido está vazio ou incompleto."
+    );
+  }
+
+  // Confirma que recebemos um PDF de verdade,
+  // e não uma página HTML do sistema.
+
+  const cabecalho = new TextDecoder("ascii").decode(
+    dados.slice(0, 5)
+  );
+
+  if (cabecalho !== "%PDF-") {
+    throw new Error(
+      "O endereço não retornou um PDF válido. Verifique se o arquivo foi publicado na pasta correta."
+    );
+  }
+
+  return new Blob([dados], {
+    type: "application/pdf",
+  });
+}
+
+// ==========================================
+// VISUALIZAR PDF EM NOVA ABA
+// ==========================================
+
+async function visualizarPdf(material, definirErro) {
+  // A aba é criada imediatamente após o clique
+  // para evitar bloqueio de pop-up.
+
+  const aba = window.open("about:blank", "_blank");
+
+  if (!aba) {
+    definirErro(
+      "O navegador bloqueou a abertura do PDF. Permita pop-ups para este site e tente novamente."
+    );
+    return;
+  }
+
+  try {
+    aba.document.title = `Abrindo ${material.titulo}`;
+
+    aba.document.body.style.cssText =
+      "margin:0;background:#111;color:#fff;" +
+      "font-family:Arial,sans-serif;" +
+      "display:flex;align-items:center;" +
+      "justify-content:center;min-height:100vh;";
+
+    aba.document.body.textContent =
+      "Carregando documento PDF...";
+
+    const arquivo = await carregarPdf(material);
+
+    const urlTemporaria =
+      URL.createObjectURL(arquivo);
+
+    // Abre o visualizador nativo do navegador.
+
+    if (!aba.closed) {
+      aba.location.replace(urlTemporaria);
+    } else {
+      URL.revokeObjectURL(urlTemporaria);
+    }
+  } catch (erro) {
+    if (!aba.closed) {
+      aba.close();
+    }
+
+    definirErro(
+      erro.message ||
+      "Não foi possível abrir o documento."
+    );
+  }
+}
+
+// ==========================================
+// BAIXAR PDF ORIGINAL
+// ==========================================
+
+async function baixarPdf(material, definirErro) {
+  try {
+    const arquivo = await carregarPdf(material);
+
+    const urlTemporaria =
+      URL.createObjectURL(arquivo);
+
+    const link = document.createElement("a");
+
+    link.href = urlTemporaria;
+    link.download = material.nomeDownload;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    window.setTimeout(() => {
+      URL.revokeObjectURL(urlTemporaria);
+    }, 60000);
+  } catch (erro) {
+    definirErro(
+      erro.message ||
+      "Não foi possível baixar o documento."
+    );
+  }
+}
 
 // ==========================================
 // ÍCONE DO HERO
@@ -252,17 +381,38 @@ function IconeVisualizar() {
 // CARTÃO DE TREINAMENTO
 // ==========================================
 
-function CardMaterial({ material }) {
-  const url = `${BASE}${material.arquivo}`;
+function CardMaterial({ material, definirErro }) {
+  const [processando, setProcessando] =
+    useState(false);
+
+  async function handleDownload() {
+    if (processando) return;
+
+    setProcessando(true);
+    definirErro("");
+
+    try {
+      await baixarPdf(material, definirErro);
+    } finally {
+      setProcessando(false);
+    }
+  }
+
+  function handleVisualizar() {
+    definirErro("");
+    visualizarPdf(material, definirErro);
+  }
 
   return (
     <article className="tc-material-card">
 
-      {/* ÍCONE + IDENTIFICAÇÃO */}
+      {/* ÍCONE + PDF */}
 
       <div className="tc-card-top">
         <div className="tc-material-icon">
-          <IconeMaterial tipo={material.icone} />
+          <IconeMaterial
+            tipo={material.icone}
+          />
         </div>
 
         <span className="tc-file-type">
@@ -294,44 +444,47 @@ function CardMaterial({ material }) {
         <span>Material Synter</span>
       </div>
 
-      {/* BOTÕES */}
+      {/* AÇÕES */}
 
       <div className="tc-material-actions">
 
-        <a
+        <button
+          type="button"
           className="tc-action tc-action-view"
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`Visualizar ${material.titulo}`}
+          onClick={handleVisualizar}
         >
           <IconeVisualizar />
           Visualizar
-        </a>
+        </button>
 
-        <a
+        <button
+          type="button"
           className="tc-action tc-action-download"
-          href={url}
-          download={material.nomeDownload}
-          aria-label={`Baixar PDF de ${material.titulo}`}
+          onClick={handleDownload}
+          disabled={processando}
         >
           <IconeDownload />
-          Baixar PDF
-        </a>
+
+          {processando
+            ? "Baixando..."
+            : "Baixar PDF"}
+        </button>
 
       </div>
-
     </article>
   );
 }
 
 // ==========================================
-// PÁGINA — TREINAMENTO COMERCIAL
+// PÁGINA TREINAMENTO COMERCIAL
 // ==========================================
 
 export default function TreinamentoComercial() {
   const [profileOpen, setProfileOpen] =
     useState(false);
+
+  const [erroDocumento, setErroDocumento] =
+    useState("");
 
   return (
     <div className="tc-page">
@@ -341,7 +494,7 @@ export default function TreinamentoComercial() {
       <Header />
 
       {/* =====================================
-          HERO — PADRÃO SYNTER
+          HERO
       ===================================== */}
 
       <section className="tc-hero">
@@ -391,7 +544,7 @@ export default function TreinamentoComercial() {
 
       <main className="tc-container tc-main">
 
-        {/* CABEÇALHO DA SEÇÃO */}
+        {/* CABEÇALHO */}
 
         <div className="tc-section-heading">
 
@@ -403,8 +556,9 @@ export default function TreinamentoComercial() {
             </h2>
 
             <p>
-              Selecione um conteúdo para visualizar
-              ou baixar o material completo.
+              Selecione um conteúdo para
+              visualizar ou baixar o
+              material completo.
             </p>
           </div>
 
@@ -414,27 +568,58 @@ export default function TreinamentoComercial() {
 
         </div>
 
-        {/* GRID DOS DOCUMENTOS */}
+        {/* MENSAGEM AMIGÁVEL */}
+
+        {erroDocumento && (
+          <div
+            role="alert"
+            style={{
+              marginBottom: 20,
+              padding: "15px 18px",
+              background: "#151515",
+              color: "#ffffff",
+              border: "1px solid #444",
+              borderRadius: 10,
+              fontSize: 13,
+              lineHeight: 1.6,
+            }}
+          >
+            <strong>
+              Não foi possível acessar o material.
+            </strong>
+
+            <p
+              style={{
+                margin: "7px 0 0",
+                color: "#b7b7bf",
+              }}
+            >
+              {erroDocumento}
+            </p>
+          </div>
+        )}
+
+        {/* GRID */}
 
         <div className="tc-grid">
           {materiais.map((material) => (
             <CardMaterial
               key={material.id}
               material={material}
+              definirErro={setErroDocumento}
             />
           ))}
         </div>
 
-        {/* INFORMAÇÃO ADICIONAL */}
+        {/* INFORMAÇÃO */}
 
         <div className="tc-info">
           <IconeDocumento />
 
           <span>
-            Os documentos são materiais de
-            capacitação Synter. Para visualizar,
-            utilize o leitor de PDF do navegador;
-            para salvar uma cópia, clique em
+            Clique em “Visualizar” para abrir o
+            PDF diretamente em uma nova aba.
+            Para salvar uma cópia, utilize
             “Baixar PDF”.
           </span>
         </div>
