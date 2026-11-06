@@ -1,19 +1,23 @@
+
 /* ======================================== */
-/* HEADER                                   */
+/* HEADER — UNIVERSIDADE SYNTER             */
 /* ======================================== */
 
 .header-all {
+    position: relative;
+    z-index: 100;
+
     width: 100%;
     max-width: 100%;
     min-width: 0;
 
-    position: relative;
-    z-index: 100;
-
     background: rgba(5, 5, 5, 0.96);
 
-    border-bottom:
-        1px solid rgba(255, 255, 255, 0.08);
+    /* Linha inferior removida */
+    border: none;
+    border-bottom: none;
+
+    box-shadow: none;
 
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -21,30 +25,32 @@
     overflow-x: hidden;
 }
 
+/* Evita linhas decorativas adicionais */
+
+.header-all::before,
+.header-all::after {
+    display: none;
+    content: none;
+}
 
 /* ======================================== */
 /* CONTAINER                                */
 /* ======================================== */
 
 .header-container {
-    width: 100%;
-    max-width: 1400px;
-    min-width: 0;
-
-    min-height: 88px;
-
-    margin: 0 auto;
-
-    padding:
-        0
-        40px;
-
     display: flex;
     align-items: center;
 
+    width: 100%;
+    max-width: 1400px;
+    min-width: 0;
+    min-height: 88px;
+
+    margin: 0 auto;
+    padding: 0 40px;
+
     box-sizing: border-box;
 }
-
 
 /* ======================================== */
 /* LOGO                                     */
@@ -55,19 +61,19 @@
     align-items: center;
 
     flex-shrink: 0;
+
+    text-decoration: none;
 }
 
-
 .header-logo {
+    display: block;
+
     width: 135px;
     max-width: 100%;
     height: auto;
 
-    display: block;
-
     object-fit: contain;
 }
-
 
 /* ======================================== */
 /* MENU                                     */
@@ -78,12 +84,10 @@
     align-items: center;
 
     min-width: 0;
-
     gap: 26px;
 
     margin-left: 45px;
 }
-
 
 .header-nav-link {
     position: relative;
@@ -92,33 +96,24 @@
 
     color: #969696;
 
+    font-family: inherit;
     font-size: 13px;
     font-weight: 500;
 
     text-decoration: none;
-
     white-space: nowrap;
 
     cursor: pointer;
 
-    transition:
-        color 0.25s ease;
+    transition: color 0.25s ease;
 }
 
-
-.header-nav-link:hover {
-    color: #ffffff;
-}
-
-
-/* Página ativa */
-
+.header-nav-link:hover,
 .header-nav-active {
     color: #ffffff;
 }
 
-
-/* Linha inferior da página ativa */
+/* Indicador da página ativa no menu */
 
 .header-nav-active::after {
     content: "";
@@ -134,7 +129,6 @@
     background: #ffffff;
 }
 
-
 /* ======================================== */
 /* ÁREA DIREITA                             */
 /* ======================================== */
@@ -144,12 +138,10 @@
     align-items: center;
 
     min-width: 0;
-
     gap: 16px;
 
     margin-left: auto;
 }
-
 
 /* ======================================== */
 /* TELEFONE                                 */
@@ -167,25 +159,25 @@
     font-weight: 500;
 
     text-decoration: none;
-
     white-space: nowrap;
 
-    transition:
-        opacity 0.25s ease;
+    transition: opacity 0.25s ease;
 }
-
 
 .header-phone:hover {
     opacity: 0.65;
 }
 
-
 .header-phone-icon {
     font-size: 15px;
-
     color: #ffffff;
 }
 
+/* Oculta links de telefone sem conteúdo */
+
+.header-phone:empty {
+    display: none;
+}
 
 /* ======================================== */
 /* REDES SOCIAIS                            */
@@ -200,17 +192,20 @@
     gap: 7px;
 }
 
+/* Compatibilidade com links e botões */
 
+.header-social a,
 .header-social button {
-    width: 29px;
-    height: 29px;
-
-    flex: 0 0 29px;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
+    flex: 0 0 30px;
+
+    width: 30px;
+    height: 30px;
+
+    margin: 0;
     padding: 0;
 
     background: transparent;
@@ -218,7 +213,7 @@
     border: none;
     border-radius: 50%;
 
-    margin: 10px;
+    text-decoration: none;
 
     cursor: pointer;
 
@@ -227,57 +222,59 @@
         transform 0.25s ease;
 }
 
-
+.header-social a:hover,
 .header-social button:hover {
-    background:
-        rgba(255, 255, 255, 0.08);
-
-    transform:
-        translateY(-1px);
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-1px);
 }
 
-
 .header-social img {
+    display: block;
+
     width: 30px;
     height: 30px;
-
     max-width: 30px;
 
     object-fit: contain;
 }
-
 
 /* ======================================== */
 /* BOTÃO FALE CONOSCO                       */
 /* ======================================== */
 
 .header-contact-button {
-    min-height: 48px;
-
-    padding: 0 18px;
-
     display: flex;
     align-items: center;
+    justify-content: center;
 
     flex-shrink: 0;
 
+    min-height: 48px;
+
     gap: 18px;
+    padding: 0 18px;
 
     background: transparent;
 
-    border:
-        1px solid rgba(255, 255, 255, 0.55);
-
+    border: 1px solid rgba(255, 255, 255, 0.55);
     border-radius: 9px;
 
     color: #ffffff;
 
+    font-family: inherit;
     font-size: 12px;
     font-weight: 600;
+
+    line-height: 1.2;
+
+    text-align: center;
+    text-decoration: none;
 
     white-space: nowrap;
 
     cursor: pointer;
+
+    box-sizing: border-box;
 
     transition:
         background-color 0.25s ease,
@@ -285,30 +282,49 @@
         border-color 0.25s ease;
 }
 
-
 .header-contact-button:hover {
     background: #ffffff;
-
     border-color: #ffffff;
 
     color: #111111;
+
+    text-decoration: none;
 }
 
+.header-contact-button:visited {
+    color: #ffffff;
+}
+
+.header-contact-button:visited:hover {
+    color: #111111;
+}
+
+/* ======================================== */
+/* SETA DO BOTÃO                            */
+/* ======================================== */
 
 .header-contact-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
     font-size: 18px;
 
-    transition:
-        transform 0.25s ease;
+    transition: transform 0.25s ease;
 }
 
+.header-contact-arrow svg {
+    display: block;
 
-.header-contact-button:hover
-.header-contact-arrow {
-    transform:
-        translateX(3px);
+    width: 20px;
+    height: 20px;
 }
 
+.header-contact-button:hover .header-contact-arrow {
+    transform: translateX(3px);
+}
 
 /* ======================================== */
 /* DIVISOR DO PERFIL                        */
@@ -322,10 +338,8 @@
 
     margin: 0 3px;
 
-    background:
-        rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.16);
 }
-
 
 /* ======================================== */
 /* PERFIL                                   */
@@ -340,33 +354,42 @@
     flex-shrink: 0;
 }
 
+/* ======================================== */
+/* ACESSIBILIDADE                           */
+/* ======================================== */
+
+.header-logo-link:focus-visible,
+.header-nav-link:focus-visible,
+.header-social a:focus-visible,
+.header-social button:focus-visible,
+.header-contact-button:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 4px;
+}
 
 /* ======================================== */
-/* RESPONSIVIDADE                           */
+/* RESPONSIVIDADE — NOTEBOOK               */
 /* ======================================== */
 
 @media (max-width: 1250px) {
 
     .header-container {
-        padding:
-            0
-            28px;
+        padding: 0 28px;
     }
-
 
     .header-nav {
         gap: 18px;
-
         margin-left: 30px;
     }
-
 
     .header-phone {
         display: none;
     }
-
 }
 
+/* ======================================== */
+/* RESPONSIVIDADE — TABLET                 */
+/* ======================================== */
 
 @media (max-width: 1050px) {
 
@@ -374,16 +397,13 @@
         display: none;
     }
 
-
     .header-actions {
         margin-left: auto;
     }
-
 }
 
-
 /* ======================================== */
-/* MOBILE                                   */
+/* RESPONSIVIDADE — MOBILE                 */
 /* ======================================== */
 
 @media (max-width: 750px) {
@@ -392,9 +412,11 @@
         width: 100%;
         max-width: 100%;
 
+        border: none;
+        box-shadow: none;
+
         overflow-x: hidden;
     }
-
 
     .header-container {
         width: 100%;
@@ -404,69 +426,44 @@
         min-height: 74px;
 
         padding-left:
-            max(
-                16px,
-                env(safe-area-inset-left)
-            );
+            max(16px, env(safe-area-inset-left));
 
         padding-right:
-            max(
-                16px,
-                env(safe-area-inset-right)
-            );
+            max(16px, env(safe-area-inset-right));
 
         gap: 12px;
     }
 
-
     .header-logo-link {
         min-width: 0;
-
         flex-shrink: 1;
     }
 
-
     .header-logo {
         width: 115px;
-
         max-width: 115px;
     }
-
 
     .header-actions {
         min-width: 0;
 
         gap: 8px;
-
         margin-left: auto;
 
         flex-shrink: 0;
     }
 
-
-    .header-social {
-        display: none;
-    }
-
-
-    .header-divider {
-        display: none;
-    }
-
-
+    .header-social,
+    .header-divider,
     .header-contact-button {
         display: none;
     }
 
-
     .header-profile {
         min-width: 0;
-
         flex-shrink: 0;
     }
-
 }
-
 
 /* ======================================== */
 /* CELULARES PEQUENOS                       */
@@ -478,28 +475,41 @@
         min-height: 68px;
 
         padding-left:
-            max(
-                14px,
-                env(safe-area-inset-left)
-            );
+            max(14px, env(safe-area-inset-left));
 
         padding-right:
-            max(
-                14px,
-                env(safe-area-inset-right)
-            );
+            max(14px, env(safe-area-inset-right));
     }
-
 
     .header-logo {
         width: 105px;
-
         max-width: 105px;
     }
-
 
     .header-actions {
         gap: 6px;
     }
+}
 
+/* ======================================== */
+/* MOVIMENTO REDUZIDO                       */
+/* ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .header-nav-link,
+    .header-phone,
+    .header-social a,
+    .header-social button,
+    .header-contact-button,
+    .header-contact-arrow {
+        transition: none;
+    }
+
+    .header-social a:hover,
+    .header-social button:hover,
+    .header-contact-button:hover
+    .header-contact-arrow {
+        transform: none;
+    }
 }
