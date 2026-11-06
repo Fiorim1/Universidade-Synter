@@ -1,9 +1,6 @@
 
 import { useEffect, useState } from "react";
-import {
-  Link,
-  Navigate,
-} from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -11,15 +8,12 @@ import Profile from "../components/Profile";
 import UserProfileButton from "../components/UserProfileButton";
 
 import { tecnicosClient } from "../lib/tecnicosClient";
-
-import {
-  consultarGeocodificacao,
-} from "../lib/geocodificacao";
+import { consultarGeocodificacao } from "../lib/geocodificacao";
 
 import "../styles/GerenciarTecnicos.css";
 
 // ==========================================
-// CONFIGURAÇÕES
+// FORMULÁRIO INICIAL
 // ==========================================
 
 const FORMULARIO_VAZIO = {
@@ -34,23 +28,19 @@ const FORMULARIO_VAZIO = {
 };
 
 // ==========================================
-// CONSULTAR COORDENADAS DA CIDADE
+// GEOLOCALIZAÇÃO DA CIDADE
 // ==========================================
 
 async function localizarCidade(cidade, uf) {
-  const dados =
-    await consultarGeocodificacao({
-      cidade,
-      uf,
-    });
+  const dados = await consultarGeocodificacao({
+    cidade,
+    uf,
+  });
 
-  const local = (
-    dados.results || []
-  ).find(
+  const local = (dados.results || []).find(
     (item) =>
-      String(
-        item.state_code || ""
-      ).toUpperCase() === uf.toUpperCase() &&
+      String(item.state_code || "").toUpperCase() ===
+        uf.toUpperCase() &&
       Number.isFinite(Number(item.lat)) &&
       Number.isFinite(Number(item.lon))
   );
@@ -68,45 +58,34 @@ async function localizarCidade(cidade, uf) {
 }
 
 // ==========================================
-// VALIDAÇÃO DO FORMULÁRIO
+// VALIDAÇÃO DOS DADOS
 // ==========================================
 
 function validarFormulario(formulario) {
-  if (
-    formulario.nome.trim().length < 3
-  ) {
+  if (formulario.nome.trim().length < 3) {
     throw new Error(
       "Informe o nome completo do profissional."
     );
   }
 
-  const whatsapp =
-    formulario.whatsapp.replace(
-      /\D/g,
-      ""
-    );
+  const whatsapp = formulario.whatsapp.replace(
+    /\D/g,
+    ""
+  );
 
-  if (
-    !/^55\d{10,11}$/.test(whatsapp)
-  ) {
+  if (!/^55\d{10,11}$/.test(whatsapp)) {
     throw new Error(
       "Informe o WhatsApp com DDI 55 e DDD."
     );
   }
 
-  if (
-    formulario.cidade.trim().length < 2
-  ) {
+  if (formulario.cidade.trim().length < 2) {
     throw new Error(
       "Informe a cidade de atendimento."
     );
   }
 
-  if (
-    !/^[A-Za-z]{2}$/.test(
-      formulario.uf.trim()
-    )
-  ) {
+  if (!/^[A-Za-z]{2}$/.test(formulario.uf.trim())) {
     throw new Error(
       "Informe a sigla do estado com duas letras."
     );
@@ -116,7 +95,7 @@ function validarFormulario(formulario) {
 }
 
 // ==========================================
-// COMPONENTE PRINCIPAL
+// PÁGINA ADMINISTRATIVA
 // ==========================================
 
 export default function GerenciarTecnicos() {
@@ -133,9 +112,7 @@ export default function GerenciarTecnicos() {
     useState([]);
 
   const [formulario, setFormulario] =
-    useState({
-      ...FORMULARIO_VAZIO,
-    });
+    useState({ ...FORMULARIO_VAZIO });
 
   const [idEdicao, setIdEdicao] =
     useState(null);
@@ -150,21 +127,20 @@ export default function GerenciarTecnicos() {
     useState("");
 
   // ========================================
-  // CARREGAR PROFISSIONAIS
+  // LISTAR CREDENCIADOS
   // ========================================
 
-  async function listarTecnicos() {
-    const { data, error } =
-      await tecnicosClient
-        .from("tecnicos_homologados")
-        .select("*")
-        .order("nome", {
-          ascending: true,
-        });
+  async function listarCredenciados() {
+    const { data, error } = await tecnicosClient
+      .from("tecnicos_homologados")
+      .select("*")
+      .order("nome", {
+        ascending: true,
+      });
 
     if (error) {
       throw new Error(
-        "Não foi possível carregar os profissionais."
+        "Não foi possível carregar os credenciados."
       );
     }
 
@@ -172,7 +148,7 @@ export default function GerenciarTecnicos() {
   }
 
   // ========================================
-  // VERIFICAR PERMISSÃO ADMINISTRATIVA
+  // VERIFICAR PERMISSÕES DO ADM
   // ========================================
 
   useEffect(() => {
@@ -183,27 +159,22 @@ export default function GerenciarTecnicos() {
         const {
           data: { user },
           error: erroSessao,
-        } =
-          await tecnicosClient.auth.getUser();
+        } = await tecnicosClient.auth.getUser();
 
-        if (
-          erroSessao ||
-          !user
-        ) {
+        if (erroSessao || !user) {
           throw new Error(
             "Sessão não disponível."
           );
         }
 
-        const { data, error } =
-          await tecnicosClient.rpc(
-            "pode_gerenciar_tecnicos"
-          );
+        const {
+          data: permitido,
+          error,
+        } = await tecnicosClient.rpc(
+          "pode_gerenciar_tecnicos"
+        );
 
-        if (
-          error ||
-          data !== true
-        ) {
+        if (error || permitido !== true) {
           if (ativo) {
             setAutorizado(false);
           }
@@ -218,24 +189,28 @@ export default function GerenciarTecnicos() {
         const {
           data: lista,
           error: erroLista,
-        } =
-          await tecnicosClient
-            .from("tecnicos_homologados")
-            .select("*")
-            .order("nome", {
-              ascending: true,
-            });
+        } = await tecnicosClient
+          .from("tecnicos_homologados")
+          .select("*")
+          .order("nome", {
+            ascending: true,
+          });
 
         if (erroLista) {
           throw new Error(
-            "Não foi possível carregar os profissionais."
+            "Não foi possível carregar os credenciados."
           );
         }
 
         if (ativo) {
           setTecnicos(lista || []);
         }
-      } catch {
+      } catch (falha) {
+        console.error(
+          "Falha no carregamento administrativo:",
+          falha
+        );
+
         if (ativo) {
           setAutorizado(false);
         }
@@ -254,21 +229,15 @@ export default function GerenciarTecnicos() {
   }, []);
 
   // ========================================
-  // ATUALIZAR FORMULÁRIO
+  // CONTROLE DO FORMULÁRIO
   // ========================================
 
   function atualizar(campo, valor) {
-    setFormulario(
-      (anterior) => ({
-        ...anterior,
-        [campo]: valor,
-      })
-    );
+    setFormulario((anterior) => ({
+      ...anterior,
+      [campo]: valor,
+    }));
   }
-
-  // ========================================
-  // LIMPAR FORMULÁRIO
-  // ========================================
 
   function limparFormulario() {
     setFormulario({
@@ -281,42 +250,29 @@ export default function GerenciarTecnicos() {
   }
 
   // ========================================
-  // EDITAR PROFISSIONAL
+  // EDITAR CREDENCIADO
   // ========================================
 
-  function editarTecnico(tecnico) {
-    setIdEdicao(tecnico.id);
+  function editarCredenciado(profissional) {
+    setIdEdicao(profissional.id);
 
     setFormulario({
-      nome:
-        tecnico.nome || "",
-
-      whatsapp:
-        tecnico.whatsapp || "",
-
-      cidade:
-        tecnico.cidade || "",
-
-      uf:
-        tecnico.uf || "",
-
-      especialidades:
-        Array.isArray(
-          tecnico.especialidades
-        )
-          ? tecnico.especialidades.join(", ")
-          : "",
-
-      homologado:
-        Boolean(tecnico.homologado),
-
-      ativo:
-        Boolean(tecnico.ativo),
-
-      autorizou_divulgacao:
-        Boolean(
-          tecnico.autorizou_divulgacao
-        ),
+      nome: profissional.nome || "",
+      whatsapp: profissional.whatsapp || "",
+      cidade: profissional.cidade || "",
+      uf: profissional.uf || "",
+      especialidades: Array.isArray(
+        profissional.especialidades
+      )
+        ? profissional.especialidades.join(", ")
+        : "",
+      homologado: Boolean(
+        profissional.homologado
+      ),
+      ativo: Boolean(profissional.ativo),
+      autorizou_divulgacao: Boolean(
+        profissional.autorizou_divulgacao
+      ),
     });
 
     setErro("");
@@ -329,16 +285,13 @@ export default function GerenciarTecnicos() {
   }
 
   // ========================================
-  // CADASTRAR OU ATUALIZAR
+  // CADASTRAR OU SALVAR EDIÇÃO
   // ========================================
 
-  async function salvarTecnico(evento) {
+  async function salvarCredenciado(evento) {
     evento.preventDefault();
 
-    if (
-      !autorizado ||
-      salvando
-    ) {
+    if (!autorizado || salvando) {
       return;
     }
 
@@ -347,30 +300,25 @@ export default function GerenciarTecnicos() {
     setSucesso("");
 
     try {
-      const whatsapp =
-        validarFormulario(formulario);
+      const whatsapp = validarFormulario(
+        formulario
+      );
 
-      const uf =
-        formulario.uf
-          .trim()
-          .toUpperCase();
+      const uf = formulario.uf
+        .trim()
+        .toUpperCase();
 
-      const cidade =
-        formulario.cidade.trim();
+      const cidade = formulario.cidade.trim();
 
       const especialidades =
         formulario.especialidades
           .split(",")
-          .map(
-            (item) => item.trim()
-          )
+          .map((item) => item.trim())
           .filter(Boolean);
 
-      const registroAnterior =
-        tecnicos.find(
-          (item) =>
-            item.id === idEdicao
-        );
+      const registroAnterior = tecnicos.find(
+        (item) => item.id === idEdicao
+      );
 
       const mudouLocalizacao =
         !registroAnterior ||
@@ -380,90 +328,57 @@ export default function GerenciarTecnicos() {
       let coordenadas;
 
       if (mudouLocalizacao) {
-        coordenadas =
-          await localizarCidade(
-            cidade,
-            uf
-          );
+        coordenadas = await localizarCidade(
+          cidade,
+          uf
+        );
       } else {
         coordenadas = {
-          latitude:
-            registroAnterior.latitude,
-
-          longitude:
-            registroAnterior.longitude,
+          latitude: registroAnterior.latitude,
+          longitude: registroAnterior.longitude,
         };
       }
 
       const dados = {
-        nome:
-          formulario.nome.trim(),
-
+        nome: formulario.nome.trim(),
         whatsapp,
-
         cidade,
         uf,
         especialidades,
-
-        latitude:
-          coordenadas.latitude,
-
-        longitude:
-          coordenadas.longitude,
-
-        regiao_atendimento:
-          `${cidade}/${uf}`,
-
-        homologado:
-          formulario.homologado,
-
-        ativo:
-          formulario.ativo,
-
+        latitude: coordenadas.latitude,
+        longitude: coordenadas.longitude,
+        regiao_atendimento: `${cidade}/${uf}`,
+        homologado: formulario.homologado,
+        ativo: formulario.ativo,
         autorizou_divulgacao:
           formulario.autorizou_divulgacao,
-
-        updated_at:
-          new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       };
 
-      // ====================================
-      // ATUALIZAR REGISTRO EXISTENTE
-      // ====================================
-
       if (idEdicao) {
-        const { error } =
-          await tecnicosClient
-            .from(
-              "tecnicos_homologados"
-            )
-            .update(dados)
-            .eq(
-              "id",
-              idEdicao
-            );
+        // Atualizar cadastro existente.
+
+        const { error } = await tecnicosClient
+          .from("tecnicos_homologados")
+          .update(dados)
+          .eq("id", idEdicao);
 
         if (error) {
           throw error;
         }
       } else {
-        // ==================================
-        // CADASTRAR NOVO PROFISSIONAL
-        // ==================================
+        // Criar novo cadastro.
 
-        const { error } =
-          await tecnicosClient
-            .from(
-              "tecnicos_homologados"
-            )
-            .insert(dados);
+        const { error } = await tecnicosClient
+          .from("tecnicos_homologados")
+          .insert(dados);
 
         if (error) {
           throw error;
         }
       }
 
-      await listarTecnicos();
+      await listarCredenciados();
 
       setFormulario({
         ...FORMULARIO_VAZIO,
@@ -472,94 +387,78 @@ export default function GerenciarTecnicos() {
       setIdEdicao(null);
 
       setSucesso(
-        "Os dados do profissional foram salvos com sucesso."
+        "Os dados do credenciado foram salvos com sucesso."
       );
     } catch (falha) {
-      console.error(falha);
+      console.error(
+        "Erro ao salvar credenciado:",
+        falha
+      );
 
-      const mensagem =
-        falha?.message || "";
+      const mensagem = falha?.message || "";
 
-      if (
-        mensagem.includes(
-          "Não encontramos"
-        ) ||
-        mensagem.includes(
-          "Informe"
-        ) ||
-        mensagem.includes(
-          "indisponível"
-        ) ||
-        mensagem.includes(
-          "localização"
-        ) ||
-        mensagem.includes(
-          "API"
-        ) ||
-        mensagem.includes(
-          "sessão"
-        )
-      ) {
-        setErro(mensagem);
-      } else {
-        setErro(
-          "Não foi possível salvar o profissional. Confira os dados e tente novamente."
-        );
-      }
+      const erroConhecido = [
+        "Não encontramos",
+        "Informe",
+        "indisponível",
+        "localização",
+        "API",
+        "sessão",
+      ].some((termo) => mensagem.includes(termo));
+
+      setErro(
+        erroConhecido
+          ? mensagem
+          : "Não foi possível salvar o credenciado. Confira os dados e tente novamente."
+      );
     } finally {
       setSalvando(false);
     }
   }
 
   // ========================================
-  // ATIVAR OU DESATIVAR
+  // ATIVAR OU DESATIVAR CREDENCIADO
   // ========================================
 
-  async function alternarStatus(tecnico) {
+  async function alternarStatus(profissional) {
     if (!autorizado) {
       return;
     }
 
-    const novoStatus =
-      !tecnico.ativo;
+    const novoStatus = !profissional.ativo;
 
     setErro("");
     setSucesso("");
 
-    const { error } =
-      await tecnicosClient
-        .from("tecnicos_homologados")
-        .update({
-          ativo: novoStatus,
-
-          updated_at:
-            new Date().toISOString(),
-        })
-        .eq("id", tecnico.id);
+    const { error } = await tecnicosClient
+      .from("tecnicos_homologados")
+      .update({
+        ativo: novoStatus,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", profissional.id);
 
     if (error) {
       setErro(
-        "Não foi possível atualizar a disponibilidade do profissional."
+        "Não foi possível atualizar a disponibilidade do credenciado."
       );
 
       return;
     }
 
     try {
-      await listarTecnicos();
+      await listarCredenciados();
 
       setSucesso(
-        "Situação do profissional atualizada."
+        "Situação do credenciado atualizada."
       );
     } catch (falha) {
-      setErro(
-        falha.message
-      );
+      setErro(falha.message);
     }
   }
 
   // ========================================
-  // CARREGAMENTO
+  // VERIFICAÇÃO DE ACESSO
   // ========================================
 
   if (verificando) {
@@ -576,10 +475,6 @@ export default function GerenciarTecnicos() {
     );
   }
 
-  // ========================================
-  // ACESSO NEGADO
-  // ========================================
-
   if (!autorizado) {
     return (
       <Navigate
@@ -590,13 +485,14 @@ export default function GerenciarTecnicos() {
   }
 
   // ========================================
-  // INTERFACE ADMINISTRATIVA
+  // INTERFACE
   // ========================================
 
   return (
     <div className="gt-page">
-
       <Header />
+
+      {/* HERO ADMINISTRATIVO */}
 
       <section className="gt-hero">
         <div className="gt-container gt-hero-inner">
@@ -613,45 +509,44 @@ export default function GerenciarTecnicos() {
             UNIVERSIDADE SYNTER / ADMINISTRAÇÃO
           </span>
 
-          <h1>
-            Gerenciar Técnicos
-          </h1>
+          <h1>Gerenciar Credenciados</h1>
 
           <p>
-            Cadastre, atualize e gerencie
-            os profissionais homologados
-            pela Synter.
+            Cadastre, atualize e gerencie os
+            profissionais da Rede de Credenciados
+            Synter.
           </p>
 
           <Link
             to="/tecnicos-homologados"
             className="gt-back-link"
           >
-            Voltar à busca de técnicos
+            Voltar à Rede de Credenciados
           </Link>
         </div>
       </section>
 
-      <main className="gt-container gt-main">
+      {/* CONTEÚDO */}
 
+      <main className="gt-container gt-main">
         <div className="gt-section-heading">
           <span />
 
           <div>
             <h2>
               {idEdicao
-                ? "EDITAR PROFISSIONAL"
-                : "CADASTRAR PROFISSIONAL"}
+                ? "EDITAR CREDENCIADO"
+                : "CADASTRAR CREDENCIADO"}
             </h2>
 
             <p>
               Preencha os dados para manter
-              a rede homologada atualizada.
+              a rede de credenciados atualizada.
             </p>
           </div>
         </div>
 
-        {/* ERRO */}
+        {/* MENSAGENS */}
 
         {erro && (
           <div
@@ -661,8 +556,6 @@ export default function GerenciarTecnicos() {
             {erro}
           </div>
         )}
-
-        {/* SUCESSO */}
 
         {sucesso && (
           <div
@@ -676,7 +569,7 @@ export default function GerenciarTecnicos() {
         {/* FORMULÁRIO */}
 
         <form
-          onSubmit={salvarTecnico}
+          onSubmit={salvarCredenciado}
           className="gt-form"
         >
           <div className="gt-form-grid">
@@ -711,9 +604,7 @@ export default function GerenciarTecnicos() {
               <input
                 required
                 type="tel"
-                value={
-                  formulario.whatsapp
-                }
+                value={formulario.whatsapp}
                 onChange={(e) =>
                   atualizar(
                     "whatsapp",
@@ -744,7 +635,7 @@ export default function GerenciarTecnicos() {
               />
             </label>
 
-            {/* ESTADO */}
+            {/* UF */}
 
             <label className="gt-field">
               <span>
@@ -768,14 +659,10 @@ export default function GerenciarTecnicos() {
             {/* ESPECIALIDADES */}
 
             <label className="gt-field gt-full">
-              <span>
-                Especialidades
-              </span>
+              <span>Especialidades</span>
 
               <input
-                value={
-                  formulario.especialidades
-                }
+                value={formulario.especialidades}
                 onChange={(e) =>
                   atualizar(
                     "especialidades",
@@ -785,19 +672,15 @@ export default function GerenciarTecnicos() {
                 placeholder="Instalação, manutenção, fechaduras digitais"
               />
             </label>
-
           </div>
 
-          {/* AUTORIZAÇÕES */}
+          {/* CONDIÇÕES DE PUBLICAÇÃO */}
 
           <div className="gt-checks">
-
             <label>
               <input
                 type="checkbox"
-                checked={
-                  formulario.homologado
-                }
+                checked={formulario.homologado}
                 onChange={(e) =>
                   atualizar(
                     "homologado",
@@ -805,16 +688,13 @@ export default function GerenciarTecnicos() {
                   )
                 }
               />
-
-              Homologação Synter confirmada
+              Credenciamento Synter confirmado
             </label>
 
             <label>
               <input
                 type="checkbox"
-                checked={
-                  formulario.ativo
-                }
+                checked={formulario.ativo}
                 onChange={(e) =>
                   atualizar(
                     "ativo",
@@ -822,7 +702,6 @@ export default function GerenciarTecnicos() {
                   )
                 }
               />
-
               Profissional ativo
             </label>
 
@@ -839,22 +718,18 @@ export default function GerenciarTecnicos() {
                   )
                 }
               />
-
-              Autorização para divulgar
-              nome, região e contato confirmada
+              Autorização para divulgar nome,
+              região e contato confirmada
             </label>
           </div>
-
-          {/* OBSERVAÇÃO */}
 
           <p className="gt-form-note">
             A localização será determinada pela
             cidade de atendimento, sem publicar
             o endereço residencial do profissional.
-
-            O profissional só aparecerá nas buscas
-            quando os três requisitos acima
-            estiverem habilitados.
+            O credenciado só aparecerá nas buscas
+            quando as três condições acima
+            estiverem habilitadas.
           </p>
 
           {/* BOTÕES */}
@@ -869,29 +744,27 @@ export default function GerenciarTecnicos() {
                 ? "Salvando..."
                 : idEdicao
                   ? "Salvar alterações"
-                  : "Cadastrar técnico"}
+                  : "Cadastrar credenciado"}
             </button>
 
             <button
               type="button"
               className="gt-secondary"
-              onClick={
-                limparFormulario
-              }
+              onClick={limparFormulario}
             >
               Limpar
             </button>
           </div>
         </form>
 
-        {/* LISTAGEM */}
+        {/* LISTAGEM DE CREDENCIADOS */}
 
         <div className="gt-section-heading gt-list-heading">
           <span />
 
           <div>
             <h2>
-              PROFISSIONAIS CADASTRADOS
+              PROFISSIONAIS CREDENCIADOS
             </h2>
 
             <p>
@@ -901,36 +774,35 @@ export default function GerenciarTecnicos() {
         </div>
 
         <div className="gt-list">
-
           {tecnicos.length === 0 && (
             <div className="gt-empty">
-              Nenhum profissional cadastrado.
+              Nenhum credenciado cadastrado.
             </div>
           )}
 
-          {tecnicos.map((tecnico) => {
+          {tecnicos.map((profissional) => {
             const disponivel =
-              tecnico.ativo &&
-              tecnico.homologado &&
-              tecnico.autorizou_divulgacao;
+              profissional.ativo &&
+              profissional.homologado &&
+              profissional.autorizou_divulgacao;
 
             return (
               <article
                 className="gt-technician"
-                key={tecnico.id}
+                key={profissional.id}
               >
                 <div className="gt-technician-info">
-
                   <strong>
-                    {tecnico.nome}
+                    {profissional.nome}
                   </strong>
 
                   <span>
-                    {tecnico.cidade} / {tecnico.uf}
+                    {profissional.cidade} /{" "}
+                    {profissional.uf}
                   </span>
 
                   <span>
-                    {tecnico.whatsapp}
+                    {profissional.whatsapp}
                   </span>
 
                   <span
@@ -947,11 +819,10 @@ export default function GerenciarTecnicos() {
                 </div>
 
                 <div className="gt-technician-actions">
-
                   <button
                     type="button"
                     onClick={() =>
-                      editarTecnico(tecnico)
+                      editarCredenciado(profissional)
                     }
                   >
                     Editar
@@ -960,19 +831,17 @@ export default function GerenciarTecnicos() {
                   <button
                     type="button"
                     onClick={() =>
-                      alternarStatus(tecnico)
+                      alternarStatus(profissional)
                     }
                   >
-                    {tecnico.ativo
+                    {profissional.ativo
                       ? "Desativar"
                       : "Ativar"}
                   </button>
-
                 </div>
               </article>
             );
           })}
-
         </div>
       </main>
 

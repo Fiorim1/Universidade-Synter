@@ -110,31 +110,6 @@ function IconeAcesso() {
 }
 
 // ==========================================
-// ÍCONE PARA TÉCNICOS HOMOLOGADOS
-// ==========================================
-
-function IconeTecnicos() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 64 64"
-      width="44"
-      height="44"
-      fill="none"
-      stroke="#ffffff"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M32 6 12 16v15c0 13 7 21 20 27 13-6 20-14 20-27V16L32 6Z" />
-      <path d="M23 34l6 6 13-15" />
-      <path d="M25 19h14" opacity="0.45" />
-    </svg>
-  );
-}
-
-// ==========================================
 // DESTAQUE DO HERO
 // ==========================================
 
@@ -167,14 +142,9 @@ function Dashboard() {
 
   return (
     <div className="dashboard-page synter-dashboard">
-
-      {/* HEADER */}
-
       <Header />
 
-      {/* =====================================
-          HERO
-      ===================================== */}
+      {/* HERO */}
 
       <section className="synter-db-hero">
         <div className="synter-db-hero-container">
@@ -186,13 +156,9 @@ function Dashboard() {
           </div>
 
           <div className="synter-db-hero-content">
-
             <div className="synter-db-eyebrow">
               <IconeSynter />
-
-              <span>
-                PLATAFORMA DE CONHECIMENTO
-              </span>
+              <span>PLATAFORMA DE CONHECIMENTO</span>
             </div>
 
             <h1 className="synter-db-title">
@@ -206,7 +172,6 @@ function Dashboard() {
             </p>
 
             <div className="synter-db-features">
-
               <DestaqueDashboard
                 icone={<IconeAtualizado />}
                 titulo="Conteúdo Atualizado"
@@ -224,18 +189,14 @@ function Dashboard() {
                 titulo="Acesso Rápido"
                 descricao="Tudo em um único lugar"
               />
-
             </div>
           </div>
         </div>
       </section>
 
-      {/* =====================================
-          ACESSO RÁPIDO
-      ===================================== */}
+      {/* ACESSO RÁPIDO */}
 
       <main className="dashboard-content">
-
         <div className="dashboard-section-title">
           <div className="dashboard-section-bar" />
           <h4>ACESSO RÁPIDO</h4>
@@ -253,7 +214,7 @@ function Dashboard() {
             enabled={true}
           />
 
-          {/* ASSISTÊNCIA TÉCNICA */}
+          {/* ASSISTÊNCIA / SUPORTE */}
 
           <CardsDashboard
             image={FtIcon}
@@ -336,15 +297,12 @@ function Dashboard() {
             enabled={true}
           />
 
-          {/* =================================
-              TÉCNICOS HOMOLOGADOS
-              SUBSTITUI TREINAMENTOS TÉCNICOS
-          ================================= */}
+          {/* REDE DE CREDENCIADOS */}
 
           <CardsDashboard
             image={TreinamentoIcon}
-            title="Técnicos Homologados"
-            desc="Encontre profissionais Synter próximos ao endereço informado."
+            title="Rede de Credenciados"
+            desc="Encontre profissionais credenciados Synter próximos ao endereço informado."
             route="/tecnicos-homologados"
             enabled={true}
           />
@@ -361,11 +319,7 @@ function Dashboard() {
         </div>
       </main>
 
-      {/* FOOTER */}
-
       <Footer />
-
-      {/* PERFIL */}
 
       {profileOpen && (
         <Profile

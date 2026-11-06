@@ -8,9 +8,7 @@ import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 
 import { tecnicosClient } from "../lib/tecnicosClient";
-import {
-  consultarGeocodificacao,
-} from "../lib/geocodificacao";
+import { consultarGeocodificacao } from "../lib/geocodificacao";
 
 import "../styles/TecnicosHomologados.css";
 
@@ -25,7 +23,7 @@ const PREFIXO_ENDERECO =
   /^(bairro|b\.|rua|r\.|avenida|av\.|travessa|tv\.|alameda|estrada|rodovia|servidao|loteamento|praca|viela)\s/i;
 
 // ==========================================
-// VALIDAR LOCALIZAÇÃO DIGITADA
+// VALIDAÇÃO DO ENDEREÇO
 // ==========================================
 
 function validarEnderecoPesquisa(valor) {
@@ -41,9 +39,6 @@ function validarEnderecoPesquisa(valor) {
     .filter(Boolean);
 
   const segmentos = [...partes];
-
-  // Remover UF final para identificar
-  // o campo que representa a cidade.
 
   if (
     segmentos.length > 1 &&
@@ -81,18 +76,13 @@ function validarEnderecoPesquisa(valor) {
     }
   }
 
-  // Endereços com duas partes, como
-  // "Centro, Forquilhinha", são aceitos.
-  //
-  // Nomes sem prefixo, como "Centro",
-  // passam por uma segunda validação
-  // no servidor da Geoapify.
-
+  // A API também verifica a localidade
+  // retornada pela Geoapify.
   return null;
 }
 
 // ==========================================
-// FUNÇÕES AUXILIARES
+// FUNÇÕES DE LOCALIZAÇÃO
 // ==========================================
 
 function converterNumero(valor) {
@@ -122,27 +112,21 @@ function coordenadasValidas(latitude, longitude) {
   );
 }
 
-// ==========================================
-// DISTÂNCIA EM LINHA RETA
-// ==========================================
-
 function calcularDistancia(lat1, lon1, lat2, lon2) {
-  const raioTerra = 6371;
-
   const rad = (valor) =>
     (valor * Math.PI) / 180;
 
-  const diferencaLatitude = rad(lat2 - lat1);
-  const diferencaLongitude = rad(lon2 - lon1);
+  const dLat = rad(lat2 - lat1);
+  const dLon = rad(lon2 - lon1);
 
   const a =
-    Math.sin(diferencaLatitude / 2) ** 2 +
+    Math.sin(dLat / 2) ** 2 +
     Math.cos(rad(lat1)) *
       Math.cos(rad(lat2)) *
-      Math.sin(diferencaLongitude / 2) ** 2;
+      Math.sin(dLon / 2) ** 2;
 
   return (
-    raioTerra *
+    6371 *
     2 *
     Math.atan2(
       Math.sqrt(a),
@@ -159,34 +143,27 @@ function formatarDistancia(valor) {
 }
 
 // ==========================================
-// WHATSAPP
+// CONTATO POR WHATSAPP
 // ==========================================
 
 function prepararWhatsapp(numero, nome) {
   const telefone = String(numero || "")
     .replace(/\D/g, "");
 
-  if (
-    !/^55\d{10,11}$/.test(telefone)
-  ) {
+  if (!/^55\d{10,11}$/.test(telefone)) {
     return null;
   }
 
   const mensagem =
-    "Olá! Encontrei seu contato na rede de " +
-    "Técnicos Homologados Synter. " +
-    "Gostaria de solicitar informações " +
-    `sobre um atendimento com ${nome}.`;
+    "Olá! Encontrei seu contato na Rede de " +
+    "Credenciados Synter. Gostaria de solicitar " +
+    `informações sobre um atendimento com ${nome}.`;
 
   return (
     `https://wa.me/${telefone}?text=` +
     encodeURIComponent(mensagem)
   );
 }
-
-// ==========================================
-// GOOGLE MAPS
-// ==========================================
 
 function gerarLinkMapa(latitude, longitude) {
   return (
@@ -196,138 +173,126 @@ function gerarLinkMapa(latitude, longitude) {
 }
 
 // ==========================================
-// LOCALIZAÇÃO VIA API DA VERCEL
+// BUSCA DE ENDEREÇO
 // ==========================================
 
 async function localizarEndereco(endereco, signal) {
-  const resultado =
-    await consultarGeocodificacao({
-      endereco,
-      signal,
-    });
+  const resultado = await consultarGeocodificacao({
+    endereco,
+    signal,
+  });
 
   const local = resultado.results?.[0];
 
-  const latitude =
-    converterNumero(local?.lat);
+  const latitude = converterNumero(local?.lat);
+  const longitude = converterNumero(local?.lon);
 
-  const longitude =
-    converterNumero(local?.lon);
-
-  if (
-    !coordenadasValidas(latitude, longitude)
-  ) {
+  if (!coordenadasValidas(latitude, longitude)) {
     throw new Error(
       "Não encontramos esse endereço. Confira a rua, bairro, cidade e estado."
     );
   }
 
-  const tipoResultado =
-    String(local?.result_type || "")
-      .toLowerCase();
+  const tipoResultado = String(
+    local?.result_type || ""
+  ).toLowerCase();
 
-  const precisao =
-    local?.rank?.match_type || "";
+  const precisao = local?.rank?.match_type || "";
 
   const aproximado =
-    !["building", "amenity"].includes(
-      tipoResultado
-    ) &&
-    ![
-      "full_match",
-      "match_by_building",
-    ].includes(precisao);
+    !["building", "amenity"].includes(tipoResultado) &&
+    !["full_match", "match_by_building"].includes(
+      precisao
+    );
 
   return {
     latitude,
     longitude,
-    enderecoFormatado:
-      local.formatted || endereco,
+    enderecoFormatado: local.formatted || endereco,
     aproximado,
   };
 }
 
 // ==========================================
-// CARREGAR TÉCNICOS HOMOLOGADOS
+// CONSULTAR PROFISSIONAIS NO SUPABASE
 // ==========================================
 
-async function carregarTecnicos() {
-  const { data, error } =
-    await tecnicosClient
-      .from("tecnicos_homologados")
-      .select(
-        "id,nome,whatsapp,cidade,uf," +
-        "especialidades,latitude,longitude," +
-        "regiao_atendimento"
-      )
-      .eq("ativo", true)
-      .eq("homologado", true)
-      .eq("autorizou_divulgacao", true)
-      .order("nome", {
-        ascending: true,
-      })
-      .limit(1000);
+async function carregarCredenciados() {
+  // Mantemos o nome da tabela existente.
+  const { data, error } = await tecnicosClient
+    .from("tecnicos_homologados")
+    .select(
+      "id,nome,whatsapp,cidade,uf," +
+      "especialidades,latitude,longitude," +
+      "regiao_atendimento"
+    )
+    .eq("ativo", true)
+    .eq("homologado", true)
+    .eq("autorizou_divulgacao", true)
+    .order("nome", { ascending: true })
+    .limit(1000);
 
   if (error) {
     console.error(
-      "Erro ao consultar técnicos:",
+      "Erro ao consultar credenciados:",
       error
     );
 
     throw new Error(
-      "Não foi possível consultar os profissionais disponíveis. Tente novamente."
+      "Não foi possível consultar os profissionais credenciados. Tente novamente."
     );
   }
 
   return (data || [])
-    .map((tecnico) => ({
-      ...tecnico,
+    .map((profissional) => ({
+      ...profissional,
       latitude: converterNumero(
-        tecnico.latitude
+        profissional.latitude
       ),
       longitude: converterNumero(
-        tecnico.longitude
+        profissional.longitude
       ),
     }))
-    .filter((tecnico) =>
+    .filter((profissional) =>
       coordenadasValidas(
-        tecnico.latitude,
-        tecnico.longitude
+        profissional.latitude,
+        profissional.longitude
       )
     );
 }
 
 // ==========================================
-// BUSCAR TÉCNICOS POR PROXIMIDADE
+// ORDENAR POR PROXIMIDADE
 // ==========================================
 
-function localizarTecnicos(tecnicos, localizacao) {
-  const ordenados = tecnicos
-    .map((tecnico) => ({
-      ...tecnico,
+function localizarCredenciados(
+  profissionais,
+  localizacao
+) {
+  const ordenados = profissionais
+    .map((profissional) => ({
+      ...profissional,
       distancia: calcularDistancia(
         localizacao.latitude,
         localizacao.longitude,
-        tecnico.latitude,
-        tecnico.longitude
+        profissional.latitude,
+        profissional.longitude
       ),
     }))
-    .sort(
-      (a, b) => a.distancia - b.distancia
-    );
+    .sort((a, b) => a.distancia - b.distancia);
 
   const raioEncontrado =
     RAIOS.find((raio) =>
       ordenados.some(
-        (tecnico) =>
-          tecnico.distancia <= raio
+        (profissional) =>
+          profissional.distancia <= raio
       )
     ) || RAIOS[RAIOS.length - 1];
 
   const encontrados = ordenados
     .filter(
-      (tecnico) =>
-        tecnico.distancia <= raioEncontrado
+      (profissional) =>
+        profissional.distancia <= raioEncontrado
     )
     .slice(0, LIMITE_RESULTADOS);
 
@@ -342,7 +307,7 @@ function localizarTecnicos(tecnicos, localizacao) {
 // ==========================================
 
 function Icone({ tipo, tamanho = 22 }) {
-  const propriedades = {
+  const props = {
     width: tamanho,
     height: tamanho,
     viewBox: "0 0 24 24",
@@ -354,103 +319,84 @@ function Icone({ tipo, tamanho = 22 }) {
     "aria-hidden": true,
   };
 
-  if (tipo === "cubo") {
-    return (
-      <svg {...propriedades}>
+  const icones = {
+    cubo: (
+      <>
         <path d="m12 2 9 5-9 5-9-5 9-5Z" />
         <path d="M3 7v10l9 5 9-5V7" />
         <path d="M12 12v10" />
-      </svg>
-    );
-  }
-
-  if (tipo === "pin") {
-    return (
-      <svg {...propriedades}>
+      </>
+    ),
+    pin: (
+      <>
         <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z" />
         <circle cx="12" cy="10" r="2.5" />
-      </svg>
-    );
-  }
-
-  if (tipo === "busca") {
-    return (
-      <svg {...propriedades}>
-        <circle
-          cx="10.5"
-          cy="10.5"
-          r="6.5"
-        />
+      </>
+    ),
+    busca: (
+      <>
+        <circle cx="10.5" cy="10.5" r="6.5" />
         <path d="m16 16 5 5" />
-      </svg>
-    );
-  }
-
-  if (tipo === "escudo") {
-    return (
-      <svg {...propriedades}>
+      </>
+    ),
+    escudo: (
+      <>
         <path d="M12 2 4 6v6c0 5 3 8 8 10 5-2 8-5 8-10V6l-8-4Z" />
         <path d="m8 12 3 3 5-6" />
-      </svg>
-    );
-  }
-
-  if (tipo === "whatsapp") {
-    return (
-      <svg {...propriedades}>
+      </>
+    ),
+    whatsapp: (
+      <>
         <path d="M21 11.5a9 9 0 0 1-13 8L3 21l1.5-5A9 9 0 1 1 21 11.5Z" />
         <path d="M8 9c1 4 3 6 7 7l2-2" />
-      </svg>
-    );
-  }
-
-  if (tipo === "externo") {
-    return (
-      <svg {...propriedades}>
+      </>
+    ),
+    externo: (
+      <>
         <path d="M14 4h6v6M20 4l-9 9" />
-        <path d="M20 13v6a1 1 0 0 1-1-1H5a1 1 0 0 1 1-1V5a1 1 0 0 1 1-1h6" />
-      </svg>
-    );
-  }
+        <path d="M20 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6" />
+      </>
+    ),
+  };
 
-  return null;
+  return <svg {...props}>{icones[tipo] || null}</svg>;
 }
 
 // ==========================================
-// CARTÃO DO PROFISSIONAL
+// CARD DO PROFISSIONAL
 // ==========================================
 
-function CardTecnico({ tecnico, posicao }) {
+function CardCredenciado({
+  profissional,
+  posicao,
+}) {
   const whatsapp = prepararWhatsapp(
-    tecnico.whatsapp,
-    tecnico.nome
+    profissional.whatsapp,
+    profissional.nome
   );
 
-  const especialidades =
-    Array.isArray(tecnico.especialidades)
-      ? tecnico.especialidades
-      : [];
+  const especialidades = Array.isArray(
+    profissional.especialidades
+  )
+    ? profissional.especialidades
+    : [];
 
   return (
     <article className="th-card">
 
       <div className="th-card-top">
         <div className="th-card-avatar">
-          <Icone
-            tipo="escudo"
-            tamanho={27}
-          />
+          <Icone tipo="escudo" tamanho={27} />
         </div>
 
         <div className="th-card-info">
           <div className="th-card-tag">
-            PROFISSIONAL HOMOLOGADO
+            PROFISSIONAL CREDENCIADO
           </div>
 
-          <h3>{tecnico.nome}</h3>
-
+          <h3>{profissional.nome}</h3>
           <p>
-            {tecnico.cidade} / {tecnico.uf}
+            {profissional.cidade} / {profissional.uf}
           </p>
         </div>
 
@@ -463,13 +409,11 @@ function CardTecnico({ tecnico, posicao }) {
 
       <div className="th-card-specialties">
         {especialidades.length > 0 ? (
-          especialidades.map(
-            (especialidade) => (
-              <span key={especialidade}>
-                {especialidade}
-              </span>
-            )
-          )
+          especialidades.map((item, indice) => (
+            <span key={`${item}-${indice}`}>
+              {item}
+            </span>
+          ))
         ) : (
           <span>
             Serviços conforme disponibilidade
@@ -484,7 +428,7 @@ function CardTecnico({ tecnico, posicao }) {
           Aproximadamente{" "}
           <strong>
             {formatarDistancia(
-              tecnico.distancia
+              profissional.distancia
             )}
           </strong>{" "}
           em linha reta
@@ -499,10 +443,7 @@ function CardTecnico({ tecnico, posicao }) {
             rel="noopener noreferrer"
             className="th-button th-button-primary"
           >
-            <Icone
-              tipo="whatsapp"
-              tamanho={18}
-            />
+            <Icone tipo="whatsapp" tamanho={18} />
             Conversar no WhatsApp
           </a>
         ) : (
@@ -513,17 +454,14 @@ function CardTecnico({ tecnico, posicao }) {
 
         <a
           href={gerarLinkMapa(
-            tecnico.latitude,
-            tecnico.longitude
+            profissional.latitude,
+            profissional.longitude
           )}
           target="_blank"
           rel="noopener noreferrer"
           className="th-button th-button-secondary"
         >
-          <Icone
-            tipo="externo"
-            tamanho={17}
-          />
+          <Icone tipo="externo" tamanho={17} />
           Ver região no mapa
         </a>
       </div>
@@ -532,7 +470,7 @@ function CardTecnico({ tecnico, posicao }) {
 }
 
 // ==========================================
-// PÁGINA PRINCIPAL
+// PÁGINA REDE DE CREDENCIADOS
 // ==========================================
 
 export default function TecnicosHomologados() {
@@ -557,20 +495,16 @@ export default function TecnicosHomologados() {
   const [raio, setRaio] =
     useState(10);
 
-  const [
-    pesquisaConcluida,
-    setPesquisaConcluida,
-  ] = useState(false);
+  const [pesquisaConcluida, setPesquisaConcluida] =
+    useState(false);
 
-  const [
-    podeGerenciar,
-    setPodeGerenciar,
-  ] = useState(false);
+  const [podeGerenciar, setPodeGerenciar] =
+    useState(false);
 
   const controladorRef = useRef(null);
 
   // ========================================
-  // CANCELAR BUSCA AO SAIR DA PÁGINA
+  // LIMPEZA DAS REQUISIÇÕES
   // ========================================
 
   useEffect(() => {
@@ -589,26 +523,23 @@ export default function TecnicosHomologados() {
     async function verificarPermissao() {
       try {
         const {
-          data: usuario,
+          data,
           error: erroUsuario,
         } = await tecnicosClient.auth.getUser();
 
-        if (
-          erroUsuario ||
-          !usuario?.user
-        ) {
+        if (erroUsuario || !data?.user) {
           return;
         }
 
-        const { data, error } =
-          await tecnicosClient.rpc(
-            "pode_gerenciar_tecnicos"
-          );
+        const {
+          data: permitido,
+          error,
+        } = await tecnicosClient.rpc(
+          "pode_gerenciar_tecnicos"
+        );
 
         if (montado && !error) {
-          setPodeGerenciar(
-            data === true
-          );
+          setPodeGerenciar(permitido === true);
         }
       } catch {
         if (montado) {
@@ -625,25 +556,20 @@ export default function TecnicosHomologados() {
   }, []);
 
   // ========================================
-  // REALIZAR BUSCA
+  // BUSCA POR ENDEREÇO
   // ========================================
 
-  async function buscarTecnicos(evento) {
+  async function buscarCredenciados(evento) {
     evento.preventDefault();
 
     if (pesquisando) {
       return;
     }
 
-    const enderecoInformado =
-      endereco.trim();
-
-    // Validar ANTES de chamar a API.
+    const enderecoInformado = endereco.trim();
 
     const erroValidacao =
-      validarEnderecoPesquisa(
-        enderecoInformado
-      );
+      validarEnderecoPesquisa(enderecoInformado);
 
     if (erroValidacao) {
       setErro(erroValidacao);
@@ -655,9 +581,7 @@ export default function TecnicosHomologados() {
 
     controladorRef.current?.abort();
 
-    const controlador =
-      new AbortController();
-
+    const controlador = new AbortController();
     controladorRef.current = controlador;
 
     setPesquisando(true);
@@ -667,32 +591,27 @@ export default function TecnicosHomologados() {
     setPesquisaConcluida(false);
 
     try {
-      const [local, tecnicos] =
+      const [local, profissionais] =
         await Promise.all([
           localizarEndereco(
             enderecoInformado,
             controlador.signal
           ),
-          carregarTecnicos(),
+          carregarCredenciados(),
         ]);
 
       if (controlador.signal.aborted) {
         return;
       }
 
-      const consulta =
-        localizarTecnicos(
-          tecnicos,
-          local
-        );
+      const consulta = localizarCredenciados(
+        profissionais,
+        local
+      );
 
       setLocalizacao(local);
-      setResultados(
-        consulta.encontrados
-      );
-      setRaio(
-        consulta.raioEncontrado
-      );
+      setResultados(consulta.encontrados);
+      setRaio(consulta.raioEncontrado);
       setPesquisaConcluida(true);
     } catch (falha) {
       if (controlador.signal.aborted) {
@@ -700,7 +619,7 @@ export default function TecnicosHomologados() {
       }
 
       setErro(
-        falha.message ||
+        falha?.message ||
           "Não foi possível concluir a busca. Tente novamente."
       );
     } finally {
@@ -710,13 +629,8 @@ export default function TecnicosHomologados() {
     }
   }
 
-  // ========================================
-  // INTERFACE
-  // ========================================
-
   return (
     <div className="th-page">
-
       <Header />
 
       {/* HERO */}
@@ -726,60 +640,45 @@ export default function TecnicosHomologados() {
 
           <div className="th-profile">
             <UserProfileButton
-              onClick={() =>
-                setProfileOpen(true)
-              }
+              onClick={() => setProfileOpen(true)}
             />
           </div>
 
           <div className="th-eyebrow">
-            <Icone
-              tipo="cubo"
-              tamanho={24}
-            />
-
-            <span>
-              REDE DE ASSISTÊNCIA HOMOLOGADA
-            </span>
+            <Icone tipo="cubo" tamanho={24} />
+            <span>REDE DE CREDENCIADOS SYNTER</span>
           </div>
 
-          <h1>Técnicos Homologados</h1>
+          <h1>Rede de Credenciados</h1>
 
           <p>
-            Localize profissionais homologados
-            pela Synter próximos ao endereço
-            da instalação e escolha com quem
-            deseja entrar em contato.
+            Localize profissionais credenciados pela
+            Synter próximos ao endereço da instalação
+            e escolha com quem deseja entrar em contato.
           </p>
         </div>
       </section>
 
-      {/* CONTEÚDO PRINCIPAL */}
+      {/* PESQUISA */}
 
       <main className="th-container th-main">
-
         <div className="th-section-heading">
           <span className="th-section-bar" />
 
           <div>
-            <h2>ENCONTRE UM PROFISSIONAL</h2>
+            <h2>ENCONTRE UM CREDENCIADO</h2>
 
             <p>
-              Informe a cidade ou um endereço
-              completo para encontrar os
-              técnicos mais próximos.
+              Informe a cidade ou um endereço completo
+              para encontrar os profissionais mais próximos.
             </p>
           </div>
         </div>
 
-        {/* ACESSO ADM */}
+        {/* GERENCIAMENTO EXCLUSIVO ADM */}
 
         {podeGerenciar && (
-          <div
-            style={{
-              marginBottom: 22,
-            }}
-          >
+          <div style={{ marginBottom: 22 }}>
             <Link
               to="/tecnicos-homologados/gerenciar"
               style={{
@@ -797,16 +696,16 @@ export default function TecnicosHomologados() {
                 textDecoration: "none",
               }}
             >
-              Gerenciar Técnicos
+              Gerenciar Credenciados
             </Link>
           </div>
         )}
 
-        {/* FORMULÁRIO DE PESQUISA */}
+        {/* FORMULÁRIO */}
 
         <form
           className="th-search-card"
-          onSubmit={buscarTecnicos}
+          onSubmit={buscarCredenciados}
         >
           <label htmlFor="endereco-tecnico">
             Endereço da instalação
@@ -814,20 +713,14 @@ export default function TecnicosHomologados() {
 
           <div className="th-search-row">
             <div className="th-input-wrapper">
-
-              <Icone
-                tipo="pin"
-                tamanho={21}
-              />
+              <Icone tipo="pin" tamanho={21} />
 
               <input
                 id="endereco-tecnico"
                 type="text"
                 value={endereco}
                 onChange={(evento) => {
-                  setEndereco(
-                    evento.target.value
-                  );
+                  setEndereco(evento.target.value);
 
                   if (erro) {
                     setErro("");
@@ -847,14 +740,11 @@ export default function TecnicosHomologados() {
               className="th-search-button"
               disabled={pesquisando}
             >
-              <Icone
-                tipo="busca"
-                tamanho={19}
-              />
+              <Icone tipo="busca" tamanho={19} />
 
               {pesquisando
                 ? "Localizando..."
-                : "Encontrar técnicos"}
+                : "Encontrar credenciados"}
             </button>
           </div>
 
@@ -862,26 +752,20 @@ export default function TecnicosHomologados() {
             id="th-instrucoes"
             className="th-search-help"
           >
-            Você pode pesquisar somente
-            pela cidade. Para pesquisar por
-            bairro ou rua, informe
+            Você pode pesquisar somente pela cidade.
+            Para pesquisar por bairro ou rua, informe
             obrigatoriamente o nome da cidade.
-            Exemplo: Bairro Santa Ana,
-            Forquilhinha, SC.
+            Exemplo: Bairro Santa Ana, Forquilhinha, SC.
           </p>
         </form>
 
-        {/* AVISO DE VALIDAÇÃO */}
+        {/* MENSAGENS */}
 
         {erro && (
-          <div
-            className="th-message"
-            role="alert"
-          >
+          <div className="th-message" role="alert">
             <strong>
               Verifique a localização informada
             </strong>
-
             <p>{erro}</p>
           </div>
         )}
@@ -890,7 +774,6 @@ export default function TecnicosHomologados() {
 
         {pesquisaConcluida && (
           <section className="th-results">
-
             <div className="th-results-header">
               <div>
                 <span className="th-eyebrow-small">
@@ -899,7 +782,7 @@ export default function TecnicosHomologados() {
 
                 <h2>
                   {resultados.length === 0
-                    ? "Nenhum técnico encontrado"
+                    ? "Nenhum credenciado encontrado"
                     : `${resultados.length} ${
                         resultados.length === 1
                           ? "profissional encontrado"
@@ -915,19 +798,12 @@ export default function TecnicosHomologados() {
 
             {localizacao && (
               <div className="th-location-summary">
-
-                <Icone
-                  tipo="pin"
-                  tamanho={19}
-                />
+                <Icone tipo="pin" tamanho={19} />
 
                 <span>
                   Busca realizada para:{" "}
-
                   <strong>
-                    {
-                      localizacao.enderecoFormatado
-                    }
+                    {localizacao.enderecoFormatado}
                   </strong>
                 </span>
               </div>
@@ -936,19 +812,18 @@ export default function TecnicosHomologados() {
             {localizacao?.aproximado && (
               <p className="th-precision-note">
                 A localização foi identificada
-                aproximadamente. Confira
-                o endereço antes de entrar
-                em contato.
+                aproximadamente. Confira o endereço
+                antes de entrar em contato.
               </p>
             )}
 
             {resultados.length > 0 ? (
               <div className="th-grid">
                 {resultados.map(
-                  (tecnico, indice) => (
-                    <CardTecnico
-                      key={tecnico.id}
-                      tecnico={tecnico}
+                  (profissional, indice) => (
+                    <CardCredenciado
+                      key={profissional.id}
+                      profissional={profissional}
                       posicao={indice}
                     />
                   )
@@ -956,22 +831,17 @@ export default function TecnicosHomologados() {
               </div>
             ) : (
               <div className="th-empty">
-
-                <Icone
-                  tipo="pin"
-                  tamanho={35}
-                />
+                <Icone tipo="pin" tamanho={35} />
 
                 <h3>
-                  Ainda não encontramos
-                  profissionais homologados
-                  nessa região.
+                  Ainda não encontramos profissionais
+                  credenciados nessa região.
                 </h3>
 
                 <p>
-                  Tente outro endereço próximo
-                  ou entre em contato com
-                  a Synter para receber orientação.
+                  Tente outro endereço próximo ou
+                  entre em contato com a Synter
+                  para receber orientação.
                 </p>
 
                 <a
@@ -985,18 +855,14 @@ export default function TecnicosHomologados() {
             )}
 
             <div className="th-disclaimer">
-              <Icone
-                tipo="escudo"
-                tamanho={20}
-              />
+              <Icone tipo="escudo" tamanho={20} />
 
               <p>
-                As distâncias são estimativas
-                em linha reta, não tempos de
-                viagem. A homologação não
-                representa confirmação de
-                disponibilidade, preço ou
-                agendamento. Confirme diretamente
+                As distâncias são estimativas em linha
+                reta, não tempos de viagem. O
+                credenciamento não representa
+                confirmação de disponibilidade, preço
+                ou agendamento. Confirme diretamente
                 com o profissional.
               </p>
             </div>
@@ -1008,9 +874,7 @@ export default function TecnicosHomologados() {
 
       {profileOpen && (
         <Profile
-          onClose={() =>
-            setProfileOpen(false)
-          }
+          onClose={() => setProfileOpen(false)}
         />
       )}
     </div>
