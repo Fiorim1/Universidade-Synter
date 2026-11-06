@@ -13,7 +13,6 @@ import CardsDashboard from "../components/CardsDashboard";
 
 import ManualIcon from "../assets/manual-icon.png";
 import YtIcon from "../assets/Yt-Icon.png";
-import TreinamentoIcon from "../assets/treinamento-icon.png";
 import TabelaIcon from "../assets/tabela-icon.png";
 import FtIcon from "../assets/Ft-icon.png";
 import ImgIcon from "../assets/img-icon.png";
@@ -22,6 +21,10 @@ import MktIcon from "../assets/mkt-icon.png";
 import AppIcon from "../assets/app-icon.png";
 import QuestionIcon from "../assets/perguntas-icon.png";
 import SeletorIcon from "../assets/seletor-icon.svg";
+
+// NOVO ÍCONE — REDE DE CREDENCIADOS
+
+import CredenciadosIcon from "../assets/rede-credenciados-icon.svg";
 
 // ==========================================
 // ESTILOS
@@ -142,9 +145,12 @@ function Dashboard() {
 
   return (
     <div className="dashboard-page synter-dashboard">
+
       <Header />
 
-      {/* HERO */}
+      {/* =====================================
+          HERO
+      ===================================== */}
 
       <section className="synter-db-hero">
         <div className="synter-db-hero-container">
@@ -156,9 +162,13 @@ function Dashboard() {
           </div>
 
           <div className="synter-db-hero-content">
+
             <div className="synter-db-eyebrow">
               <IconeSynter />
-              <span>PLATAFORMA DE CONHECIMENTO</span>
+
+              <span>
+                PLATAFORMA DE CONHECIMENTO
+              </span>
             </div>
 
             <h1 className="synter-db-title">
@@ -172,6 +182,7 @@ function Dashboard() {
             </p>
 
             <div className="synter-db-features">
+
               <DestaqueDashboard
                 icone={<IconeAtualizado />}
                 titulo="Conteúdo Atualizado"
@@ -189,14 +200,18 @@ function Dashboard() {
                 titulo="Acesso Rápido"
                 descricao="Tudo em um único lugar"
               />
+
             </div>
           </div>
         </div>
       </section>
 
-      {/* ACESSO RÁPIDO */}
+      {/* =====================================
+          ACESSO RÁPIDO
+      ===================================== */}
 
       <main className="dashboard-content">
+
         <div className="dashboard-section-title">
           <div className="dashboard-section-bar" />
           <h4>ACESSO RÁPIDO</h4>
@@ -297,10 +312,13 @@ function Dashboard() {
             enabled={true}
           />
 
-          {/* REDE DE CREDENCIADOS */}
+          {/* =================================
+              REDE DE CREDENCIADOS
+              NOVO ÍCONE DE LOCALIZAÇÃO
+          ================================= */}
 
           <CardsDashboard
-            image={TreinamentoIcon}
+            image={CredenciadosIcon}
             title="Rede de Credenciados"
             desc="Encontre profissionais credenciados Synter próximos ao endereço informado."
             route="/tecnicos-homologados"
@@ -320,6 +338,10 @@ function Dashboard() {
       </main>
 
       <Footer />
+
+      {/* =====================================
+          PERFIL
+      ===================================== */}
 
       {profileOpen && (
         <Profile
