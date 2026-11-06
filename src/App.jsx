@@ -68,7 +68,7 @@ import DigMarketing from "./pages/DigMarketing.jsx";
 import SeletorFechaduras from "./pages/SeletorFechaduras.jsx";
 
 // ========================================
-// TÉCNICOS HOMOLOGADOS
+// REDE DE CREDENCIADOS
 // ========================================
 
 import TecnicosHomologados from "./pages/TecnicosHomologados.jsx";
@@ -120,7 +120,7 @@ function App() {
   const location = useLocation();
 
   // ========================================
-  // VOLTAR AO TOPO AO MUDAR DE PÁGINA
+  // VOLTAR AO TOPO AO TROCAR DE ROTA
   // ========================================
 
   useEffect(() => {
@@ -215,12 +215,13 @@ function App() {
 
         {/* ====================================
             DASHBOARD SAC
+            EXCLUSIVO PARA ADM
         ==================================== */}
 
         <Route
           path="/dashsac"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute requiredRole="adm">
               <DashboardSAC />
             </ProtectedRoute>
           }
@@ -366,7 +367,7 @@ function App() {
         />
 
         {/* ====================================
-            TÉCNICOS HOMOLOGADOS
+            REDE DE CREDENCIADOS
             BUSCA DE PROFISSIONAIS
         ==================================== */}
 
@@ -380,14 +381,14 @@ function App() {
         />
 
         {/* ====================================
-            GERENCIAMENTO DE TÉCNICOS
-            PERMISSÃO ADM
+            GERENCIAMENTO DE CREDENCIADOS
+            MANTÉM CONTROLE ADM DA PÁGINA
         ==================================== */}
 
         <Route
           path="/tecnicos-homologados/gerenciar"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute requiredRole="adm">
               <GerenciarTecnicos />
             </ProtectedRoute>
           }
@@ -395,12 +396,13 @@ function App() {
 
         {/* ====================================
             ASSISTÊNCIA TÉCNICA
+            EXCLUSIVO PARA ADM
         ==================================== */}
 
         <Route
           path="/assistencia-tecnica"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute requiredRole="adm">
               <AssistenciaTecnica />
             </ProtectedRoute>
           }
@@ -408,12 +410,13 @@ function App() {
 
         {/* ====================================
             VISITAS TÉCNICAS
+            EXCLUSIVO PARA ADM
         ==================================== */}
 
         <Route
           path="/visitas-tecnicas"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute requiredRole="adm">
               <VisitasTecnicas />
             </ProtectedRoute>
           }
@@ -421,12 +424,13 @@ function App() {
 
         {/* ====================================
             SYNTER ANALYTICS
+            EXCLUSIVO PARA ADM
         ==================================== */}
 
         <Route
           path="/synter-analytics"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute requiredRole="adm">
               <SynterAnalytics />
             </ProtectedRoute>
           }
@@ -513,7 +517,6 @@ function App() {
       {mostrarAssistente && (
         <SynterAssistant />
       )}
-
     </>
   );
 }

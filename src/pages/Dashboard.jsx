@@ -1,11 +1,14 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 import CardsDashboard from "../components/CardsDashboard";
+
+import { useAuth } from "../context/AuthContext";
+import { tecnicosClient } from "../lib/tecnicosClient";
 
 // ==========================================
 // ÍCONES
@@ -21,9 +24,6 @@ import MktIcon from "../assets/mkt-icon.png";
 import AppIcon from "../assets/app-icon.png";
 import QuestionIcon from "../assets/perguntas-icon.png";
 import SeletorIcon from "../assets/seletor-icon.svg";
-
-// NOVO ÍCONE — REDE DE CREDENCIADOS
-
 import CredenciadosIcon from "../assets/rede-credenciados-icon.svg";
 
 // ==========================================
@@ -113,7 +113,7 @@ function IconeAcesso() {
 }
 
 // ==========================================
-// DESTAQUE DO HERO
+// DESTAQUES DO HERO
 // ==========================================
 
 function DestaqueDashboard({
@@ -140,8 +140,87 @@ function DestaqueDashboard({
 // ==========================================
 
 function Dashboard() {
+  const { user } = useAuth();
+
   const [profileOpen, setProfileOpen] =
     useState(false);
+
+  const [perfil, setPerfil] = useState({
+    userId: null,
+    role: null,
+  });
+
+  // ========================================
+  // VERIFICAR SE O USUÁRIO É ADM
+  // ========================================
+
+  useEffect(() => {
+    let ativo = true;
+
+    async function carregarPerfil() {
+      if (!user?.id) {
+        setPerfil({
+          userId: null,
+          role: null,
+        });
+        return;
+      }
+
+      setPerfil({
+        userId: user.id,
+        role: null,
+      });
+
+      try {
+        const { data, error } =
+          await tecnicosClient
+            .from("profiles")
+            .select("role")
+            .eq("id", user.id)
+            .maybeSingle();
+
+        if (error) {
+          throw error;
+        }
+
+        if (ativo) {
+          setPerfil({
+            userId: user.id,
+            role: String(
+              data?.role || ""
+            ).trim().toLowerCase(),
+          });
+        }
+      } catch (erro) {
+        console.error(
+          "Erro ao consultar perfil:",
+          erro
+        );
+
+        if (ativo) {
+          setPerfil({
+            userId: user.id,
+            role: null,
+          });
+        }
+      }
+    }
+
+    carregarPerfil();
+
+    return () => {
+      ativo = false;
+    };
+  }, [user?.id]);
+
+  const isAdm =
+    Boolean(user?.id) &&
+    perfil.userId === user.id &&
+    perfil.role === "adm";
+
+  // ========================================
+  // INTERFACE
+  // ========================================
 
   return (
     <div className="dashboard-page synter-dashboard">
@@ -165,7 +244,6 @@ function Dashboard() {
 
             <div className="synter-db-eyebrow">
               <IconeSynter />
-
               <span>
                 PLATAFORMA DE CONHECIMENTO
               </span>
@@ -229,14 +307,20 @@ function Dashboard() {
             enabled={true}
           />
 
-          {/* ASSISTÊNCIA / SUPORTE */}
+          {/* =================================
+              ASSISTÊNCIA / SUPORTE TÉCNICO
+              EXCLUSIVO PARA ADM
+          ================================= */}
 
-          <CardsDashboard
-            image={FtIcon}
-            title="Assistência / Suporte Técnico"
-            desc="Acesse nosso SAC"
-            route="/dashsac"
-          />
+          {isAdm && (
+            <CardsDashboard
+              image={FtIcon}
+              title="Assistência / Suporte Técnico"
+              desc="Acesse nosso SAC"
+              route="/dashsac"
+              enabled={true}
+            />
+          )}
 
           {/* FICHAS TÉCNICAS */}
 
@@ -312,10 +396,7 @@ function Dashboard() {
             enabled={true}
           />
 
-          {/* =================================
-              REDE DE CREDENCIADOS
-              NOVO ÍCONE DE LOCALIZAÇÃO
-          ================================= */}
+          {/* REDE DE CREDENCIADOS */}
 
           <CardsDashboard
             image={CredenciadosIcon}
@@ -339,9 +420,7 @@ function Dashboard() {
 
       <Footer />
 
-      {/* =====================================
-          PERFIL
-      ===================================== */}
+      {/* PERFIL */}
 
       {profileOpen && (
         <Profile
