@@ -1,0 +1,111 @@
+/* Exclusivo para a página de Manuais Técnicos. Não altera Fichas Técnicas. */
+.manual-mobile-catalog { display: none; }
+
+@media (max-width: 750px) {
+  .manuals-catalog-page .videos-hero-area { min-height: 0 !important; }
+  .manuals-catalog-page .videos-hero-content {
+    padding-top: 14px !important;
+    padding-bottom: 24px !important;
+  }
+  .manuals-catalog-page .videos-profile { padding-top: 10px !important; }
+  .manuals-catalog-page .manuals-desktop-catalog { display: none !important; }
+  .manuals-catalog-page .manual-mobile-catalog {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    padding: 22px 16px 34px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .manual-mobile-catalog * { box-sizing: border-box; }
+  .manual-mobile-head { margin-bottom: 14px; }
+  .manual-mobile-head h2 {
+    margin: 0 0 4px; padding-left: 10px;
+    border-left: 2px solid white;
+    font-size: 11px; font-weight: 750; letter-spacing: 1.1px;
+  }
+  .manual-mobile-head p { margin: 0; color: #a4a4ac; font-size: 11px; }
+  .manual-mobile-search {
+    display: flex; align-items: center; gap: 9px;
+    width: 100%; height: 44px; margin-bottom: 10px;
+    padding: 0 11px; background: #151517;
+    border: 1px solid #3b3b40; border-radius: 9px; color: #a8a8b0;
+  }
+  .manual-mobile-search > span { font-size: 23px; line-height: 1; }
+  .manual-mobile-search input {
+    min-width: 0; flex: 1; width: 100%; height: 100%; border: 0;
+    outline: none; background: transparent; color: #fff;
+    font: inherit; font-size: 12px;
+  }
+  .manual-mobile-search input::placeholder { color: #92929b; }
+  .manual-mobile-tabs {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px; margin-bottom: 12px;
+  }
+  .manual-mobile-tabs button {
+    min-width: 0; min-height: 35px; padding: 5px 2px;
+    border: 1px solid #35353b; border-radius: 7px;
+    background: #171719; color: #d2d2d8;
+    font: inherit; font-size: 10px; font-weight: 650; cursor: pointer;
+  }
+  .manual-mobile-tabs button.is-selected { background: white; border-color: white; color: #101010; }
+  .manual-mobile-filter-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 9px; }
+  .manual-mobile-filter-grid label { display: flex; flex-direction: column; min-width: 0; gap: 6px; }
+  .manual-mobile-filter-grid label > span { color: #aaaab3; font-size: 10px; }
+  .manual-mobile-filter-grid select {
+    width: 100%; min-width: 0; min-height: 39px; padding: 0 8px;
+    background: #171719; color: #fff; border: 1px solid #36363a;
+    border-radius: 8px; font-size: 11px;
+  }
+  .manual-mobile-resultbar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; margin: 17px 0 11px;
+    color: #aaaab3; font-size: 11px;
+  }
+  .manual-mobile-resultbar button {
+    border: 0; background: none; color: #dddde4;
+    font: inherit; font-size: 11px; cursor: pointer;
+    text-decoration: underline; text-underline-offset: 3px;
+  }
+  .manual-mobile-list { display: grid; gap: 8px; }
+  .manual-mobile-item {
+    display: flex; align-items: center; gap: 11px;
+    width: 100%; min-width: 0; min-height: 67px; padding: 9px;
+    background: #141416; border: 1px solid #35353a; border-radius: 10px;
+  }
+  .manual-mobile-item-image {
+    display: flex; align-items: center; justify-content: center;
+    width: 42px; height: 45px; flex: 0 0 42px;
+    border: 1px solid #3a3a40; border-radius: 8px; background: #1f1f22;
+  }
+  .manual-mobile-item-image img { display: block; max-width: 90%; max-height: 90%; object-fit: contain; }
+  .manual-mobile-item-info { display: flex; flex: 1; flex-direction: column; gap: 4px; min-width: 0; }
+  .manual-mobile-item-info strong { color: white; font-size: 11px; font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }
+  .manual-mobile-item-info small { color: #a2a2ab; font-size: 10px; }
+  .manual-mobile-open {
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+    flex: 0 0 auto; min-height: 32px; padding: 7px 9px;
+    background: #fff; color: #101010; border-radius: 7px;
+    font-size: 10px; font-weight: 750; text-decoration: none;
+  }
+  .manual-mobile-soon { font-size: 9px; color: #898991; white-space: nowrap; }
+  .manual-mobile-more {
+    display: block; width: 100%; min-height: 41px; margin-top: 12px;
+    background: #1b1b1e; color: #fff; border: 1px solid #44444a;
+    border-radius: 9px; font: inherit; font-size: 12px; cursor: pointer;
+  }
+  .manual-mobile-empty {
+    padding: 23px 12px; border: 1px solid #37373b;
+    border-radius: 10px; color: #b3b3bc; font-size: 12px; text-align: center;
+  }
+  .manual-mobile-catalog button:focus-visible,
+  .manual-mobile-catalog a:focus-visible,
+  .manual-mobile-catalog select:focus-visible,
+  .manual-mobile-catalog input:focus-visible { outline: 2px solid white; outline-offset: 2px; }
+}
+
+@media (max-width: 365px) {
+  .manuals-catalog-page .manual-mobile-catalog { padding-left: 12px; padding-right: 12px; }
+  .manual-mobile-tabs button { font-size: 9px; }
+  .manual-mobile-open { font-size: 9px; padding: 6px; }
+}
