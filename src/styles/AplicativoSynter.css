@@ -139,6 +139,122 @@
 }
 
 /* ==========================================
+   CARTÃO DO MANUAL OFICIAL
+========================================== */
+
+.appsynter-page .appsynter-manual-card {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 50px;
+  padding: 26px;
+  background: linear-gradient(
+    135deg,
+    #1a1a1d 0%,
+    #101012 100%
+  );
+  border: 1px solid #3d3d43;
+  border-radius: 16px;
+}
+
+.appsynter-page .appsynter-manual-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 72px;
+  width: 72px;
+  height: 72px;
+  background: #252528;
+  border: 1px solid #45454b;
+  border-radius: 13px;
+  color: #ffffff;
+}
+
+.appsynter-page .appsynter-manual-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.appsynter-page .appsynter-manual-label {
+  display: block;
+  margin-bottom: 9px;
+  color: #aaaab5;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.appsynter-page .appsynter-manual-content h2 {
+  margin: 0 0 9px;
+  color: #ffffff;
+  font-size: 21px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.appsynter-page .appsynter-manual-content p {
+  max-width: 670px;
+  margin: 0 0 11px;
+  color: #b3b3bc;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.appsynter-page .appsynter-manual-meta {
+  color: #92929e;
+  font-size: 11px;
+}
+
+.appsynter-page .appsynter-manual-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  flex-shrink: 0;
+}
+
+.appsynter-page .appsynter-manual-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 43px;
+  padding: 11px 15px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.appsynter-page .appsynter-manual-button.primary {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #101010;
+}
+
+.appsynter-page .appsynter-manual-button.primary:hover {
+  background: #e6e6e8;
+  color: #101010;
+}
+
+.appsynter-page .appsynter-manual-button.secondary {
+  background: #262629;
+  border-color: #48484e;
+  color: #ffffff;
+}
+
+.appsynter-page .appsynter-manual-button.secondary:hover {
+  background: #36363b;
+  color: #ffffff;
+}
+
+/* ==========================================
    PESQUISA
 ========================================== */
 
@@ -147,9 +263,9 @@
   align-items: center;
   gap: 14px;
   width: 100%;
+  min-height: 54px;
   margin-bottom: 24px;
   padding: 0 18px;
-  min-height: 54px;
   background: #121214;
   border: 1px solid #35353a;
   border-radius: 11px;
@@ -194,7 +310,11 @@
 
 .appsynter-page .appsynter-guide-card {
   min-width: 0;
-  background: linear-gradient(135deg, #151516, #0c0c0d);
+  background: linear-gradient(
+    135deg,
+    #151516,
+    #0c0c0d
+  );
   border: 1px solid #303034;
   border-radius: 14px;
   overflow: hidden;
@@ -207,7 +327,7 @@
 }
 
 /* ==========================================
-   CABEÇALHO DE CADA GUIA
+   CABEÇALHO DO GUIA
 ========================================== */
 
 .appsynter-page .appsynter-guide-trigger {
@@ -341,6 +461,33 @@
   line-height: 1.75;
 }
 
+/* REFERÊNCIA AO MANUAL */
+
+.appsynter-page .appsynter-guide-reference {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #303036;
+  color: #a9a9b3;
+  font-size: 11px;
+}
+
+.appsynter-page .appsynter-guide-reference a {
+  margin-left: auto;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.appsynter-page .appsynter-guide-reference a:hover {
+  color: #d1d1d6;
+}
+
 /* ==========================================
    SEM RESULTADOS
 ========================================== */
@@ -354,6 +501,7 @@
 }
 
 .appsynter-page .appsynter-empty strong {
+  color: #ffffff;
   font-size: 15px;
 }
 
@@ -377,7 +525,7 @@
 }
 
 /* ==========================================
-   ÁREA DO VÍDEO
+   VÍDEO DEMONSTRATIVO
 ========================================== */
 
 .appsynter-page .appsynter-video-section {
@@ -478,7 +626,11 @@
   gap: 28px;
   margin-top: 48px;
   padding: 30px;
-  background: linear-gradient(135deg, #19191b, #101011);
+  background: linear-gradient(
+    135deg,
+    #19191b,
+    #101011
+  );
   border: 1px solid #35353a;
   border-radius: 16px;
 }
@@ -533,7 +685,8 @@
 ========================================== */
 
 .appsynter-page button:focus-visible,
-.appsynter-page a:focus-visible {
+.appsynter-page a:focus-visible,
+.appsynter-page input:focus-visible {
   outline: 2px solid #ffffff;
   outline-offset: 3px;
 }
@@ -541,6 +694,17 @@
 /* ==========================================
    NOTEBOOK / TABLET
 ========================================== */
+
+@media (max-width: 1150px) {
+  .appsynter-page .appsynter-manual-card {
+    flex-wrap: wrap;
+  }
+
+  .appsynter-page .appsynter-manual-actions {
+    flex-basis: 100%;
+    padding-left: 94px;
+  }
+}
 
 @media (max-width: 1050px) {
   .appsynter-page .appsynter-guide-grid {
@@ -585,6 +749,10 @@
     padding: 35px 0 65px;
   }
 
+  .appsynter-page .appsynter-manual-actions {
+    padding-left: 0;
+  }
+
   .appsynter-page .appsynter-support {
     flex-direction: column;
     align-items: flex-start;
@@ -607,6 +775,34 @@
 
   .appsynter-page .appsynter-hero-features {
     gap: 10px;
+  }
+
+  .appsynter-page .appsynter-manual-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 17px;
+    padding: 20px;
+  }
+
+  .appsynter-page .appsynter-manual-icon {
+    flex-basis: auto;
+    width: 58px;
+    height: 58px;
+  }
+
+  .appsynter-page .appsynter-manual-content h2 {
+    font-size: 18px;
+  }
+
+  .appsynter-page .appsynter-manual-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .appsynter-page .appsynter-manual-button {
+    width: 100%;
+    white-space: normal;
   }
 
   .appsynter-page .appsynter-guide-trigger {
@@ -648,6 +844,10 @@
     font-size: 12px;
   }
 
+  .appsynter-page .appsynter-guide-reference a {
+    margin-left: 0;
+  }
+
   .appsynter-page .appsynter-video-footer {
     padding: 18px;
   }
@@ -669,6 +869,10 @@
     white-space: normal;
   }
 }
+
+/* ==========================================
+   MOVIMENTO REDUZIDO
+========================================== */
 
 @media (prefers-reduced-motion: reduce) {
   .appsynter-page *,
