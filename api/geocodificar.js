@@ -15,24 +15,182 @@ const CHAVE_PUBLICA_SUPABASE =
   process.env.SUPABASE_ANON_KEY ||
   process.env.VITE_SUPABASE_ANON_KEY;
 
-// Esta chave fica exclusivamente na Vercel.
-// Não é enviada para o navegador.
-
 const CHAVE_GEOAPIFY =
   process.env.GEOAPIFY_API_KEY;
 
 // ==========================================
-// FUNÇÃO SERVERLESS
+// PADRONIZAÇÃO DE TEXTO
+// ==========================================
+
+function normalizar(valor) {
+  return String(valor || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+// ==========================================
+// IDENTIFICAR PESQUISAS POR BAIRRO OU RUA
+// ==========================================
+
+const PREFIXO_LOGRADOURO =
+  /^(bairro|b\.|rua|r\.|avenida|av\.|travessa|tv\.|alameda|estrada|rodovia|servidao|loteamento|praca|viela)\s/i;
+
+const TIPOS_BAIRRO = new Set([
+  "suburb",
+  "district",
+  "neighbourhood",
+  "neighborhood",
+  "quarter",
+]);
+
+// ==========================================
+// EXTRAIR CIDADE DO TEXTO
+// ==========================================
+
+function analisarEndereco(valor) {
+  const endereco = String(valor || "").trim();
+
+  if (endereco.length < 3 || endereco.length > 240) {
+    return {
+      erro: "Informe uma localização válida.",
+    };
+  }
+
+  // Aceita formato:
+  // Bairro X, Cidade, UF
+  // Rua X, 123, Cidade, UF
+  // Cidade
+  // Cidade, UF
+
+  const partes = endereco
+    .split(/\s*,\s*|\s+-\s+/)
+    .map((parte) => parte.trim())
+    .filter(Boolean);
+
+  const localDetalhado =
+    PREFIXO_LOGRADOURO.test(endereco);
+
+  const segmentos = [...partes];
+
+  let ufInformada = "";
+
+  if (
+    segmentos.length > 1 &&
+    /^[a-zA-Z]{2}$/.test(
+      segmentos[segmentos.length - 1]
+    )
+  ) {
+    ufInformada =
+      segmentos.pop().toUpperCase();
+  }
+
+  // Bairro ou rua precisam ter a cidade
+  // como o último segmento não numérico.
+
+  if (localDetalhado) {
+    if (segmentos.length < 2) {
+      return {
+        erro:
+          "Para pesquisar por bairro ou rua, informe obrigatoriamente a cidade. Exemplo: Bairro Santa Ana, Forquilhinha, SC.",
+      };
+    }
+
+    const cidadeInformada =
+      segmentos[segmentos.length - 1];
+
+    if (
+      cidadeInformada.length < 3 ||
+      /^\d/.test(cidadeInformada) ||
+      PREFIXO_LOGRADOURO.test(cidadeInformada)
+    ) {
+      return {
+        erro:
+          "Informe o nome da cidade após a rua ou o bairro. Exemplo: Rua das Flores, 123, Forquilhinha, SC.",
+      };
+    }
+
+    return {
+      endereco,
+      cidadeInformada,
+      ufInformada,
+      localDetalhado: true,
+    };
+  }
+
+  // Formato sem prefixo:
+  // "Centro, Forquilhinha"
+  // "Forquilhinha, SC"
+  // "Forquilhinha"
+
+  const cidadeInformada =
+    segmentos.length > 1
+      ? segmentos[segmentos.length - 1]
+      : segmentos[0] || "";
+
+  if (
+    !cidadeInformada ||
+    /^\d/.test(cidadeInformada)
+  ) {
+    return {
+      erro: "Informe o nome da cidade.",
+    };
+  }
+
+  return {
+    endereco,
+    cidadeInformada,
+    ufInformada,
+    localDetalhado: segmentos.length > 1,
+    pesquisaSimples: segmentos.length === 1,
+  };
+}
+
+// ==========================================
+// COMPARAR CIDADE DO RESULTADO
+// ==========================================
+
+function cidadeConfere(local, cidadeInformada) {
+  const esperada = normalizar(cidadeInformada);
+
+  if (!esperada) {
+    return false;
+  }
+
+  const localidades = [
+    local.city,
+    local.municipality,
+  ]
+    .map(normalizar)
+    .filter(Boolean);
+
+  return localidades.includes(esperada);
+}
+
+function ufConfere(local, ufInformada) {
+  if (!ufInformada) {
+    return true;
+  }
+
+  return (
+    String(local.state_code || "")
+      .toUpperCase() === ufInformada
+  );
+}
+
+// ==========================================
+// FUNÇÃO PRINCIPAL DA VERCEL
 // ==========================================
 
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
+
   res.setHeader(
     "Content-Type",
     "application/json; charset=utf-8"
   );
-
-  // Somente requisições POST
 
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -42,12 +200,10 @@ export default async function handler(req, res) {
     });
   }
 
-  // Verificar configurações
-
   if (
-    !CHAVE_GEOAPIFY ||
     !URL_SUPABASE ||
-    !CHAVE_PUBLICA_SUPABASE
+    !CHAVE_PUBLICA_SUPABASE ||
+    !CHAVE_GEOAPIFY
   ) {
     console.error(
       "Configuração ausente em /api/geocodificar"
@@ -60,20 +216,20 @@ export default async function handler(req, res) {
   }
 
   // ========================================
-  // VALIDAR SESSÃO DO USUÁRIO
+  // VALIDAR TOKEN DE AUTENTICAÇÃO
   // ========================================
 
-  const bearer =
+  const autorizacao =
     req.headers.authorization || "";
 
-  const token = bearer.startsWith("Bearer ")
-    ? bearer.slice(7)
+  const token = autorizacao.startsWith("Bearer ")
+    ? autorizacao.slice(7)
     : "";
 
   if (!token || token.length > 4096) {
     return res.status(401).json({
       erro:
-        "Entre na sua conta para fazer a consulta.",
+        "Entre na sua conta para consultar a localização.",
     });
   }
 
@@ -89,12 +245,10 @@ export default async function handler(req, res) {
       }
     );
 
-    const {
-      data: usuario,
-      error: erroUsuario,
-    } = await supabase.auth.getUser(token);
+    const { data, error } =
+      await supabase.auth.getUser(token);
 
-    if (erroUsuario || !usuario?.user?.id) {
+    if (error || !data?.user?.id) {
       return res.status(401).json({
         erro:
           "Sessão inválida. Entre novamente.",
@@ -102,14 +256,30 @@ export default async function handler(req, res) {
     }
 
     // ======================================
-    // RECEBER ENDEREÇO OU CIDADE
+    // LER O CORPO DA REQUISIÇÃO
     // ======================================
 
-    const corpo =
-      req.body &&
-      typeof req.body === "object"
-        ? req.body
-        : {};
+    let corpo = req.body;
+
+    if (typeof corpo === "string") {
+      try {
+        corpo = JSON.parse(corpo);
+      } catch {
+        return res.status(400).json({
+          erro: "Dados da consulta inválidos.",
+        });
+      }
+    }
+
+    if (
+      !corpo ||
+      typeof corpo !== "object" ||
+      Array.isArray(corpo)
+    ) {
+      return res.status(400).json({
+        erro: "Dados da consulta inválidos.",
+      });
+    }
 
     const endereco =
       typeof corpo.endereco === "string"
@@ -126,10 +296,16 @@ export default async function handler(req, res) {
         ? corpo.uf.trim().toUpperCase()
         : "";
 
-    let texto;
-    let limite;
+    let consulta;
+    let cidadeEsperada;
+    let ufEsperada;
+    let pesquisaDetalhada = false;
+    let pesquisaSimples = false;
 
-    // Busca de cidade para o cadastro ADM
+    // ======================================
+    // CADASTRO DE TÉCNICO:
+    // CIDADE + UF
+    // ======================================
 
     if (cidade || uf) {
       if (
@@ -142,22 +318,37 @@ export default async function handler(req, res) {
         });
       }
 
-      texto = `${cidade}, ${uf}, Brasil`;
-      limite = "5";
+      consulta = `${cidade}, ${uf}, Brasil`;
+      cidadeEsperada = cidade;
+      ufEsperada = uf;
+      pesquisaSimples = true;
     } else {
-      // Busca de endereço do usuário
+      // ====================================
+      // PESQUISA DO USUÁRIO
+      // ====================================
 
-      if (
-        endereco.length < 3 ||
-        endereco.length > 240
-      ) {
+      const analise =
+        analisarEndereco(endereco);
+
+      if (analise.erro) {
         return res.status(400).json({
-          erro: "Informe um endereço válido.",
+          erro: analise.erro,
         });
       }
 
-      texto = `${endereco}, Brasil`;
-      limite = "1";
+      consulta = `${endereco}, Brasil`;
+
+      cidadeEsperada =
+        analise.cidadeInformada;
+
+      ufEsperada =
+        analise.ufInformada;
+
+      pesquisaDetalhada =
+        analise.localDetalhado;
+
+      pesquisaSimples =
+        analise.pesquisaSimples;
     }
 
     // ======================================
@@ -165,11 +356,11 @@ export default async function handler(req, res) {
     // ======================================
 
     const parametros = new URLSearchParams({
-      text: texto,
+      text: consulta,
       format: "json",
       filter: "countrycode:br",
       lang: "pt",
-      limit: limite,
+      limit: "5",
       apiKey: CHAVE_GEOAPIFY,
     });
 
@@ -193,29 +384,114 @@ export default async function handler(req, res) {
       });
     }
 
-    const dados = await resposta.json();
+    const dadosGeoapify =
+      await resposta.json();
 
-    const resultados = Array.isArray(
-      dados.results
+    const candidatos = Array.isArray(
+      dadosGeoapify.results
     )
-      ? dados.results
+      ? dadosGeoapify.results
       : [];
 
-    // Retornar somente dados necessários.
-    // Nunca retornar a chave da Geoapify.
+    // ======================================
+    // CONFERIR CIDADE E UF
+    // ======================================
+
+    const correspondentes = candidatos.filter(
+      (local) => {
+        const lat = Number(local.lat);
+        const lon = Number(local.lon);
+
+        if (
+          !Number.isFinite(lat) ||
+          !Number.isFinite(lon)
+        ) {
+          return false;
+        }
+
+        return (
+          cidadeConfere(
+            local,
+            cidadeEsperada
+          ) &&
+          ufConfere(
+            local,
+            ufEsperada
+          )
+        );
+      }
+    );
+
+    // Pesquisa simples como "Centro":
+    // se o provedor identificar como bairro,
+    // exigir a cidade na pesquisa.
+
+    if (
+      pesquisaSimples &&
+      correspondentes.length === 0 &&
+      candidatos.some((local) =>
+        TIPOS_BAIRRO.has(
+          String(local.result_type || "")
+            .toLowerCase()
+        )
+      )
+    ) {
+      return res.status(422).json({
+        erro:
+          "A localização parece ser um bairro. Informe também a cidade. Exemplo: Centro, Forquilhinha, SC.",
+      });
+    }
+
+    if (correspondentes.length === 0) {
+      return res.status(422).json({
+        erro:
+          "Não foi possível confirmar a cidade informada. Confira o nome do município e a UF.",
+      });
+    }
+
+    // Se buscou uma rua ou bairro, evita
+    // aceitar um resultado somente de cidade.
+
+    const resultadosFiltrados =
+      pesquisaDetalhada
+        ? correspondentes.filter(
+            (local) =>
+              !["city", "county", "state"]
+                .includes(
+                  String(
+                    local.result_type || ""
+                  ).toLowerCase()
+                )
+          )
+        : correspondentes;
+
+    if (resultadosFiltrados.length === 0) {
+      return res.status(422).json({
+        erro:
+          "Não foi possível confirmar a rua ou bairro nessa cidade. Confira o endereço informado.",
+      });
+    }
+
+    // ======================================
+    // RETORNAR DADOS SEGUROS
+    // ======================================
 
     return res.status(200).json({
-      results: resultados.map((item) => ({
-        lat: item.lat,
-        lon: item.lon,
-        formatted: item.formatted,
-        result_type: item.result_type,
-        state_code: item.state_code,
-        rank: {
-          match_type:
-            item.rank?.match_type,
-        },
-      })),
+      results: resultadosFiltrados
+        .slice(0, 5)
+        .map((local) => ({
+          lat: local.lat,
+          lon: local.lon,
+          formatted: local.formatted,
+          city: local.city,
+          municipality: local.municipality,
+          state_code: local.state_code,
+          result_type: local.result_type,
+          rank: {
+            match_type:
+              local.rank?.match_type,
+          },
+        })),
     });
   } catch (erro) {
     console.error(
