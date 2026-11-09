@@ -8,6 +8,7 @@ import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 
 import "../styles/SeletorFechaduras.css";
+import "../styles/SeletorFechadurasMobile.css";
 
 // ==========================================
 // CATÁLOGO INICIAL SYNTER
@@ -245,6 +246,8 @@ export default function SeletorFechaduras() {
   const [mostrarTodos, setMostrarTodos] =
     useState(false);
 
+  const [linhaFiltro, setLinhaFiltro] = useState("todas");
+
   const etapa = ETAPAS[etapaAtual];
 
   const respostaAtual = respostas[etapa.chave];
@@ -256,6 +259,14 @@ export default function SeletorFechaduras() {
   // ========================================
   // FILTRAR CATÁLOGO PELA CATEGORIA
   // ========================================
+
+  const linhasDisponiveis = useMemo(() => {
+    const elegiveis = PRODUTOS.filter((produto) =>
+      respostas.tipo === "indefinido" || produto.tipo === respostas.tipo
+    );
+    return [...new Set(elegiveis.map((produto) => produto.nome.split(" ")[0]))]
+      .sort((a, b) => a.localeCompare(b, "pt-BR"));
+  }, [respostas.tipo]);
 
   const produtosCandidatos = useMemo(() => {
     const termo = pesquisa
@@ -269,6 +280,10 @@ export default function SeletorFechaduras() {
         respostas.tipo === "indefinido" ||
         produto.tipo === respostas.tipo;
 
+      const atendeLinha =
+        linhaFiltro === "todas" ||
+        produto.nome.split(" ")[0] === linhaFiltro;
+
       const nomeNormalizado = produto.nome
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
@@ -276,14 +291,19 @@ export default function SeletorFechaduras() {
 
       return (
         atendeTipo &&
+        atendeLinha &&
         nomeNormalizado.includes(termo)
       );
     });
-  }, [respostas.tipo, pesquisa]);
+  }, [respostas.tipo, pesquisa, linhaFiltro]);
 
   const produtosExibidos = mostrarTodos
     ? produtosCandidatos
     : produtosCandidatos.slice(0, 8);
+
+  const produtosMobileExibidos = mostrarTodos
+    ? produtosCandidatos
+    : produtosCandidatos.slice(0, 3);
 
   // ========================================
   // REGISTRAR RESPOSTA
@@ -328,6 +348,7 @@ export default function SeletorFechaduras() {
     setMostrarResultado(false);
     setPesquisa("");
     setMostrarTodos(false);
+    setLinhaFiltro("todas");
   }
 
   return (
@@ -515,50 +536,50 @@ export default function SeletorFechaduras() {
 
               {/* RESUMO */}
 
-              <div className="sf-summary">
+              <div className="sf-summary sf-summary-desktop">
                 {ETAPAS.map((item) => (
-                  <div
-                    key={item.chave}
-                    className="sf-summary-item"
-                  >
-                    <span>
-                      {item.chave === "tipo"
-                        ? "Tipo"
-                        : item.chave === "ambiente"
-                          ? "Ambiente"
-                          : item.chave === "finalidade"
-                            ? "Finalidade"
-                            : "Prioridade"}
-                    </span>
-
-                    <strong>
-                      {nomeDaOpcao(
-                        item.chave,
-                        respostas[item.chave]
-                      )}
-                    </strong>
+                  <div key={item.chave} className="sf-summary-item">
+                    <span>{item.chave === "tipo" ? "Tipo" : item.chave === "ambiente" ? "Ambiente" : item.chave === "finalidade" ? "Finalidade" : "Prioridade"}</span>
+                    <strong>{nomeDaOpcao(item.chave, respostas[item.chave])}</strong>
                   </div>
                 ))}
               </div>
 
+              <details className="sf-mobile-details sf-summary-mobile">
+                <summary>Ver respostas da seleção <span>4 critérios</span></summary>
+                <div className="sf-mobile-summary-list">
+                  {ETAPAS.map((item) => (
+                    <div key={item.chave}>
+                      <span>{item.chave === "tipo" ? "Tipo" : item.chave === "ambiente" ? "Ambiente" : item.chave === "finalidade" ? "Finalidade" : "Prioridade"}</span>
+                      <strong>{nomeDaOpcao(item.chave, respostas[item.chave])}</strong>
+                    </div>
+                  ))}
+                </div>
+              </details>
+
               {/* INFORMAÇÃO DE SEGURANÇA */}
 
-              <div className="sf-notice">
-                <strong>
-                  Verificação técnica necessária
-                </strong>
-
+              <div className="sf-notice sf-notice-desktop">
+                <strong>Verificação técnica necessária</strong>
                 <p>
-                  Esta versão seleciona produtos pela
-                  categoria. Ambiente, finalidade e
-                  prioridade são registrados, mas ainda
-                  não eliminam modelos por compatibilidade.
-                  Antes de recomendar ou instalar,
-                  confirme as informações nos manuais
-                  e fichas técnicas, especialmente para
-                  áreas externas e litorâneas.
+                  Esta versão seleciona produtos pela categoria. Ambiente,
+                  finalidade e prioridade são registrados, mas ainda não
+                  eliminam modelos por compatibilidade. Antes de recomendar
+                  ou instalar, confirme as informações nos manuais e fichas
+                  técnicas, especialmente para áreas externas e litorâneas.
                 </p>
               </div>
+
+              <details className="sf-mobile-details sf-notice-mobile">
+                <summary>Verificação técnica necessária <span>Leia antes de indicar</span></summary>
+                <p>
+                  Esta versão seleciona produtos pela categoria. Ambiente,
+                  finalidade e prioridade são registrados, mas ainda não
+                  eliminam modelos por compatibilidade. Antes de recomendar
+                  ou instalar, confirme as informações nos manuais e fichas
+                  técnicas, especialmente para áreas externas e litorâneas.
+                </p>
+              </details>
 
               {/* PESQUISA */}
 
@@ -567,23 +588,52 @@ export default function SeletorFechaduras() {
                   CATÁLOGO DE MODELOS
                 </h4>
 
-                <input
-                  type="search"
-                  value={pesquisa}
-                  onChange={(evento) => {
-                    setPesquisa(evento.target.value);
-                    setMostrarTodos(false);
-                  }}
-                  placeholder="Pesquisar modelo..."
-                  aria-label="Pesquisar modelos"
-                />
+                <div className="sf-catalog-filters">
+                  <input
+                    type="search"
+                    value={pesquisa}
+                    onChange={(evento) => {
+                      setPesquisa(evento.target.value);
+                      setMostrarTodos(false);
+                    }}
+                    placeholder="Pesquisar modelo..."
+                    aria-label="Pesquisar modelos"
+                  />
+                  <label className="sf-line-filter">
+                    <span>Linha</span>
+                    <select
+                      value={linhaFiltro}
+                      onChange={(evento) => {
+                        setLinhaFiltro(evento.target.value);
+                        setMostrarTodos(false);
+                      }}
+                    >
+                      <option value="todas">Todas as linhas</option>
+                      {linhasDisponiveis.map((linha) => (
+                        <option key={linha} value={linha}>{linha}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <button
+                    type="button"
+                    className="sf-filter-clear"
+                    onClick={() => {
+                      setPesquisa("");
+                      setLinhaFiltro("todas");
+                      setMostrarTodos(false);
+                    }}
+                  >Limpar</button>
+                </div>
+                <span className="sf-result-count">
+                  {produtosCandidatos.length} modelos encontrados
+                </span>
               </div>
 
               {/* PRODUTOS */}
 
               {produtosCandidatos.length > 0 ? (
                 <>
-                  <div className="sf-product-grid">
+                  <div className="sf-product-grid sf-product-grid-desktop">
                     {produtosExibidos.map(
                       (produto) => (
                         <article
@@ -614,10 +664,23 @@ export default function SeletorFechaduras() {
                     )}
                   </div>
 
+                  <div className="sf-product-grid sf-product-grid-mobile">
+                    {produtosMobileExibidos.map((produto) => (
+                      <article key={produto.nome} className="sf-product-card">
+                        <span className="sf-product-icon"><IconeCubo /></span>
+                        <span className="sf-product-info">
+                          <small>{produto.tipo === "digital" ? "FECHADURA DIGITAL" : "FECHADURA MECÂNICA"}</small>
+                          <strong>{produto.nome}</strong>
+                          <span>Consulte os documentos abaixo</span>
+                        </span>
+                      </article>
+                    ))}
+                  </div>
+
                   {produtosCandidatos.length > 8 && (
                     <button
                       type="button"
-                      className="sf-show-more"
+                      className="sf-show-more sf-show-more-desktop"
                       onClick={() =>
                         setMostrarTodos((atual) => !atual)
                       }
@@ -625,6 +688,16 @@ export default function SeletorFechaduras() {
                       {mostrarTodos
                         ? "Mostrar menos"
                         : `Ver todos os ${produtosCandidatos.length} modelos`}
+                    </button>
+                  )}
+
+                  {produtosCandidatos.length > 3 && (
+                    <button
+                      type="button"
+                      className="sf-show-more sf-show-more-mobile"
+                      onClick={() => setMostrarTodos((atual) => !atual)}
+                    >
+                      {mostrarTodos ? "Mostrar menos" : `Ver mais ${produtosCandidatos.length - 3} modelos`}
                     </button>
                   )}
                 </>
