@@ -7,19 +7,24 @@ import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 
-// ÍCONES
+// ==========================================
+// ÍCONES ORIGINAIS
+// ==========================================
 
 import MKT1 from "../assets/logomkt1.png";
 import MKT2 from "../assets/logomkt2.png";
 import MKT3 from "../assets/logomkt3.png";
 
+// ==========================================
 // ESTILOS
+// ==========================================
 
 import "../styles/Marketing.css";
+import "../styles/MarketingMobile.css";
 
-// ========================================
+// ==========================================
 // ÍCONE PADRÃO SYNTER
-// ========================================
+// ==========================================
 
 function IconeSynter() {
   return (
@@ -41,9 +46,9 @@ function IconeSynter() {
   );
 }
 
-// ========================================
+// ==========================================
 // ÍCONES DOS DESTAQUES
-// ========================================
+// ==========================================
 
 function IconeImagem() {
   return (
@@ -56,7 +61,13 @@ function IconeImagem() {
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      <rect x="3" y="3" width="18" height="18" rx="3" />
+      <rect
+        x="3"
+        y="3"
+        width="18"
+        height="18"
+        rx="3"
+      />
       <circle cx="8" cy="8" r="1.5" />
       <path d="m4 17 5-5 4 4 3-3 4 4" />
     </svg>
@@ -96,6 +107,10 @@ function IconeAcesso() {
   );
 }
 
+// ==========================================
+// ÍCONE DE NAVEGAÇÃO
+// ==========================================
+
 function IconeSeta() {
   return (
     <svg
@@ -116,9 +131,9 @@ function IconeSeta() {
   );
 }
 
-// ========================================
+// ==========================================
 // DESTAQUES DO HERO
-// ========================================
+// ==========================================
 
 function DestaqueMarketing({
   icone,
@@ -139,9 +154,9 @@ function DestaqueMarketing({
   );
 }
 
-// ========================================
+// ==========================================
 // CARTÃO DE MARKETING
-// ========================================
+// ==========================================
 
 function CartaoMarketing({
   imagem,
@@ -165,7 +180,7 @@ function CartaoMarketing({
         <p>{descricao}</p>
       </div>
 
-      {disponivel ? (
+      {disponivel && rota ? (
         <span
           className="mkt-card-arrow"
           aria-hidden="true"
@@ -182,7 +197,10 @@ function CartaoMarketing({
 
   if (!disponivel || !rota) {
     return (
-      <div className="mkt-card mkt-card-disabled">
+      <div
+        className="mkt-card mkt-card-disabled"
+        aria-disabled="true"
+      >
         {conteudo}
       </div>
     );
@@ -199,9 +217,9 @@ function CartaoMarketing({
   );
 }
 
-// ========================================
-// PÁGINA DE MATERIAIS DE MARKETING
-// ========================================
+// ==========================================
+// PÁGINA PRINCIPAL
+// ==========================================
 
 export default function Marketing() {
   const [profileOpen, setProfileOpen] =
@@ -214,9 +232,9 @@ export default function Marketing() {
 
       <Header />
 
-      {/* ====================================
-          HERO — PADRÃO UNIVERSIDADE SYNTER
-      ==================================== */}
+      {/* =====================================
+          HERO
+      ===================================== */}
 
       <section className="mkt-hero">
         <div className="mkt-hero-container">
@@ -249,6 +267,8 @@ export default function Marketing() {
               Synter e fortalecer suas ações de marketing.
             </p>
 
+            {/* DESTAQUES — VISÍVEIS NO DESKTOP */}
+
             <div className="mkt-features">
 
               <DestaqueMarketing
@@ -275,9 +295,9 @@ export default function Marketing() {
         </div>
       </section>
 
-      {/* ====================================
+      {/* =====================================
           CONTEÚDO PRINCIPAL
-      ==================================== */}
+      ===================================== */}
 
       <main className="mkt-main">
 
@@ -289,28 +309,34 @@ export default function Marketing() {
           </h2>
         </div>
 
-        {/* TRÊS CARTÕES LADO A LADO */}
-
         <div className="mkt-cards-grid">
+
+          {/* FECHADURAS DIGITAIS */}
 
           <CartaoMarketing
             imagem={MKT1}
             titulo="Vídeos e Imagens de Fechaduras Digitais"
             descricao="Acesse vídeos, imagens e materiais visuais das fechaduras digitais Synter para divulgação e apoio comercial."
             rota="/digmarketing"
-            disponivel
+            disponivel={true}
           />
+
+          {/* FECHADURAS MECÂNICAS */}
 
           <CartaoMarketing
             imagem={MKT2}
             titulo="Vídeos e Imagens de Fechaduras Mecânicas"
             descricao="Acesse vídeos, imagens e materiais visuais das fechaduras mecânicas Synter para divulgação e apoio comercial."
+            disponivel={false}
           />
+
+          {/* FERRAGENS */}
 
           <CartaoMarketing
             imagem={MKT3}
             titulo="Vídeos e Imagens de Ferragens"
             descricao="Acesse vídeos, imagens e materiais visuais das ferragens Synter para divulgação e apoio comercial."
+            disponivel={false}
           />
 
         </div>
@@ -321,7 +347,7 @@ export default function Marketing() {
 
       <Footer />
 
-      {/* MODAL DO PERFIL */}
+      {/* PERFIL */}
 
       {profileOpen && (
         <Profile
