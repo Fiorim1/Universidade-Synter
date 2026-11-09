@@ -1,0 +1,499 @@
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   GERENCIAR CREDENCIADOS
+   LAYOUT MOBILE COMPACTO
+========================================== */
+
+/* ==========================================
+   DESKTOP — MANTER FORMULÁRIO ORIGINAL
+========================================== */
+
+.gt-page .gt-mobile-progress,
+.gt-page .gt-mobile-actions,
+.gt-page .gt-mobile-pagination {
+  display: none;
+}
+
+.gt-page .gt-step-title {
+  display: none;
+}
+
+.gt-page .gt-step {
+  margin-bottom: 18px;
+}
+
+.gt-page .gt-step:last-of-type {
+  margin-bottom: 0;
+}
+
+.gt-page .gt-technician.gt-mobile-hidden {
+  display: flex;
+}
+
+/* ==========================================
+   PESQUISA DA LISTA
+========================================== */
+
+.gt-page .gt-list-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 12px;
+}
+
+.gt-page .gt-list-search input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 44px;
+  padding: 0 13px;
+
+  background: #151517;
+  border: 1px solid #3c3c42;
+  border-radius: 9px;
+
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.gt-page .gt-list-search input:focus {
+  border-color: #fff;
+}
+
+.gt-page .gt-list-search button {
+  min-height: 40px;
+  padding: 8px 12px;
+
+  background: #252528;
+  border: 1px solid #48484d;
+  border-radius: 9px;
+
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gt-page .gt-list-count {
+  margin: 0 0 14px;
+  color: #a8a8b2;
+  font-size: 11px;
+}
+
+/* ==========================================
+   MOBILE — ATÉ 768 PX
+========================================== */
+
+@media screen and (max-width: 768px) {
+
+  /* CONTAINER */
+
+  .gt-page .gt-container {
+    width: calc(100% - 32px);
+  }
+
+  /* ========================================
+     HERO COMPACTO
+  ======================================== */
+
+  .gt-page .gt-hero-inner {
+    min-height: 0 !important;
+    padding: 76px 0 20px !important;
+  }
+
+  .gt-page .gt-profile {
+    top: 14px !important;
+    right: 0 !important;
+  }
+
+  .gt-page .gt-eyebrow {
+    margin-bottom: 11px !important;
+    font-size: 9px !important;
+    letter-spacing: 1.1px !important;
+    line-height: 1.5;
+  }
+
+  .gt-page .gt-hero h1 {
+    margin-bottom: 10px !important;
+
+    font-size: clamp(
+      27px,
+      7vw,
+      34px
+    ) !important;
+
+    line-height: 1.14 !important;
+    letter-spacing: -1px !important;
+  }
+
+  .gt-page .gt-hero p {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+  }
+
+  .gt-page .gt-back-link {
+    margin-top: 13px !important;
+    font-size: 11px !important;
+  }
+
+  /* ========================================
+     CONTEÚDO
+  ======================================== */
+
+  .gt-page .gt-main {
+    padding: 18px 0 36px !important;
+  }
+
+  .gt-page .gt-section-heading {
+    gap: 9px !important;
+    margin-bottom: 13px !important;
+    scroll-margin-top: 85px;
+  }
+
+  .gt-page .gt-section-heading h2 {
+    font-size: 10px !important;
+    letter-spacing: 1.2px !important;
+  }
+
+  .gt-page .gt-section-heading p {
+    margin-top: 5px !important;
+
+    font-size: 11px !important;
+    line-height: 1.45 !important;
+  }
+
+  /* ========================================
+     FORMULÁRIO MOBILE
+  ======================================== */
+
+  .gt-page .gt-form {
+    padding: 15px !important;
+    border-radius: 11px !important;
+  }
+
+  /* ETAPAS */
+
+  .gt-page .gt-mobile-progress {
+    display: block !important;
+    margin-bottom: 18px;
+  }
+
+  .gt-page .gt-progress-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 10px;
+  }
+
+  .gt-page .gt-progress-heading strong {
+    color: #fff;
+    font-size: 12px;
+  }
+
+  .gt-page .gt-progress-heading span {
+    color: #a6a6af;
+    font-size: 10px;
+    text-align: right;
+  }
+
+  .gt-page .gt-progress-bars {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .gt-page .gt-progress-bars span {
+    height: 4px;
+    background: #44444b;
+    border-radius: 99px;
+  }
+
+  .gt-page .gt-progress-bars span.active {
+    background: #fff;
+  }
+
+  /* MOSTRAR SOMENTE ETAPA ATIVA */
+
+  .gt-page .gt-step {
+    display: none !important;
+    margin: 0 !important;
+  }
+
+  .gt-page .gt-step.gt-step-active {
+    display: block !important;
+  }
+
+  .gt-page .gt-step-title {
+    display: block;
+    margin: 0 0 14px;
+
+    color: #fff;
+    font-size: 14px;
+    font-weight: 750;
+  }
+
+  /* CAMPOS */
+
+  .gt-page .gt-form-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px !important;
+  }
+
+  .gt-page .gt-field {
+    gap: 7px !important;
+  }
+
+  .gt-page .gt-field > span {
+    font-size: 11px !important;
+  }
+
+  .gt-page .gt-field input {
+    height: 43px !important;
+    min-height: 43px;
+
+    padding: 0 12px !important;
+
+    border-radius: 8px !important;
+
+    font-size: 16px !important;
+  }
+
+  /* CHECKBOXES */
+
+  .gt-page .gt-checks {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    margin-top: 14px !important;
+    padding-top: 14px !important;
+  }
+
+  .gt-page .gt-checks label {
+    align-items: flex-start;
+    font-size: 11px !important;
+    line-height: 1.5;
+  }
+
+  .gt-page .gt-checks input {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+  }
+
+  .gt-page .gt-form-note {
+    margin: 13px 0 0 !important;
+    font-size: 10px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* BOTÕES DAS ETAPAS */
+
+  .gt-page .gt-desktop-actions {
+    display: none !important;
+  }
+
+  .gt-page .gt-mobile-actions {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 9px;
+
+    margin-top: 17px;
+  }
+
+  .gt-page .gt-mobile-actions
+  > button:not(.gt-mobile-clear) {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .gt-page .gt-mobile-actions button {
+    min-height: 42px;
+    padding: 9px 12px;
+
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+  }
+
+  .gt-page .gt-mobile-clear {
+    width: 100%;
+
+    background: transparent;
+    border: 1px solid #3b3b41;
+
+    color: #aaaab3;
+  }
+
+  .gt-page .gt-mobile-actions button:disabled {
+    opacity: 0.55;
+    cursor: wait;
+  }
+
+  /* ========================================
+     LISTAGEM
+  ======================================== */
+
+  .gt-page .gt-list-heading {
+    margin-top: 25px !important;
+  }
+
+  .gt-page .gt-list-search {
+    margin-bottom: 10px;
+  }
+
+  .gt-page .gt-list-search input {
+    height: 42px;
+    font-size: 14px;
+  }
+
+  .gt-page .gt-list {
+    gap: 9px;
+  }
+
+  /* ESCONDER RESULTADOS EXCEDENTES */
+
+  .gt-page .gt-technician.gt-mobile-hidden {
+    display: none !important;
+  }
+
+  /* CARD COMPACTO */
+
+  .gt-page .gt-technician {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 11px !important;
+    padding: 13px !important;
+
+    border-radius: 10px !important;
+  }
+
+  .gt-page .gt-technician-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .gt-page .gt-technician-info strong {
+    font-size: 13px !important;
+    line-height: 1.4;
+  }
+
+  .gt-page .gt-technician-info > span {
+    font-size: 11px !important;
+  }
+
+  .gt-page .gt-technician-info > .gt-status {
+    margin-top: 5px;
+    padding: 5px 8px !important;
+    font-size: 9px !important;
+  }
+
+  .gt-page .gt-technician-actions {
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    width: 100%;
+    gap: 8px !important;
+  }
+
+  .gt-page .gt-technician-actions button {
+    width: 100%;
+    min-width: 0;
+    min-height: 37px !important;
+
+    padding: 7px 9px !important;
+    font-size: 11px !important;
+  }
+
+  /* ========================================
+     VER MAIS CREDENCIADOS
+  ======================================== */
+
+  .gt-page .gt-mobile-pagination {
+    display: block !important;
+    margin-top: 12px;
+  }
+
+  .gt-page .gt-mobile-pagination button {
+    display: block;
+    width: 100%;
+    min-height: 42px;
+
+    padding: 10px 13px;
+
+    background: #222225;
+    border: 1px solid #44444a;
+    border-radius: 9px;
+
+    color: #fff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+  }
+
+  .gt-page .gt-mobile-pagination button:hover {
+    background: #303034;
+  }
+
+  /* MENSAGENS */
+
+  .gt-page .gt-alert {
+    margin-bottom: 12px !important;
+    padding: 12px !important;
+    font-size: 11px !important;
+  }
+}
+
+/* ==========================================
+   CELULARES MENORES
+========================================== */
+
+@media screen and (max-width: 390px) {
+  .gt-page .gt-container {
+    width: calc(100% - 28px);
+  }
+
+  .gt-page .gt-hero h1 {
+    font-size: 26px !important;
+  }
+
+  .gt-page .gt-form {
+    padding: 12px !important;
+  }
+
+  .gt-page .gt-progress-heading span {
+    font-size: 9px;
+  }
+}
+
+/* ==========================================
+   ACESSIBILIDADE
+========================================== */
+
+.gt-page .gt-list-search input:focus-visible,
+.gt-page .gt-mobile-actions button:focus-visible,
+.gt-page .gt-mobile-pagination button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gt-page .gt-mobile-pagination button {
+    transition: none;
+  }
+}
