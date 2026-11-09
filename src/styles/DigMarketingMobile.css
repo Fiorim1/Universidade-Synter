@@ -1,0 +1,504 @@
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   MARKETING DIGITAL — MOBILE COMPACTO
+========================================== */
+
+/* VERSÕES MOBILE OCULTAS NO DESKTOP */
+
+.dig-marketing-page .dig-marketing-mobile,
+.dig-marketing-page .dig-marketing-mobile-filters {
+  display: none;
+}
+
+.dig-marketing-page .dig-marketing-desktop {
+  display: block;
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media screen and (max-width: 750px) {
+
+  /* HERO COMPACTO */
+
+  .dig-marketing-page .dig-marketing-hero {
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-hero-container {
+    width: calc(100% - 32px) !important;
+    min-height: 0 !important;
+
+    padding-top: 76px !important;
+    padding-bottom: 22px !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-profile {
+    top: 14px !important;
+    right: 0 !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-eyebrow {
+    gap: 9px !important;
+    margin-bottom: 11px !important;
+
+    font-size: 9px !important;
+    letter-spacing: 1.2px !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-eyebrow svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-title {
+    margin-bottom: 10px !important;
+
+    font-size: clamp(
+      27px,
+      7vw,
+      35px
+    ) !important;
+
+    line-height: 1.14 !important;
+    letter-spacing: -1px !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-description {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* CONTEÚDO */
+
+  .dig-marketing-page
+  .videos-content {
+    padding-top: 20px !important;
+    padding-bottom: 36px !important;
+
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .dig-marketing-page
+  .videos-section-title {
+    margin-bottom: 14px !important;
+  }
+
+  .dig-marketing-page
+  .videos-section-title h4 {
+    font-size: 10px !important;
+    letter-spacing: 1.2px !important;
+  }
+
+  /* PESQUISA */
+
+  .dig-marketing-page
+  .dig-marketing-search {
+    margin-bottom: 12px !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-search input {
+    display: block;
+
+    width: 100% !important;
+    max-width: none !important;
+
+    height: 44px !important;
+
+    padding: 0 13px !important;
+
+    background: #141416;
+    border: 1px solid #35353a;
+    border-radius: 9px;
+
+    color: #ffffff;
+    font-size: 14px !important;
+  }
+
+  /* FILTROS */
+
+  .dig-marketing-page
+  .dig-marketing-mobile-filters {
+    display: block !important;
+    margin-bottom: 13px;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-filter-row {
+    display: flex;
+    align-items: end;
+    gap: 9px;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-filter-field {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    min-width: 0;
+    gap: 6px;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-filter-field label {
+    color: #a8a8b1;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-filter-field select {
+    width: 100%;
+    min-width: 0;
+    height: 42px;
+
+    padding: 0 10px;
+
+    color: #ffffff;
+    background: #171719;
+
+    border: 1px solid #39393e;
+    border-radius: 9px;
+
+    font-family: inherit;
+    font-size: 12px;
+
+    outline: none;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-filter-field select option {
+    color: #ffffff;
+    background: #171719;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-clear {
+    flex-shrink: 0;
+    min-height: 42px;
+
+    padding: 0 11px;
+
+    background: #1c1c1e;
+    border: 1px solid #39393e;
+    border-radius: 9px;
+
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+
+    cursor: pointer;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-result-count {
+    margin-top: 12px;
+
+    color: #a7a7af;
+    font-size: 11px;
+  }
+
+  /* MOSTRAR SOMENTE A VERSÃO MOBILE */
+
+  .dig-marketing-page
+  .dig-marketing-desktop {
+    display: none !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-mobile {
+    display: block !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-mobile-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 9px;
+    width: 100%;
+  }
+
+  /* ========================================
+     CARD HORIZONTAL COMPACTO
+  ======================================== */
+
+  .dig-marketing-page
+  .dig-marketing-mobile-list
+  .video-card {
+    display: grid !important;
+
+    grid-template-columns: 92px minmax(0, 1fr);
+    align-items: center;
+
+    width: 100% !important;
+    max-width: none !important;
+
+    min-height: 88px !important;
+    height: auto !important;
+
+    margin: 0 !important;
+    padding: 9px !important;
+
+    gap: 11px !important;
+
+    background: #141416 !important;
+
+    border: 1px solid #35353a !important;
+    border-radius: 11px !important;
+
+    overflow: hidden;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  /* CAPA DO VÍDEO */
+
+  .dig-marketing-page
+  .dig-marketing-mobile-list
+  .video-preview {
+    display: block !important;
+
+    width: 92px !important;
+    height: 68px !important;
+    max-width: none !important;
+
+    aspect-ratio: auto !important;
+
+    margin: 0 !important;
+
+    border-radius: 7px;
+
+    object-fit: cover !important;
+
+    background: #090909;
+  }
+
+  /* INFORMAÇÕES */
+
+  .dig-marketing-page
+  .dig-marketing-mobile-list
+  .video-card-info {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    gap: 8px !important;
+  }
+
+  /* TÍTULO */
+
+  .dig-marketing-page
+  .dig-marketing-mobile-list
+  .video-card-info h2 {
+    margin: 0 !important;
+    padding: 0 !important;
+
+    min-height: 0 !important;
+
+    color: #ffffff;
+    font-size: 11px !important;
+    font-weight: 700;
+    line-height: 1.35 !important;
+
+    overflow-wrap: anywhere;
+  }
+
+  /* OCULTAR DESCRIÇÃO NO MOBILE */
+
+  .dig-marketing-page
+  .dig-marketing-mobile-list
+  .video-card-info > p:not(.video-download-erro) {
+    display: none !important;
+  }
+
+  /* BOTÕES */
+
+  .dig-marketing-page
+  .dig-marketing-mobile-list
+  .video-card-botoes {
+    display: flex !important;
+
+    flex-direction: row !important;
+    align-items: center !important;
+
+    width: 100% !important;
+
+    gap: 6px !important;
+    margin: 0 !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-mobile-list
+  .botao-assistir {
+    display: inline-flex !important;
+
+    align-items: center;
+    justify-content: center;
+
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 29px !important;
+
+    flex: 0 1 auto !important;
+
+    gap: 6px !important;
+    padding: 5px 11px !important;
+
+    font-size: 11px !important;
+    font-weight: 700;
+
+    border-radius: 7px !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-mobile-list
+  .botao-assistir svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  /* ========================================
+     VER MAIS / MOSTRAR MENOS
+  ======================================== */
+
+  .dig-marketing-page
+  .dig-marketing-more {
+    display: block;
+
+    width: 100%;
+    min-height: 43px;
+
+    margin-top: 12px;
+    padding: 10px 16px;
+
+    background: #202023;
+    color: #ffffff;
+
+    border: 1px solid #424248;
+    border-radius: 9px;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-more:hover {
+    background: #303034;
+  }
+
+  /* SEM RESULTADOS */
+
+  .dig-marketing-page
+  .dig-marketing-empty {
+    padding: 24px 16px;
+
+    background: #141416;
+    border: 1px solid #35353a;
+    border-radius: 11px;
+
+    text-align: center;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-empty strong {
+    color: #ffffff;
+    font-size: 13px;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-empty p {
+    color: #aaaab2;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-empty button {
+    min-height: 36px;
+    padding: 8px 13px;
+
+    background: #ffffff;
+    color: #111111;
+
+    border: 0;
+    border-radius: 8px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+  }
+}
+
+/* ==========================================
+   CELULARES PEQUENOS
+========================================== */
+
+@media screen and (max-width: 390px) {
+
+  .dig-marketing-page
+  .dig-marketing-title {
+    font-size: 27px !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-mobile-list
+  .video-card {
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 9px !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-mobile-list
+  .video-preview {
+    width: 78px !important;
+    height: 66px !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-mobile-list
+  .video-card-info h2 {
+    font-size: 10.5px !important;
+  }
+
+  .dig-marketing-page
+  .dig-marketing-clear {
+    font-size: 10px;
+    padding: 0 9px;
+  }
+}
+
+/* ==========================================
+   ACESSIBILIDADE
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .dig-marketing-page
+  .dig-marketing-more {
+    transition: none;
+  }
+}
