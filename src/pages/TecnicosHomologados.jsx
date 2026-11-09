@@ -11,6 +11,7 @@ import { tecnicosClient } from "../lib/tecnicosClient";
 import { consultarGeocodificacao } from "../lib/geocodificacao";
 
 import "../styles/TecnicosHomologados.css";
+import "../styles/TecnicosHomologadosMobile.css";
 
 // ==========================================
 // CONFIGURAÇÕES
@@ -369,6 +370,7 @@ function Icone({ tipo, tamanho = 22 }) {
 function CardCredenciado({
   profissional,
   posicao,
+  ocultarNoMobile = false,
 }) {
   const whatsapp = prepararWhatsapp(
     profissional.whatsapp,
@@ -382,7 +384,7 @@ function CardCredenciado({
     : [];
 
   return (
-    <article className="th-card">
+    <article className={`th-card${ocultarNoMobile ? " th-mobile-hidden" : ""}`}>
 
       <div className="th-card-top">
         <div className="th-card-avatar">
@@ -501,6 +503,9 @@ export default function TecnicosHomologados() {
   const [podeGerenciar, setPodeGerenciar] =
     useState(false);
 
+  const [mostrarTodosResultados, setMostrarTodosResultados] =
+    useState(false);
+
   const controladorRef = useRef(null);
 
   // ========================================
@@ -584,6 +589,7 @@ export default function TecnicosHomologados() {
     const controlador = new AbortController();
     controladorRef.current = controlador;
 
+    setMostrarTodosResultados(false);
     setPesquisando(true);
     setErro("");
     setResultados([]);
@@ -748,15 +754,17 @@ export default function TecnicosHomologados() {
             </button>
           </div>
 
-          <p
-            id="th-instrucoes"
-            className="th-search-help"
-          >
-            Você pode pesquisar somente pela cidade.
-            Para pesquisar por bairro ou rua, informe
-            obrigatoriamente o nome da cidade.
-            Exemplo: Bairro Santa Ana, Forquilhinha, SC.
-          </p>
+          <details className="th-instructions" id="th-instrucoes">
+            <summary>
+              Bairro ou rua? Informe também a cidade.
+            </summary>
+            <p className="th-search-help">
+              Você pode pesquisar somente pela cidade.
+              Para pesquisar por bairro ou rua, informe
+              obrigatoriamente o nome da cidade.
+              Exemplo: Bairro Santa Ana, Forquilhinha, SC.
+            </p>
+          </details>
         </form>
 
         {/* MENSAGENS */}
@@ -825,6 +833,9 @@ export default function TecnicosHomologados() {
                       key={profissional.id}
                       profissional={profissional}
                       posicao={indice}
+                      ocultarNoMobile={
+                        !mostrarTodosResultados && indice >= 3
+                      }
                     />
                   )
                 )}
@@ -852,6 +863,21 @@ export default function TecnicosHomologados() {
                   Falar com a Synter
                 </a>
               </div>
+            )}
+
+            {resultados.length > 3 && (
+              <button
+                type="button"
+                className="th-more-results"
+                onClick={() =>
+                  setMostrarTodosResultados((anterior) => !anterior)
+                }
+                aria-expanded={mostrarTodosResultados}
+              >
+                {mostrarTodosResultados
+                  ? "Mostrar menos credenciados"
+                  : `Ver mais ${resultados.length - 3} credenciados`}
+              </button>
             )}
 
             <div className="th-disclaimer">
