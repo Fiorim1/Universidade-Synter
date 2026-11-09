@@ -15,6 +15,7 @@ import { supabase } from "../services/supabaseClient";
 
 
 import "../styles/SynterAssistant.css";
+import "../styles/SynterAssistantMobile.css";
 
 
 

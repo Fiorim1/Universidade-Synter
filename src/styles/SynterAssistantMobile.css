@@ -1,0 +1,519 @@
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   ASSISTENTE SYNTER — MOBILE RESPONSIVO
+   DESIGN PRETO E BRANCO
+========================================== */
+
+@media screen and (max-width: 768px) {
+
+  /* ========================================
+     CONTAINER PRINCIPAL
+  ======================================== */
+
+  .synter-assistant {
+    position: fixed !important;
+    right: max(14px, env(safe-area-inset-right)) !important;
+    bottom: max(14px, env(safe-area-inset-bottom)) !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    z-index: 99999 !important;
+    pointer-events: none;
+  }
+
+  .synter-assistant > * {
+    pointer-events: auto;
+  }
+
+  /* ========================================
+     JANELA DO ASSISTENTE
+  ======================================== */
+
+  .synter-assistant .synter-chat {
+    position: fixed !important;
+
+    left: 50% !important;
+    right: auto !important;
+    top: auto !important;
+
+    bottom: max(
+      76px,
+      calc(66px + env(safe-area-inset-bottom))
+    ) !important;
+
+    transform: translateX(-50%) !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: calc(100vw - 24px) !important;
+    max-width: 430px !important;
+    min-width: 0 !important;
+
+    height: min(
+      560px,
+      calc(100dvh - 100px)
+    ) !important;
+
+    min-height: 0 !important;
+
+    max-height: calc(100dvh - 100px) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    background: #090909 !important;
+
+    border: 1px solid #333338 !important;
+    border-radius: 16px !important;
+
+    overflow: hidden !important;
+
+    box-shadow:
+      0 15px 55px rgba(0, 0, 0, 0.65) !important;
+
+    z-index: 100000 !important;
+  }
+
+  /* ========================================
+     CABEÇALHO
+  ======================================== */
+
+  .synter-assistant .synter-chat-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    flex: 0 0 auto !important;
+
+    min-height: 58px !important;
+
+    padding: 10px 13px !important;
+    margin: 0 !important;
+
+    background: #101011 !important;
+
+    border-bottom: 1px solid #29292d !important;
+  }
+
+  .synter-assistant .synter-chat-user {
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 10px !important;
+    min-width: 0 !important;
+  }
+
+  .synter-assistant .synter-chat-avatar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    flex: 0 0 34px !important;
+
+    font-size: 13px !important;
+    border-radius: 50% !important;
+  }
+
+  .synter-assistant .synter-chat-user strong {
+    display: block;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+  }
+
+  .synter-assistant .synter-chat-user span {
+    display: block;
+    font-size: 10px !important;
+    line-height: 1.4 !important;
+  }
+
+  /* BOTÃO FECHAR */
+
+  .synter-assistant .synter-chat-close {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    flex: 0 0 34px !important;
+
+    width: 34px !important;
+    height: 34px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    font-size: 23px !important;
+    cursor: pointer;
+  }
+
+  /* ========================================
+     ÁREA DAS MENSAGENS
+  ======================================== */
+
+  .synter-assistant .synter-chat-messages {
+    display: flex !important;
+    flex-direction: column !important;
+
+    flex: 1 1 auto !important;
+
+    width: 100% !important;
+
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    height: auto !important;
+    max-height: none !important;
+
+    padding: 13px 11px !important;
+
+    gap: 10px !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: thin;
+    scrollbar-color: #44444a transparent;
+  }
+
+  /* MENSAGENS */
+
+  .synter-assistant .synter-message {
+    max-width: 88% !important;
+
+    margin: 0 !important;
+    padding: 10px 12px !important;
+
+    border-radius: 12px !important;
+
+    font-size: 12px !important;
+    line-height: 1.6 !important;
+
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .synter-assistant .synter-message-user {
+    align-self: flex-end !important;
+  }
+
+  .synter-assistant .synter-message-assistant {
+    align-self: flex-start !important;
+  }
+
+  .synter-assistant .synter-message-text {
+    font-size: 12px !important;
+    line-height: 1.6 !important;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  /* IMAGENS */
+
+  .synter-assistant .synter-message-image,
+  .synter-assistant .synter-generated-image {
+    width: auto !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 260px !important;
+    object-fit: contain;
+  }
+
+  .synter-assistant .synter-generated-images {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* ÁUDIOS */
+
+  .synter-assistant .synter-message-audio,
+  .synter-assistant .synter-audio-preview {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .synter-assistant audio {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* ARQUIVOS */
+
+  .synter-assistant .synter-message-file {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .synter-assistant .synter-file-info,
+  .synter-assistant .synter-file-preview-info {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* ========================================
+     CAMPO DE MENSAGEM
+  ======================================== */
+
+  .synter-assistant .synter-chat-form {
+    display: flex !important;
+    flex-direction: column !important;
+
+    flex: 0 0 auto !important;
+
+    min-width: 0 !important;
+
+    height: auto !important;
+    max-height: 45% !important;
+
+    margin: 0 !important;
+    padding: 9px 10px !important;
+
+    background: #101011 !important;
+
+    border-top: 1px solid #29292d !important;
+
+    overflow-y: auto !important;
+  }
+
+  /* LINHA DE DIGITAÇÃO */
+
+  .synter-assistant .synter-chat-compose-row {
+    display: flex !important;
+
+    flex-direction: row !important;
+    align-items: center !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    gap: 6px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* TEXTAREA */
+
+  .synter-assistant
+  .synter-chat-compose-row textarea {
+    flex: 1 1 auto !important;
+
+    width: auto !important;
+    min-width: 0 !important;
+
+    min-height: 40px !important;
+    max-height: 110px !important;
+
+    height: 40px;
+
+    padding: 11px !important;
+
+    border-radius: 9px !important;
+
+    font-family: inherit;
+    font-size: 16px !important;
+    line-height: 1.3 !important;
+
+    resize: none !important;
+
+    overflow-y: auto !important;
+  }
+
+  /* BOTÕES DE ANEXO E MICROFONE */
+
+  .synter-assistant .synter-chat-tool-button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    flex: 0 0 34px !important;
+
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 40px !important;
+
+    padding: 0 !important;
+
+    border-radius: 9px !important;
+
+    font-size: 20px !important;
+  }
+
+  .synter-assistant
+  .synter-chat-tool-button svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  /* ENVIAR */
+
+  .synter-assistant .synter-chat-send-button {
+    flex: 0 0 35px !important;
+
+    width: 35px !important;
+    min-width: 35px !important;
+    height: 40px !important;
+
+    padding: 0 !important;
+
+    border-radius: 9px !important;
+
+    font-size: 20px !important;
+  }
+
+  /* ========================================
+     ÁREA DE ANEXOS
+  ======================================== */
+
+  .synter-assistant .synter-attachment-area {
+    max-width: 100%;
+    min-width: 0;
+
+    margin-bottom: 8px !important;
+    padding: 8px !important;
+
+    border-radius: 9px !important;
+  }
+
+  .synter-assistant .synter-image-preview,
+  .synter-assistant .synter-file-preview,
+  .synter-assistant .synter-recording-preview {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .synter-assistant .synter-image-preview img {
+    width: 45px !important;
+    height: 45px !important;
+    object-fit: cover;
+  }
+
+  /* ========================================
+     RODAPÉ DO CHAT
+  ======================================== */
+
+  .synter-assistant .synter-chat-footer {
+    flex: 0 0 auto !important;
+
+    min-height: 19px !important;
+    height: auto !important;
+
+    padding: 3px 8px 5px !important;
+
+    text-align: center;
+    font-size: 9px !important;
+
+    background: #101011 !important;
+  }
+
+  /* ========================================
+     BOTÃO FLUTUANTE
+  ======================================== */
+
+  .synter-assistant .synter-assistant-button {
+    position: relative !important;
+
+    right: auto !important;
+    bottom: auto !important;
+
+    width: 52px !important;
+    height: 52px !important;
+
+    min-width: 52px !important;
+    min-height: 52px !important;
+
+    border-radius: 50% !important;
+
+    z-index: 100001 !important;
+  }
+
+  /* QUANDO O CHAT ESTIVER ABERTO:
+     O BOTÃO FLUTUANTE NÃO COBRE O FORMULÁRIO */
+
+  .synter-assistant:has(.synter-chat)
+  .synter-assistant-button {
+    display: none !important;
+  }
+}
+
+/* ==========================================
+   CELULARES PEQUENOS
+========================================== */
+
+@media screen and (max-width: 390px) {
+
+  .synter-assistant .synter-chat {
+    width: calc(100vw - 16px) !important;
+    border-radius: 12px !important;
+  }
+
+  .synter-assistant .synter-chat-header {
+    padding: 9px 10px !important;
+  }
+
+  .synter-assistant .synter-chat-messages {
+    padding: 10px 8px !important;
+  }
+
+  .synter-assistant .synter-chat-form {
+    padding: 8px !important;
+  }
+
+  .synter-assistant .synter-chat-compose-row {
+    gap: 5px !important;
+  }
+
+  .synter-assistant .synter-chat-tool-button {
+    flex-basis: 31px !important;
+    width: 31px !important;
+    min-width: 31px !important;
+  }
+
+  .synter-assistant .synter-chat-send-button {
+    flex-basis: 32px !important;
+    width: 32px !important;
+    min-width: 32px !important;
+  }
+}
+
+/* ==========================================
+   CELULAR NA HORIZONTAL OU TELA BAIXA
+========================================== */
+
+@media screen and (max-height: 600px) and (max-width: 768px) {
+
+  .synter-assistant .synter-chat {
+    bottom: 12px !important;
+
+    height: calc(100dvh - 24px) !important;
+    max-height: calc(100dvh - 24px) !important;
+  }
+
+  .synter-assistant .synter-chat-header {
+    min-height: 48px !important;
+  }
+
+  .synter-assistant .synter-chat-footer {
+    display: none !important;
+  }
+}
+
+/* ==========================================
+   ACESSIBILIDADE
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .synter-assistant .synter-chat,
+  .synter-assistant .synter-assistant-button {
+    transition: none !important;
+  }
+}
