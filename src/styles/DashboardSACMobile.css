@@ -1,0 +1,268 @@
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   GESTÃO DE ATENDIMENTO
+   MOBILE COMPACTO
+========================================== */
+
+/* ==========================================
+   TABLET E CELULAR
+========================================== */
+
+@media screen and (max-width: 768px) {
+
+  /* CONTAINER PRINCIPAL */
+
+  .dashboard-sac-page {
+    width: 100%;
+    min-height: 100svh;
+    overflow-x: hidden;
+  }
+
+  /* ========================================
+     HERO MAIS COMPACTO
+  ======================================== */
+
+  .dashboard-sac-page .synter-sac-hero {
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  .dashboard-sac-page
+  .synter-sac-hero-container {
+    width: calc(100% - 32px) !important;
+    min-height: 0 !important;
+
+    padding: 70px 0 20px !important;
+  }
+
+  /* PERFIL */
+
+  .dashboard-sac-page .synter-sac-profile {
+    top: 14px !important;
+    right: 0 !important;
+  }
+
+  /* CONTEÚDO */
+
+  .dashboard-sac-page
+  .synter-sac-hero-content {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  /* IDENTIFICAÇÃO */
+
+  .dashboard-sac-page .synter-sac-eyebrow {
+    gap: 9px !important;
+
+    margin-bottom: 10px !important;
+
+    font-size: 9px !important;
+    letter-spacing: 1.1px !important;
+    line-height: 1.4 !important;
+  }
+
+  .dashboard-sac-page
+  .synter-sac-eyebrow svg {
+    flex: 0 0 18px !important;
+
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  /* TÍTULO */
+
+  .dashboard-sac-page .synter-sac-title {
+    margin-bottom: 9px !important;
+
+    font-size: clamp(
+      27px,
+      7vw,
+      34px
+    ) !important;
+
+    letter-spacing: -1px !important;
+    line-height: 1.12 !important;
+  }
+
+  /* DESCRIÇÃO */
+
+  .dashboard-sac-page
+  .synter-sac-description {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* ========================================
+     ACESSO RÁPIDO
+  ======================================== */
+
+  .dashboard-sac-page .sac-quick-content {
+    width: calc(100% - 32px) !important;
+
+    padding-top: 19px !important;
+    padding-bottom: 30px !important;
+  }
+
+  .dashboard-sac-page .sac-section-heading {
+    gap: 9px !important;
+    margin-bottom: 13px !important;
+  }
+
+  .dashboard-sac-page .sac-section-bar {
+    height: 18px !important;
+  }
+
+  .dashboard-sac-page .sac-section-heading h2 {
+    font-size: 10px !important;
+    letter-spacing: 1.2px !important;
+  }
+
+  /* GRID */
+
+  .dashboard-sac-page .sac-links-grid {
+    display: grid !important;
+
+    grid-template-columns:
+      minmax(0, 1fr) !important;
+
+    max-width: 100% !important;
+
+    gap: 9px !important;
+  }
+
+  /* ========================================
+     CARTÕES HORIZONTAIS
+  ======================================== */
+
+  .dashboard-sac-page .sac-link-card {
+    display: flex !important;
+
+    flex-direction: row !important;
+    align-items: center !important;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 62px !important;
+    height: auto !important;
+
+    gap: 11px !important;
+
+    margin: 0 !important;
+    padding: 9px 11px !important;
+
+    border-radius: 10px !important;
+
+    background: #141416 !important;
+
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  /* ÍCONE */
+
+  .dashboard-sac-page .sac-link-icon {
+    flex: 0 0 42px !important;
+
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px !important;
+
+    border-radius: 9px !important;
+  }
+
+  .dashboard-sac-page .sac-link-icon img {
+    width: 25px !important;
+    height: 25px !important;
+
+    object-fit: contain;
+  }
+
+  /* TÍTULO */
+
+  .dashboard-sac-page .sac-link-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    flex: 1;
+    min-width: 0;
+
+    gap: 0 !important;
+  }
+
+  .dashboard-sac-page .sac-link-info h3 {
+    font-size: 12px !important;
+    font-weight: 750;
+    line-height: 1.35 !important;
+
+    letter-spacing: -0.2px !important;
+  }
+
+  /* OCULTAR DESCRIÇÃO APENAS NO MOBILE */
+
+  .dashboard-sac-page .sac-link-info p {
+    display: none !important;
+  }
+
+  /* SETA */
+
+  .dashboard-sac-page .sac-link-arrow {
+    flex: 0 0 27px !important;
+
+    width: 27px !important;
+    height: 27px !important;
+
+    margin-left: auto !important;
+  }
+
+  .dashboard-sac-page .sac-link-arrow svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+}
+
+/* ==========================================
+   CELULARES MENORES
+========================================== */
+
+@media screen and (max-width: 390px) {
+
+  .dashboard-sac-page
+  .synter-sac-hero-container {
+    width: calc(100% - 28px) !important;
+  }
+
+  .dashboard-sac-page .sac-quick-content {
+    width: calc(100% - 28px) !important;
+  }
+
+  .dashboard-sac-page .synter-sac-title {
+    font-size: 27px !important;
+  }
+
+  .dashboard-sac-page .sac-link-card {
+    padding: 8px 10px !important;
+    gap: 9px !important;
+  }
+
+  .dashboard-sac-page .sac-link-info h3 {
+    font-size: 11px !important;
+  }
+}
+
+/* ==========================================
+   ACESSIBILIDADE
+========================================== */
+
+.dashboard-sac-page .sac-link-card:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-sac-page .sac-link-card {
+    transition: none !important;
+  }
+}

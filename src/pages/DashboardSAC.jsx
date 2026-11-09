@@ -7,15 +7,24 @@ import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 
+// ==========================================
+// ÍCONES ORIGINAIS SYNTER
+// ==========================================
+
 import AppIcon from "../assets/app-icon.png";
 import AstIcon from "../assets/ast-icon.png";
 import TabelaIcon from "../assets/tabela-icon.png";
 
-import "../styles/DashboardSAC.css";
+// ==========================================
+// ESTILOS
+// ==========================================
 
-// ========================================
+import "../styles/DashboardSAC.css";
+import "../styles/DashboardSACMobile.css";
+
+// ==========================================
 // ÍCONE PADRÃO SYNTER
-// ========================================
+// ==========================================
 
 function IconeSynter() {
   return (
@@ -31,15 +40,15 @@ function IconeSynter() {
       aria-hidden="true"
     >
       <path d="m12 2 9 5-9 5-9-5 9-5Z" />
-      <path d="M3 7v10l9 5 9-5V7" />
+      <path d="M3 7v10l9 5 9-5-9-5Z" />
       <path d="M12 12v10" />
     </svg>
   );
 }
 
-// ========================================
+// ==========================================
 // ÍCONE DE SETA
-// ========================================
+// ==========================================
 
 function IconeSeta() {
   return (
@@ -61,9 +70,9 @@ function IconeSeta() {
   );
 }
 
-// ========================================
-// CARTÃO PADRÃO SAC
-// ========================================
+// ==========================================
+// CARTÃO DE ACESSO RÁPIDO
+// ==========================================
 
 function CartaoSAC({
   imagem,
@@ -100,9 +109,9 @@ function CartaoSAC({
   );
 }
 
-// ========================================
+// ==========================================
 // DASHBOARD SAC
-// ========================================
+// ==========================================
 
 export default function DashboardSAC() {
   const [profileOpen, setProfileOpen] =
@@ -112,9 +121,9 @@ export default function DashboardSAC() {
     <div className="dashboard-sac-page">
       <Header />
 
-      {/* ====================================
-          HERO PADRÃO UNIVERSIDADE SYNTER
-      ==================================== */}
+      {/* =====================================
+          HERO
+      ===================================== */}
 
       <section className="synter-sac-hero">
         <div className="synter-sac-hero-container">
@@ -128,8 +137,10 @@ export default function DashboardSAC() {
           </div>
 
           <div className="synter-sac-hero-content">
+
             <div className="synter-sac-eyebrow">
               <IconeSynter />
+
               <span>
                 SUPORTE E ATENDIMENTO
               </span>
@@ -145,26 +156,26 @@ export default function DashboardSAC() {
               indicadores de qualidade e desempenho
               do SAC Synter.
             </p>
-          </div>
 
+          </div>
         </div>
       </section>
 
-      {/* ====================================
+      {/* =====================================
           ACESSO RÁPIDO
-      ==================================== */}
+      ===================================== */}
 
       <main className="sac-quick-content">
 
         <div className="sac-section-heading">
           <span className="sac-section-bar" />
 
-          <h2>
-            ACESSO RÁPIDO
-          </h2>
+          <h2>ACESSO RÁPIDO</h2>
         </div>
 
         <div className="sac-links-grid">
+
+          {/* CHAMADOS TÉCNICOS */}
 
           <CartaoSAC
             imagem={AppIcon}
@@ -173,12 +184,16 @@ export default function DashboardSAC() {
             rota="/assistencia-tecnica"
           />
 
+          {/* DOCUMENTOS DE VISITA TÉCNICA */}
+
           <CartaoSAC
             imagem={AstIcon}
             titulo="Documentos de Visita Técnica"
             descricao="Registre visitas, colete assinaturas e gere formulários em PDF."
             rota="/visitas-tecnicas"
           />
+
+          {/* SYNTER ANALYTICS */}
 
           <CartaoSAC
             imagem={TabelaIcon}
@@ -192,9 +207,7 @@ export default function DashboardSAC() {
 
       <Footer />
 
-      {/* ====================================
-          PERFIL
-      ==================================== */}
+      {/* PERFIL */}
 
       {profileOpen && (
         <Profile
