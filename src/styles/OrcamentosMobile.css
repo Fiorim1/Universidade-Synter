@@ -528,3 +528,50 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   CENTRALIZAR MODAL — NOVO ORÇAMENTO
+   MOBILE
+========================================== */
+
+@media (max-width: 768px) {
+
+  /* CENTRALIZA O MODAL NA TELA */
+
+  .orcamentos-page .orcamentos-modal-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    height: 100dvh !important;
+
+    padding: 12px !important;
+    margin: 0 !important;
+
+    box-sizing: border-box !important;
+    overflow-y: auto;
+  }
+
+  /* MODAL NOVO ORÇAMENTO */
+
+  .orcamentos-page
+  .orcamentos-modal:has(#titulo-novo-orcamento) {
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 420px !important;
+
+    max-height: calc(100dvh - 24px) !important;
+
+    margin: auto !important;
+
+    overflow-y: auto !important;
+
+    border-radius: 14px !important;
+  }
+}
