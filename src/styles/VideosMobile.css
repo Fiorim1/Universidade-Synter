@@ -1,0 +1,237 @@
+/* ==========================================
+   UNIVERSIDADE SYNTER — VÍDEOS MOBILE
+   Regras isoladas: não alterar Videos.css,
+   VideosHero.css nem VideoCard.css.
+========================================== */
+
+.synter-videos-page .synter-videos-filters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: -8px 0 18px;
+}
+
+.synter-videos-page .synter-videos-filter {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 7px;
+}
+
+.synter-videos-page .synter-videos-filter > span {
+  color: #a6a6b0;
+  font-size: 11px;
+}
+
+.synter-videos-page .synter-videos-filter select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #39393f;
+  border-radius: 9px;
+  background: #151517;
+  color: #ffffff;
+  font: inherit;
+  font-size: 12px;
+  color-scheme: dark;
+}
+
+.synter-videos-page .synter-videos-show-more {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  min-height: 44px;
+  margin: 18px auto 0;
+  border: 1px solid #45454b;
+  border-radius: 10px;
+  background: #19191c;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.synter-videos-page .synter-videos-show-more:hover {
+  background: #27272b;
+}
+
+@media (max-width: 750px) {
+  /* HERO: menos espaço antes da pesquisa */
+  .synter-videos-page .synter-videos-hero {
+    min-height: 0;
+  }
+
+  .synter-videos-page .synter-videos-hero-container {
+    width: calc(100% - 32px);
+    padding: 74px 0 20px;
+  }
+
+  .synter-videos-page .synter-videos-profile {
+    top: 12px;
+  }
+
+  .synter-videos-page .synter-videos-eyebrow {
+    gap: 9px;
+    margin-bottom: 10px;
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  .synter-videos-page .synter-videos-eyebrow svg {
+    width: 19px;
+    height: 19px;
+    flex-basis: 19px;
+  }
+
+  .synter-videos-page .synter-videos-title {
+    margin-bottom: 10px;
+    font-size: clamp(27px, 7vw, 34px);
+    line-height: 1.13;
+    letter-spacing: -1px;
+  }
+
+  .synter-videos-page .synter-videos-description {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .synter-videos-page .videos-content {
+    padding-top: 20px;
+    padding-bottom: 36px;
+  }
+
+  .synter-videos-page .videos-section-title {
+    margin-bottom: 14px;
+  }
+
+  .synter-videos-page .pesquisa-videos {
+    margin-bottom: 14px;
+  }
+
+  .synter-videos-page .synter-videos-search-field {
+    min-height: 44px;
+    gap: 9px;
+    padding: 0 12px;
+    border-radius: 9px;
+  }
+
+  .synter-videos-page .synter-videos-search-field input {
+    height: 42px;
+    min-height: 42px;
+    font-size: 12px;
+  }
+
+  .synter-videos-page .synter-videos-filters {
+    gap: 9px;
+    margin: 0 0 10px;
+  }
+
+  .synter-videos-page .synter-videos-filter select {
+    min-height: 42px;
+    padding: 0 7px;
+    font-size: 11px;
+  }
+
+  .synter-videos-page .synter-videos-results {
+    margin: 10px 0 13px;
+    justify-content: flex-start;
+    font-size: 11px;
+  }
+
+  .synter-videos-page .videos-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 9px;
+  }
+
+  /* Card horizontal compacto. Modais permanecem intactos. */
+  .synter-videos-page .videos-grid .video-card {
+    display: grid;
+    grid-template-columns: 78px minmax(0, 1fr);
+    align-items: center;
+    gap: 11px;
+    min-height: 92px;
+    max-width: none;
+    padding: 9px;
+    border-radius: 11px;
+    transform: none;
+  }
+
+  .synter-videos-page .videos-grid .video-preview {
+    width: 78px;
+    height: 72px;
+    aspect-ratio: auto;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  .synter-videos-page .videos-grid .video-card-info {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 36px;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .synter-videos-page .videos-grid .video-card-info h2 {
+    grid-column: 1;
+    min-height: 0;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .synter-videos-page .videos-grid .video-card-info > p:not(.video-download-erro) {
+    display: none;
+  }
+
+  .synter-videos-page .videos-grid .video-card-botoes {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    width: 36px;
+    margin: 0;
+    gap: 0;
+  }
+
+  .synter-videos-page .videos-grid .botao-assistir {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 0; /* preserva o nome do botão para leitores de tela */
+  }
+
+  .synter-videos-page .videos-grid .botao-assistir svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .synter-videos-page .videos-grid .video-download-erro {
+    grid-column: 1 / -1;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 390px) {
+  .synter-videos-page .videos-grid .video-card {
+    grid-template-columns: 65px minmax(0, 1fr);
+    gap: 8px;
+  }
+  .synter-videos-page .videos-grid .video-preview {
+    width: 65px;
+    height: 65px;
+  }
+  .synter-videos-page .videos-grid .video-card-info h2 {
+    font-size: 11px;
+  }
+}

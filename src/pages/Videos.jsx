@@ -1,5 +1,5 @@
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 // ========================================
 // COMPONENTES
@@ -40,6 +40,7 @@ import x1CadAdm from "../assets/x1cadadm.png";
 
 import "../styles/Videos.css";
 import "../styles/VideosHero.css";
+import "../styles/VideosMobile.css";
 
 // ========================================
 // VÍDEOS EDUCATIVOS
@@ -205,6 +206,40 @@ function normalizarTexto(valor) {
 }
 
 // ========================================
+// LINHA E PROCEDIMENTO DE CADA VÍDEO
+// Derivados dos títulos já cadastrados.
+// ========================================
+
+function obterLinha(titulo) {
+  const nome = normalizarTexto(titulo);
+  if (nome.startsWith("syrius")) return "Syrius";
+  if (nome.startsWith("venus")) return "Venus";
+  if (nome.startsWith("mars")) return "Mars";
+  if (nome.startsWith("x1")) return "X1";
+  return "Outros";
+}
+
+function obterProcedimento(titulo) {
+  const nome = normalizarTexto(titulo);
+  if (nome.includes("reset")) return "Reset";
+  if (nome.includes("retirada")) return "Retirada da porta";
+  if (nome.includes("cadastro")) return "Cadastro";
+  if (nome.includes("troca de placa")) return "Manutenção";
+  if (nome.includes("erro")) return "Diagnóstico";
+  if (nome.includes("configuracao") || nome.includes("idioma")) {
+    return "Configuração";
+  }
+  if (nome.includes("exclusao")) return "Exclusão";
+  if (nome.includes("reversao")) return "Reversão";
+  return "Outros";
+}
+
+const LINHAS = [...new Set(videos.map((item) => obterLinha(item.titulo)))];
+const PROCEDIMENTOS = [
+  ...new Set(videos.map((item) => obterProcedimento(item.titulo))),
+];
+
+// ========================================
 // ÍCONE GEOMÉTRICO — PADRÃO SYNTER
 // ========================================
 
@@ -235,33 +270,48 @@ function IconeSynter() {
 function Videos() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [pesquisa, setPesquisa] = useState("");
+  const [linha, setLinha] = useState("todas");
+  const [procedimento, setProcedimento] = useState("todos");
+  const [mostrarTodos, setMostrarTodos] = useState(false);
+  const [mobile, setMobile] = useState(
+    () => typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 750px)").matches
+  );
 
-  // ========================================
-  // FILTRAR VÍDEOS
-  // ========================================
+  // Reage também quando o DevTools muda entre desktop e celular.
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 750px)");
+    const atualizar = () => setMobile(media.matches);
+    atualizar();
+    media.addEventListener("change", atualizar);
+    return () => media.removeEventListener("change", atualizar);
+  }, []);
 
   const videosFiltrados = useMemo(() => {
     const termo = normalizarTexto(pesquisa);
-
-    if (!termo) {
-      return videos;
-    }
-
     return videos.filter((item) => {
-      const conteudo = normalizarTexto(
-        `${item.titulo} ${item.descricao}`
+      const texto = normalizarTexto(`${item.titulo} ${item.descricao}`);
+      return (
+        (!termo || texto.includes(termo)) &&
+        (linha === "todas" || obterLinha(item.titulo) === linha) &&
+        (procedimento === "todos" ||
+          obterProcedimento(item.titulo) === procedimento)
       );
-
-      return conteudo.includes(termo);
     });
-  }, [pesquisa]);
+  }, [pesquisa, linha, procedimento]);
 
-  // ========================================
-  // LIMPAR PESQUISA
-  // ========================================
+  // Desktop mostra todos os resultados. Mobile mostra só 3 inicialmente.
+  const videosVisiveis = mobile && !mostrarTodos
+    ? videosFiltrados.slice(0, 3)
+    : videosFiltrados;
 
-  function limparPesquisa() {
+  const existemMais = mobile && videosFiltrados.length > 3;
+
+  function limparFiltros() {
     setPesquisa("");
+    setLinha("todas");
+    setProcedimento("todos");
+    setMostrarTodos(false);
   }
 
   return (
@@ -345,9 +395,10 @@ function Videos() {
               type="search"
               placeholder="Pesquisar vídeo, fechadura ou procedimento..."
               value={pesquisa}
-              onChange={(evento) =>
-                setPesquisa(evento.target.value)
-              }
+              onChange={(evento) => {
+                setPesquisa(evento.target.value);
+                setMostrarTodos(false);
+              }}
               aria-label="Pesquisar vídeos educativos"
             />
 
@@ -355,13 +406,48 @@ function Videos() {
               <button
                 type="button"
                 className="synter-videos-clear"
-                onClick={limparPesquisa}
+                onClick={limparFiltros}
                 aria-label="Limpar pesquisa"
               >
                 Limpar
               </button>
             )}
           </div>
+        </div>
+
+        {/* FILTROS DE LINHA E PROCEDIMENTO */}
+        <div className="synter-videos-filters">
+          <label className="synter-videos-filter">
+            <span>Linha de fechaduras</span>
+            <select
+              value={linha}
+              onChange={(evento) => {
+                setLinha(evento.target.value);
+                setMostrarTodos(false);
+              }}
+            >
+              <option value="todas">Todas as linhas</option>
+              {LINHAS.map((nome) => (
+                <option key={nome} value={nome}>{nome}</option>
+              ))}
+            </select>
+          </label>
+
+          <label className="synter-videos-filter">
+            <span>Tipo de procedimento</span>
+            <select
+              value={procedimento}
+              onChange={(evento) => {
+                setProcedimento(evento.target.value);
+                setMostrarTodos(false);
+              }}
+            >
+              <option value="todos">Todos os procedimentos</option>
+              {PROCEDIMENTOS.map((nome) => (
+                <option key={nome} value={nome}>{nome}</option>
+              ))}
+            </select>
+          </label>
         </div>
 
         {/* =====================================
@@ -382,7 +468,7 @@ function Videos() {
 
         {videosFiltrados.length > 0 ? (
           <div className="videos-grid">
-            {videosFiltrados.map((item) => (
+            {videosVisiveis.map((item) => (
               <VideoCard
                 key={item.id}
                 titulo={item.titulo}
@@ -423,11 +509,23 @@ function Videos() {
 
             <button
               type="button"
-              onClick={limparPesquisa}
+              onClick={limparFiltros}
             >
               Limpar pesquisa
             </button>
           </div>
+        )}
+
+        {existemMais && (
+          <button
+            type="button"
+            className="synter-videos-show-more"
+            onClick={() => setMostrarTodos((atual) => !atual)}
+          >
+            {mostrarTodos
+              ? "Mostrar somente 3 vídeos"
+              : `Ver mais ${videosFiltrados.length - 3} vídeos`}
+          </button>
         )}
       </main>
 
