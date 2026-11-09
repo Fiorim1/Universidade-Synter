@@ -1,0 +1,471 @@
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   PERGUNTAS FREQUENTES — MOBILE COMPACTO
+========================================== */
+
+/* ==========================================
+   DESKTOP — MANTER VISUAL ORIGINAL
+========================================== */
+
+.faq-page .faq-mobile-filter,
+.faq-page .faq-mobile-pagination {
+  display: none;
+}
+
+/* No desktop, todas as perguntas continuam
+   visíveis, independentemente do limite mobile. */
+
+.faq-page .faq-list .faq-item.faq-mobile-hidden {
+  display: block;
+}
+
+/* Garante que as respostas fechadas
+   permaneçam ocultas. */
+
+.faq-page .faq-answer[hidden] {
+  display: none !important;
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media screen and (max-width: 750px) {
+
+  /* HERO COMPACTO */
+
+  .faq-page .faq-hero {
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  .faq-page .faq-hero-content {
+    width: calc(100% - 32px) !important;
+    min-height: 0 !important;
+
+    padding-top: 72px !important;
+    padding-bottom: 22px !important;
+  }
+
+  .faq-page .faq-profile {
+    top: 14px !important;
+    right: 16px !important;
+  }
+
+  .faq-page .faq-eyebrow {
+    gap: 9px !important;
+    margin-bottom: 12px !important;
+
+    font-size: 9px !important;
+    letter-spacing: 1.2px !important;
+  }
+
+  .faq-page .faq-eyebrow svg {
+    width: 18px !important;
+    height: 18px !important;
+    flex-basis: 18px !important;
+  }
+
+  .faq-page .faq-hero h1 {
+    margin-bottom: 10px !important;
+
+    font-size: clamp(
+      27px,
+      7vw,
+      35px
+    ) !important;
+
+    letter-spacing: -1px !important;
+    line-height: 1.15 !important;
+  }
+
+  .faq-page .faq-hero p {
+    font-size: 12px !important;
+    line-height: 1.55 !important;
+  }
+
+  /* ========================================
+     CONTEÚDO PRINCIPAL
+  ======================================== */
+
+  .faq-page .faq-content {
+    width: calc(100% - 32px) !important;
+
+    padding-top: 20px !important;
+    padding-bottom: 36px !important;
+  }
+
+  /* CABEÇALHO INTERNO MAIS COMPACTO */
+
+  .faq-page .faq-section-heading {
+    gap: 10px !important;
+    margin-bottom: 15px !important;
+  }
+
+  .faq-page .faq-section-bar {
+    flex-basis: 3px !important;
+    height: 20px !important;
+  }
+
+  .faq-page .faq-section-label {
+    margin-bottom: 4px !important;
+
+    font-size: 9px !important;
+    letter-spacing: 1.3px !important;
+  }
+
+  .faq-page .faq-section-heading h2 {
+    margin-bottom: 5px !important;
+
+    font-size: 18px !important;
+    letter-spacing: -0.4px !important;
+  }
+
+  .faq-page .faq-section-heading p {
+    font-size: 11px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* ========================================
+     PESQUISA
+  ======================================== */
+
+  .faq-page .faq-search {
+    min-height: 44px !important;
+    padding: 0 12px !important;
+    gap: 10px !important;
+
+    border-radius: 9px !important;
+  }
+
+  .faq-page .faq-search svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .faq-page .faq-search input {
+    height: 42px !important;
+    min-width: 0 !important;
+
+    padding: 0 !important;
+
+    font-size: 13px !important;
+  }
+
+  .faq-page .faq-search button {
+    flex-shrink: 0;
+
+    min-height: 30px;
+    padding: 6px 9px;
+
+    font-size: 10px;
+  }
+
+  /* ========================================
+     FILTROS
+  ======================================== */
+
+  /* Esconde os botões do desktop */
+
+  .faq-page .faq-categories {
+    display: none !important;
+  }
+
+  /* Mostra o seletor mobile */
+
+  .faq-page .faq-mobile-filter {
+    display: flex !important;
+    flex-direction: column;
+
+    width: 100%;
+    margin-top: 12px;
+    margin-bottom: 16px;
+    gap: 7px;
+  }
+
+  .faq-page .faq-mobile-filter label {
+    color: #aaaab3;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .faq-page .faq-mobile-filter select {
+    display: block;
+
+    width: 100%;
+    min-width: 0;
+    height: 44px;
+
+    padding: 0 13px;
+
+    background: #171719;
+    border: 1px solid #3b3b42;
+    border-radius: 9px;
+
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    outline: none;
+    cursor: pointer;
+  }
+
+  .faq-page .faq-mobile-filter select option {
+    background: #171719;
+    color: #ffffff;
+  }
+
+  .faq-page .faq-mobile-filter select:focus {
+    border-color: #ffffff;
+  }
+
+  /* ========================================
+     CABEÇALHO DE RESULTADOS
+  ======================================== */
+
+  .faq-page .faq-results-header {
+    display: flex;
+    align-items: center !important;
+    justify-content: space-between;
+
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .faq-page .faq-results-header h3 {
+    margin-bottom: 0 !important;
+
+    font-size: 14px !important;
+  }
+
+  .faq-page .faq-results-header p {
+    display: none !important;
+  }
+
+  .faq-page .faq-count {
+    flex-shrink: 0;
+
+    padding: 7px 9px !important;
+
+    border-radius: 7px !important;
+
+    font-size: 10px !important;
+  }
+
+  /* ========================================
+     LISTA COMPACTA
+  ======================================== */
+
+  .faq-page .faq-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 9px !important;
+  }
+
+  /* Mostra somente as perguntas liberadas
+     pelo controle de limite do JSX */
+
+  .faq-page .faq-list
+  .faq-item.faq-mobile-hidden {
+    display: none !important;
+  }
+
+  .faq-page .faq-item {
+    background: #121214;
+
+    border: 1px solid #343439;
+    border-radius: 10px !important;
+  }
+
+  .faq-page .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    min-height: 54px !important;
+
+    padding: 12px 13px !important;
+
+    gap: 10px !important;
+  }
+
+  .faq-page .faq-question-text {
+    font-size: 12px !important;
+    font-weight: 700;
+    line-height: 1.4 !important;
+  }
+
+  .faq-page .faq-chevron {
+    flex: 0 0 27px;
+
+    width: 27px !important;
+    height: 27px !important;
+
+    border-radius: 7px !important;
+  }
+
+  .faq-page .faq-chevron svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* ========================================
+     RESPOSTAS
+  ======================================== */
+
+  .faq-page .faq-answer {
+    padding: 0 13px 14px !important;
+  }
+
+  .faq-page .faq-answer p {
+    padding-top: 13px !important;
+
+    font-size: 12px !important;
+    line-height: 1.7 !important;
+  }
+
+  .faq-page .faq-answer[hidden] {
+    display: none !important;
+  }
+
+  /* ========================================
+     VER MAIS / MOSTRAR MENOS
+  ======================================== */
+
+  .faq-page .faq-mobile-pagination {
+    display: flex !important;
+    flex-direction: column;
+
+    gap: 8px;
+    margin-top: 13px;
+  }
+
+  .faq-page .faq-mobile-pagination button {
+    width: 100%;
+    min-height: 42px;
+
+    padding: 10px 14px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+  }
+
+  .faq-page .faq-mobile-more {
+    background: #242427;
+    color: #ffffff;
+
+    border: 1px solid #45454c;
+  }
+
+  .faq-page .faq-mobile-more:hover {
+    background: #343438;
+  }
+
+  .faq-page .faq-mobile-less {
+    background: transparent;
+    color: #aaaab3;
+
+    border: 1px solid #303036;
+  }
+
+  .faq-page .faq-mobile-less:hover {
+    color: #ffffff;
+    border-color: #55555b;
+  }
+
+  /* ========================================
+     SEM RESULTADOS
+  ======================================== */
+
+  .faq-page .faq-empty {
+    padding: 24px 16px !important;
+    border-radius: 11px !important;
+  }
+
+  .faq-page .faq-empty-icon {
+    width: 40px !important;
+    height: 40px !important;
+
+    margin-bottom: 12px !important;
+    font-size: 21px !important;
+  }
+
+  .faq-page .faq-empty h3 {
+    font-size: 15px !important;
+  }
+
+  .faq-page .faq-empty p {
+    font-size: 12px !important;
+  }
+
+  /* ========================================
+     ORIENTAÇÃO FINAL
+  ======================================== */
+
+  .faq-page .faq-help {
+    margin-top: 20px !important;
+    padding: 16px !important;
+
+    border-radius: 11px !important;
+  }
+
+  .faq-page .faq-help h3 {
+    margin-bottom: 7px !important;
+    font-size: 14px !important;
+  }
+
+  .faq-page .faq-help p {
+    font-size: 11px !important;
+    line-height: 1.6 !important;
+  }
+}
+
+/* ==========================================
+   CELULARES PEQUENOS
+========================================== */
+
+@media screen and (max-width: 390px) {
+
+  .faq-page .faq-hero-content,
+  .faq-page .faq-content {
+    width: calc(100% - 28px) !important;
+  }
+
+  .faq-page .faq-hero h1 {
+    font-size: 27px !important;
+  }
+
+  .faq-page .faq-question-text {
+    font-size: 11px !important;
+  }
+
+  .faq-page .faq-results-header h3 {
+    font-size: 13px !important;
+  }
+
+  .faq-page .faq-count {
+    font-size: 9px !important;
+  }
+}
+
+/* ==========================================
+   ACESSIBILIDADE
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .faq-page .faq-item,
+  .faq-page .faq-chevron,
+  .faq-page .faq-category {
+    transition: none !important;
+  }
+}
