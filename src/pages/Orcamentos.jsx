@@ -62,6 +62,7 @@ function Orcamentos() {
   // ========================================
 
   const [modalNovoOpen, setModalNovoOpen] = useState(false);
+  const [etapaNovoMobile, setEtapaNovoMobile] = useState(1);
   const [salvando, setSalvando] = useState(false);
   const [erroFormulario, setErroFormulario] = useState("");
 
@@ -698,6 +699,8 @@ function Orcamentos() {
 
   function abrirNovoOrcamento() {
 
+    setEtapaNovoMobile(1);
+
     setErroFormulario("");
 
     setFormulario({
@@ -733,6 +736,17 @@ function Orcamentos() {
   async function criarOrcamento(event) {
 
     event.preventDefault();
+
+    // Enter no celular não envia o formulário na primeira etapa.
+    if (window.matchMedia("(max-width: 768px)").matches && etapaNovoMobile === 1) {
+      if (formulario.cliente_nome.trim().length < 2) {
+        setErroFormulario("Informe o nome do cliente.");
+        return;
+      }
+      setErroFormulario("");
+      setEtapaNovoMobile(2);
+      return;
+    }
 
     if (role !== "representante") {
 
@@ -5118,9 +5132,15 @@ Synter`;
 
             <form
               onSubmit={criarOrcamento}
-              className="orcamentos-form"
+              className={`orcamentos-form orcamentos-novo-form orcamentos-novo-etapa-${etapaNovoMobile}`}
             >
 
+              <div className="orcamentos-novo-progress" aria-label={`Etapa ${etapaNovoMobile} de 2`}>
+                <span>{etapaNovoMobile === 1 ? "1 de 2 · Dados do cliente" : "2 de 2 · Venda e entrega"}</span>
+                <div className="orcamentos-novo-progress-bar"><i/><i className={etapaNovoMobile === 2 ? "active" : ""}/></div>
+              </div>
+
+              <div className="orcamentos-novo-grupo-cliente">
               <div className="orcamentos-form-group orcamentos-form-full">
 
                 <label htmlFor="cliente_nome">
@@ -5219,6 +5239,9 @@ Synter`;
               </div>
 
 
+              </div>
+
+              <div className="orcamentos-novo-grupo-venda">
               <div className="orcamentos-form-separator orcamentos-form-full">
 
                 <span>
@@ -5346,6 +5369,39 @@ Synter`;
 
               </div>
 
+
+              </div>
+
+              <div className="orcamentos-novo-navegacao">
+                {etapaNovoMobile === 1 ? (
+                  <button
+                    type="button"
+                    className="orcamentos-primary-button"
+                    onClick={(event) => {
+                      if (formulario.cliente_nome.trim().length < 2) {
+                        setErroFormulario("Informe o nome do cliente.");
+                        return;
+                      }
+                      setErroFormulario("");
+                      setEtapaNovoMobile(2);
+                      event.currentTarget.closest(".orcamentos-modal")?.scrollTo({ top: 0 });
+                    }}
+                  >
+                    Avançar para venda e entrega
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="orcamentos-secondary-button"
+                    onClick={(event) => {
+                      setEtapaNovoMobile(1);
+                      event.currentTarget.closest(".orcamentos-modal")?.scrollTo({ top: 0 });
+                    }}
+                  >
+                    Voltar aos dados do cliente
+                  </button>
+                )}
+              </div>
 
               {erroFormulario && (
 
