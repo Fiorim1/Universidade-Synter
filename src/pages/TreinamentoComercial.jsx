@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -7,9 +7,10 @@ import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 
 import "../styles/TreinamentoComercial.css";
+import "../styles/TreinamentoComercialMobile.css";
 
 // ==========================================
-// ENDEREÇO DOS DOCUMENTOS
+// CONFIGURAÇÃO DOS DOCUMENTOS
 // ==========================================
 
 const BASE = `${
@@ -17,7 +18,7 @@ const BASE = `${
 }treinamento-comercial/`;
 
 // ==========================================
-// MATERIAIS DE CAPACITAÇÃO
+// MATERIAIS ORIGINAIS SYNTER
 // ==========================================
 
 const materiais = [
@@ -72,7 +73,36 @@ const materiais = [
 ];
 
 // ==========================================
-// VALIDAR E CARREGAR PDF ORIGINAL
+// CONFIGURAÇÕES DE FILTRO
+// ==========================================
+
+const CATEGORIAS = [
+  {
+    valor: "todos",
+    nome: "Todos os materiais",
+  },
+  {
+    valor: "CAPACITAÇÃO DE PRODUTOS",
+    nome: "Capacitação de Produtos",
+  },
+  {
+    valor: "CONHECIMENTO COMERCIAL",
+    nome: "Conhecimento Comercial",
+  },
+];
+
+const LIMITE_MOBILE = 2;
+
+function normalizarTexto(valor) {
+  return String(valor ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+// ==========================================
+// CARREGAR E VALIDAR PDF
 // ==========================================
 
 async function carregarPdf(material) {
@@ -98,9 +128,6 @@ async function carregarPdf(material) {
     );
   }
 
-  // Confirma que recebemos um PDF de verdade,
-  // e não uma página HTML do sistema.
-
   const cabecalho = new TextDecoder("ascii").decode(
     dados.slice(0, 5)
   );
@@ -117,30 +144,39 @@ async function carregarPdf(material) {
 }
 
 // ==========================================
-// VISUALIZAR PDF EM NOVA ABA
+// VISUALIZAR PDF
 // ==========================================
 
-async function visualizarPdf(material, definirErro) {
-  // A aba é criada imediatamente após o clique
-  // para evitar bloqueio de pop-up.
-
-  const aba = window.open("about:blank", "_blank");
+async function visualizarPdf(
+  material,
+  definirErro
+) {
+  const aba = window.open(
+    "about:blank",
+    "_blank"
+  );
 
   if (!aba) {
     definirErro(
-      "O navegador bloqueou a abertura do PDF. Permita pop-ups para este site e tente novamente."
+      "O navegador bloqueou a abertura do PDF. Permita pop-ups e tente novamente."
     );
     return;
   }
 
   try {
-    aba.document.title = `Abrindo ${material.titulo}`;
+    aba.document.title =
+      `Abrindo ${material.titulo}`;
 
-    aba.document.body.style.cssText =
-      "margin:0;background:#111;color:#fff;" +
-      "font-family:Arial,sans-serif;" +
-      "display:flex;align-items:center;" +
-      "justify-content:center;min-height:100vh;";
+    aba.document.body.style.cssText = [
+      "margin:0",
+      "background:#111",
+      "color:#fff",
+      "font-family:Arial,sans-serif",
+      "display:flex",
+      "align-items:center",
+      "justify-content:center",
+      "min-height:100vh",
+    ].join(";");
 
     aba.document.body.textContent =
       "Carregando documento PDF...";
@@ -149,8 +185,6 @@ async function visualizarPdf(material, definirErro) {
 
     const urlTemporaria =
       URL.createObjectURL(arquivo);
-
-    // Abre o visualizador nativo do navegador.
 
     if (!aba.closed) {
       aba.location.replace(urlTemporaria);
@@ -164,16 +198,19 @@ async function visualizarPdf(material, definirErro) {
 
     definirErro(
       erro.message ||
-      "Não foi possível abrir o documento."
+        "Não foi possível abrir o documento."
     );
   }
 }
 
 // ==========================================
-// BAIXAR PDF ORIGINAL
+// BAIXAR PDF
 // ==========================================
 
-async function baixarPdf(material, definirErro) {
+async function baixarPdf(
+  material,
+  definirErro
+) {
   try {
     const arquivo = await carregarPdf(material);
 
@@ -195,13 +232,13 @@ async function baixarPdf(material, definirErro) {
   } catch (erro) {
     definirErro(
       erro.message ||
-      "Não foi possível baixar o documento."
+        "Não foi possível baixar o documento."
     );
   }
 }
 
 // ==========================================
-// ÍCONE DO HERO
+// ÍCONE PADRÃO SYNTER
 // ==========================================
 
 function IconeCubo() {
@@ -229,17 +266,19 @@ function IconeCubo() {
 // ==========================================
 
 function IconeMaterial({ tipo }) {
+  const props = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1.5",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    "aria-hidden": "true",
+  };
+
   if (tipo === "digital") {
     return (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
+      <svg {...props}>
         <rect
           x="7"
           y="2"
@@ -254,15 +293,7 @@ function IconeMaterial({ tipo }) {
 
   if (tipo === "mecanica") {
     return (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
+      <svg {...props}>
         <rect
           x="3"
           y="5"
@@ -278,15 +309,7 @@ function IconeMaterial({ tipo }) {
 
   if (tipo === "dobradica") {
     return (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
+      <svg {...props}>
         <path d="M11 3H4v18h7M13 3h7v18h-7M11 2h2v20h-2z" />
         <path d="M7 7h.01M7 17h.01M17 7h.01M17 17h.01" />
       </svg>
@@ -294,24 +317,12 @@ function IconeMaterial({ tipo }) {
   }
 
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
+    <svg {...props}>
       <path d="M4 5.5C7 4 10 4 12 6c2-2 5-2 8-.5V19c-3-1.5-6-1.5-8 .5-2-2-5-2-8-.5V5.5Z" />
       <path d="M12 6v13.5M7 9h2M15 9h2M7 12h2M15 12h2" />
     </svg>
   );
 }
-
-// ==========================================
-// ÍCONE PDF
-// ==========================================
 
 function IconeDocumento() {
   return (
@@ -332,10 +343,6 @@ function IconeDocumento() {
   );
 }
 
-// ==========================================
-// ÍCONE DOWNLOAD
-// ==========================================
-
 function IconeDownload() {
   return (
     <svg
@@ -353,10 +360,6 @@ function IconeDownload() {
     </svg>
   );
 }
-
-// ==========================================
-// ÍCONE VISUALIZAR
-// ==========================================
 
 function IconeVisualizar() {
   return (
@@ -378,10 +381,14 @@ function IconeVisualizar() {
 }
 
 // ==========================================
-// CARTÃO DE TREINAMENTO
+// CARD DE MATERIAL
 // ==========================================
 
-function CardMaterial({ material, definirErro }) {
+function CardMaterial({
+  material,
+  definirErro,
+  ocultarNoMobile,
+}) {
   const [processando, setProcessando] =
     useState(false);
 
@@ -404,9 +411,17 @@ function CardMaterial({ material, definirErro }) {
   }
 
   return (
-    <article className="tc-material-card">
-
-      {/* ÍCONE + PDF */}
+    <article
+      className={[
+        "tc-material-card",
+        ocultarNoMobile
+          ? "tc-mobile-hidden"
+          : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
+      {/* ÍCONE E IDENTIFICAÇÃO PDF */}
 
       <div className="tc-card-top">
         <div className="tc-material-icon">
@@ -437,17 +452,18 @@ function CardMaterial({ material, definirErro }) {
         {material.descricao}
       </p>
 
-      {/* INFORMAÇÕES */}
+      {/* METADADOS */}
 
       <div className="tc-material-meta">
-        <span>{material.paginas} páginas</span>
+        <span>
+          {material.paginas} páginas
+        </span>
         <span>Material Synter</span>
       </div>
 
       {/* AÇÕES */}
 
       <div className="tc-material-actions">
-
         <button
           type="button"
           className="tc-action tc-action-view"
@@ -469,14 +485,13 @@ function CardMaterial({ material, definirErro }) {
             ? "Baixando..."
             : "Baixar PDF"}
         </button>
-
       </div>
     </article>
   );
 }
 
 // ==========================================
-// PÁGINA TREINAMENTO COMERCIAL
+// PÁGINA PRINCIPAL
 // ==========================================
 
 export default function TreinamentoComercial() {
@@ -486,11 +501,68 @@ export default function TreinamentoComercial() {
   const [erroDocumento, setErroDocumento] =
     useState("");
 
+  const [pesquisa, setPesquisa] =
+    useState("");
+
+  const [categoria, setCategoria] =
+    useState("todos");
+
+  const [mostrarTodos, setMostrarTodos] =
+    useState(false);
+
+  // ========================================
+  // FILTRAR MATERIAIS
+  // ========================================
+
+  const materiaisFiltrados = useMemo(() => {
+    const termo = normalizarTexto(pesquisa);
+
+    return materiais.filter((material) => {
+      const correspondePesquisa =
+        !termo ||
+        normalizarTexto(
+          `${material.titulo} ${material.descricao} ${material.categoria}`
+        ).includes(termo);
+
+      const correspondeCategoria =
+        categoria === "todos" ||
+        material.categoria === categoria;
+
+      return (
+        correspondePesquisa &&
+        correspondeCategoria
+      );
+    });
+  }, [pesquisa, categoria]);
+
+  function alterarPesquisa(valor) {
+    setPesquisa(valor);
+    setMostrarTodos(false);
+  }
+
+  function alterarCategoria(valor) {
+    setCategoria(valor);
+    setMostrarTodos(false);
+  }
+
+  function limparFiltros() {
+    setPesquisa("");
+    setCategoria("todos");
+    setMostrarTodos(false);
+  }
+
+  const quantidadeRestante = Math.max(
+    0,
+    materiaisFiltrados.length -
+      LIMITE_MOBILE
+  );
+
+  // ========================================
+  // INTERFACE
+  // ========================================
+
   return (
     <div className="tc-page">
-
-      {/* HEADER */}
-
       <Header />
 
       {/* =====================================
@@ -500,8 +572,6 @@ export default function TreinamentoComercial() {
       <section className="tc-hero">
         <div className="tc-container tc-hero-inner">
 
-          {/* PERFIL */}
-
           <div className="tc-profile">
             <UserProfileButton
               onClick={() =>
@@ -510,31 +580,23 @@ export default function TreinamentoComercial() {
             />
           </div>
 
-          {/* IDENTIFICAÇÃO */}
-
           <div className="tc-eyebrow">
             <IconeCubo />
-
             <span>
               CAPACITAÇÃO E DESENVOLVIMENTO
             </span>
           </div>
 
-          {/* TÍTULO */}
-
           <h1>
             Treinamento Comercial
           </h1>
 
-          {/* DESCRIÇÃO */}
-
           <p>
             Consulte os materiais oficiais de
-            capacitação da Synter e aprofunde
-            seus conhecimentos sobre produtos,
-            aplicações e práticas comerciais.
+            capacitação da Synter e aprofunde seus
+            conhecimentos sobre produtos, aplicações
+            e práticas comerciais.
           </p>
-
         </div>
       </section>
 
@@ -544,10 +606,7 @@ export default function TreinamentoComercial() {
 
       <main className="tc-container tc-main">
 
-        {/* CABEÇALHO */}
-
         <div className="tc-section-heading">
-
           <span className="tc-section-bar" />
 
           <div>
@@ -563,74 +622,169 @@ export default function TreinamentoComercial() {
           </div>
 
           <span className="tc-total">
-            04 documentos
+            {materiaisFiltrados.length}
+            {materiaisFiltrados.length === 1
+              ? " documento"
+              : " documentos"}
           </span>
-
         </div>
 
-        {/* MENSAGEM AMIGÁVEL */}
+        {/* =====================================
+            FILTROS
+        ===================================== */}
+
+        <div className="tc-filtros">
+          <div className="tc-pesquisa">
+            <label htmlFor="tc-pesquisar">
+              Pesquisar treinamento
+            </label>
+
+            <input
+              id="tc-pesquisar"
+              type="search"
+              value={pesquisa}
+              onChange={(evento) =>
+                alterarPesquisa(
+                  evento.target.value
+                )
+              }
+              placeholder="Pesquisar material..."
+            />
+          </div>
+
+          <div className="tc-categoria">
+            <label htmlFor="tc-categoria">
+              Categoria
+            </label>
+
+            <select
+              id="tc-categoria"
+              value={categoria}
+              onChange={(evento) =>
+                alterarCategoria(
+                  evento.target.value
+                )
+              }
+            >
+              {CATEGORIAS.map((opcao) => (
+                <option
+                  key={opcao.valor}
+                  value={opcao.valor}
+                >
+                  {opcao.nome}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <button
+            type="button"
+            className="tc-limpar-filtros"
+            onClick={limparFiltros}
+          >
+            Limpar
+          </button>
+        </div>
+
+        {/* =====================================
+            MENSAGEM DE ERRO
+        ===================================== */}
 
         {erroDocumento && (
           <div
+            className="tc-erro-documento"
             role="alert"
-            style={{
-              marginBottom: 20,
-              padding: "15px 18px",
-              background: "#151515",
-              color: "#ffffff",
-              border: "1px solid #444",
-              borderRadius: 10,
-              fontSize: 13,
-              lineHeight: 1.6,
-            }}
           >
             <strong>
               Não foi possível acessar o material.
             </strong>
 
-            <p
-              style={{
-                margin: "7px 0 0",
-                color: "#b7b7bf",
-              }}
-            >
-              {erroDocumento}
-            </p>
+            <p>{erroDocumento}</p>
           </div>
         )}
 
-        {/* GRID */}
+        {/* =====================================
+            RESULTADOS
+        ===================================== */}
 
-        <div className="tc-grid">
-          {materiais.map((material) => (
-            <CardMaterial
-              key={material.id}
-              material={material}
-              definirErro={setErroDocumento}
-            />
-          ))}
-        </div>
+        {materiaisFiltrados.length > 0 ? (
+          <>
+            <div
+              className="tc-grid"
+              aria-label="Materiais de treinamento"
+            >
+              {materiaisFiltrados.map(
+                (material, indice) => (
+                  <CardMaterial
+                    key={material.id}
+                    material={material}
+                    definirErro={setErroDocumento}
+                    ocultarNoMobile={
+                      !mostrarTodos &&
+                      indice >= LIMITE_MOBILE
+                    }
+                  />
+                )
+              )}
+            </div>
 
-        {/* INFORMAÇÃO */}
+            {materiaisFiltrados.length >
+              LIMITE_MOBILE && (
+              <div className="tc-mobile-pagination">
+                <button
+                  type="button"
+                  className="tc-mobile-more"
+                  onClick={() =>
+                    setMostrarTodos(
+                      (atual) => !atual
+                    )
+                  }
+                  aria-expanded={mostrarTodos}
+                >
+                  {mostrarTodos
+                    ? "Mostrar menos materiais"
+                    : `Ver mais ${quantidadeRestante} materiais`}
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="tc-sem-resultados">
+            <strong>
+              Nenhum material encontrado
+            </strong>
+
+            <p>
+              Tente pesquisar outro termo
+              ou selecionar uma categoria diferente.
+            </p>
+
+            <button
+              type="button"
+              onClick={limparFiltros}
+            >
+              Limpar filtros
+            </button>
+          </div>
+        )}
+
+        {/* =====================================
+            ORIENTAÇÃO FINAL
+        ===================================== */}
 
         <div className="tc-info">
           <IconeDocumento />
 
           <span>
-            Clique em “Visualizar” para abrir o
-            PDF diretamente em uma nova aba.
-            Para salvar uma cópia, utilize
-            “Baixar PDF”.
+            Clique em “Visualizar” para abrir
+            o PDF em uma nova aba. Para salvar
+            uma cópia, utilize “Baixar PDF”.
           </span>
         </div>
 
       </main>
 
-      {/* FOOTER */}
-
       <Footer />
-
-      {/* PERFIL */}
 
       {profileOpen && (
         <Profile
@@ -639,7 +793,6 @@ export default function TreinamentoComercial() {
           }
         />
       )}
-
     </div>
   );
 }
