@@ -11,6 +11,7 @@ import synterImagensMap from "../data/synterImagensMap.json";
 
 import "../styles/TabelaPrecos.css";
 import "../styles/TabelaPrecosHero.css";
+import "../styles/TabelaPrecosMobile.css";
 
 // ==========================================
 // UNIVERSIDADE SYNTER — TABELA DE PREÇOS
@@ -149,6 +150,10 @@ function TabelaPrecos() {
     setProdutoSelecionado,
   ] = useState(null);
 
+  // Quantidade exibida inicialmente na versão mobile.
+  const [limiteMobile, setLimiteMobile] = useState(3);
+
+
   // ========================================
   // FILTRAR PRODUTOS
   // ========================================
@@ -203,6 +208,55 @@ function TabelaPrecos() {
       });
   }, [pesquisa, categoriaSelecionada]);
 
+  // Lista plana para o catálogo mobile, sem perder a categoria
+  // e o índice original utilizados no mapeamento das imagens.
+  const produtosMobile = useMemo(
+    () => categoriasFiltradas.flatMap((categoria) =>
+      categoria.produtos.map((produto) => ({ categoria, produto }))
+    ),
+    [categoriasFiltradas]
+  );
+
+  const produtosMobileVisiveis = produtosMobile.slice(0, limiteMobile);
+
+  function alterarPesquisa(valor) {
+    setPesquisa(valor);
+    setLimiteMobile(3);
+  }
+
+  function alterarCategoria(valor) {
+    setCategoriaSelecionada(valor);
+    setLimiteMobile(3);
+  }
+
+  function obterCamposVisiveis(categoria, produto) {
+    return categoria.colunas.map((coluna, indice) => ({
+      rotulo: String(coluna ?? `Campo ${indice + 1}`),
+      valor: String(produto.linha[indice] ?? "").trim(),
+    })).filter(({ valor }) => valor !== "");
+  }
+
+  function obterResumoProduto(categoria, produto) {
+    const campos = obterCamposVisiveis(categoria, produto);
+    const campoModelo = campos.find(({ rotulo }) =>
+      /modelo|produto|nome|linha/i.test(normalizarTexto(rotulo))
+    );
+    const campoReferencia = campos.find(({ rotulo }) =>
+      /referencia|codigo|ref\b/i.test(normalizarTexto(rotulo))
+    );
+    const campoPreco = campos.find(({ valor, rotulo }) =>
+      /^R\$/.test(valor) || /preco|valor/i.test(normalizarTexto(rotulo))
+    );
+    const modelo = campoModelo?.valor ||
+      campos.find(({ valor }) => !/^R\$/.test(valor))?.valor ||
+      "Produto Synter";
+    return {
+      modelo,
+      referencia: campoReferencia?.valor || "",
+      preco: campoPreco?.valor || "",
+    };
+  }
+
   // ========================================
   // QUANTIDADE DE RESULTADOS
   // ========================================
@@ -239,7 +293,8 @@ function TabelaPrecos() {
 
   function limparFiltros() {
     setPesquisa("");
-    setCategoriaSelecionada("todos");
+    alterarCategoria("todos");
+    setLimiteMobile(3);
   }
 
   function abrirProduto(categoria, produto) {
@@ -382,7 +437,7 @@ function TabelaPrecos() {
               placeholder="Pesquisar produto, modelo ou referência..."
               value={pesquisa}
               onChange={(evento) =>
-                setPesquisa(evento.target.value)
+                alterarPesquisa(evento.target.value)
               }
               aria-label="Pesquisar produtos"
             />
@@ -391,7 +446,7 @@ function TabelaPrecos() {
               <button
                 type="button"
                 className="tabela-precos-limpar-pesquisa"
-                onClick={() => setPesquisa("")}
+                onClick={() => alterarPesquisa("")}
                 aria-label="Limpar pesquisa"
               >
                 ×
@@ -415,7 +470,7 @@ function TabelaPrecos() {
                 : "categoria-button"
             }
             onClick={() =>
-              setCategoriaSelecionada("todos")
+              alterarCategoria("todos")
             }
           >
             Todos
@@ -445,11 +500,31 @@ function TabelaPrecos() {
         </section>
 
         {/* ===================================
+            FILTRO MOBILE POR CATEGORIA
+        ==================================== */}
+
+        <div className="tp-mobile-filtro">
+          <label htmlFor="tp-mobile-categoria">Categoria</label>
+          <select
+            id="tp-mobile-categoria"
+            value={categoriaSelecionada}
+            onChange={(evento) => alterarCategoria(evento.target.value)}
+          >
+            <option value="todos">Todas as categorias</option>
+            {tabelaPrecosData.categorias.map((categoria) => (
+              <option key={categoria.id} value={categoria.id}>
+                {categoria.titulo}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* ===================================
             IDENTIFICAÇÃO DOS RESULTADOS
         ==================================== */}
 
         {categoriasFiltradas.length > 0 && (
-          <section className="tabela-precos-categoria">
+          <section className="tabela-precos-categoria tp-desktop-categoria-header">
 
             <div className="tabela-precos-categoria-header">
               <div>
@@ -476,10 +551,79 @@ function TabelaPrecos() {
         )}
 
         {/* ===================================
+            CATÁLOGO MOBILE COMPACTO
+        ==================================== */}
+
+        <section className="tp-mobile-catalogo" aria-label="Produtos Synter">
+          <div className="tp-mobile-meta">
+            <span>{totalResultados} {totalResultados === 1 ? "resultado" : "resultados"}</span>
+            <button type="button" onClick={limparFiltros}>Limpar filtros</button>
+          </div>
+
+          {produtosMobileVisiveis.length ? (
+            <div className="tp-mobile-lista">
+              {produtosMobileVisiveis.map(({ categoria, produto }) => {
+                const info = obterResumoProduto(categoria, produto);
+                return (
+                  <button
+                    type="button"
+                    className="tp-mobile-produto"
+                    key={`${categoria.id}-${produto.indiceOriginal}`}
+                    onClick={() => abrirProduto(categoria, produto)}
+                    aria-label={`Ver detalhes de ${info.modelo}`}
+                  >
+                    <span className="tp-mobile-imagem">
+                      <ImagemProduto imagem={produto.imagem} alt={info.modelo} />
+                    </span>
+                    <span className="tp-mobile-info">
+                      <strong>{info.modelo}</strong>
+                      <small>{categoria.titulo}</small>
+                      {info.referencia && <small>Ref.: {info.referencia}</small>}
+                      {info.preco && <b>{info.preco}</b>}
+                    </span>
+                    <span className="tp-mobile-seta" aria-hidden="true">›</span>
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="tp-mobile-vazio">Nenhum produto encontrado.</div>
+          )}
+
+          {totalResultados > 3 && (
+            <div className="tp-mobile-paginacao">
+              {limiteMobile < totalResultados && (
+                <button type="button" onClick={() => setLimiteMobile((n) => n + 3)}>
+                  Ver mais {Math.min(3, totalResultados - limiteMobile)} produtos
+                </button>
+              )}
+              {limiteMobile > 3 && (
+                <button type="button" onClick={() => setLimiteMobile(3)}>
+                  Mostrar menos
+                </button>
+              )}
+            </div>
+          )}
+
+          {categoriaSelecionada !== "todos" && categoriasFiltradas.map((categoria) =>
+            categoria.observacoes?.length > 0 ? (
+              <details className="tp-mobile-observacoes" key={categoria.id}>
+                <summary>Informações importantes — {categoria.titulo}</summary>
+                <ul>
+                  {categoria.observacoes.map((obs, indice) => (
+                    <li key={indice}>{obs}</li>
+                  ))}
+                </ul>
+              </details>
+            ) : null
+          )}
+        </section>
+
+        {/* ===================================
             RESULTADOS
         ==================================== */}
 
-        <section className="tabela-precos-resultados">
+        <section className="tabela-precos-resultados tp-desktop-resultados">
 
           {categoriasFiltradas.length > 0 ? (
             categoriasFiltradas.map(

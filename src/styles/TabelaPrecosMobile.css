@@ -1,0 +1,172 @@
+/* UNIVERSIDADE SYNTER — TABELA DE PREÇOS COMPACTA */
+/* O desktop permanece com a tabela e a grade originais. */
+.tabela-precos-page .tp-mobile-filtro,
+.tabela-precos-page .tp-mobile-catalogo { display: none; }
+
+@media (max-width: 750px) {
+  .tabela-precos-page .tp-faq-hero { min-height: 0 !important; }
+  .tabela-precos-page .tp-faq-hero-container {
+    width: calc(100% - 32px) !important;
+    padding: 76px 0 22px !important;
+  }
+  .tabela-precos-page .tp-faq-profile { top: 15px !important; right: 0 !important; }
+  .tabela-precos-page .tp-faq-eyebrow {
+    margin-bottom: 11px !important;
+    gap: 9px !important;
+    font-size: 9px !important;
+    letter-spacing: 1.2px !important;
+  }
+  .tabela-precos-page .tp-faq-eyebrow svg { width: 18px !important; height: 18px !important; flex-basis: 18px !important; }
+  .tabela-precos-page .tp-faq-title {
+    margin-bottom: 9px !important;
+    font-size: clamp(27px, 7vw, 35px) !important;
+    line-height: 1.15 !important;
+    letter-spacing: -1px !important;
+  }
+  .tabela-precos-page .tp-faq-description { font-size: 12px !important; line-height: 1.55 !important; }
+  .tabela-precos-page .tabela-precos-content {
+    padding: 19px 16px 40px !important;
+    width: 100%;
+  }
+  .tabela-precos-page .tabela-precos-topo {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-bottom: 15px !important;
+  }
+  .tabela-precos-page .tabela-precos-titulo-area { gap: 5px !important; min-width: 0; }
+  .tabela-precos-page .tabela-precos-section-title h4 { font-size: 10px !important; letter-spacing: 1.1px !important; }
+  .tabela-precos-page .tabela-precos-info span { font-size: 14px !important; line-height: 1.3 !important; }
+  .tabela-precos-page .tabela-precos-info small { font-size: 10px !important; }
+  .tabela-precos-page .tabela-precos-total {
+    flex-shrink: 0;
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 8px 10px !important;
+    border-radius: 8px !important;
+  }
+  .tabela-precos-page .tabela-precos-total span { font-size: 17px !important; }
+  .tabela-precos-page .tabela-precos-total small { font-size: 8px !important; margin-top: 2px !important; }
+  .tabela-precos-page .tabela-precos-filtros { margin-bottom: 12px !important; }
+  .tabela-precos-page .tabela-precos-pesquisa { border-radius: 9px !important; }
+  .tabela-precos-page .tabela-precos-search-icon { width: 35px !important; font-size: 19px !important; }
+  .tabela-precos-page .tabela-precos-pesquisa input {
+    min-width: 0 !important;
+    height: 44px !important;
+    font-size: 16px !important;
+  }
+  .tabela-precos-page .tabela-precos-categorias { display: none !important; }
+  .tabela-precos-page .tp-desktop-categoria-header,
+  .tabela-precos-page .tp-desktop-resultados { display: none !important; }
+
+  .tabela-precos-page .tp-mobile-filtro {
+    display: flex !important;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0 0 14px;
+  }
+  .tabela-precos-page .tp-mobile-filtro label { font-size: 11px; font-weight: 600; color: #a8a8b1; }
+  .tabela-precos-page .tp-mobile-filtro select {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 12px;
+    color: #fff;
+    background: #171719;
+    border: 1px solid #3b3b42;
+    border-radius: 9px;
+    font: inherit;
+    font-size: 13px;
+  }
+  .tabela-precos-page .tp-mobile-filtro option { background: #171719; color: #fff; }
+  .tabela-precos-page .tp-mobile-catalogo { display: block !important; }
+  .tabela-precos-page .tp-mobile-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 0 0 11px;
+    font-size: 11px;
+    color: #a7a7af;
+  }
+  .tabela-precos-page .tp-mobile-meta button {
+    border: 0;
+    background: none;
+    padding: 5px;
+    color: #ccc;
+    font: inherit;
+    cursor: pointer;
+  }
+  .tabela-precos-page .tp-mobile-lista { display: grid; grid-template-columns: minmax(0, 1fr); gap: 9px; }
+  .tabela-precos-page .tp-mobile-produto {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+    min-height: 85px;
+    width: 100%;
+    padding: 9px;
+    background: #151517;
+    border: 1px solid #35353a;
+    border-radius: 11px;
+    color: #fff;
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .tabela-precos-page .tp-mobile-produto:focus-visible,
+  .tabela-precos-page .tp-mobile-paginacao button:focus-visible,
+  .tabela-precos-page .tp-mobile-filtro select:focus-visible { outline: 2px solid white; outline-offset: 2px; }
+  .tabela-precos-page .tp-mobile-imagem {
+    display: flex;
+    flex: 0 0 66px;
+    align-items: center;
+    justify-content: center;
+    width: 66px;
+    height: 67px;
+    background: #f4f4f4;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .tabela-precos-page .tp-mobile-imagem .tabela-precos-produto-imagem {
+    width: 62px !important;
+    height: 62px !important;
+    object-fit: contain !important;
+  }
+  .tabela-precos-page .tp-mobile-imagem > span { color: #555 !important; }
+  .tabela-precos-page .tp-mobile-info { display: flex; flex: 1; flex-direction: column; gap: 3px; min-width: 0; }
+  .tabela-precos-page .tp-mobile-info strong { font-size: 12px; color: #fff; line-height: 1.35; overflow-wrap: anywhere; }
+  .tabela-precos-page .tp-mobile-info small { color: #a6a6af; font-size: 10px; line-height: 1.3; overflow-wrap: anywhere; }
+  .tabela-precos-page .tp-mobile-info b { color: #fff; font-size: 12px; margin-top: 2px; }
+  .tabela-precos-page .tp-mobile-seta { color: #ccc; font-size: 24px; padding: 0 4px; }
+  .tabela-precos-page .tp-mobile-paginacao { display: flex; flex-direction: column; gap: 8px; margin: 13px 0 0; }
+  .tabela-precos-page .tp-mobile-paginacao button {
+    width: 100%;
+    min-height: 42px;
+    padding: 10px;
+    background: #242427;
+    border: 1px solid #45454c;
+    border-radius: 9px;
+    color: white;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .tabela-precos-page .tp-mobile-observacoes { margin-top: 10px; border: 1px solid #37373d; border-radius: 9px; background: #151517; }
+  .tabela-precos-page .tp-mobile-observacoes summary { padding: 12px; font-size: 11px; color: #fff; cursor: pointer; }
+  .tabela-precos-page .tp-mobile-observacoes ul { padding: 0 14px 12px 30px; margin: 0; font-size: 11px; line-height: 1.65; color: #b6b6bf; }
+  .tabela-precos-page .tp-mobile-vazio { padding: 25px 12px; text-align: center; font-size: 12px; color: #aaa; }
+
+  /* Modal existente, apenas menos alto na abertura. */
+  .tabela-precos-page .produto-modal-imagem-area { min-height: 175px !important; padding: 15px !important; }
+  .tabela-precos-page .produto-modal-imagem { max-height: 170px !important; }
+  .tabela-precos-page .produto-modal-conteudo { padding: 20px 16px !important; }
+  .tabela-precos-page .produto-modal-conteudo h2 { font-size: 19px !important; margin-bottom: 15px !important; }
+}
+
+@media (max-width: 380px) {
+  .tabela-precos-page .tp-mobile-imagem { flex-basis: 54px; width: 54px; height: 59px; }
+  .tabela-precos-page .tp-mobile-imagem .tabela-precos-produto-imagem { width: 51px !important; height: 55px !important; }
+  .tabela-precos-page .tp-mobile-produto { gap: 8px; }
+}
