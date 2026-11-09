@@ -21,6 +21,7 @@ import { CONDICOES_PAGAMENTO_SYNTER, textoCondicaoPagamento } from "../data/cond
 
 import "../styles/Orcamentos.css";
 import "../styles/OrcamentosHero.css";
+import "../styles/OrcamentosMobile.css";
 
 
 // ========================================

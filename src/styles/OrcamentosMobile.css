@@ -1,0 +1,74 @@
+/* UNIVERSIDADE SYNTER — ORÇAMENTOS MOBILE COMPACTO
+   Importar depois de Orcamentos.css e OrcamentosHero.css.
+   Sem alterações nas regras de negócio, permissões e PDF. */
+@media (max-width: 768px) {
+  .orcamentos-page { overflow-x: hidden; }
+  .orcamentos-page .orcamentos-hero { min-height: 0 !important; height: auto !important; }
+  .orcamentos-page .orcamentos-hero-container {
+    width: calc(100% - 32px) !important;
+    min-height: 0 !important;
+    padding: 73px 0 19px !important;
+  }
+  .orcamentos-page .orcamentos-profile { top: 14px !important; right: 16px !important; gap: 8px; }
+  .orcamentos-page .orcamentos-eyebrow { gap: 8px !important; margin-bottom: 9px !important; font-size: 9px !important; letter-spacing: 1.1px !important; }
+  .orcamentos-page .orcamentos-eyebrow-icon,
+  .orcamentos-page .orcamentos-eyebrow-icon svg { width: 18px !important; height: 18px !important; }
+  .orcamentos-page .orcamentos-hero h1,
+  .orcamentos-page .orcamentos-hero-title { font-size: clamp(27px, 7vw, 34px) !important; line-height: 1.12 !important; letter-spacing: -1px !important; margin: 0 0 8px !important; }
+  .orcamentos-page .orcamentos-hero-description { font-size: 12px !important; line-height: 1.45 !important; margin: 0 !important; }
+  .orcamentos-page .orcamentos-hero-divider { margin: 13px 0 10px !important; }
+  .orcamentos-page .orcamentos-role { flex-direction: row !important; align-items: center !important; gap: 8px !important; }
+  .orcamentos-page .orcamentos-role-label { font-size: 9px !important; letter-spacing: 0.6px !important; }
+  .orcamentos-page .orcamentos-role strong { padding: 5px 9px !important; font-size: 10px !important; }
+  .orcamentos-page .orcamentos-content { width: calc(100% - 32px) !important; padding: 18px 0 38px !important; }
+  .orcamentos-page .orcamentos-section-title { gap: 8px !important; }
+  .orcamentos-page .orcamentos-section-title h4 { font-size: 10px !important; letter-spacing: 1.3px !important; }
+  .orcamentos-page .orcamentos-section-bar { height: 17px !important; }
+  .orcamentos-page .orcamentos-summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 7px !important; margin-top: 12px !important; margin-bottom: 22px !important; }
+  .orcamentos-page .orcamentos-summary-card { min-width: 0; min-height: 76px !important; padding: 10px 8px !important; border-radius: 9px !important; transform: none !important; }
+  .orcamentos-page .orcamentos-summary-card > span { margin-bottom: 8px !important; font-size: 9px !important; letter-spacing: 0 !important; text-transform: none !important; overflow-wrap: anywhere; }
+  .orcamentos-page .orcamentos-summary-card strong { margin-bottom: 0 !important; font-size: 24px !important; }
+  .orcamentos-page .orcamentos-summary-card p { display: none !important; }
+  .orcamentos-page .orcamentos-section-header { gap: 12px !important; margin-bottom: 13px !important; }
+  .orcamentos-page .orcamentos-section-header p { margin-top: 6px !important; font-size: 11px !important; line-height: 1.4 !important; }
+  .orcamentos-page .orcamentos-primary-button { min-height: 41px !important; }
+  .orcamentos-page .orcamentos-list-search { max-width: none !important; }
+  .orcamentos-page .orcamentos-list-search input { min-height: 42px !important; font-size: 16px !important; }
+  .orcamentos-page .orcamentos-status-filters { flex-wrap: nowrap !important; overflow-x: auto !important; padding: 2px 0 5px; scrollbar-width: thin; }
+  .orcamentos-page .orcamentos-status-filters button { flex: 0 0 auto !important; min-height: 32px !important; padding: 0 11px !important; font-size: 10px !important; }
+  .orcamentos-page .orcamentos-empty { min-height: 160px !important; padding: 22px 15px !important; }
+  .orcamentos-page .orcamentos-empty-icon { width: 42px !important; height: 42px !important; margin-bottom: 10px !important; }
+  .orcamentos-page .orcamentos-empty-icon img { width: 25px !important; height: 25px !important; }
+  .orcamentos-page .orcamentos-empty h3 { font-size: 14px !important; }
+  .orcamentos-page .orcamentos-empty p { font-size: 11px !important; }
+  /* Tabela de orçamentos vira cartões compactos, sem rolagem horizontal. */
+  .orcamentos-page .orcamentos-table-wrapper { overflow: visible !important; }
+  .orcamentos-page .orcamentos-table,
+  .orcamentos-page .orcamentos-table tbody { display: block !important; width: 100% !important; min-width: 0 !important; }
+  .orcamentos-page .orcamentos-table thead { display: none !important; }
+  .orcamentos-page .orcamentos-table tbody { padding: 8px; }
+  .orcamentos-page .orcamentos-table tbody tr { display: flex !important; align-items: center; flex-wrap: wrap; gap: 7px 9px; padding: 11px !important; margin-bottom: 8px; background: #141416; border: 1px solid #333339; border-radius: 10px; }
+  .orcamentos-page .orcamentos-table tbody tr:last-child { margin-bottom: 0; }
+  .orcamentos-page .orcamentos-table tbody td { display: none !important; border: 0 !important; padding: 0 !important; }
+  .orcamentos-page .orcamentos-table tbody td:first-child { display: block !important; flex: 1 1 100%; }
+  .orcamentos-page .orcamentos-table tbody td:has(.orcamentos-status) { display: block !important; flex: 0 0 auto; }
+  .orcamentos-page .orcamentos-table tbody td:has(.orcamentos-card-acoes) { display: block !important; margin-left: auto; }
+  .orcamentos-page .orcamentos-client { gap: 9px; }
+  .orcamentos-page .orcamentos-client-avatar { width: 34px; height: 34px; }
+  .orcamentos-page .orcamentos-client strong { font-size: 12px !important; margin-bottom: 2px !important; }
+  .orcamentos-page .orcamentos-client span { font-size: 10px !important; overflow-wrap: anywhere; }
+  .orcamentos-page .orcamentos-status { min-height: 23px; padding: 0 8px; font-size: 9px; }
+  .orcamentos-page .orcamentos-modal-overlay { padding: 9px !important; }
+  .orcamentos-page .orcamentos-modal { max-height: calc(100dvh - 18px) !important; }
+  .orcamentos-page .orcamentos-modal-header { padding: 16px !important; }
+  .orcamentos-page .orcamentos-detalhes-body { padding: 16px !important; }
+  .orcamentos-page .orcamentos-detalhes-info { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
+  .orcamentos-page .orcamentos-detalhes-info > div { min-height: 0 !important; padding: 10px !important; }
+  .orcamentos-page .orcamentos-produtos-body { padding: 14px !important; }
+}
+@media (max-width: 360px) {
+  .orcamentos-page .orcamentos-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orcamentos-page .orcamentos-summary-card { transition: none !important; }
+}
