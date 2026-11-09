@@ -1,0 +1,532 @@
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   TREINAMENTO COMERCIAL — MOBILE COMPACTO
+========================================== */
+
+/* ==========================================
+   FILTROS — DESKTOP E MOBILE
+========================================== */
+
+.tc-page .tc-filtros {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.tc-page .tc-pesquisa,
+.tc-page .tc-categoria {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.tc-page .tc-pesquisa {
+  flex: 1;
+}
+
+.tc-page .tc-categoria {
+  width: 260px;
+}
+
+.tc-page .tc-filtros label {
+  color: #aaaab4;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tc-page .tc-filtros input,
+.tc-page .tc-filtros select {
+  width: 100%;
+  min-width: 0;
+  height: 45px;
+  padding: 0 13px;
+
+  background: #171719;
+  border: 1px solid #38383e;
+  border-radius: 9px;
+
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 13px;
+
+  outline: none;
+}
+
+.tc-page .tc-filtros input:focus,
+.tc-page .tc-filtros select:focus {
+  border-color: #ffffff;
+}
+
+.tc-page .tc-filtros select option {
+  background: #171719;
+  color: #ffffff;
+}
+
+.tc-page .tc-limpar-filtros {
+  min-height: 45px;
+  padding: 0 16px;
+
+  background: #202023;
+  border: 1px solid #414148;
+  border-radius: 9px;
+
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.tc-page .tc-limpar-filtros:hover {
+  background: #303034;
+}
+
+/* ==========================================
+   ERRO DE DOCUMENTO
+========================================== */
+
+.tc-page .tc-erro-documento {
+  margin-bottom: 20px;
+  padding: 15px 18px;
+
+  background: #171719;
+  border: 1px solid #55555d;
+  border-radius: 10px;
+
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.tc-page .tc-erro-documento p {
+  margin: 7px 0 0;
+  color: #b7b7bf;
+  line-height: 1.6;
+}
+
+/* ==========================================
+   NENHUM RESULTADO
+========================================== */
+
+.tc-page .tc-sem-resultados {
+  padding: 28px 18px;
+  text-align: center;
+
+  background: #151517;
+  border: 1px solid #35353b;
+  border-radius: 12px;
+}
+
+.tc-page .tc-sem-resultados strong {
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.tc-page .tc-sem-resultados p {
+  color: #aaaab4;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.tc-page .tc-sem-resultados button {
+  min-height: 38px;
+  margin-top: 8px;
+  padding: 8px 15px;
+
+  background: #ffffff;
+  border: 0;
+  border-radius: 8px;
+
+  color: #111111;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+/* ==========================================
+   PAGINAÇÃO MOBILE
+========================================== */
+
+.tc-page .tc-mobile-pagination {
+  display: none;
+}
+
+/* O limite de dois materiais não interfere
+   na versão desktop. */
+
+.tc-page .tc-material-card.tc-mobile-hidden {
+  display: flex;
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media screen and (max-width: 600px) {
+
+  /* HERO MAIS COMPACTO */
+
+  .tc-page .tc-hero {
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  .tc-page .tc-hero-inner {
+    width: calc(100% - 32px);
+    min-height: 0 !important;
+
+    padding-top: 76px !important;
+    padding-bottom: 22px !important;
+  }
+
+  .tc-page .tc-profile {
+    top: 15px !important;
+    right: 0 !important;
+  }
+
+  .tc-page .tc-eyebrow {
+    gap: 9px !important;
+    margin-bottom: 10px !important;
+
+    font-size: 9px !important;
+    letter-spacing: 1.1px !important;
+  }
+
+  .tc-page .tc-eyebrow svg {
+    width: 18px !important;
+    height: 18px !important;
+    flex-basis: 18px !important;
+  }
+
+  .tc-page .tc-hero h1 {
+    margin-bottom: 9px !important;
+
+    font-size: clamp(
+      27px,
+      7vw,
+      34px
+    ) !important;
+
+    line-height: 1.12 !important;
+    letter-spacing: -1px !important;
+  }
+
+  .tc-page .tc-hero p {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* CONTEÚDO PRINCIPAL */
+
+  .tc-page .tc-main {
+    width: calc(100% - 32px);
+
+    padding-top: 20px !important;
+    padding-bottom: 35px !important;
+  }
+
+  /* CABEÇALHO */
+
+  .tc-page .tc-section-heading {
+    gap: 9px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .tc-page .tc-section-bar {
+    height: 18px !important;
+  }
+
+  .tc-page .tc-section-heading h2 {
+    font-size: 10px !important;
+    letter-spacing: 1.2px !important;
+  }
+
+  .tc-page .tc-section-heading p {
+    margin-top: 5px !important;
+
+    font-size: 11px !important;
+    line-height: 1.45 !important;
+  }
+
+  .tc-page .tc-total {
+    display: none !important;
+  }
+
+  /* FILTROS */
+
+  .tc-page .tc-filtros {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .tc-page .tc-pesquisa {
+    grid-column: 1 / -1;
+  }
+
+  .tc-page .tc-categoria {
+    grid-column: 1;
+    width: 100%;
+  }
+
+  .tc-page .tc-limpar-filtros {
+    grid-column: 2;
+    align-self: end;
+
+    min-height: 42px;
+    padding: 0 12px;
+    font-size: 11px;
+  }
+
+  .tc-page .tc-filtros input,
+  .tc-page .tc-filtros select {
+    height: 42px;
+    font-size: 16px;
+  }
+
+  /* GRID MOBILE */
+
+  .tc-page .tc-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* MOSTRAR SOMENTE DOIS INICIALMENTE */
+
+  .tc-page
+  .tc-material-card.tc-mobile-hidden {
+    display: none !important;
+  }
+
+  /* ========================================
+     CARD COMPACTO
+  ======================================== */
+
+  .tc-page .tc-material-card {
+    display: grid !important;
+
+    grid-template-columns: 48px minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto;
+
+    min-width: 0;
+    min-height: 0 !important;
+    height: auto !important;
+
+    padding: 13px !important;
+    column-gap: 12px;
+    row-gap: 4px;
+
+    background: #151517 !important;
+
+    border: 1px solid #35353a;
+    border-radius: 11px !important;
+
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  /* ÍCONE À ESQUERDA */
+
+  .tc-page .tc-card-top {
+    grid-column: 1;
+    grid-row: 1 / 4;
+
+    display: flex;
+    align-items: flex-start;
+
+    margin: 0 !important;
+  }
+
+  .tc-page .tc-material-icon {
+    width: 46px !important;
+    height: 46px !important;
+    flex: 0 0 46px !important;
+
+    border-radius: 9px !important;
+  }
+
+  .tc-page .tc-material-icon svg {
+    width: 25px !important;
+    height: 25px !important;
+  }
+
+  /* OCULTAR SELO PDF PARA ECONOMIZAR ESPAÇO */
+
+  .tc-page .tc-file-type {
+    display: none !important;
+  }
+
+  /* CATEGORIA */
+
+  .tc-page .tc-material-category {
+    grid-column: 2;
+    grid-row: 1;
+
+    align-self: end;
+
+    font-size: 9px !important;
+    letter-spacing: 0.8px !important;
+  }
+
+  /* TÍTULO */
+
+  .tc-page .tc-material-card h3 {
+    grid-column: 2;
+    grid-row: 2;
+
+    margin: 2px 0 !important;
+
+    font-size: 14px !important;
+    line-height: 1.3 !important;
+
+    overflow-wrap: anywhere;
+  }
+
+  /* DESCRIÇÃO DISPONÍVEL NO DESKTOP */
+
+  .tc-page .tc-material-description {
+    display: none !important;
+  }
+
+  /* QUANTIDADE DE PÁGINAS */
+
+  .tc-page .tc-material-meta {
+    grid-column: 2;
+    grid-row: 3;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    font-size: 10px !important;
+  }
+
+  .tc-page
+  .tc-material-meta span:last-child {
+    display: none;
+  }
+
+  /* BOTÕES */
+
+  .tc-page .tc-material-actions {
+    grid-column: 1 / -1;
+    grid-row: 4;
+
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 8px !important;
+    margin-top: 10px !important;
+  }
+
+  .tc-page .tc-action {
+    min-height: 36px !important;
+    padding: 7px 8px !important;
+
+    font-size: 11px !important;
+    border-radius: 8px !important;
+  }
+
+  .tc-page .tc-action svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  /* ========================================
+     BOTÃO VER MAIS
+  ======================================== */
+
+  .tc-page .tc-mobile-pagination {
+    display: block !important;
+    margin-top: 12px;
+  }
+
+  .tc-page .tc-mobile-more {
+    display: block;
+
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 14px;
+
+    background: #222225;
+    border: 1px solid #44444a;
+    border-radius: 9px;
+
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+  }
+
+  .tc-page .tc-mobile-more:hover {
+    background: #303034;
+  }
+
+  /* AVISO INFERIOR */
+
+  .tc-page .tc-info {
+    margin-top: 17px !important;
+    padding: 12px !important;
+
+    font-size: 11px !important;
+    line-height: 1.5 !important;
+  }
+}
+
+/* ==========================================
+   CELULARES PEQUENOS
+========================================== */
+
+@media screen and (max-width: 390px) {
+  .tc-page .tc-hero h1 {
+    font-size: 27px !important;
+  }
+
+  .tc-page .tc-main,
+  .tc-page .tc-hero-inner {
+    width: calc(100% - 28px);
+  }
+
+  .tc-page .tc-material-card {
+    column-gap: 9px !important;
+    padding: 11px !important;
+  }
+
+  .tc-page .tc-material-card h3 {
+    font-size: 13px !important;
+  }
+}
+
+/* ==========================================
+   ACESSIBILIDADE
+========================================== */
+
+.tc-page .tc-mobile-more:focus-visible,
+.tc-page .tc-filtros select:focus-visible,
+.tc-page .tc-filtros input:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tc-page .tc-mobile-more {
+    transition: none;
+  }
+}
