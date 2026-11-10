@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 
 // ========================================
+// UNIVERSIDADE SYNTER
 // AUTENTICAÇÃO
 // ========================================
 
@@ -18,11 +19,12 @@ import ForgotPassword from "./components/ForgotPassword.jsx";
 import UpdatePassword from "./components/UpdatePassword.jsx";
 
 // ========================================
-// CONTROLE DE ACESSO
+// CONTROLE DE ACESSO E RECUPERAÇÃO
 // ========================================
 
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import PublicRoute from "./components/PublicRoute.jsx";
+import PasswordRecoveryGuard from "./components/PasswordRecoveryGuard.jsx";
 
 // ========================================
 // DASHBOARDS
@@ -120,7 +122,7 @@ export default function App() {
   const location = useLocation();
 
   // ========================================
-  // ROLAGEM AO TROCAR DE PÁGINA
+  // ROLAGEM AO TROCAR DE ROTA
   // ========================================
 
   useEffect(() => {
@@ -135,7 +137,7 @@ export default function App() {
   }, [location.pathname]);
 
   // ========================================
-  // EXIBIÇÃO DO ASSISTENTE
+  // EXIBIÇÃO DO ASSISTENTE SYNTER
   // ========================================
 
   const mostrarAssistente =
@@ -145,362 +147,386 @@ export default function App() {
 
   return (
     <>
-      <Routes>
-        {/* ====================================
-            LOGIN
-        ==================================== */}
+      {/* ====================================
+          PROTEÇÃO DA RECUPERAÇÃO DE SENHA
 
-        <Route
-          path="/"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
+          Enquanto existir uma recuperação
+          ativa, o sistema não deve liberar
+          a navegação para outras páginas.
 
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
+          A validação da alteração continua
+          sendo responsabilidade do Supabase.
+      ==================================== */}
 
-        {/* ====================================
-            CADASTRO
-        ==================================== */}
+      <PasswordRecoveryGuard>
+        <Routes>
+          {/* ====================================
+              LOGIN
+          ==================================== */}
 
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <Register />
-            </PublicRoute>
-          }
-        />
+          <Route
+            path="/"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
 
-        {/* ====================================
-            ESQUECI MINHA SENHA
-        ==================================== */}
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
 
-        <Route
-          path="/forgot-password"
-          element={
-            <PublicRoute>
-              <ForgotPassword />
-            </PublicRoute>
-          }
-        />
+          {/* ====================================
+              CADASTRO
+          ==================================== */}
 
-        {/* ====================================
-            REDEFINIR SENHA
-            SEM PUBLICROUTE / PROTECTEDROUTE
-        ==================================== */}
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
 
-        <Route
-          path="/update-password"
-          element={<UpdatePassword />}
-        />
+          {/* ====================================
+              ESQUECI MINHA SENHA
+          ==================================== */}
 
-        {/* ====================================
-            DASHBOARD PRINCIPAL
-        ==================================== */}
+          <Route
+            path="/forgot-password"
+            element={
+              <PublicRoute>
+                <ForgotPassword />
+              </PublicRoute>
+            }
+          />
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+          {/* ====================================
+              REDEFINIÇÃO DE SENHA
 
-        {/* ====================================
-            DASHBOARD SAC
-            ACESSO ADMINISTRATIVO
-        ==================================== */}
+              Não utilizar PublicRoute ou
+              ProtectedRoute nesta rota.
 
-        <Route
-          path="/dashsac"
-          element={
-            <ProtectedRoute requiredRole="adm">
-              <DashboardSAC />
-            </ProtectedRoute>
-          }
-        />
+              O UpdatePassword valida a
+              sessão de recuperação.
+          ==================================== */}
 
-        {/* ====================================
-            APLICATIVO SYNTER
-        ==================================== */}
+          <Route
+            path="/update-password"
+            element={<UpdatePassword />}
+          />
 
-        <Route
-          path="/aplicativo-synter"
-          element={
-            <ProtectedRoute>
-              <AplicativoSynter />
-            </ProtectedRoute>
-          }
-        />
+          {/* ====================================
+              DASHBOARD PRINCIPAL
+          ==================================== */}
 
-        {/* ====================================
-            MANUAIS
-        ==================================== */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/manuals"
-          element={
-            <ProtectedRoute>
-              <Manuals />
-            </ProtectedRoute>
-          }
-        />
+          {/* ====================================
+              DASHBOARD SAC
+              ACESSO ADMINISTRATIVO
+          ==================================== */}
 
-        {/* ====================================
-            FICHAS TÉCNICAS
-        ==================================== */}
+          <Route
+            path="/dashsac"
+            element={
+              <ProtectedRoute requiredRole="adm">
+                <DashboardSAC />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/fichas-tecnicas"
-          element={
-            <ProtectedRoute>
-              <FichaTec />
-            </ProtectedRoute>
-          }
-        />
+          {/* ====================================
+              APLICATIVO SYNTER
+          ==================================== */}
 
-        <Route
-          path="/ficha-tecnica"
-          element={
-            <Navigate
-              to="/fichas-tecnicas"
-              replace
-            />
-          }
-        />
+          <Route
+            path="/aplicativo-synter"
+            element={
+              <ProtectedRoute>
+                <AplicativoSynter />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* ====================================
-            VÍDEOS DE INSTALAÇÃO
-        ==================================== */}
+          {/* ====================================
+              MANUAIS
+          ==================================== */}
 
-        <Route
-          path="/videos"
-          element={
-            <ProtectedRoute>
-              <Videos />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/manuals"
+            element={
+              <ProtectedRoute>
+                <Manuals />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* ====================================
-            TABELA DE PREÇOS
-        ==================================== */}
+          {/* ====================================
+              FICHAS TÉCNICAS
+          ==================================== */}
 
-        <Route
-          path="/tabela-precos"
-          element={
-            <ProtectedRoute>
-              <TabelaPrecos />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/fichas-tecnicas"
+            element={
+              <ProtectedRoute>
+                <FichaTec />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* ====================================
-            PERGUNTAS FREQUENTES
-        ==================================== */}
+          <Route
+            path="/ficha-tecnica"
+            element={
+              <Navigate
+                to="/fichas-tecnicas"
+                replace
+              />
+            }
+          />
 
-        <Route
-          path="/perguntas-frequentes"
-          element={
-            <ProtectedRoute>
-              <PerguntasFrequentes />
-            </ProtectedRoute>
-          }
-        />
+          {/* ====================================
+              VÍDEOS DE INSTALAÇÃO
+          ==================================== */}
 
-        {/* ====================================
-            TREINAMENTO COMERCIAL
-        ==================================== */}
+          <Route
+            path="/videos"
+            element={
+              <ProtectedRoute>
+                <Videos />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/treinamento-comercial"
-          element={
-            <ProtectedRoute>
-              <TreinamentoComercial />
-            </ProtectedRoute>
-          }
-        />
+          {/* ====================================
+              TABELA DE PREÇOS
+          ==================================== */}
 
-        {/* ====================================
-            ORÇAMENTOS
-        ==================================== */}
+          <Route
+            path="/tabela-precos"
+            element={
+              <ProtectedRoute>
+                <TabelaPrecos />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/orcamentos"
-          element={
-            <ProtectedRoute>
-              <Orcamentos />
-            </ProtectedRoute>
-          }
-        />
+          {/* ====================================
+              PERGUNTAS FREQUENTES
+          ==================================== */}
 
-        {/* ====================================
-            SELETOR DE FECHADURAS
-        ==================================== */}
+          <Route
+            path="/perguntas-frequentes"
+            element={
+              <ProtectedRoute>
+                <PerguntasFrequentes />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/seletor-fechaduras"
-          element={
-            <ProtectedRoute>
-              <SeletorFechaduras />
-            </ProtectedRoute>
-          }
-        />
+          {/* ====================================
+              TREINAMENTO COMERCIAL
+          ==================================== */}
 
-        <Route
-          path="/comparador-fechaduras"
-          element={
-            <Navigate
-              to="/seletor-fechaduras"
-              replace
-            />
-          }
-        />
+          <Route
+            path="/treinamento-comercial"
+            element={
+              <ProtectedRoute>
+                <TreinamentoComercial />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* ====================================
-            REDE DE CREDENCIADOS
-        ==================================== */}
+          {/* ====================================
+              ORÇAMENTOS
+          ==================================== */}
 
-        <Route
-          path="/tecnicos-homologados"
-          element={
-            <ProtectedRoute>
-              <TecnicosHomologados />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/orcamentos"
+            element={
+              <ProtectedRoute>
+                <Orcamentos />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/tecnicos-homologados/gerenciar"
-          element={
-            <ProtectedRoute requiredRole="adm">
-              <GerenciarTecnicos />
-            </ProtectedRoute>
-          }
-        />
+          {/* ====================================
+              SELETOR DE FECHADURAS
+          ==================================== */}
 
-        {/* ====================================
-            ASSISTÊNCIA TÉCNICA
-        ==================================== */}
+          <Route
+            path="/seletor-fechaduras"
+            element={
+              <ProtectedRoute>
+                <SeletorFechaduras />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/assistencia-tecnica"
-          element={
-            <ProtectedRoute requiredRole="adm">
-              <AssistenciaTecnica />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/comparador-fechaduras"
+            element={
+              <Navigate
+                to="/seletor-fechaduras"
+                replace
+              />
+            }
+          />
 
-        {/* ====================================
-            VISITAS TÉCNICAS
-        ==================================== */}
+          {/* ====================================
+              REDE DE CREDENCIADOS
+          ==================================== */}
 
-        <Route
-          path="/visitas-tecnicas"
-          element={
-            <ProtectedRoute requiredRole="adm">
-              <VisitasTecnicas />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/tecnicos-homologados"
+            element={
+              <ProtectedRoute>
+                <TecnicosHomologados />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* ====================================
-            SYNTER ANALYTICS
-        ==================================== */}
+          <Route
+            path="/tecnicos-homologados/gerenciar"
+            element={
+              <ProtectedRoute requiredRole="adm">
+                <GerenciarTecnicos />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/synter-analytics"
-          element={
-            <ProtectedRoute requiredRole="adm">
-              <SynterAnalytics />
-            </ProtectedRoute>
-          }
-        />
+          {/* ====================================
+              ASSISTÊNCIA TÉCNICA
+              ACESSO ADMINISTRATIVO
+          ==================================== */}
 
-        {/* ====================================
-            MARKETING
-        ==================================== */}
+          <Route
+            path="/assistencia-tecnica"
+            element={
+              <ProtectedRoute requiredRole="adm">
+                <AssistenciaTecnica />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/marketing"
-          element={
-            <ProtectedRoute>
-              <Marketing />
-            </ProtectedRoute>
-          }
-        />
+          {/* ====================================
+              VISITAS TÉCNICAS
+              ACESSO ADMINISTRATIVO
+          ==================================== */}
 
-        {/* ====================================
-            MARKETING DIGITAL
-        ==================================== */}
+          <Route
+            path="/visitas-tecnicas"
+            element={
+              <ProtectedRoute requiredRole="adm">
+                <VisitasTecnicas />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/digmarketing"
-          element={
-            <ProtectedRoute>
-              <DigMarketing />
-            </ProtectedRoute>
-          }
-        />
+          {/* ====================================
+              SYNTER ANALYTICS
+              ACESSO ADMINISTRATIVO
+          ==================================== */}
 
-        {/* ====================================
-            CONVERSOR DE IMAGEM PARA PDF
-        ==================================== */}
+          <Route
+            path="/synter-analytics"
+            element={
+              <ProtectedRoute requiredRole="adm">
+                <SynterAnalytics />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/imagem-para-pdf"
-          element={
-            <ProtectedRoute>
-              <ImageToPdf />
-            </ProtectedRoute>
-          }
-        />
+          {/* ====================================
+              MARKETING
+          ==================================== */}
 
-        {/* ====================================
-            ROTAS ANTIGAS DE MFA
-        ==================================== */}
+          <Route
+            path="/marketing"
+            element={
+              <ProtectedRoute>
+                <Marketing />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/mfa/setup"
-          element={
-            <Navigate
-              to="/dashboard"
-              replace
-            />
-          }
-        />
+          {/* ====================================
+              MARKETING DIGITAL
+          ==================================== */}
 
-        <Route
-          path="/mfa/verify"
-          element={
-            <Navigate
-              to="/dashboard"
-              replace
-            />
-          }
-        />
+          <Route
+            path="/digmarketing"
+            element={
+              <ProtectedRoute>
+                <DigMarketing />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* ====================================
-            PÁGINA NÃO ENCONTRADA
-        ==================================== */}
+          {/* ====================================
+              CONVERSOR DE IMAGEM PARA PDF
+          ==================================== */}
 
-        <Route
-          path="*"
-          element={<NotFound />}
-        />
-      </Routes>
+          <Route
+            path="/imagem-para-pdf"
+            element={
+              <ProtectedRoute>
+                <ImageToPdf />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* ====================================
+              ROTAS ANTIGAS DE MFA
+
+              Redirecionamentos de
+              compatibilidade.
+          ==================================== */}
+
+          <Route
+            path="/mfa/setup"
+            element={
+              <Navigate
+                to="/dashboard"
+                replace
+              />
+            }
+          />
+
+          <Route
+            path="/mfa/verify"
+            element={
+              <Navigate
+                to="/dashboard"
+                replace
+              />
+            }
+          />
+
+          {/* ====================================
+              PÁGINA NÃO ENCONTRADA
+          ==================================== */}
+
+          <Route
+            path="*"
+            element={<NotFound />}
+          />
+        </Routes>
+      </PasswordRecoveryGuard>
 
       {/* ====================================
           ASSISTENTE SYNTER

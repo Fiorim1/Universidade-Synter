@@ -26,39 +26,53 @@ export default function UpdatePassword() {
   const [confirmPassword, setConfirmPassword] =
     useState("");
 
-  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
+  // A recuperação precisa estar marcada pelo
+  // evento PASSWORD_RECOVERY do Supabase.
+  // Ter uma sessão normal não é suficiente.
   const recoveryReady =
-    !authLoading &&
     Boolean(session && isPasswordRecovery);
 
-  const parametros = new URLSearchParams(
+  const query = new URLSearchParams(
     window.location.search
   );
 
-  const linkComErro =
-    parametros.has("error") ||
-    parametros.has("error_code");
+  const hash = new URLSearchParams(
+    window.location.hash.replace(/^#/, "")
+  );
 
-  const aguardando =
-    authLoading || loading;
+  const linkComErro =
+    query.has("error") ||
+    query.has("error_code") ||
+    hash.has("error") ||
+    hash.has("error_code");
+
+  const verificando =
+    authLoading && !success;
 
   async function handleSubmit(event) {
     event.preventDefault();
 
-    if (loading || success) return;
+    if (saving || success) return;
 
     setErrorMsg("");
 
-    if (!recoveryReady || linkComErro) {
+    if (
+      authLoading ||
+      !recoveryReady ||
+      linkComErro
+    ) {
       setErrorMsg(
-        "O link de recuperação é inválido ou expirou."
+        "O link de recuperação é inválido ou expirou. " +
+        "Solicite um novo link."
       );
       return;
     }
 
+    // Validação de senha existente no sistema.
     const errosSenha = validatePassword(password);
 
     if (errosSenha.length > 0) {
@@ -67,81 +81,113 @@ export default function UpdatePassword() {
     }
 
     if (password !== confirmPassword) {
-      setErrorMsg(
-        "As senhas informadas não coincidem."
-      );
+      setErrorMsg("As senhas não coincidem.");
       return;
     }
 
-    setLoading(true);
+    setSaving(true);
 
     try {
-      // Confirma a identidade da sessão atual.
+      // Confirma a identidade do usuário
+      // diretamente com o Supabase Auth.
       const {
         data: { user },
-        error: userError,
+        error: identityError,
       } = await supabase.auth.getUser();
 
-      if (userError || !user) {
+      if (identityError || !user) {
         throw new Error(
           "Sessão de recuperação inválida."
         );
       }
 
-      const { error } =
-        await supabase.auth.updateUser({
-          password,
-        });
+      // Não permite que uma sessão que perdeu
+      // a identidade continue a operação.
+      if (user.id !== session.user.id) {
+        throw new Error(
+          "A sessão de recuperação foi alterada."
+        );
+      }
 
-      if (error) {
+      // Atualização efetiva da senha.
+      const {
+        data,
+        error: updateError,
+      } = await supabase.auth.updateUser({
+        password,
+      });
+
+      if (updateError) {
+        throw updateError;
+      }
+
+      // Verifica a resposta da atualização.
+      if (
+        !data?.user ||
+        data.user.id !== user.id
+      ) {
+        throw new Error(
+          "O Supabase não confirmou a atualização."
+        );
+      }
+
+      // A troca foi confirmada.
+      // Remove os valores de senha da interface.
+      setPassword("");
+      setConfirmPassword("");
+
+      // Encerra primeiro a sessão de recuperação.
+      const {
+        error: signOutError,
+      } = await supabase.auth.signOut({
+        scope: "local",
+      });
+
+      if (signOutError) {
         if (import.meta.env.DEV) {
           console.error(
-            "Erro ao atualizar a senha:",
-            error
+            "Falha ao encerrar a sessão:",
+            signOutError
           );
         }
 
+        // A atualização foi confirmada, mas
+        // não vamos indicar que o logout funcionou.
+        clearPasswordRecovery();
+        setSuccess(true);
         setErrorMsg(
-          "Não foi possível atualizar a senha. " +
-          "Confira os requisitos e tente novamente."
+          "A senha foi alterada, mas não foi " +
+          "possível encerrar a sessão automaticamente. " +
+          "Saia da conta antes de entrar novamente."
         );
         return;
       }
 
-      // Invalida o indicador local de recuperação.
+      // Limpa o marcador local somente
+      // depois da tentativa de encerrar a sessão.
       clearPasswordRecovery();
 
-      setPassword("");
-      setConfirmPassword("");
-
-      // Encerra a sessão no navegador.
-      const { error: signOutError } =
-        await supabase.auth.signOut({
-          scope: "local",
-        });
-
-      if (signOutError && import.meta.env.DEV) {
-        console.error(
-          "Erro ao encerrar sessão:",
-          signOutError
-        );
-      }
-
+      // Exibe a confirmação na própria página.
+      // Não navega automaticamente ao dashboard.
       setSuccess(true);
+
+      // Não chamamos navigate("/dashboard").
+      // O usuário escolherá voltar ao login.
     } catch (error) {
       if (import.meta.env.DEV) {
         console.error(
-          "Erro inesperado ao redefinir a senha:",
+          "Falha na redefinição da senha:",
           error
         );
       }
 
       setErrorMsg(
-        "Não foi possível redefinir sua senha. " +
-        "Solicite um novo link e tente novamente."
+        "Não foi possível atualizar a senha. " +
+        "Verifique os requisitos ou solicite " +
+        "um novo link de recuperação."
       );
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   }
 
@@ -152,35 +198,30 @@ export default function UpdatePassword() {
       <Hero
         one="Redefinição de senha"
         two="Proteja sua conta"
-        three="Defina uma nova senha para acessar a Universidade Synter."
+        three="Cadastre uma nova senha para acessar a Universidade Synter."
       />
 
       <main className="update-container">
-        {aguardando && !success && (
+        {verificando && (
           <div className="update-password-container">
-            <h2>
-              {loading
-                ? "Atualizando sua senha"
-                : "Verificando o link"}
-            </h2>
-
+            <h2>Verificando o link</h2>
             <p>
-              {loading
-                ? "Estamos salvando a nova senha."
-                : "Aguarde enquanto validamos a recuperação."}
+              Aguarde enquanto validamos sua
+              solicitação de recuperação.
             </p>
           </div>
         )}
 
-        {!aguardando &&
+        {!verificando &&
           !success &&
           (!recoveryReady || linkComErro) && (
             <div className="update-password-container">
               <h2>Link inválido ou expirado</h2>
 
               <p className="auth-error">
-                Não foi possível confirmar a
-                recuperação da sua conta.
+                Sua solicitação não pôde ser
+                validada. Peça um novo link
+                para redefinir sua senha.
               </p>
 
               <button
@@ -196,7 +237,7 @@ export default function UpdatePassword() {
             </div>
           )}
 
-        {!aguardando &&
+        {!verificando &&
           recoveryReady &&
           !linkComErro &&
           !success && (
@@ -205,8 +246,15 @@ export default function UpdatePassword() {
                 <h2>Criar nova senha</h2>
 
                 <p>
-                  Informe uma senha forte e
-                  confirme para atualizar seu acesso.
+                  Informe uma senha forte
+                  e confirme para atualizar
+                  seu acesso.
+                </p>
+
+                <p>
+                  Utilize letras maiúsculas,
+                  minúsculas, números e pelo
+                  menos um caractere especial.
                 </p>
 
                 {errorMsg && (
@@ -232,7 +280,7 @@ export default function UpdatePassword() {
                     }
                     autoComplete="new-password"
                     minLength={8}
-                    disabled={loading}
+                    disabled={saving}
                     required
                   />
                 </div>
@@ -253,17 +301,17 @@ export default function UpdatePassword() {
                     }
                     autoComplete="new-password"
                     minLength={8}
-                    disabled={loading}
+                    disabled={saving}
                     required
                   />
                 </div>
 
                 <button
                   type="submit"
-                  disabled={loading}
+                  disabled={saving}
                 >
-                  {loading
-                    ? "Atualizando..."
+                  {saving
+                    ? "Atualizando senha..."
                     : "Atualizar senha"}
                 </button>
               </div>
@@ -278,17 +326,49 @@ export default function UpdatePassword() {
               className="auth-success"
               role="status"
             >
-              Sua senha foi alterada com sucesso.
-              Utilize a nova senha para entrar.
+              O Supabase confirmou a
+              alteração da sua senha.
             </p>
+
+            {errorMsg && (
+              <p
+                className="auth-error"
+                role="alert"
+              >
+                {errorMsg}
+              </p>
+            )}
 
             <button
               type="button"
-              onClick={() =>
+              onClick={() => {
+                // Se houver sessão remanescente,
+                // não enviamos o usuário ao login
+                // antes de tentar encerrá-la.
+                if (errorMsg) {
+                  supabase.auth
+                    .signOut({ scope: "local" })
+                    .then(({ error }) => {
+                      if (error) {
+                        setErrorMsg(
+                          "Não foi possível sair. " +
+                          "Tente encerrar a sessão novamente."
+                        );
+                        return;
+                      }
+
+                      setErrorMsg("");
+                      navigate("/login", {
+                        replace: true,
+                      });
+                    });
+                  return;
+                }
+
                 navigate("/login", {
                   replace: true,
-                })
-              }
+                });
+              }}
             >
               Ir para o login
             </button>
