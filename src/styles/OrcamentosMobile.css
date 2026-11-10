@@ -529,1753 +529,425 @@
   }
 }
 
-/* ==========================================
-   UNIVERSIDADE SYNTER
-   CENTRALIZAR MODAL — NOVO ORÇAMENTO
-   MOBILE
-========================================== */
 
+/* ======================================================
+   UNIVERSIDADE SYNTER — MODAIS MOBILE CONSOLIDADOS
+   Substitui os blocos antigos de modais, não acumular CSS.
+   Pesquisa geral, funis, detalhes e criação em 2 etapas.
+====================================================== */
 @media (max-width: 768px) {
-
-  /* CENTRALIZA O MODAL NA TELA */
-
   .orcamentos-page .orcamentos-modal-overlay {
     position: fixed !important;
     inset: 0 !important;
-
+    z-index: 9999;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-
-    width: 100% !important;
-    height: 100dvh !important;
-
     padding: 12px !important;
     margin: 0 !important;
-
-    box-sizing: border-box !important;
-    overflow-y: auto;
-  }
-
-  /* MODAL NOVO ORÇAMENTO */
-
-  .orcamentos-page
-  .orcamentos-modal:has(#titulo-novo-orcamento) {
-    position: relative !important;
-
     width: 100% !important;
-    max-width: 420px !important;
-
-    max-height: calc(100dvh - 24px) !important;
-
-    margin: auto !important;
-
-    overflow-y: auto !important;
-
-    border-radius: 14px !important;
-  }
-}
-
-/* ==========================================
-   UNIVERSIDADE SYNTER
-   CORREÇÃO DO MODAL NOVO ORÇAMENTO
-   EVITAR DESLOCAMENTO NO MOBILE
-========================================== */
-
-@media (max-width: 768px) {
-
-  .orcamentos-page .orcamentos-modal-overlay {
-    position: fixed !important;
-    inset: 0 !important;
-
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    overflow: hidden !important;
-    padding: 12px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal:has(#titulo-novo-orcamento) {
-    position: relative !important;
-
-    width: 100% !important;
-    max-width: 420px !important;
-
-    max-height: calc(100dvh - 24px) !important;
-
-    margin: 0 auto !important;
-
-    overflow-y: auto !important;
-    overscroll-behavior: contain;
-
-    border-radius: 14px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-novo-form input:focus {
-    scroll-margin-top: 15px;
-    scroll-margin-bottom: 15px;
-  }
-}
-
-/* ==========================================
-   UNIVERSIDADE SYNTER
-   DETALHES DO ORÇAMENTO — MOBILE
-   CORREÇÃO DE RESPONSIVIDADE
-========================================== */
-
-@media (max-width: 768px) {
-
-  /* JANELA PRINCIPAL */
-
-  .orcamentos-page
-  .orcamentos-modal-overlay:has(.orcamentos-modal-detalhes) {
-    position: fixed !important;
-    inset: 0 !important;
-
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    width: 100% !important;
-    max-width: 100vw !important;
     height: 100dvh !important;
-
-    margin: 0 !important;
-    padding: 10px !important;
-
     overflow: hidden !important;
     box-sizing: border-box !important;
   }
 
-  .orcamentos-page .orcamentos-modal-detalhes {
-    position: relative !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-
-    width: 100% !important;
-    max-width: 480px !important;
-    min-width: 0 !important;
-
-    height: auto !important;
-    max-height: calc(100dvh - 20px) !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-
-    overscroll-behavior: contain;
-    border-radius: 14px !important;
-
-    box-sizing: border-box !important;
-  }
-
-  .orcamentos-page .orcamentos-modal-detalhes *,
-  .orcamentos-page .orcamentos-modal-detalhes *::before,
-  .orcamentos-page .orcamentos-modal-detalhes *::after {
+  .orcamentos-page .orcamentos-modal,
+  .orcamentos-page .orcamentos-modal * {
     box-sizing: border-box;
   }
 
-  /* CABEÇALHO: TÍTULO E BOTÕES */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-
-    gap: 13px !important;
-    width: 100% !important;
-    min-width: 0 !important;
-
-    padding: 16px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header > div:first-child {
-    width: 100% !important;
-    min-width: 0 !important;
-    padding-right: 36px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header h2 {
-    margin: 5px 0 7px !important;
-    font-size: 21px !important;
-    line-height: 1.2 !important;
-    overflow-wrap: anywhere;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header p {
-    margin: 0 !important;
-    font-size: 11px !important;
-    line-height: 1.5 !important;
-  }
-
-  /* BOTÕES DO CABEÇALHO */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header-actions {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-
-    width: 100% !important;
-    min-width: 0 !important;
-    gap: 8px !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-pdf-button,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-edit-button {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    min-height: 40px !important;
-
-    margin: 0 !important;
-    padding: 8px !important;
-
-    font-size: 11px !important;
-    line-height: 1.4 !important;
-
-    white-space: normal !important;
-    text-align: center !important;
-    justify-content: center !important;
-  }
-
-  /* BOTÃO X NO CANTO SUPERIOR DIREITO */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header-actions
-  .orcamentos-modal-close {
-    position: absolute !important;
-    top: 15px !important;
-    right: 15px !important;
-
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
-
-    margin: 0 !important;
-    padding: 0 !important;
-
-    grid-column: auto !important;
-    z-index: 3 !important;
-  }
-
-  /* QUANDO HÁ APENAS UM BOTÃO DE AÇÃO */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header-actions
-  .orcamentos-pdf-button:only-of-type {
-    grid-column: 1 / -1;
-  }
-
-  /* CONTEÚDO DO ORÇAMENTO */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-body {
-    display: block !important;
-
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-
-    padding: 13px !important;
+  /* NOVO ORÇAMENTO — A JANELA CENTRALIZA E ROLA POR DENTRO */
+  .orcamentos-page .orcamentos-modal:has(#titulo-novo-orcamento) {
+    width: min(420px, 100%) !important;
+    max-height: calc(100dvh - 24px) !important;
+    margin: 0 auto !important;
     overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+  }
+  .orcamentos-page .orcamentos-novo-form input:focus {
+    scroll-margin-block: 14px;
   }
 
-  /* DADOS DO CLIENTE EM DUAS COLUNAS */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-info {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-
-    width: 100% !important;
-    min-width: 0 !important;
-    gap: 8px !important;
-
-    margin-bottom: 18px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-info > div {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    min-height: 62px !important;
-
-    padding: 11px !important;
-
-    overflow-wrap: anywhere;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-info > div span {
-    font-size: 9px !important;
-    line-height: 1.4 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-info > div strong {
-    font-size: 11px !important;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
-
-  /* DADOS DA VENDA E ENTREGA */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-observacoes,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-header {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-header {
+  /* DETALHES — CABEÇALHO VISÍVEL, APENAS O CORPO ROLA */
+  .orcamentos-page .orcamentos-modal.orcamentos-modal-detalhes {
     display: flex !important;
     flex-direction: column !important;
-    align-items: stretch !important;
-
-    gap: 12px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-header
-  .orcamentos-primary-button {
-    width: 100% !important;
-    min-height: 42px !important;
-  }
-
-  /* PRODUTOS ADICIONADOS */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-item {
-    display: flex !important;
-    flex-direction: column !important;
-
-    width: 100% !important;
+    width: min(390px, 100%) !important;
     min-width: 0 !important;
-    max-width: 100% !important;
-
-    gap: 12px !important;
-    padding: 13px !important;
-
+    height: 77dvh !important;
+    max-height: calc(100dvh - 24px) !important;
+    margin: 0 !important;
     overflow: hidden !important;
   }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-item-produto,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-item-precos,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-item-valores,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-item-acoes {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-item-precos,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-item-valores {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 9px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-item-acoes {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 8px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-item-acoes button {
-    max-width: 100% !important;
-    white-space: normal !important;
-  }
-
-  /* EDIÇÃO DE ITENS */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-item-edicao,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-item-edicao-campos {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-item-edicao-campos input {
-    min-width: 0 !important;
-    max-width: 100% !important;
-    font-size: 16px !important;
-  }
-
-  /* RESUMO DOS VALORES */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-resumo-valores {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-
-    overflow-wrap: anywhere;
-  }
-}
-
-/* CELULARES PEQUENOS */
-
-@media (max-width: 380px) {
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header {
-    padding: 13px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-body {
-    padding: 10px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header-actions {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
-}
-
-/* ==========================================
-   UNIVERSIDADE SYNTER
-   DETALHES DO ORÇAMENTO — MOBILE COMPACTO
-   REDUÇÃO DE SCROLL
-========================================== */
-
-@media (max-width: 768px) {
-
-  /* MODAL PRINCIPAL */
-
-  .orcamentos-page .orcamentos-modal-detalhes {
-    width: calc(100% - 20px) !important;
-    max-width: 440px !important;
-    max-height: calc(100dvh - 20px) !important;
-
-    margin: auto !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-  }
-
-  /* CABEÇALHO MAIS COMPACTO */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header {
-    gap: 9px !important;
-    padding: 12px 14px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header h2 {
-    font-size: 19px !important;
-    margin: 3px 0 5px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header p {
-    font-size: 10px !important;
-    line-height: 1.4 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header-actions {
-    gap: 7px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-pdf-button,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-edit-button {
-    min-height: 34px !important;
-    padding: 7px 9px !important;
-    font-size: 10px !important;
-  }
-
-  /* CORPO MAIS COMPACTO */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-body {
-    padding: 12px !important;
-  }
-
-  /* DADOS DO CLIENTE — 2 COLUNAS */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-info {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 7px !important;
-    margin-bottom: 14px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-info > div {
-    min-height: 0 !important;
-    padding: 9px 10px !important;
-    border-radius: 9px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-info > div span {
-    font-size: 9px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-info > div strong {
-    font-size: 11px !important;
-    line-height: 1.4 !important;
-  }
-
-  /* VENDA E ENTREGA */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-section {
-    margin: 12px 0 15px !important;
-    padding: 12px 0 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-title {
-    margin-bottom: 10px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-title > span {
-    font-size: 10px !important;
-    letter-spacing: 1px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-title p {
-    display: none !important;
-  }
-
-  /* 4 INFORMAÇÕES EM 2 COLUNAS */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 7px !important;
-    width: 100% !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-grid > div {
-    width: 100% !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    padding: 10px !important;
-    margin: 0 !important;
-    border-radius: 9px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-grid > div span {
-    display: block;
-    margin-bottom: 5px !important;
-    font-size: 9px !important;
-    line-height: 1.3 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-grid > div strong {
-    display: block;
-    font-size: 11px !important;
-    line-height: 1.45 !important;
-    overflow-wrap: anywhere;
-  }
-
-  /* OBSERVAÇÕES */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-observacoes,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-observacoes {
-    margin: 9px 0 !important;
-    padding: 11px !important;
-    font-size: 11px !important;
-    line-height: 1.5 !important;
-  }
-
-  /* PRODUTOS */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-header {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    flex-wrap: wrap !important;
-    gap: 8px !important;
-    margin: 12px 0 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-header > div > span {
-    font-size: 10px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-header p {
-    display: none !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-header
-  .orcamentos-primary-button {
-    width: auto !important;
-    min-width: 0 !important;
-    min-height: 35px !important;
-    padding: 7px 12px !important;
-    font-size: 10px !important;
-  }
-
-  /* ITENS DO ORÇAMENTO */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-item {
-    gap: 8px !important;
-    padding: 11px !important;
-    margin-bottom: 8px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-itens-state {
-    min-height: 85px !important;
-    padding: 14px !important;
-  }
-}
-
-/* CELULARES MUITO PEQUENOS */
-
-@media (max-width: 360px) {
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-grid {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-/* ==========================================
-   UNIVERSIDADE SYNTER
-   DETALHES DO ORÇAMENTO — MOBILE COMPACTO
-   MENOS SCROLL E MAIS CONTEÚDO VISÍVEL
-========================================== */
-
-@media screen and (max-width: 768px) {
-
-  /* ========================================
-     MODAL
-  ======================================== */
-
-  .orcamentos-page .orcamentos-modal-detalhes {
-    width: 100% !important;
-    max-width: 440px !important;
-    max-height: calc(100dvh - 20px) !important;
-
-    min-width: 0 !important;
-    margin: auto !important;
-
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-
-    overscroll-behavior: contain;
-    scroll-padding-top: 100px;
-  }
-
-  /* ========================================
-     CABEÇALHO
-  ======================================== */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 10 !important;
-
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-modal-header {
+    position: relative !important;
+    flex: 0 0 auto !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: stretch !important;
-
     gap: 8px !important;
-    padding: 12px 13px !important;
-
-    background: #101011 !important;
-    border-bottom: 1px solid #2d2d31 !important;
+    padding: 12px 14px !important;
+    background: #111113;
   }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header h2 {
-    margin: 3px 0 !important;
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-modal-header > div:first-child {
+    min-width: 0;
+    padding-right: 38px;
+  }
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-modal-header h2 {
+    margin: 3px 0 4px !important;
     font-size: 18px !important;
-    line-height: 1.2 !important;
   }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header p {
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-modal-header p {
     margin: 0 !important;
-    font-size: 10px !important;
-    line-height: 1.35 !important;
+    font-size: 11px !important;
+    line-height: 1.4 !important;
   }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header-actions {
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-modal-close {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    width: 34px;
+    height: 34px;
+  }
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-modal-header-actions {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-
     gap: 7px !important;
+    width: 100%;
+  }
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-modal-header-actions button:not(.orcamentos-modal-close) {
     width: 100% !important;
     min-width: 0 !important;
+    min-height: 36px !important;
+    padding: 7px !important;
+    white-space: normal;
+    font-size: 11px;
   }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-pdf-button,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-edit-button {
-    min-height: 34px !important;
-    padding: 6px 9px !important;
-    font-size: 10px !important;
-  }
-
-  /* ========================================
-     CONTEÚDO
-  ======================================== */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-body {
-    padding: 11px !important;
-  }
-
-  /* ========================================
-     DADOS DO CLIENTE
-  ======================================== */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-info {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-
-    gap: 6px !important;
-    margin-bottom: 10px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-info > div {
-    min-width: 0 !important;
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-detalhes-body {
+    flex: 1 1 auto !important;
     min-height: 0 !important;
-
-    margin: 0 !important;
-    padding: 8px 9px !important;
-    border-radius: 8px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-info > div span {
-    font-size: 9px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-info > div strong {
-    font-size: 11px !important;
-    line-height: 1.35 !important;
-    overflow-wrap: anywhere;
-  }
-
-  /* ========================================
-     VENDA E ENTREGA
-  ======================================== */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-section {
-    margin: 10px 0 !important;
-    padding: 10px 0 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-title {
-    margin: 0 0 9px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-title p {
-    display: none !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-
-    gap: 6px !important;
     width: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    padding: 12px !important;
   }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-grid > div {
-    min-width: 0 !important;
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-detalhes-info,
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-venda-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+    margin-bottom: 12px;
+  }
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-detalhes-info > div,
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-venda-grid > div {
+    min-width: 0;
     min-height: 0 !important;
-
-    margin: 0 !important;
-    padding: 8px 9px !important;
-    border-radius: 8px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-grid > div span {
-    margin: 0 0 4px !important;
-    font-size: 9px !important;
-    line-height: 1.3 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-grid > div strong {
-    font-size: 11px !important;
-    line-height: 1.35 !important;
+    padding: 9px !important;
     overflow-wrap: anywhere;
   }
-
-  /* ========================================
-     PRODUTOS
-  ======================================== */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-header {
-    display: flex !important;
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-detalhes-header {
     flex-direction: row !important;
     align-items: center !important;
-    justify-content: space-between !important;
-
-    gap: 8px !important;
-    margin: 12px 0 9px !important;
+    flex-wrap: wrap;
+    gap: 8px;
   }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-header p {
-    display: none !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-header
-  .orcamentos-primary-button {
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-detalhes-header .orcamentos-primary-button {
     width: auto !important;
-    min-height: 34px !important;
-
-    padding: 7px 11px !important;
-    font-size: 10px !important;
+    min-height: 36px !important;
+    padding: 7px 12px !important;
   }
-
-  /* ESTADO VAZIO DOS PRODUTOS */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-itens-empty {
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-itens-empty {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
     justify-content: flex-start !important;
-
-    gap: 11px !important;
-
-    min-height: 0 !important;
-    height: auto !important;
-
-    margin: 0 !important;
-    padding: 12px !important;
-
     text-align: left !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-empty-mini-icon {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    flex: 0 0 30px !important;
-
-    width: 30px !important;
-    height: 30px !important;
-
-    margin: 0 !important;
-    font-size: 15px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-itens-empty h3 {
-    margin: 0 !important;
-    font-size: 11px !important;
-    line-height: 1.4 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-itens-empty p {
-    display: none !important;
-  }
-
-  /* ========================================
-     FLUXO DO ORÇAMENTO
-  ======================================== */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-fluxo {
-    margin: 12px 0 !important;
-    padding: 12px 0 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-fluxo-info {
-    margin-bottom: 9px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-fluxo-info span {
-    font-size: 10px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-fluxo-info p {
-    margin: 5px 0 0 !important;
-    font-size: 10px !important;
-    line-height: 1.5 !important;
-  }
-
-  /* BOTÕES DO FLUXO */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-fluxo button {
-    min-height: 35px !important;
-    padding: 8px 11px !important;
-    font-size: 10px !important;
-  }
-
-  /* ========================================
-     HISTÓRICO DO ORÇAMENTO
-  ======================================== */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-historico {
-    margin: 12px 0 0 !important;
-    padding: 12px 0 0 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-historico h3 {
-    margin: 0 0 6px !important;
-    font-size: 11px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-historico p {
-    font-size: 10px !important;
-    line-height: 1.5 !important;
-  }
-}
-
-/* ==========================================
-   CELULARES MENORES
-========================================== */
-
-@media screen and (max-width: 380px) {
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header {
-    padding: 10px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-body {
-    padding: 9px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-}
-
-/* ==========================================
-   UNIVERSIDADE SYNTER
-   MODAL DE DETALHES REALMENTE MENOR
-   MOBILE — AJUSTE FINAL
-========================================== */
-
-@media screen and (max-width: 768px) {
-
-  /* FUNDO DO MODAL */
-
-  .orcamentos-page
-  .orcamentos-modal-overlay:has(.orcamentos-modal-detalhes) {
-    position: fixed !important;
-    inset: 0 !important;
-
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    width: 100vw !important;
-    height: 100dvh !important;
-
+    gap: 10px !important;
+    min-height: 0 !important;
     padding: 12px !important;
-    margin: 0 !important;
-
-    overflow: hidden !important;
-    box-sizing: border-box !important;
-  }
-
-  /* JANELA MENOR E CENTRALIZADA */
-
-  .orcamentos-page
-  .orcamentos-modal-overlay
-  .orcamentos-modal.orcamentos-modal-detalhes {
-    position: relative !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-
-    width: calc(100vw - 32px) !important;
-    max-width: 370px !important;
-    min-width: 0 !important;
-
-    height: 75dvh !important;
-    max-height: 75dvh !important;
-    min-height: 0 !important;
-
-    margin: 0 auto !important;
-    padding: 0 !important;
-
-    border-radius: 14px !important;
-
-    overflow: hidden !important;
-    transform: none !important;
-  }
-
-  /* CABEÇALHO FIXO NO TOPO DA JANELA */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header {
-    position: relative !important;
-    top: auto !important;
-
-    flex: 0 0 auto !important;
-
-    padding: 11px 12px !important;
-    gap: 7px !important;
-
-    background: #101011 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header h2 {
-    font-size: 17px !important;
-    margin: 2px 0 4px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header p {
-    font-size: 10px !important;
-  }
-
-  /* BOTÕES */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-modal-header-actions {
-    gap: 6px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-pdf-button,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-edit-button {
-    min-height: 32px !important;
-    padding: 6px !important;
-    font-size: 10px !important;
-  }
-
-  /* SOMENTE O CORPO ROLA */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-body {
-    flex: 1 1 auto !important;
-
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-
-    padding: 10px !important;
-
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* EVITA QUE ELEMENTOS ESTOUREM A LARGURA */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-body > * {
-    max-width: 100% !important;
-    min-width: 0 !important;
-  }
-
-  /* CARTÕES COMPACTOS */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-info,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 6px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-detalhes-info > div,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-grid > div {
-    min-height: 0 !important;
-    padding: 8px !important;
-    margin: 0 !important;
-  }
-
-  /* MENOS ESPAÇO ENTRE SEÇÕES */
-
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-venda-section,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-fluxo,
-  .orcamentos-page
-  .orcamentos-modal-detalhes
-  .orcamentos-historico {
     margin-top: 10px !important;
-    margin-bottom: 10px !important;
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
   }
-}
-
-/* TELAS BAIXAS */
-
-@media screen and (max-width: 768px) and (max-height: 650px) {
-  .orcamentos-page
-  .orcamentos-modal-overlay
-  .orcamentos-modal.orcamentos-modal-detalhes {
-    height: 85dvh !important;
-    max-height: 85dvh !important;
-  }
-}
-
-/* ==========================================
-   UNIVERSIDADE SYNTER
-   ADICIONAR PRODUTO — MODAL MOBILE COMPACTO
-========================================== */
-
-@media screen and (max-width: 768px) {
-
-  /* FUNDO E CENTRALIZAÇÃO */
-
-  .orcamentos-page .orcamentos-modal-overlay-produto {
-    position: fixed !important;
-    inset: 0 !important;
-    z-index: 9999 !important;
-
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    width: 100% !important;
-    height: 100dvh !important;
-
-    padding: 12px !important;
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-itens-empty h3 {
     margin: 0 !important;
-
-    overflow: hidden !important;
-  }
-
-  /* JANELA: 65% DA ALTURA */
-
-  .orcamentos-page
-  .orcamentos-modal-overlay-produto
-  .orcamentos-modal-produtos {
-    position: relative !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-
-    width: min(390px, calc(100vw - 28px)) !important;
-    min-width: 0 !important;
-    max-width: 390px !important;
-
-    height: 65dvh !important;
-    min-height: 0 !important;
-    max-height: 65dvh !important;
-
-    padding: 0 !important;
-    margin: 0 auto !important;
-
-    overflow: hidden !important;
-    border-radius: 14px !important;
-
-    transform: none !important;
-    box-sizing: border-box !important;
-  }
-
-  /* CABEÇALHO */
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-modal-header {
-    position: relative !important;
-    flex: 0 0 auto !important;
-
-    min-height: 0 !important;
-    padding: 12px 14px !important;
-    margin: 0 !important;
-
-    gap: 8px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-modal-header > div:first-child {
-    min-width: 0 !important;
-    padding-right: 38px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-modal-header h2 {
-    margin: 4px 0 0 !important;
-    font-size: 18px !important;
-    line-height: 1.2 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-modal-header p {
-    display: none !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-modal-close {
-    position: absolute !important;
-    right: 12px !important;
-    top: 12px !important;
-
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
-  }
-
-  /* CONTEÚDO INTERNO */
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-body {
-    display: flex !important;
-    flex-direction: column !important;
-
-    flex: 1 1 auto !important;
-    min-height: 0 !important;
-    min-width: 0 !important;
-
-    height: auto !important;
-    max-height: none !important;
-
-    padding: 10px 12px !important;
-    gap: 9px !important;
-
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-  }
-
-  /* PESQUISA GERAL / FUNIS */
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-modos {
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-
-    gap: 5px !important;
-    min-height: 0 !important;
-    margin: 0 !important;
-    padding: 4px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-modos button {
-    min-width: 0 !important;
-    min-height: 32px !important;
-    height: auto !important;
-
-    padding: 5px 3px !important;
-
-    font-size: 9px !important;
-    line-height: 1.3 !important;
-    white-space: normal !important;
-  }
-
-  /* FILTROS */
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-filtros {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-
-    gap: 7px !important;
-    margin: 0 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-busca,
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-categoria {
-    min-width: 0 !important;
-    margin: 0 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-busca label,
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-categoria label {
-    display: block;
-    margin-bottom: 4px !important;
-    font-size: 10px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-busca input,
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-categoria select {
-    width: 100% !important;
-    min-width: 0 !important;
-    height: 37px !important;
-    min-height: 37px !important;
-
-    padding: 0 9px !important;
-    margin: 0 !important;
-
-    font-size: 16px !important;
-    border-radius: 8px !important;
-  }
-
-  /* CONTADOR DE PRODUTOS */
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-contador {
-    margin: 0 !important;
-    padding: 0 !important;
-    font-size: 10px !important;
-  }
-
-  /* LISTA COMPACTA E SCROLL PRÓPRIO */
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-lista {
-    display: flex !important;
-    flex-direction: column !important;
-
-    flex: 0 0 auto !important;
-
-    gap: 5px !important;
-
-    width: 100% !important;
-    min-width: 0 !important;
-
-    height: min(21dvh, 165px) !important;
-    min-height: 95px !important;
-    max-height: min(21dvh, 165px) !important;
-
-    margin: 0 !important;
-    padding: 0 3px 0 0 !important;
-
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-  }
-
-  /* CARTÕES MENORES */
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produto-card {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-
-    flex: 0 0 auto !important;
-
-    width: 100% !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-
-    gap: 8px !important;
-    margin: 0 !important;
-    padding: 9px 10px !important;
-
-    border-radius: 9px !important;
-    text-align: left !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produto-main {
-    flex: 1 1 auto !important;
-    min-width: 0 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produto-main > strong {
-    display: block;
-    margin: 3px 0 !important;
-
-    font-size: 11px !important;
-    line-height: 1.35 !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produto-topo {
-    gap: 5px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produto-codigo,
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produto-tipo {
-    font-size: 9px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produto-meta {
-    margin: 2px 0 0 !important;
-    gap: 4px !important;
-    font-size: 9px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produto-preco {
-    flex: 0 0 auto !important;
-    min-width: 78px !important;
-    margin: 0 !important;
-    text-align: right !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produto-preco > span {
-    display: block;
-    font-size: 9px !important;
-  }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produto-preco > strong {
     font-size: 12px !important;
   }
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-itens-empty p {
+    display: none !important;
+  }
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-empty-mini-icon {
+    width: 32px !important;
+    height: 32px !important;
+    flex: 0 0 32px;
+  }
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-fluxo,
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-historico,
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-venda-section {
+    margin-block: 11px !important;
+    padding-block: 11px !important;
+  }
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-fluxo-acoes {
+    gap: 7px !important;
+    margin-top: 10px !important;
+  }
+  .orcamentos-page .orcamentos-modal-detalhes .orcamentos-fluxo-acoes button {
+    min-height: 36px !important;
+  }
 
-  /* BOTÕES INFERIORES */
+  /* CATÁLOGO — MESMO MODAL NOS TRÊS MODOS */
+  .orcamentos-page .orcamentos-modal-overlay-produto {
+    z-index: 10020 !important;
+  }
+  .orcamentos-page .orcamentos-modal.orcamentos-modal-produtos {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: min(410px, 100%) !important;
+    max-width: 410px !important;
+    min-width: 0 !important;
+    height: min(740px, 79dvh) !important;
+    max-height: calc(100dvh - 24px) !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border-radius: 14px !important;
+    background: #101011;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-modal-header {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    min-height: 0 !important;
+    padding: 13px 14px !important;
+    gap: 10px !important;
+    background: #111113;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-modal-header > div:first-child {
+    min-width: 0;
+    padding-right: 38px;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-modal-header h2 {
+    font-size: 18px !important;
+    margin-top: 3px !important;
+    line-height: 1.25 !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-modal-header p {
+    display: none !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-modal-close {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    width: 34px !important;
+    height: 34px !important;
+    margin: 0 !important;
+    z-index: 2;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-body {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    padding: 11px 12px 12px !important;
+    gap: 10px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
 
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-actions {
-    position: sticky !important;
-    bottom: -10px !important;
-    z-index: 5 !important;
+  /* ABAS: 3 COLUNAS ESTÁVEIS */
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-modos {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 4px !important;
+    margin: 0 !important;
+    gap: 4px !important;
+    overflow: visible !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-modos button {
+    position: static !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 5px 4px !important;
+    margin: 0 !important;
+    white-space: normal !important;
+    line-height: 1.2 !important;
+    font-size: 10px !important;
+    transform: none !important;
+    border-radius: 7px !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-modos button.ativo {
+    color: #111 !important;
+    background: #fff !important;
+  }
 
+  /* PESQUISA E CATEGORIA LADO A LADO */
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-filtros {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-
     flex: 0 0 auto !important;
-
-    width: 100% !important;
     gap: 7px !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-busca,
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-categoria {
+    min-width: 0 !important;
+    width: 100% !important;
+    gap: 5px !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-busca input,
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-categoria select,
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-campo select,
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-quantidade input {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    min-height: 40px !important;
+    height: 40px !important;
+    padding: 0 10px !important;
+    font-size: 16px !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-contador {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    font-size: 10px !important;
+  }
 
-    margin-top: auto !important;
-    padding: 10px 0 !important;
+  /* LISTAGEM: USA ESPAÇO LIVRE, MAS NÃO CORTA O FUNIL */
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-lista {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 0 170px !important;
+    min-height: 170px !important;
+    max-height: none !important;
+    height: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    gap: 6px !important;
+    margin: 0 !important;
+    padding: 0 4px 0 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produto-card {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    min-height: 63px !important;
+    height: auto !important;
+    width: 100% !important;
+    gap: 9px !important;
+    padding: 9px 10px !important;
+    margin: 0 !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produto-main {min-width: 0 !important;}
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produto-main > strong {font-size: 11px !important;}
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produto-preco {text-align: right !important;}
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produto-preco strong {font-size: 12px !important;}
 
+  /* FUNIL MECÂNICO E DIGITAL: ROLAGEM NO CORPO DO MODAL */
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-mecanico,
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-digital {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    margin: 0 !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-topo {
+    gap: 10px !important;
+    margin-bottom: 10px !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    gap: 8px !important;
+    overflow: visible !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-campo {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    padding: 10px !important;
+    overflow: visible !important;
+  }
+
+  /* SELEÇÃO E PREÇOS: DEIXAR CAMPOS CRESCEREM */
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produto-selecionado {
+    grid-template-columns: minmax(0, 1fr) !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    margin-top: 8px !important;
+    padding: 12px !important;
+    gap: 10px !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produto-total-previo {
+    text-align: left !important;
+  }
+
+  /* BOTÕES PERMANECEM APÓS O CONTEÚDO, SEM SOBREPOR O FUNIL */
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-actions {
+    position: sticky !important;
+    bottom: -12px !important;
+    z-index: 5 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    gap: 8px !important;
+    margin: auto 0 0 !important;
+    padding: 10px 0 12px !important;
     background: #101011 !important;
     border-top: 1px solid #303036 !important;
   }
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-actions button {
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-actions button {
     width: 100% !important;
     min-width: 0 !important;
-    min-height: 36px !important;
-
-    padding: 7px !important;
-
-    font-size: 10px !important;
+    min-height: 40px !important;
+    margin: 0 !important;
+    padding: 8px !important;
+    font-size: 11px !important;
     line-height: 1.3 !important;
   }
-
 }
 
-/* TELAS MENORES */
-
-@media screen and (max-width: 768px) and (max-height: 700px) {
-  .orcamentos-page
-  .orcamentos-modal-overlay-produto
-  .orcamentos-modal-produtos {
-    height: 75dvh !important;
-    max-height: 75dvh !important;
+@media (max-width: 380px) {
+  .orcamentos-page .orcamentos-modal-overlay {padding: 8px !important;}
+  .orcamentos-page .orcamentos-modal.orcamentos-modal-produtos {
+    height: 84dvh !important;
+    max-height: calc(100dvh - 16px) !important;
   }
-}
-
-/* ==========================================
-   UNIVERSIDADE SYNTER
-   ADICIONAR PRODUTO — APROVEITAR ÁREA VAZIA
-========================================== */
-
-@media screen and (max-width: 768px) {
-
-  /* JANELA DO CATÁLOGO */
-
-  .orcamentos-page
-  .orcamentos-modal-produtos {
-    display: flex !important;
-    flex-direction: column !important;
-    overflow: hidden !important;
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-body {
+    padding: 9px !important;
   }
-
-  /* CONTEÚDO OCUPA O ESPAÇO DISPONÍVEL */
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-body {
-    display: flex !important;
-    flex-direction: column !important;
-
-    flex: 1 1 auto !important;
-
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-
-    overflow: hidden !important;
-  }
-
-  /* LISTA EXPANDE ATÉ OS BOTÕES INFERIORES */
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-lista {
-    display: flex !important;
-    flex-direction: column !important;
-
-    flex: 1 1 0 !important;
-
-    width: 100% !important;
-
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-
-    gap: 6px !important;
-
-    margin: 0 !important;
-    padding: 0 4px 0 0 !important;
-
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-  }
-
-  /* OS CARTÕES NÃO ENCOLHEM */
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produto-card {
-    flex: 0 0 auto !important;
-
-    min-height: 65px !important;
-    height: auto !important;
-
-    padding: 10px !important;
-    margin: 0 !important;
-  }
-
-  /* BOTÕES SEM OCUPAR O ESPAÇO DA LISTA */
-
-  .orcamentos-page
-  .orcamentos-modal-produtos
-  .orcamentos-produtos-actions {
-    position: relative !important;
-    bottom: auto !important;
-
-    flex: 0 0 auto !important;
-
-    margin-top: 8px !important;
-    padding: 9px 0 0 !important;
-
-    background: #101011 !important;
-  }
-
 }
