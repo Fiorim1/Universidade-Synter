@@ -1617,3 +1617,189 @@
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   MODAL DE DETALHES REALMENTE MENOR
+   MOBILE — AJUSTE FINAL
+========================================== */
+
+@media screen and (max-width: 768px) {
+
+  /* FUNDO DO MODAL */
+
+  .orcamentos-page
+  .orcamentos-modal-overlay:has(.orcamentos-modal-detalhes) {
+    position: fixed !important;
+    inset: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100vw !important;
+    height: 100dvh !important;
+
+    padding: 12px !important;
+    margin: 0 !important;
+
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  /* JANELA MENOR E CENTRALIZADA */
+
+  .orcamentos-page
+  .orcamentos-modal-overlay
+  .orcamentos-modal.orcamentos-modal-detalhes {
+    position: relative !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: calc(100vw - 32px) !important;
+    max-width: 370px !important;
+    min-width: 0 !important;
+
+    height: 75dvh !important;
+    max-height: 75dvh !important;
+    min-height: 0 !important;
+
+    margin: 0 auto !important;
+    padding: 0 !important;
+
+    border-radius: 14px !important;
+
+    overflow: hidden !important;
+    transform: none !important;
+  }
+
+  /* CABEÇALHO FIXO NO TOPO DA JANELA */
+
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-modal-header {
+    position: relative !important;
+    top: auto !important;
+
+    flex: 0 0 auto !important;
+
+    padding: 11px 12px !important;
+    gap: 7px !important;
+
+    background: #101011 !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-modal-header h2 {
+    font-size: 17px !important;
+    margin: 2px 0 4px !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-modal-header p {
+    font-size: 10px !important;
+  }
+
+  /* BOTÕES */
+
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-modal-header-actions {
+    gap: 6px !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-pdf-button,
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-edit-button {
+    min-height: 32px !important;
+    padding: 6px !important;
+    font-size: 10px !important;
+  }
+
+  /* SOMENTE O CORPO ROLA */
+
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-detalhes-body {
+    flex: 1 1 auto !important;
+
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+
+    padding: 10px !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* EVITA QUE ELEMENTOS ESTOUREM A LARGURA */
+
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-detalhes-body > * {
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* CARTÕES COMPACTOS */
+
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-detalhes-info,
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-venda-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-detalhes-info > div,
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-venda-grid > div {
+    min-height: 0 !important;
+    padding: 8px !important;
+    margin: 0 !important;
+  }
+
+  /* MENOS ESPAÇO ENTRE SEÇÕES */
+
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-venda-section,
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-fluxo,
+  .orcamentos-page
+  .orcamentos-modal-detalhes
+  .orcamentos-historico {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+}
+
+/* TELAS BAIXAS */
+
+@media screen and (max-width: 768px) and (max-height: 650px) {
+  .orcamentos-page
+  .orcamentos-modal-overlay
+  .orcamentos-modal.orcamentos-modal-detalhes {
+    height: 85dvh !important;
+    max-height: 85dvh !important;
+  }
+}
