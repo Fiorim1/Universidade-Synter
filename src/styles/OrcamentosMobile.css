@@ -867,38 +867,155 @@
   .orcamentos-page .orcamentos-modal-produtos .orcamentos-produto-preco {text-align: right !important;}
   .orcamentos-page .orcamentos-modal-produtos .orcamentos-produto-preco strong {font-size: 12px !important;}
 
-  /* FUNIL MECÂNICO E DIGITAL: ROLAGEM NO CORPO DO MODAL */
+  /* ==========================================
+     FUNIS MECÂNICO E DIGITAL COMPACTOS
+     2 COLUNAS, SEM PERDER ETAPAS OU ROLAGEM
+  ========================================== */
   .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-mecanico,
   .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-digital {
+    display: flex !important;
+    flex-direction: column !important;
     flex: 0 0 auto !important;
     width: 100% !important;
     min-width: 0 !important;
     height: auto !important;
     max-height: none !important;
-    overflow: visible !important;
     margin: 0 !important;
+    padding: 10px !important;
+    gap: 0 !important;
+    overflow: visible !important;
   }
+
+  /* Título e contador de etapas na mesma linha */
   .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-topo {
-    gap: 10px !important;
-    margin-bottom: 10px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin: 0 0 7px !important;
   }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-topo > div:first-child {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-topo > div:first-child > span {
+    margin-bottom: 3px !important;
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-topo > div:first-child > strong {
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-topo > div:first-child > p {
+    margin: 3px 0 0 !important;
+    font-size: 9px !important;
+    line-height: 1.35 !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-progresso {
+    align-self: center !important;
+    flex: 0 0 auto !important;
+    min-width: 48px !important;
+    margin: 0 !important;
+    padding: 6px 7px !important;
+    border-radius: 8px !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-progresso strong {
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-progresso span {
+    font-size: 7px !important;
+    margin-top: 1px !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-barra {
+    height: 3px !important;
+    margin: 7px 0 9px !important;
+  }
+
+  /* Cinco etapas mecânicas / opções digitais em duas colunas */
   .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-grid {
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) !important;
-    min-width: 0 !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     width: 100% !important;
+    min-width: 0 !important;
     height: auto !important;
     max-height: none !important;
-    gap: 8px !important;
+    gap: 7px !important;
+    margin: 0 !important;
+    padding: 0 !important;
     overflow: visible !important;
   }
   .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-campo {
     min-width: 0 !important;
     min-height: 0 !important;
+    width: 100% !important;
     height: auto !important;
     max-height: none !important;
-    padding: 10px !important;
+    margin: 0 !important;
+    padding: 7px !important;
+    border-radius: 9px !important;
     overflow: visible !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-label {
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    margin: 0 0 5px !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-label > span {
+    width: 17px !important;
+    height: 17px !important;
+    flex: 0 0 17px !important;
+    font-size: 8px !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-label label {
+    min-width: 0 !important;
+    font-size: 8px !important;
+    line-height: 1.3 !important;
+    overflow-wrap: anywhere;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-campo select,
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-campo input {
+    box-sizing: border-box !important;
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 0 8px !important;
+    font-size: 16px !important; /* Evita zoom automático no iPhone */
+    border-radius: 7px !important;
+  }
+
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-resumo {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 7px !important;
+    margin: 8px 0 0 !important;
+    padding: 8px 0 0 !important;
+    min-width: 0 !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-resumo > div {
+    min-width: 0 !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-resumo strong {
+    font-size: 12px !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-resumo span {
+    font-size: 9px !important;
+  }
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-resumo button {
+    min-height: 32px !important;
+    padding: 6px 9px !important;
+    font-size: 10px !important;
   }
 
   /* SELEÇÃO E PREÇOS: DEIXAR CAMPOS CRESCEREM */
@@ -949,5 +1066,12 @@
   }
   .orcamentos-page .orcamentos-modal-produtos .orcamentos-produtos-body {
     padding: 9px !important;
+  }
+}
+
+/* Funis em celulares muito estreitos: manter seletores legíveis */
+@media (max-width: 350px) {
+  .orcamentos-page .orcamentos-modal-produtos .orcamentos-funil-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
   }
 }
