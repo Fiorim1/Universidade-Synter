@@ -116,11 +116,11 @@ const ROTAS_SEM_ASSISTENTE = [
 // COMPONENTE PRINCIPAL
 // ========================================
 
-function App() {
+export default function App() {
   const location = useLocation();
 
   // ========================================
-  // VOLTAR AO TOPO AO TROCAR DE ROTA
+  // ROLAGEM AO TROCAR DE PÁGINA
   // ========================================
 
   useEffect(() => {
@@ -146,7 +146,6 @@ function App() {
   return (
     <>
       <Routes>
-
         {/* ====================================
             LOGIN
         ==================================== */}
@@ -183,7 +182,7 @@ function App() {
         />
 
         {/* ====================================
-            RECUPERAÇÃO DE SENHA
+            ESQUECI MINHA SENHA
         ==================================== */}
 
         <Route
@@ -194,6 +193,11 @@ function App() {
             </PublicRoute>
           }
         />
+
+        {/* ====================================
+            REDEFINIR SENHA
+            SEM PUBLICROUTE / PROTECTEDROUTE
+        ==================================== */}
 
         <Route
           path="/update-password"
@@ -215,7 +219,7 @@ function App() {
 
         {/* ====================================
             DASHBOARD SAC
-            EXCLUSIVO PARA ADM
+            ACESSO ADMINISTRATIVO
         ==================================== */}
 
         <Route
@@ -354,8 +358,6 @@ function App() {
           }
         />
 
-        {/* ROTA ANTIGA DO COMPARADOR */}
-
         <Route
           path="/comparador-fechaduras"
           element={
@@ -368,7 +370,6 @@ function App() {
 
         {/* ====================================
             REDE DE CREDENCIADOS
-            BUSCA DE PROFISSIONAIS
         ==================================== */}
 
         <Route
@@ -379,11 +380,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        {/* ====================================
-            GERENCIAMENTO DE CREDENCIADOS
-            MANTÉM CONTROLE ADM DA PÁGINA
-        ==================================== */}
 
         <Route
           path="/tecnicos-homologados/gerenciar"
@@ -396,7 +392,6 @@ function App() {
 
         {/* ====================================
             ASSISTÊNCIA TÉCNICA
-            EXCLUSIVO PARA ADM
         ==================================== */}
 
         <Route
@@ -410,7 +405,6 @@ function App() {
 
         {/* ====================================
             VISITAS TÉCNICAS
-            EXCLUSIVO PARA ADM
         ==================================== */}
 
         <Route
@@ -424,7 +418,6 @@ function App() {
 
         {/* ====================================
             SYNTER ANALYTICS
-            EXCLUSIVO PARA ADM
         ==================================== */}
 
         <Route
@@ -476,7 +469,7 @@ function App() {
         />
 
         {/* ====================================
-            ROTAS ANTIGAS DE AUTENTICAÇÃO
+            ROTAS ANTIGAS DE MFA
         ==================================== */}
 
         <Route
@@ -507,7 +500,6 @@ function App() {
           path="*"
           element={<NotFound />}
         />
-
       </Routes>
 
       {/* ====================================
@@ -520,5 +512,3 @@ function App() {
     </>
   );
 }
-
-export default App;
