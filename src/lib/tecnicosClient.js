@@ -1,26 +1,18 @@
 
-import { createClient } from "@supabase/supabase-js";
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   CLIENTE COMPARTILHADO DE TÉCNICOS
+========================================== */
 
-// ==========================================
-// CONFIGURAÇÃO DE ACESSO
-// ==========================================
+import { supabase } from "../services/supabaseClient";
 
-const supabaseUrl =
-  import.meta.env.VITE_SUPABASE_URL;
+// Utiliza a mesma sessão autenticada
+// do restante da aplicação.
+//
+// Mantém:
+// - JWT do usuário autenticado
+// - Renovação automática da sessão
+// - Compatibilidade com RLS
+// - Permissões existentes
 
-const supabaseKey =
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
-  import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-// Nunca utilizar service_role no navegador.
-
-if (!supabaseUrl || !supabaseKey) {
-  console.warn(
-    "Configuração de acesso aos técnicos não encontrada."
-  );
-}
-
-export const tecnicosClient = createClient(
-  supabaseUrl || "https://placeholder.supabase.co",
-  supabaseKey || "placeholder"
-);
+export const tecnicosClient = supabase;

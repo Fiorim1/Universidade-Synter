@@ -1,14 +1,14 @@
 
 import { createClient } from "@supabase/supabase-js";
 
-// ========================================
-// UNIVERSIDADE SYNTER
-// CONFIGURAÇÃO SEGURA DO SUPABASE
-// ========================================
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   CLIENTE PRINCIPAL DO SUPABASE
+   AUTENTICAÇÃO CENTRALIZADA
+========================================== */
 
-// Variáveis públicas do frontend.
-// Nunca utilizar service_role ou sb_secret_
-// em variáveis VITE_.
+// Apenas variáveis públicas podem ser
+// utilizadas no frontend.
 
 const supabaseUrl =
   import.meta.env.VITE_SUPABASE_URL;
@@ -16,9 +16,9 @@ const supabaseUrl =
 const supabaseKey =
   import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-// ========================================
+// ==========================================
 // VALIDAR CONFIGURAÇÃO
-// ========================================
+// ==========================================
 
 if (!supabaseUrl || !supabaseKey) {
   throw new Error(
@@ -26,9 +26,9 @@ if (!supabaseUrl || !supabaseKey) {
   );
 }
 
-// ========================================
-// VALIDAR URL
-// ========================================
+// ==========================================
+// VALIDAR ENDEREÇO DO SUPABASE
+// ==========================================
 
 let parsedSupabaseUrl;
 
@@ -53,12 +53,12 @@ if (
   );
 }
 
-// ========================================
-// BLOQUEAR CHAVES SECRETAS
-// ========================================
+// ==========================================
+// PROTEÇÃO CONTRA CHAVES SECRETAS
+// ==========================================
 
 if (
-  typeof supabaseKey === "string" &&
+  typeof supabaseKey !== "string" ||
   supabaseKey.startsWith("sb_secret_")
 ) {
   throw new Error(
@@ -66,9 +66,9 @@ if (
   );
 }
 
-// ========================================
+// ==========================================
 // IDENTIFICAR SERVICE_ROLE LEGADA
-// ========================================
+// ==========================================
 
 function hasServiceRole(key) {
   try {
@@ -104,32 +104,25 @@ if (hasServiceRole(supabaseKey)) {
   );
 }
 
-// ========================================
-// CLIENTE ÚNICO DO SUPABASE
-// ========================================
+// ==========================================
+// CLIENTE ÚNICO
+// ==========================================
 
 export const supabase = createClient(
   supabaseUrl,
   supabaseKey,
   {
     auth: {
-      // Preserva a sessão após atualizar a página.
       persistSession: true,
-
-      // Renova tokens automaticamente.
       autoRefreshToken: true,
 
-      // Reconhece links de autenticação enviados
-      // pelo Supabase, incluindo recuperação
-      // e confirmação de e-mail.
+      // Processa links de autenticação
+      // recebidos por e-mail.
       detectSessionInUrl: true,
 
-      // Fluxo compatível com os links de recuperação
-      // padrão enviados pelo Supabase.
-      flowType: "implicit",
-
-      // Armazenamento padrão no navegador.
-      storageKey: "universidade-synter-auth",
+      // Sem storageKey personalizada:
+      // utiliza o armazenamento padrão
+      // da biblioteca Supabase.
     },
   }
 );
