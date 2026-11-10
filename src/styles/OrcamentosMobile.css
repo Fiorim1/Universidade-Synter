@@ -575,3 +575,47 @@
     border-radius: 14px !important;
   }
 }
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   CORREÇÃO DO MODAL NOVO ORÇAMENTO
+   EVITAR DESLOCAMENTO NO MOBILE
+========================================== */
+
+@media (max-width: 768px) {
+
+  .orcamentos-page .orcamentos-modal-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    overflow: hidden !important;
+    padding: 12px !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal:has(#titulo-novo-orcamento) {
+    position: relative !important;
+
+    width: 100% !important;
+    max-width: 420px !important;
+
+    max-height: calc(100dvh - 24px) !important;
+
+    margin: 0 auto !important;
+
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+
+    border-radius: 14px !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-novo-form input:focus {
+    scroll-margin-top: 15px;
+    scroll-margin-bottom: 15px;
+  }
+}
