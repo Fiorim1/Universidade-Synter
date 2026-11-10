@@ -1803,3 +1803,385 @@
     max-height: 85dvh !important;
   }
 }
+
+/* ==========================================
+   UNIVERSIDADE SYNTER
+   ADICIONAR PRODUTO — MODAL MOBILE COMPACTO
+========================================== */
+
+@media screen and (max-width: 768px) {
+
+  /* FUNDO E CENTRALIZAÇÃO */
+
+  .orcamentos-page .orcamentos-modal-overlay-produto {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 9999 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    height: 100dvh !important;
+
+    padding: 12px !important;
+    margin: 0 !important;
+
+    overflow: hidden !important;
+  }
+
+  /* JANELA: 65% DA ALTURA */
+
+  .orcamentos-page
+  .orcamentos-modal-overlay-produto
+  .orcamentos-modal-produtos {
+    position: relative !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: min(390px, calc(100vw - 28px)) !important;
+    min-width: 0 !important;
+    max-width: 390px !important;
+
+    height: 65dvh !important;
+    min-height: 0 !important;
+    max-height: 65dvh !important;
+
+    padding: 0 !important;
+    margin: 0 auto !important;
+
+    overflow: hidden !important;
+    border-radius: 14px !important;
+
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+
+  /* CABEÇALHO */
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-modal-header {
+    position: relative !important;
+    flex: 0 0 auto !important;
+
+    min-height: 0 !important;
+    padding: 12px 14px !important;
+    margin: 0 !important;
+
+    gap: 8px !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-modal-header > div:first-child {
+    min-width: 0 !important;
+    padding-right: 38px !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-modal-header h2 {
+    margin: 4px 0 0 !important;
+    font-size: 18px !important;
+    line-height: 1.2 !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-modal-header p {
+    display: none !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-modal-close {
+    position: absolute !important;
+    right: 12px !important;
+    top: 12px !important;
+
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+  }
+
+  /* CONTEÚDO INTERNO */
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produtos-body {
+    display: flex !important;
+    flex-direction: column !important;
+
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    min-width: 0 !important;
+
+    height: auto !important;
+    max-height: none !important;
+
+    padding: 10px 12px !important;
+    gap: 9px !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+
+  /* PESQUISA GERAL / FUNIS */
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produtos-modos {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+
+    gap: 5px !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 4px !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produtos-modos button {
+    min-width: 0 !important;
+    min-height: 32px !important;
+    height: auto !important;
+
+    padding: 5px 3px !important;
+
+    font-size: 9px !important;
+    line-height: 1.3 !important;
+    white-space: normal !important;
+  }
+
+  /* FILTROS */
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produtos-filtros {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+
+    gap: 7px !important;
+    margin: 0 !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produtos-busca,
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produtos-categoria {
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produtos-busca label,
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produtos-categoria label {
+    display: block;
+    margin-bottom: 4px !important;
+    font-size: 10px !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produtos-busca input,
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produtos-categoria select {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 37px !important;
+    min-height: 37px !important;
+
+    padding: 0 9px !important;
+    margin: 0 !important;
+
+    font-size: 16px !important;
+    border-radius: 8px !important;
+  }
+
+  /* CONTADOR DE PRODUTOS */
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produtos-contador {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 10px !important;
+  }
+
+  /* LISTA COMPACTA E SCROLL PRÓPRIO */
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produtos-lista {
+    display: flex !important;
+    flex-direction: column !important;
+
+    flex: 0 0 auto !important;
+
+    gap: 5px !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    height: min(21dvh, 165px) !important;
+    min-height: 95px !important;
+    max-height: min(21dvh, 165px) !important;
+
+    margin: 0 !important;
+    padding: 0 3px 0 0 !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+
+  /* CARTÕES MENORES */
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produto-card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+
+    flex: 0 0 auto !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    gap: 8px !important;
+    margin: 0 !important;
+    padding: 9px 10px !important;
+
+    border-radius: 9px !important;
+    text-align: left !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produto-main {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produto-main > strong {
+    display: block;
+    margin: 3px 0 !important;
+
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produto-topo {
+    gap: 5px !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produto-codigo,
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produto-tipo {
+    font-size: 9px !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produto-meta {
+    margin: 2px 0 0 !important;
+    gap: 4px !important;
+    font-size: 9px !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produto-preco {
+    flex: 0 0 auto !important;
+    min-width: 78px !important;
+    margin: 0 !important;
+    text-align: right !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produto-preco > span {
+    display: block;
+    font-size: 9px !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produto-preco > strong {
+    font-size: 12px !important;
+  }
+
+  /* BOTÕES INFERIORES */
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produtos-actions {
+    position: sticky !important;
+    bottom: -10px !important;
+    z-index: 5 !important;
+
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+
+    flex: 0 0 auto !important;
+
+    width: 100% !important;
+    gap: 7px !important;
+
+    margin-top: auto !important;
+    padding: 10px 0 !important;
+
+    background: #101011 !important;
+    border-top: 1px solid #303036 !important;
+  }
+
+  .orcamentos-page
+  .orcamentos-modal-produtos
+  .orcamentos-produtos-actions button {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 36px !important;
+
+    padding: 7px !important;
+
+    font-size: 10px !important;
+    line-height: 1.3 !important;
+  }
+
+}
+
+/* TELAS MENORES */
+
+@media screen and (max-width: 768px) and (max-height: 700px) {
+  .orcamentos-page
+  .orcamentos-modal-overlay-produto
+  .orcamentos-modal-produtos {
+    height: 75dvh !important;
+    max-height: 75dvh !important;
+  }
+}
