@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+
 import {
   Navigate,
   useLocation,
@@ -12,18 +13,29 @@ import { tecnicosClient } from "../lib/tecnicosClient";
 // UNIVERSIDADE SYNTER
 // PROTEÇÃO DE ROTAS
 //
-// Sem requiredRole:
-// exige apenas autenticação.
+// Autenticação normal:
+// - Exige usuário autenticado.
 //
-// Com requiredRole="adm":
-// exige autenticação e perfil ADM.
+// Rotas administrativas:
+// - Exige usuário autenticado.
+// - Exige perfil ADM.
+//
+// Recuperação de senha:
+// - Não permite acessar áreas protegidas
+//   enquanto a redefinição estiver ativa.
 // ========================================
 
-function ProtectedRoute({
+export default function ProtectedRoute({
   children,
   requiredRole = null,
 }) {
-  const { user, loading } = useAuth();
+  const {
+    user,
+    session,
+    loading,
+    isPasswordRecovery,
+  } = useAuth();
+
   const location = useLocation();
 
   const [permissao, setPermissao] = useState({
@@ -33,14 +45,19 @@ function ProtectedRoute({
   });
 
   // ========================================
-  // CONSULTAR FUNÇÃO NO SUPABASE
+  // CONSULTAR PERMISSÃO ADMINISTRATIVA
   // ========================================
 
   useEffect(() => {
     let ativo = true;
 
     async function verificarPermissao() {
-      if (!user?.id || !requiredRole) {
+      if (
+        loading ||
+        !user?.id ||
+        !requiredRole ||
+        isPasswordRecovery
+      ) {
         return;
       }
 
@@ -62,28 +79,30 @@ function ProtectedRoute({
           throw error;
         }
 
-        if (ativo) {
-          setPermissao({
-            userId: user.id,
-            role: String(
-              data?.role || ""
-            ).trim().toLowerCase(),
-            verificado: true,
-          });
-        }
-      } catch (erro) {
-        console.error(
-          "Erro ao verificar permissão:",
-          erro
-        );
+        if (!ativo) return;
 
-        if (ativo) {
-          setPermissao({
-            userId: user.id,
-            role: null,
-            verificado: true,
-          });
+        setPermissao({
+          userId: user.id,
+          role: String(data?.role || "")
+            .trim()
+            .toLowerCase(),
+          verificado: true,
+        });
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.error(
+            "Erro ao verificar permissão:",
+            error
+          );
         }
+
+        if (!ativo) return;
+
+        setPermissao({
+          userId: user.id,
+          role: null,
+          verificado: true,
+        });
       }
     }
 
@@ -92,7 +111,12 @@ function ProtectedRoute({
     return () => {
       ativo = false;
     };
-  }, [user?.id, requiredRole]);
+  }, [
+    loading,
+    user?.id,
+    requiredRole,
+    isPasswordRecovery,
+  ]);
 
   // ========================================
   // AGUARDAR AUTENTICAÇÃO
@@ -103,10 +127,30 @@ function ProtectedRoute({
   }
 
   // ========================================
+  // RECUPERAÇÃO DE SENHA ATIVA
+  // ========================================
+
+  // O link de recuperação pode criar uma
+  // sessão temporária no Supabase.
+  //
+  // A sessão não deve ser utilizada para
+  // entrar no dashboard antes da conclusão
+  // da troca de senha.
+
+  if (session && isPasswordRecovery) {
+    return (
+      <Navigate
+        to="/update-password"
+        replace
+      />
+    );
+  }
+
+  // ========================================
   // USUÁRIO NÃO AUTENTICADO
   // ========================================
 
-  if (!user) {
+  if (!user || !session) {
     return (
       <Navigate
         to="/login"
@@ -119,7 +163,7 @@ function ProtectedRoute({
   }
 
   // ========================================
-  // VERIFICAR FUNÇÃO EXIGIDA
+  // VERIFICAR PERFIL ADMINISTRATIVO
   // ========================================
 
   if (requiredRole) {
@@ -135,7 +179,11 @@ function ProtectedRoute({
       );
     }
 
-    if (permissao.role !== requiredRole) {
+    const roleExigida = String(requiredRole)
+      .trim()
+      .toLowerCase();
+
+    if (permissao.role !== roleExigida) {
       return (
         <Navigate
           to="/dashboard"
@@ -146,10 +194,8 @@ function ProtectedRoute({
   }
 
   // ========================================
-  // ACESSO PERMITIDO
+  // ACESSO AUTORIZADO
   // ========================================
 
   return children;
 }
-
-export default ProtectedRoute;
