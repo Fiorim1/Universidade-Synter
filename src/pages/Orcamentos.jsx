@@ -38,6 +38,23 @@ function montarVisualizacaoProduto(produto) {
   };
 }
 
+// Validação explícita para formulários em etapas.
+// Um campo oculto não pode receber foco da validação nativa do navegador.
+function emailClienteValido(valor) {
+  const email = String(valor ?? "").trim();
+  return email === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function validarDadosCliente(formulario) {
+  if (String(formulario.cliente_nome ?? "").trim().length < 2) {
+    return "Informe o nome do cliente (mínimo de 2 caracteres).";
+  }
+  if (!emailClienteValido(formulario.cliente_email)) {
+    return "Informe um e-mail válido (ex.: cliente@empresa.com.br) ou deixe o campo vazio.";
+  }
+  return "";
+}
+
 function Orcamentos() {
 
   const [loading, setLoading] = useState(true);
@@ -690,6 +707,10 @@ function Orcamentos() {
       })
     );
 
+    if (erroFormulario) {
+      setErroFormulario("");
+    }
+
   }
 
 
@@ -737,12 +758,18 @@ function Orcamentos() {
 
     event.preventDefault();
 
-    // Enter no celular não envia o formulário na primeira etapa.
-    if (window.matchMedia("(max-width: 768px)").matches && etapaNovoMobile === 1) {
-      if (formulario.cliente_nome.trim().length < 2) {
-        setErroFormulario("Informe o nome do cliente.");
-        return;
+    // Validar também o e-mail opcional, antes de mudar de etapa.
+    const erroCliente = validarDadosCliente(formulario);
+    if (erroCliente) {
+      setErroFormulario(erroCliente);
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        setEtapaNovoMobile(1);
       }
+      return;
+    }
+
+    // Enter no mobile avança a etapa, sem tentar gravar no banco.
+    if (window.matchMedia("(max-width: 768px)").matches && etapaNovoMobile === 1) {
       setErroFormulario("");
       setEtapaNovoMobile(2);
       return;
@@ -880,7 +907,12 @@ function Orcamentos() {
         cliente_documento: "",
         cliente_email: "",
         cliente_telefone: "",
-        observacoes: ""
+        observacoes: "",
+        frete: "0.00",
+        condicao_pagamento: "",
+        local_entrega: "",
+        data_entrega: "",
+        observacoes_venda: ""
       });
 
     }
@@ -5107,7 +5139,7 @@ Synter`;
                 </span>
 
                 <h2 id="titulo-novo-orcamento">
-                  Dados do cliente
+                  {etapaNovoMobile === 1 ? "Dados do cliente" : "Venda e entrega"}
                 </h2>
 
                 <p>
@@ -5132,6 +5164,7 @@ Synter`;
 
             <form
               onSubmit={criarOrcamento}
+              noValidate
               className={`orcamentos-form orcamentos-novo-form orcamentos-novo-etapa-${etapaNovoMobile}`}
             >
 
@@ -5378,8 +5411,9 @@ Synter`;
                     type="button"
                     className="orcamentos-primary-button"
                     onClick={(event) => {
-                      if (formulario.cliente_nome.trim().length < 2) {
-                        setErroFormulario("Informe o nome do cliente.");
+                      const erroCliente = validarDadosCliente(formulario);
+                      if (erroCliente) {
+                        setErroFormulario(erroCliente);
                         return;
                       }
                       setErroFormulario("");
