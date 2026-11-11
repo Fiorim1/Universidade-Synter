@@ -1,24 +1,16 @@
 
 import { createClient } from "@supabase/supabase-js";
 
-/* ==========================================
-   UNIVERSIDADE SYNTER
-   CLIENTE PRINCIPAL DO SUPABASE
-   AUTENTICAÇÃO CENTRALIZADA
-========================================== */
-
-// Apenas variáveis públicas podem ser
-// utilizadas no frontend.
+// ==========================================
+// UNIVERSIDADE SYNTER
+// CLIENTE PRINCIPAL DO SUPABASE
+// ==========================================
 
 const supabaseUrl =
   import.meta.env.VITE_SUPABASE_URL;
 
 const supabaseKey =
   import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-
-// ==========================================
-// VALIDAR CONFIGURAÇÃO
-// ==========================================
 
 if (!supabaseUrl || !supabaseKey) {
   throw new Error(
@@ -27,7 +19,7 @@ if (!supabaseUrl || !supabaseKey) {
 }
 
 // ==========================================
-// VALIDAR ENDEREÇO DO SUPABASE
+// VALIDAR URL
 // ==========================================
 
 let parsedSupabaseUrl;
@@ -54,7 +46,7 @@ if (
 }
 
 // ==========================================
-// PROTEÇÃO CONTRA CHAVES SECRETAS
+// BLOQUEAR CHAVES SECRETAS
 // ==========================================
 
 if (
@@ -67,7 +59,7 @@ if (
 }
 
 // ==========================================
-// IDENTIFICAR SERVICE_ROLE LEGADA
+// PROTEÇÃO CONTRA SERVICE_ROLE
 // ==========================================
 
 function hasServiceRole(key) {
@@ -115,14 +107,7 @@ export const supabase = createClient(
     auth: {
       persistSession: true,
       autoRefreshToken: true,
-
-      // Processa links de autenticação
-      // recebidos por e-mail.
       detectSessionInUrl: true,
-
-      // Sem storageKey personalizada:
-      // utiliza o armazenamento padrão
-      // da biblioteca Supabase.
     },
   }
 );

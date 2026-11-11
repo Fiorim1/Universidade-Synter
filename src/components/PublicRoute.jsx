@@ -6,10 +6,6 @@ import { useAuth } from "../context/AuthContext";
 // ========================================
 // UNIVERSIDADE SYNTER
 // CONTROLE DE ROTAS PÚBLICAS
-//
-// Login por e-mail e senha
-// Recuperação de senha pelo Supabase
-// Sem exigência de Google Authenticator
 // ========================================
 
 export default function PublicRoute({ children }) {
@@ -21,7 +17,7 @@ export default function PublicRoute({ children }) {
   } = useAuth();
 
   // ========================================
-  // AGUARDAR VERIFICAÇÃO DA SESSÃO
+  // AGUARDAR SESSÃO
   // ========================================
 
   if (loading) {
@@ -33,16 +29,12 @@ export default function PublicRoute({ children }) {
   }
 
   // ========================================
-  // RECUPERAÇÃO DE SENHA ATIVA
+  // RECUPERAÇÃO DE SENHA
   // ========================================
 
-  // O Supabase pode criar uma sessão
-  // autenticada após o usuário clicar
-  // no link recebido por e-mail.
-  //
-  // Essa sessão não deve provocar o
-  // redirecionamento automático ao dashboard
-  // durante a recuperação de senha.
+  // Não encaminhar ao dashboard durante
+  // uma recuperação identificada pelo
+  // contexto de autenticação.
 
   if (session && isPasswordRecovery) {
     return (
@@ -54,12 +46,8 @@ export default function PublicRoute({ children }) {
   }
 
   // ========================================
-  // USUÁRIO JÁ AUTENTICADO
+  // LOGIN NORMAL
   // ========================================
-
-  // Somente usuários autenticados
-  // fora do fluxo de recuperação
-  // são enviados ao dashboard.
 
   if (user && session) {
     return (
@@ -69,13 +57,6 @@ export default function PublicRoute({ children }) {
       />
     );
   }
-
-  // ========================================
-  // USUÁRIO NÃO AUTENTICADO
-  // ========================================
-
-  // Permite acessar login, cadastro
-  // e solicitação de recuperação.
 
   return children;
 }

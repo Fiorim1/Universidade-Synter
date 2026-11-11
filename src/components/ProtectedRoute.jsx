@@ -12,17 +12,6 @@ import { tecnicosClient } from "../lib/tecnicosClient";
 // ========================================
 // UNIVERSIDADE SYNTER
 // PROTEÇÃO DE ROTAS
-//
-// Autenticação normal:
-// - Exige usuário autenticado.
-//
-// Rotas administrativas:
-// - Exige usuário autenticado.
-// - Exige perfil ADM.
-//
-// Recuperação de senha:
-// - Não permite acessar áreas protegidas
-//   enquanto a redefinição estiver ativa.
 // ========================================
 
 export default function ProtectedRoute({
@@ -55,6 +44,7 @@ export default function ProtectedRoute({
       if (
         loading ||
         !user?.id ||
+        !session?.access_token ||
         !requiredRole ||
         isPasswordRecovery
       ) {
@@ -114,6 +104,7 @@ export default function ProtectedRoute({
   }, [
     loading,
     user?.id,
+    session?.access_token,
     requiredRole,
     isPasswordRecovery,
   ]);
@@ -127,15 +118,8 @@ export default function ProtectedRoute({
   }
 
   // ========================================
-  // RECUPERAÇÃO DE SENHA ATIVA
+  // RECUPERAÇÃO ATIVA
   // ========================================
-
-  // O link de recuperação pode criar uma
-  // sessão temporária no Supabase.
-  //
-  // A sessão não deve ser utilizada para
-  // entrar no dashboard antes da conclusão
-  // da troca de senha.
 
   if (session && isPasswordRecovery) {
     return (
@@ -147,10 +131,10 @@ export default function ProtectedRoute({
   }
 
   // ========================================
-  // USUÁRIO NÃO AUTENTICADO
+  // EXIGIR SESSÃO
   // ========================================
 
-  if (!user || !session) {
+  if (!user || !session?.access_token) {
     return (
       <Navigate
         to="/login"
@@ -192,10 +176,6 @@ export default function ProtectedRoute({
       );
     }
   }
-
-  // ========================================
-  // ACESSO AUTORIZADO
-  // ========================================
 
   return children;
 }

@@ -132,8 +132,6 @@ export default function ForgotPassword() {
     setErrorMsg("");
     setCaptchaToken("");
 
-    // Remonta o componente apenas quando
-    // o usuário solicita uma nova tentativa.
     setCaptchaVersion((value) => value + 1);
   }
 
@@ -241,9 +239,7 @@ export default function ForgotPassword() {
 
       <main className="forgot-main">
         <div className="forgot-layout">
-          {/* ================================
-              FORMULÁRIO
-          ================================ */}
+          {/* FORMULÁRIO */}
 
           <section className="forgot-left">
             <div className="forgot-content">
@@ -397,9 +393,7 @@ export default function ForgotPassword() {
             </div>
           </section>
 
-          {/* ================================
-              APRESENTAÇÃO VISUAL
-          ================================ */}
+          {/* APRESENTAÇÃO VISUAL */}
 
           <section className="forgot-visual">
             <div className="forgot-visual-content">
