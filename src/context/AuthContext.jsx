@@ -18,18 +18,15 @@ import { supabase } from "../services/supabaseClient";
 const AuthContext = createContext(null);
 
 const RECOVERY_KEY =
-  "synter_password_recovery_v2";
+  "synter_password_recovery_v3";
 
-const LEGACY_RECOVERY_KEY =
-  "synter_password_recovery";
+const OLD_RECOVERY_KEYS = [
+  "synter_password_recovery",
+  "synter_password_recovery_v2",
+];
 
-// Limite local para o indicador da interface.
-// Não altera a validade real do link Supabase.
-const RECOVERY_MAX_AGE = 15 * 60 * 1000;
-
-// ==========================================
-// LER INDICADOR DE RECUPERAÇÃO
-// ==========================================
+// O marcador apenas identifica o fluxo.
+// A sessão real é validada pelo Supabase.
 
 function readRecovery() {
   try {
@@ -41,14 +38,10 @@ function readRecovery() {
 
     const data = JSON.parse(raw);
 
-    const valid =
-      typeof data?.userId === "string" &&
-      typeof data?.createdAt === "number" &&
-      data.createdAt <= Date.now() &&
-      Date.now() - data.createdAt <
-        RECOVERY_MAX_AGE;
-
-    if (!valid) {
+    if (
+      !data ||
+      typeof data.userId !== "string"
+    ) {
       sessionStorage.removeItem(RECOVERY_KEY);
       return null;
     }
@@ -58,10 +51,6 @@ function readRecovery() {
     return null;
   }
 }
-
-// ==========================================
-// SALVAR INDICADOR
-// ==========================================
 
 function saveRecovery(userId) {
   if (!userId) return null;
@@ -77,31 +66,27 @@ function saveRecovery(userId) {
       JSON.stringify(data)
     );
   } catch {
-    // A autenticação continua no Supabase.
+    // A sessão permanece no Supabase.
   }
 
   return data;
 }
 
-// ==========================================
-// LIMPAR INDICADORES
-// ==========================================
-
 function removeRecovery() {
   try {
     sessionStorage.removeItem(RECOVERY_KEY);
-    sessionStorage.removeItem(
-      LEGACY_RECOVERY_KEY
-    );
+
+    OLD_RECOVERY_KEYS.forEach((key) => {
+      sessionStorage.removeItem(key);
+    });
   } catch {
-    // Nenhum segredo de autenticação é
-    // armazenado nesses indicadores.
+    // Sem ação adicional.
   }
 }
 
-// ==========================================
-// PROVIDER
-// ==========================================
+/* ==========================================
+   PROVIDER
+========================================== */
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -113,8 +98,6 @@ export function AuthProvider({ children }) {
     setRecoveryRecord,
   ] = useState(readRecovery);
 
-  // Identifica eventos de autenticação
-  // mais recentes que o carregamento inicial.
   const authVersion = useRef(0);
 
   const clearPasswordRecovery = useCallback(
@@ -136,19 +119,17 @@ export function AuthProvider({ children }) {
     []
   );
 
-  // ========================================
-  // INICIALIZAÇÃO DA AUTENTICAÇÃO
-  // ========================================
+  /* ========================================
+     MONITORAMENTO DE AUTENTICAÇÃO
+  ======================================== */
 
   useEffect(() => {
     let mounted = true;
 
-    // Remove o indicador antigo que não
-    // estava vinculado à identidade do usuário.
     try {
-      sessionStorage.removeItem(
-        LEGACY_RECOVERY_KEY
-      );
+      OLD_RECOVERY_KEYS.forEach((key) => {
+        sessionStorage.removeItem(key);
+      });
     } catch {
       // Sem ação adicional.
     }
@@ -164,20 +145,22 @@ export function AuthProvider({ children }) {
         setSession(newSession);
         setUser(newSession?.user ?? null);
 
-        // Evento emitido pelo Supabase após
-        // reconhecer um link de recuperação.
         if (event === "PASSWORD_RECOVERY") {
           markPasswordRecovery(
             newSession?.user?.id
           );
+
+          if (import.meta.env.DEV) {
+            console.info(
+              "Sessão de recuperação reconhecida."
+            );
+          }
         }
 
         if (event === "SIGNED_OUT") {
           clearPasswordRecovery();
         }
 
-        // Login comum realizado fora da
-        // página de recuperação.
         if (
           event === "SIGNED_IN" &&
           window.location.pathname !==
@@ -190,9 +173,9 @@ export function AuthProvider({ children }) {
       }
     );
 
-    // ======================================
-    // CARREGAR SESSÃO EXISTENTE
-    // ======================================
+    /* ======================================
+       CARREGAMENTO INICIAL
+    ====================================== */
 
     async function loadSession() {
       const versionAtStart =
@@ -204,32 +187,21 @@ export function AuthProvider({ children }) {
           error: sessionError,
         } = await supabase.auth.getSession();
 
-        if (!mounted) return;
-
-        // Evita sobrescrever uma sessão que
-        // chegou por evento mais recente.
         if (
+          !mounted ||
           authVersion.current !== versionAtStart
         ) {
           return;
         }
 
         if (sessionError) {
-          if (import.meta.env.DEV) {
-            console.error(
-              "Erro ao obter sessão:",
-              sessionError
-            );
-          }
-
-          setUser(null);
-          setSession(null);
-          return;
+          throw sessionError;
         }
 
         if (!currentSession) {
-          setUser(null);
           setSession(null);
+          setUser(null);
+          clearPasswordRecovery();
           return;
         }
 
@@ -253,13 +225,14 @@ export function AuthProvider({ children }) {
             );
           }
 
-          setUser(null);
           setSession(null);
+          setUser(null);
           return;
         }
 
         setSession(currentSession);
         setUser(verifiedUser);
+
       } catch (error) {
         if (
           !mounted ||
@@ -270,13 +243,14 @@ export function AuthProvider({ children }) {
 
         if (import.meta.env.DEV) {
           console.error(
-            "Falha ao inicializar autenticação:",
+            "Erro de autenticação:",
             error
           );
         }
 
-        setUser(null);
         setSession(null);
+        setUser(null);
+
       } finally {
         if (mounted) {
           setLoading(false);
@@ -295,24 +269,21 @@ export function AuthProvider({ children }) {
     markPasswordRecovery,
   ]);
 
-  // ========================================
-  // RECUPERAÇÃO ATIVA
-  // ========================================
+  /* ========================================
+     RECUPERAÇÃO DE SENHA
+  ======================================== */
 
   const isPasswordRecovery = Boolean(
     recoveryRecord &&
-      session?.user?.id &&
-      recoveryRecord.userId ===
-        session.user.id &&
-      Date.now() - recoveryRecord.createdAt <
-        RECOVERY_MAX_AGE
+    session?.user?.id &&
+    recoveryRecord.userId === session.user.id
   );
 
-  // ========================================
-  // LOGOUT
-  // ========================================
+  /* ========================================
+     LOGOUT
+  ======================================== */
 
-  async function logout() {
+  const logout = useCallback(async () => {
     try {
       const { error } =
         await supabase.auth.signOut({
@@ -320,12 +291,10 @@ export function AuthProvider({ children }) {
         });
 
       if (error) {
-        if (import.meta.env.DEV) {
-          console.error(
-            "Erro ao encerrar sessão:",
-            error
-          );
-        }
+        console.error(
+          "Erro ao encerrar sessão:",
+          error
+        );
 
         return { error };
       }
@@ -333,17 +302,20 @@ export function AuthProvider({ children }) {
       clearPasswordRecovery();
 
       return { error: null };
+
     } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error(
-          "Erro inesperado no logout:",
-          error
-        );
-      }
+      console.error(
+        "Falha inesperada no logout:",
+        error
+      );
 
       return { error };
     }
-  }
+  }, [clearPasswordRecovery]);
+
+  /* ========================================
+     CONTEXTO GLOBAL
+  ======================================== */
 
   return (
     <AuthContext.Provider
@@ -361,9 +333,9 @@ export function AuthProvider({ children }) {
   );
 }
 
-// ==========================================
-// HOOK DE AUTENTICAÇÃO
-// ==========================================
+/* ==========================================
+   HOOK DE AUTENTICAÇÃO
+========================================== */
 
 export function useAuth() {
   const context = useContext(AuthContext);

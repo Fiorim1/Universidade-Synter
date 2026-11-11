@@ -12,6 +12,63 @@ import { validatePassword } from "../utils/validators";
 
 import "../styles/UpdatePassword.css";
 
+function traduzirErro(error) {
+  const code = error?.code || "";
+  const message = error?.message || "";
+  const texto = message.toLowerCase();
+
+  if (
+    code === "same_password" ||
+    texto.includes("same password")
+  ) {
+    return "A nova senha deve ser diferente da senha atual.";
+  }
+
+  if (
+    code === "weak_password" ||
+    texto.includes("weak password")
+  ) {
+    return "A senha não atende aos requisitos de segurança.";
+  }
+
+  if (
+    code === "session_not_found" ||
+    code === "session_expired" ||
+    code === "invalid_jwt" ||
+    texto.includes("jwt expired") ||
+    texto.includes("session not found")
+  ) {
+    return "Sua sessão expirou. Solicite um novo link de recuperação.";
+  }
+
+  if (
+    code === "reauthentication_needed" ||
+    code === "reauthentication_not_valid" ||
+    texto.includes("reauthentication")
+  ) {
+    return "O Supabase está exigindo uma nova confirmação de identidade. Verifique as configurações de autenticação.";
+  }
+
+  if (
+    code === "insufficient_aal" ||
+    texto.includes("aal2") ||
+    texto.includes("mfa")
+  ) {
+    return "A atualização exige uma verificação adicional de autenticação. Verifique os fatores MFA da conta.";
+  }
+
+  if (
+    code === "over_request_rate_limit" ||
+    texto.includes("rate limit")
+  ) {
+    return "Muitas tentativas realizadas. Aguarde antes de tentar novamente.";
+  }
+
+  return message
+    ? `Não foi possível atualizar a senha: ${message}`
+    : "Não foi possível atualizar a senha. Tente novamente.";
+}
+
 export default function UpdatePassword() {
   const navigate = useNavigate();
 
@@ -25,16 +82,11 @@ export default function UpdatePassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] =
     useState("");
-
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-
-  // A recuperação precisa estar marcada pelo
-  // evento PASSWORD_RECOVERY do Supabase.
-  // Ter uma sessão normal não é suficiente.
-  const recoveryReady =
-    Boolean(session && isPasswordRecovery);
+  const [logoutPending, setLogoutPending] =
+    useState(false);
 
   const query = new URLSearchParams(
     window.location.search
@@ -50,8 +102,13 @@ export default function UpdatePassword() {
     hash.has("error") ||
     hash.has("error_code");
 
-  const verificando =
-    authLoading && !success;
+  // Nunca aceitar uma sessão comum como
+  // autorização para redefinir a senha.
+  const recoveryReady = Boolean(
+    session && isPasswordRecovery
+  );
+
+  const verificando = authLoading && !success;
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -60,19 +117,13 @@ export default function UpdatePassword() {
 
     setErrorMsg("");
 
-    if (
-      authLoading ||
-      !recoveryReady ||
-      linkComErro
-    ) {
+    if (authLoading || !recoveryReady || linkComErro) {
       setErrorMsg(
-        "O link de recuperação é inválido ou expirou. " +
-        "Solicite um novo link."
+        "Link inválido ou sessão de recuperação não reconhecida. Solicite um novo link."
       );
       return;
     }
 
-    // Validação de senha existente no sistema.
     const errosSenha = validatePassword(password);
 
     if (errosSenha.length > 0) {
@@ -88,28 +139,45 @@ export default function UpdatePassword() {
     setSaving(true);
 
     try {
-      // Confirma a identidade do usuário
-      // diretamente com o Supabase Auth.
+      // Consulta novamente a sessão do Supabase.
+      const {
+        data: { session: currentSession },
+        error: sessionError,
+      } = await supabase.auth.getSession();
+
+      if (sessionError) {
+        throw sessionError;
+      }
+
+      if (!currentSession?.user) {
+        throw new Error(
+          "Sessão de recuperação não encontrada."
+        );
+      }
+
+      if (currentSession.user.id !== session.user.id) {
+        throw new Error(
+          "A identidade da sessão foi alterada. Solicite um novo link."
+        );
+      }
+
+      // Confirma a identidade com o servidor.
       const {
         data: { user },
-        error: identityError,
+        error: userError,
       } = await supabase.auth.getUser();
 
-      if (identityError || !user) {
+      if (userError) {
+        throw userError;
+      }
+
+      if (!user || user.id !== currentSession.user.id) {
         throw new Error(
-          "Sessão de recuperação inválida."
+          "Não foi possível validar sua identidade."
         );
       }
 
-      // Não permite que uma sessão que perdeu
-      // a identidade continue a operação.
-      if (user.id !== session.user.id) {
-        throw new Error(
-          "A sessão de recuperação foi alterada."
-        );
-      }
-
-      // Atualização efetiva da senha.
+      // Atualiza a senha.
       const {
         data,
         error: updateError,
@@ -118,77 +186,79 @@ export default function UpdatePassword() {
       });
 
       if (updateError) {
+        console.error("Erro ao atualizar senha:", {
+          message: updateError.message,
+          code: updateError.code,
+          status: updateError.status,
+        });
+
         throw updateError;
       }
 
-      // Verifica a resposta da atualização.
-      if (
-        !data?.user ||
-        data.user.id !== user.id
-      ) {
+      if (!data?.user || data.user.id !== user.id) {
         throw new Error(
-          "O Supabase não confirmou a atualização."
+          "O Supabase não confirmou a atualização da senha."
         );
       }
 
-      // A troca foi confirmada.
-      // Remove os valores de senha da interface.
+      // A atualização foi confirmada.
       setPassword("");
       setConfirmPassword("");
+      setSuccess(true);
 
-      // Encerra primeiro a sessão de recuperação.
-      const {
-        error: signOutError,
-      } = await supabase.auth.signOut({
-        scope: "local",
-      });
+      // Encerra a sessão de recuperação.
+      const { error: signOutError } =
+        await supabase.auth.signOut({
+          scope: "local",
+        });
 
       if (signOutError) {
-        if (import.meta.env.DEV) {
-          console.error(
-            "Falha ao encerrar a sessão:",
-            signOutError
-          );
-        }
+        console.error(
+          "Erro ao encerrar sessão:",
+          signOutError
+        );
 
-        // A atualização foi confirmada, mas
-        // não vamos indicar que o logout funcionou.
-        clearPasswordRecovery();
-        setSuccess(true);
+        setLogoutPending(true);
         setErrorMsg(
-          "A senha foi alterada, mas não foi " +
-          "possível encerrar a sessão automaticamente. " +
-          "Saia da conta antes de entrar novamente."
+          "A senha foi alterada, mas não foi possível encerrar a sessão. Tente sair novamente antes de entrar."
         );
         return;
       }
 
-      // Limpa o marcador local somente
-      // depois da tentativa de encerrar a sessão.
       clearPasswordRecovery();
-
-      // Exibe a confirmação na própria página.
-      // Não navega automaticamente ao dashboard.
-      setSuccess(true);
-
-      // Não chamamos navigate("/dashboard").
-      // O usuário escolherá voltar ao login.
+      setLogoutPending(false);
+      setErrorMsg("");
     } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error(
-          "Falha na redefinição da senha:",
-          error
-        );
-      }
+      console.error("Falha na redefinição:", {
+        message: error?.message,
+        code: error?.code,
+        status: error?.status,
+      });
 
-      setErrorMsg(
-        "Não foi possível atualizar a senha. " +
-        "Verifique os requisitos ou solicite " +
-        "um novo link de recuperação."
-      );
+      setErrorMsg(traduzirErro(error));
     } finally {
       setSaving(false);
     }
+  }
+
+  async function voltarLogin() {
+    if (logoutPending) {
+      const { error } = await supabase.auth.signOut({
+        scope: "local",
+      });
+
+      if (error) {
+        setErrorMsg(
+          "Não foi possível encerrar a sessão. Tente novamente."
+        );
+        return;
+      }
+
+      clearPasswordRecovery();
+      setLogoutPending(false);
+    }
+
+    navigate("/login", { replace: true });
   }
 
   return (
@@ -206,8 +276,8 @@ export default function UpdatePassword() {
           <div className="update-password-container">
             <h2>Verificando o link</h2>
             <p>
-              Aguarde enquanto validamos sua
-              solicitação de recuperação.
+              Validando sua solicitação de
+              recuperação de senha.
             </p>
           </div>
         )}
@@ -218,10 +288,9 @@ export default function UpdatePassword() {
             <div className="update-password-container">
               <h2>Link inválido ou expirado</h2>
 
-              <p className="auth-error">
+              <p className="auth-error" role="alert">
                 Sua solicitação não pôde ser
-                validada. Peça um novo link
-                para redefinir sua senha.
+                validada. Solicite um novo link.
               </p>
 
               <button
@@ -246,15 +315,14 @@ export default function UpdatePassword() {
                 <h2>Criar nova senha</h2>
 
                 <p>
-                  Informe uma senha forte
-                  e confirme para atualizar
-                  seu acesso.
+                  Informe uma senha forte e
+                  confirme para atualizar seu acesso.
                 </p>
 
                 <p>
                   Utilize letras maiúsculas,
-                  minúsculas, números e pelo
-                  menos um caractere especial.
+                  minúsculas, números e pelo menos
+                  um caractere especial.
                 </p>
 
                 {errorMsg && (
@@ -326,51 +394,22 @@ export default function UpdatePassword() {
               className="auth-success"
               role="status"
             >
-              O Supabase confirmou a
-              alteração da sua senha.
+              Sua senha foi alterada com sucesso.
             </p>
 
             {errorMsg && (
-              <p
-                className="auth-error"
-                role="alert"
-              >
+              <p className="auth-error" role="alert">
                 {errorMsg}
               </p>
             )}
 
             <button
               type="button"
-              onClick={() => {
-                // Se houver sessão remanescente,
-                // não enviamos o usuário ao login
-                // antes de tentar encerrá-la.
-                if (errorMsg) {
-                  supabase.auth
-                    .signOut({ scope: "local" })
-                    .then(({ error }) => {
-                      if (error) {
-                        setErrorMsg(
-                          "Não foi possível sair. " +
-                          "Tente encerrar a sessão novamente."
-                        );
-                        return;
-                      }
-
-                      setErrorMsg("");
-                      navigate("/login", {
-                        replace: true,
-                      });
-                    });
-                  return;
-                }
-
-                navigate("/login", {
-                  replace: true,
-                });
-              }}
+              onClick={voltarLogin}
             >
-              Ir para o login
+              {logoutPending
+                ? "Encerrar sessão e ir para login"
+                : "Ir para o login"}
             </button>
           </div>
         )}
