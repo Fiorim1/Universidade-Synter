@@ -23,6 +23,7 @@ import cadastroAppS2 from "../assets/s2cadastroapp.png";
 import trocaPlacaS1 from "../assets/trocaplacas1.png";
 import erroPortaSempreAbertaS1 from "../assets/erroportaabertas1.png";
 import cadastroVenusS3IMG from "../assets/cadastros3venus.png";
+import venusS3InstalacaoIMG from "../assets/venus-s3-instalacao.png";
 import cadastroMarsS2IMG from "../assets/marss2cadastro.png";
 import resetMarsS2IMG from "../assets/marss2reset.png";
 import venuss2TrocaIdioma from "../assets/venuss2trocaidioma.png";
@@ -110,6 +111,14 @@ const videos = [
       "Aprenda como realizar corretamente o cadastro da fechadura Venus S3.",
     video: "https://youtu.be/G-0pJ70Wupg",
     capa: cadastroVenusS3IMG,
+  },
+  {
+    id: 19,
+    titulo: "Venus S3 - Instalação",
+    descricao:
+      "Aprenda o passo a passo para realizar corretamente a instalação da fechadura digital Venus S3.",
+    video: "https://youtu.be/QYJnjXgKUIk",
+    capa: venusS3InstalacaoIMG,
   },
   {
     id: 9,
@@ -221,6 +230,7 @@ function obterLinha(titulo) {
 
 function obterProcedimento(titulo) {
   const nome = normalizarTexto(titulo);
+  if (nome.includes("instalacao")) return "Instalação";
   if (nome.includes("reset")) return "Reset";
   if (nome.includes("retirada")) return "Retirada da porta";
   if (nome.includes("cadastro")) return "Cadastro";
