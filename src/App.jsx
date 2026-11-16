@@ -403,7 +403,7 @@ export default function App() {
           <Route
             path="/tecnicos-homologados/gerenciar"
             element={
-              <ProtectedRoute requiredRole="adm">
+              <ProtectedRoute>
                 <GerenciarTecnicos />
               </ProtectedRoute>
             }
@@ -417,7 +417,7 @@ export default function App() {
           <Route
             path="/assistencia-tecnica"
             element={
-              <ProtectedRoute requiredRole="adm">
+              <ProtectedRoute>
                 <AssistenciaTecnica />
               </ProtectedRoute>
             }
@@ -431,7 +431,7 @@ export default function App() {
           <Route
             path="/visitas-tecnicas"
             element={
-              <ProtectedRoute requiredRole="adm">
+              <ProtectedRoute>
                 <VisitasTecnicas />
               </ProtectedRoute>
             }
@@ -445,7 +445,7 @@ export default function App() {
           <Route
             path="/synter-analytics"
             element={
-              <ProtectedRoute requiredRole="adm">
+              <ProtectedRoute>
                 <SynterAnalytics />
               </ProtectedRoute>
             }
