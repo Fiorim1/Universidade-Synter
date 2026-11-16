@@ -13,10 +13,13 @@ import {
 // AUTENTICAÇÃO
 // ========================================
 
-import Login from "./components/Login.jsx";
+import * as LoginModule from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
 import ForgotPassword from "./components/ForgotPassword.jsx";
 import UpdatePassword from "./components/UpdatePassword.jsx";
+
+// Aceita tanto export default quanto export nomeado do componente Login.
+const Login = LoginModule.default ?? LoginModule.Login;
 
 // ========================================
 // CONTROLE DE ACESSO E RECUPERAÇÃO
