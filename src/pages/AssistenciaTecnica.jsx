@@ -4,9 +4,21 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
+import { supabase } from "../services/supabaseClient";
 
 import "../styles/AssistenciaTecnica.css";
 import "../styles/AssistenciaHero.css";
+
+
+// Cabeçalho com o token da sessão atual. O servidor valida o token
+// e o cargo; o navegador apenas o envia.
+async function obterCabecalhoAuth() {
+    const { data } = await supabase.auth.getSession();
+
+    return {
+        Authorization: `Bearer ${data?.session?.access_token || ""}`,
+    };
+}
 
 
 function AssistenciaTecnica() {
@@ -77,8 +89,34 @@ function AssistenciaTecnica() {
                 await fetch(
                     `/api/sat/buscar?q=${encodeURIComponent(
                         valorPesquisa
-                    )}`
+                    )}`,
+                    {
+                        headers:
+                            await obterCabecalhoAuth(),
+                    }
                 );
+
+
+            if (resposta.status === 401) {
+
+                setMensagem(
+                    "Sua sessão expirou. Entre novamente para consultar os chamados."
+                );
+
+                return;
+
+            }
+
+
+            if (resposta.status === 403) {
+
+                setMensagem(
+                    "Seu usuário não tem permissão para consultar chamados."
+                );
+
+                return;
+
+            }
 
 
             const dados =
@@ -175,20 +213,84 @@ function AssistenciaTecnica() {
     // BAIXAR PDF
     // ==========================================
 
-    function baixarPDF(
+    async function baixarPDF(
         notionPageId
     ) {
 
-        const url =
-            `/api/sat/pdf?pageId=${encodeURIComponent(
-                notionPageId
-            )}`;
+        try {
+
+            const resposta =
+                await fetch(
+                    `/api/sat/pdf?pageId=${encodeURIComponent(
+                        notionPageId
+                    )}`,
+                    {
+                        headers:
+                            await obterCabecalhoAuth(),
+                    }
+                );
 
 
-        window.open(
-            url,
-            "_blank"
-        );
+            if (!resposta.ok) {
+
+                window.alert(
+                    resposta.status === 401
+                        ? "Sua sessão expirou. Entre novamente para baixar o PDF."
+                        : resposta.status === 403
+                            ? "Seu usuário não tem permissão para baixar este PDF."
+                            : "Não foi possível gerar o PDF do chamado."
+                );
+
+                return;
+
+            }
+
+
+            const blob =
+                await resposta.blob();
+
+            const disposicao =
+                resposta.headers.get(
+                    "Content-Disposition"
+                ) || "";
+
+            const nomeArquivo =
+                (disposicao.match(
+                    /filename="?([^";]+)"?/i
+                ) || [])[1] ||
+                "Chamado-SAT.pdf";
+
+
+            const urlTemporaria =
+                URL.createObjectURL(blob);
+
+            const link =
+                document.createElement("a");
+
+            link.href = urlTemporaria;
+            link.download = nomeArquivo;
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            setTimeout(
+                () => URL.revokeObjectURL(urlTemporaria),
+                60000
+            );
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao baixar PDF:",
+                erro
+            );
+
+            window.alert(
+                "Não foi possível gerar o PDF do chamado."
+            );
+
+        }
 
     }
 

@@ -1,3 +1,4 @@
+import { exigirAcesso, lerCargosPermitidos } from "./_lib/exigirAcesso.js";
 
 const NOTION_API = "https://api.notion.com/v1";
 const NOTION_VERSION = "2025-09-03";
@@ -992,14 +993,20 @@ export default async function handler(
       });
     }
 
-    // Verificar usuário autenticado.
+    // Verificar usuário autenticado E com cargo autorizado.
+    // Cargos: ANALYTICS_CARGOS_PERMITIDOS ou, se vazio, SAT_CARGOS_PERMITIDOS.
 
-    if (!(await validarLogin(req))) {
-      return res.status(401).json({
-        error:
-          "Sessão inválida ou expirada.",
-      });
-    }
+    const acesso = await exigirAcesso(req, res, {
+      cargos: lerCargosPermitidos([
+        "ANALYTICS_CARGOS_PERMITIDOS",
+        "SAT_CARGOS_PERMITIDOS",
+      ]),
+      formatoErro: "analytics",
+    });
+
+    if (!acesso) return;
+
+    res.setHeader("Cache-Control", "no-store");
 
     // ====================================
     // GET — LISTAGEM

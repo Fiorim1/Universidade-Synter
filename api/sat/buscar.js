@@ -1,4 +1,5 @@
 import { Client } from "@notionhq/client";
+import { exigirAcesso, lerCargosPermitidos } from "../_lib/exigirAcesso.js";
 
 
 // =====================================================
@@ -258,6 +259,16 @@ export default async function handler(req, res) {
   }
 
 
+  // Só usuários logados e com cargo autorizado acessam os chamados
+  const acesso = await exigirAcesso(req, res, {
+    cargos: lerCargosPermitidos("SAT_CARGOS_PERMITIDOS"),
+  });
+
+  if (!acesso) return;
+
+  // Contém dados pessoais de clientes: nunca guardar em cache
+  res.setHeader("Cache-Control", "no-store");
+
   try {
 
     const pesquisa =
@@ -444,9 +455,6 @@ export default async function handler(req, res) {
 
       mensagem:
         "Não foi possível consultar os chamados.",
-
-      erro:
-        erro?.message || "Erro desconhecido",
 
     });
 

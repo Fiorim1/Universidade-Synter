@@ -29,7 +29,13 @@ function linha(rotulo, valor) {
 }
 
 function assinatura(src, titulo, nome) {
-  if (!/^data:image\/(png|jpeg|webp);base64,/i.test(src || "")) {
+  // Data URL de imagem com SOMENTE caracteres base64 até o fim:
+  // impede que o valor feche o atributo src e injete HTML.
+  if (
+    !/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/]+={0,2}$/i.test(
+      src || ""
+    )
+  ) {
     throw new Error(
       `A assinatura ${titulo.toLowerCase()} não está disponível.`
     );
@@ -38,7 +44,7 @@ function assinatura(src, titulo, nome) {
   return `
     <div class="assinatura">
       <img
-        src="${src}"
+        src="${limpar(src)}"
         alt="${limpar(titulo)}"
       />
 

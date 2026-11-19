@@ -1,5 +1,6 @@
 import { Client } from "@notionhq/client";
 import PDFDocument from "pdfkit";
+import { exigirAcesso, lerCargosPermitidos } from "../_lib/exigirAcesso.js";
 
 
 // =====================================================
@@ -9,6 +10,13 @@ import PDFDocument from "pdfkit";
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
+
+// Formato aceito para o ID de uma página do Notion
+const FORMATO_ID_NOTION =
+  /^(?:[0-9a-f]{32}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/i;
+
+const semTracos = (valor) =>
+  String(valor || "").replace(/-/g, "").toLowerCase();
 
 
 // =====================================================
@@ -587,17 +595,30 @@ export default async function handler(
       });
   }
 
+  // Só usuários logados e com cargo autorizado acessam os chamados
+  const acesso = await exigirAcesso(req, res, {
+    cargos: lerCargosPermitidos("SAT_CARGOS_PERMITIDOS"),
+  });
+
+  if (!acesso) return;
+
+  // Contém dados pessoais de clientes: nunca guardar em cache
+  res.setHeader("Cache-Control", "no-store");
+
   try {
     const pageId =
       req.query.pageId;
 
-    if (!pageId) {
+    if (
+      typeof pageId !== "string" ||
+      !FORMATO_ID_NOTION.test(pageId)
+    ) {
       return res
         .status(400)
         .json({
           sucesso: false,
           mensagem:
-            "Chamado não informado.",
+            "Chamado inválido ou não informado.",
         });
     }
 
@@ -610,6 +631,32 @@ export default async function handler(
       await notion.pages.retrieve({
         page_id: pageId,
       });
+
+    // Só gera PDF de páginas que pertencem ao banco de chamados.
+    // Sem isso, qualquer página que a integração do Notion enxerga
+    // poderia ser lida informando o ID dela.
+    const fonteEsperada = semTracos(
+      process.env.NOTION_DATA_SOURCE_ID
+    );
+
+    const fontePagina = semTracos(
+      pagina.parent?.data_source_id
+    );
+
+    if (!fonteEsperada || fontePagina !== fonteEsperada) {
+      console.warn(
+        "PDF recusado: página fora do banco de chamados. Tipo do pai:",
+        pagina.parent?.type
+      );
+
+      return res
+        .status(404)
+        .json({
+          sucesso: false,
+          mensagem:
+            "Chamado não encontrado.",
+        });
+    }
 
     const properties =
       pagina.properties;
@@ -1229,10 +1276,6 @@ export default async function handler(
 
         mensagem:
           "Não foi possível gerar o PDF do chamado.",
-
-        erro:
-          erro?.message ||
-          "Erro desconhecido",
       });
   }
 }

@@ -4,6 +4,11 @@ import OpenAI, {
     toFile
 } from "openai"
 
+import {
+    exigirAcesso,
+    lerCargosPermitidos
+} from "./_lib/exigirAcesso.js"
+
 
 const openai =
     new OpenAI({
@@ -996,25 +1001,32 @@ export default async function handler(
 
 
         // ======================================
-        // MFA / AAL2 OBRIGATÓRIO
+        // CARGO AUTORIZADO (verificado no servidor)
         // ======================================
+        //
+        // O uso do chat consome a conta paga da OpenAI. Só entram cargos
+        // listados em CHAT_CARGOS_PERMITIDOS (ou, se vazio, em
+        // SAT_CARGOS_PERMITIDOS).
 
-        if (
-            autenticacao.claims?.aal !==
-            "aal2"
-        ) {
+        const acesso =
+            await exigirAcesso(
+                req,
+                res,
+                {
+                    cargos:
+                        lerCargosPermitidos([
+                            "CHAT_CARGOS_PERMITIDOS",
+                            "SAT_CARGOS_PERMITIDOS"
+                        ]),
 
-            return res
-                .status(403)
-                .json({
+                    formatoErro:
+                        "analytics"
+                }
+            )
 
-                    error:
-                        "Confirme a autenticação em dois fatores para continuar.",
+        if (!acesso) {
 
-                    code:
-                        "MFA_REQUIRED"
-
-                })
+            return
 
         }
 
