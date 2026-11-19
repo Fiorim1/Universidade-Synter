@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 
 import {
@@ -247,7 +246,7 @@ export default function App() {
           <Route
             path="/dashsac"
             element={
-              <ProtectedRoute requiredRole="adm">
+              <ProtectedRoute requiredRole="adm,sat">
                 <DashboardSAC />
               </ProtectedRoute>
             }
@@ -420,7 +419,7 @@ export default function App() {
           <Route
             path="/assistencia-tecnica"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="adm,sat">
                 <AssistenciaTecnica />
               </ProtectedRoute>
             }
@@ -448,7 +447,7 @@ export default function App() {
           <Route
             path="/synter-analytics"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="adm,sat">
                 <SynterAnalytics />
               </ProtectedRoute>
             }

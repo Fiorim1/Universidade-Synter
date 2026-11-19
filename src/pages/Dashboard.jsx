@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 
 import Header from "../components/Header";
@@ -218,6 +217,11 @@ function Dashboard() {
     perfil.userId === user.id &&
     perfil.role === "adm";
 
+  const isSat =
+    Boolean(user?.id) &&
+    perfil.userId === user.id &&
+    perfil.role === "sat";
+
   // ========================================
   // INTERFACE
   // ========================================
@@ -309,10 +313,10 @@ function Dashboard() {
 
           {/* =================================
               ASSISTÊNCIA / SUPORTE TÉCNICO
-              EXCLUSIVO PARA ADM
+              ADM E SAT
           ================================= */}
 
-          {isAdm && (
+          {(isAdm || isSat) && (
             <CardsDashboard
               image={FtIcon}
               title="Assistência / Suporte Técnico"

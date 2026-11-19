@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 
 import {
@@ -163,11 +162,17 @@ export default function ProtectedRoute({
       );
     }
 
-    const roleExigida = String(requiredRole)
-      .trim()
-      .toLowerCase();
+    // Aceita um cargo ("adm"), vários separados por vírgula ("adm,sat")
+    // ou uma lista (["adm", "sat"]).
+    const rolesExigidas = (
+      Array.isArray(requiredRole)
+        ? requiredRole
+        : String(requiredRole).split(",")
+    )
+      .map((item) => String(item).trim().toLowerCase())
+      .filter(Boolean);
 
-    if (permissao.role !== roleExigida) {
+    if (!rolesExigidas.includes(permissao.role)) {
       return (
         <Navigate
           to="/dashboard"
