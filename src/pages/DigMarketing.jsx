@@ -137,6 +137,18 @@ import imagem9 from "../assets/marketing-digitais/Imagem S2 Face Id Senha com Á
 import imagem10 from "../assets/marketing-digitais/Imagem S2 Pro Neo.jpg";
 import imagem11 from "../assets/marketing-digitais/Imagem S2 Pro.jpg";
 
+import imagem12 from "../assets/marketing-digitais/Imagem Syrius S3 Max.jpg";
+import imagem13 from "../assets/marketing-digitais/Imagem Dallas S3 Pro.jpg";
+import imagem14 from "../assets/marketing-digitais/Imagem Venus S3 Pro.jpg";
+import imagem15 from "../assets/marketing-digitais/Imagem Syrius S3 Pro.jpg";
+import imagem16 from "../assets/marketing-digitais/Imagem Lyra App.png";
+import imagem17 from "../assets/marketing-digitais/Imagem Lyra Máquina.png";
+import imagem18 from "../assets/marketing-digitais/Imagem Lyra Senha.png";
+import imagem19 from "../assets/marketing-digitais/Imagem Lyra Tag.png";
+import imagem20 from "../assets/marketing-digitais/Imagem Lyra Cepo Traseira.png";
+import imagem21 from "../assets/marketing-digitais/Imagem Lyra Cepo.png";
+import imagem22 from "../assets/marketing-digitais/Imagem Lyra.jpg";
+
 const imagens = [
   { id: 1, titulo: "Eris S2 Face Id App", linha: "Eris", src: imagem0, arquivo: "Imagem Eris S2 Face Id App.png" },
   { id: 2, titulo: "Eris S2 Face Id Bateria", linha: "Eris", src: imagem1, arquivo: "Imagem Eris S2 Face Id Bateria.png" },
@@ -150,6 +162,17 @@ const imagens = [
   { id: 10, titulo: "S2 Face Id Senha com Água", linha: "Eris", src: imagem9, arquivo: "Imagem S2 Face Id Senha com Água.png" },
   { id: 11, titulo: "Syrius S2 Pro Neo", linha: "Syrius", src: imagem10, arquivo: "Imagem S2 Pro Neo.jpg" },
   { id: 12, titulo: "Syrius S2 Pro", linha: "Syrius", src: imagem11, arquivo: "Imagem S2 Pro.jpg" },
+  { id: 13, titulo: "Syrius S3 Max", linha: "Syrius", src: imagem12, arquivo: "Imagem Syrius S3 Max.jpg" },
+  { id: 14, titulo: "Dallas S3 Pro", linha: "Dallas", src: imagem13, arquivo: "Imagem Dallas S3 Pro.jpg" },
+  { id: 15, titulo: "Venus S3 Pro", linha: "Venus", src: imagem14, arquivo: "Imagem Venus S3 Pro.jpg" },
+  { id: 16, titulo: "Syrius S3 Pro", linha: "Syrius", src: imagem15, arquivo: "Imagem Syrius S3 Pro.jpg" },
+  { id: 17, titulo: "Lyra App", linha: "Lyra", src: imagem16, arquivo: "Imagem Lyra App.png" },
+  { id: 18, titulo: "Lyra Máquina", linha: "Lyra", src: imagem17, arquivo: "Imagem Lyra Máquina.png" },
+  { id: 19, titulo: "Lyra Senha", linha: "Lyra", src: imagem18, arquivo: "Imagem Lyra Senha.png" },
+  { id: 20, titulo: "Lyra Tag", linha: "Lyra", src: imagem19, arquivo: "Imagem Lyra Tag.png" },
+  { id: 21, titulo: "Lyra Cepo Traseira", linha: "Lyra", src: imagem20, arquivo: "Imagem Lyra Cepo Traseira.png" },
+  { id: 22, titulo: "Lyra Cepo", linha: "Lyra", src: imagem21, arquivo: "Imagem Lyra Cepo.png" },
+  { id: 23, titulo: "Lyra", linha: "Lyra", src: imagem22, arquivo: "Imagem Lyra.jpg" },
 ];
 
 const LIMITE_MOBILE = 3;
