@@ -235,6 +235,7 @@ export default function DigMarketing() {
   const [profileOpen, setProfileOpen] =
     useState(false);
   const [imagemAberta, setImagemAberta] = useState(null);
+  const [mostrarTodasImagens, setMostrarTodasImagens] = useState(false);
 
   const [pesquisa, setPesquisa] =
     useState("");
@@ -285,16 +286,19 @@ export default function DigMarketing() {
     setPesquisa("");
     setLinha("Todas");
     setMostrarTodos(false);
+    setMostrarTodasImagens(false);
   }
 
   function alterarPesquisa(valor) {
     setPesquisa(valor);
     setMostrarTodos(false);
+    setMostrarTodasImagens(false);
   }
 
   function alterarLinha(valor) {
     setLinha(valor);
     setMostrarTodos(false);
+    setMostrarTodasImagens(false);
   }
 
   // ========================================
@@ -512,7 +516,7 @@ export default function DigMarketing() {
             <h4>IMAGENS DE FECHADURAS DIGITAIS E ACESSÓRIOS</h4>
           </div>
           {imagensFiltradas.length ? (
-            <div className="videos-grid dm-gallery-grid">
+            <div className={`videos-grid dm-gallery-grid ${mostrarTodasImagens ? "dm-gallery-expanded" : ""}`}>
               {imagensFiltradas.map((item) => (
                 <article className="dm-gallery-card" key={item.id}>
                   <button type="button" className="dm-gallery-preview" onClick={() => setImagemAberta(item)} aria-label={`Ampliar ${item.titulo}`}>
@@ -530,6 +534,13 @@ export default function DigMarketing() {
               ))}
             </div>
           ) : <p>Nenhuma imagem encontrada.</p>}
+          {imagensFiltradas.length > LIMITE_MOBILE && (
+            <button type="button" className="dig-marketing-more dm-gallery-more"
+              aria-expanded={mostrarTodasImagens}
+              onClick={() => setMostrarTodasImagens(atual => !atual)}>
+              {mostrarTodasImagens ? "Mostrar menos imagens" : `Ver mais ${imagensFiltradas.length - LIMITE_MOBILE} imagens`}
+            </button>
+          )}
         </section>
         {imagemAberta && (
           <div className="dm-gallery-overlay" onClick={() => setImagemAberta(null)} onKeyDown={(e) => { if (e.key === "Escape") setImagemAberta(null); }}>
