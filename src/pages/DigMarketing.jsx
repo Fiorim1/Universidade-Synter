@@ -482,14 +482,20 @@ export default function DigMarketing() {
             <h4>IMAGENS DE FECHADURAS DIGITAIS E ACESSÓRIOS</h4>
           </div>
           {imagensFiltradas.length ? (
-            <div className="dm-gallery-grid">
+            <div className="videos-grid dm-gallery-grid">
               {imagensFiltradas.map((item) => (
                 <article className="dm-gallery-card" key={item.id}>
                   <button type="button" className="dm-gallery-preview" onClick={() => setImagemAberta(item)} aria-label={`Ampliar ${item.titulo}`}>
                     <img src={item.src} alt={item.titulo} loading="lazy" />
                   </button>
-                  <h3>{item.titulo}</h3>
-                  <a href={item.src} download={item.arquivo}>Baixar imagem</a>
+                  <div className="dm-gallery-body">
+                    <h3>{item.titulo}</h3>
+                    <p>Conteúdo para apoiar ações comerciais e de marketing.</p>
+                    <a className="dm-gallery-download" href={item.src} download={item.arquivo}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4" /></svg>
+                      Baixar imagem
+                    </a>
+                  </div>
                 </article>
               ))}
             </div>
