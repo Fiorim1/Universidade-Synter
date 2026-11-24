@@ -149,6 +149,10 @@ import imagem20 from "../assets/marketing-digitais/Imagem Lyra Cepo Traseira.png
 import imagem21 from "../assets/marketing-digitais/Imagem Lyra Cepo.png";
 import imagem22 from "../assets/marketing-digitais/Imagem Lyra.jpg";
 
+import imagem23 from "../assets/marketing-digitais/Controladora Digital.jpg";
+import imagem24 from "../assets/marketing-digitais/Controladora QR Code.jpg";
+import imagem25 from "../assets/marketing-digitais/Controladora Face Id.jpg";
+
 const imagens = [
   { id: 1, titulo: "Eris S2 Face Id App", linha: "Eris", src: imagem0, arquivo: "Imagem Eris S2 Face Id App.png" },
   { id: 2, titulo: "Eris S2 Face Id Bateria", linha: "Eris", src: imagem1, arquivo: "Imagem Eris S2 Face Id Bateria.png" },
@@ -173,6 +177,9 @@ const imagens = [
   { id: 21, titulo: "Lyra Cepo Traseira", linha: "Lyra", src: imagem20, arquivo: "Imagem Lyra Cepo Traseira.png" },
   { id: 22, titulo: "Lyra Cepo", linha: "Lyra", src: imagem21, arquivo: "Imagem Lyra Cepo.png" },
   { id: 23, titulo: "Lyra", linha: "Lyra", src: imagem22, arquivo: "Imagem Lyra.jpg" },
+  { id: 24, titulo: "Controladora Digital", linha: "Controladoras", src: imagem23, arquivo: "Controladora Digital.jpg" },
+  { id: 25, titulo: "Controladora QR Code", linha: "Controladoras", src: imagem24, arquivo: "Controladora QR Code.jpg" },
+  { id: 26, titulo: "Controladora Face Id", linha: "Controladoras", src: imagem25, arquivo: "Controladora Face Id.jpg" },
 ];
 
 const LIMITE_MOBILE = 3;
