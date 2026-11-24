@@ -136,8 +136,99 @@ import stillusRoseta0740 from "../assets/fichas-tecnicas/stillus/FT_Stillus_Rose
 import stillusRoseta0755 from "../assets/fichas-tecnicas/stillus/FT_Stillus_Roseta_07_55mm.pdf";
 
 // ==========================================
+// PDFS — ACQUA MAX
+// ==========================================
+
+import acquaMaxRoseta0855 from "../assets/fichas-tecnicas/acquamax/FT_Acqua_Max_Roseta_08_55mm.pdf";
+
+// ==========================================
+// PDFS — CECI
+// ==========================================
+
+import ceciRoseta0155 from "../assets/fichas-tecnicas/ceci/FT_Ceci_Roseta_01_55mm.pdf";
+import ceciRoseta1055 from "../assets/fichas-tecnicas/ceci/FT_Ceci_Roseta_10_55mm.pdf";
+
+// ==========================================
 // MAPEAMENTO DE FICHAS
 // ==========================================
+
+import luckRoseta0155 from "../assets/fichas-tecnicas/luck/FT_Luck_Roseta_01_55mm.pdf";
+import luckRoseta0955 from "../assets/fichas-tecnicas/luck/FT_Luck_Roseta_09_55mm.pdf";
+
+import marineRoseta0155 from "../assets/fichas-tecnicas/marine/FT_Marine_Roseta_01_55mm.pdf";
+import marineRoseta0440 from "../assets/fichas-tecnicas/marine/FT_Marine_Roseta_04_40mm.pdf";
+import marineRoseta0455 from "../assets/fichas-tecnicas/marine/FT_Marine_Roseta_04_55mm.pdf";
+import marineRoseta0740 from "../assets/fichas-tecnicas/marine/FT_Marine_Roseta_07_40mm.pdf";
+import marineRoseta0755 from "../assets/fichas-tecnicas/marine/FT_Marine_Roseta_07_55mm.pdf";
+import marineRoseta0955 from "../assets/fichas-tecnicas/marine/FT_Marine_Roseta_09_55mm.pdf";
+
+import marineIIRoseta0155 from "../assets/fichas-tecnicas/marineii/FT_Marine_II_Roseta_01_55mm.pdf";
+import marineIIRoseta0440 from "../assets/fichas-tecnicas/marineii/FT_Marine_II_Roseta_04_40mm.pdf";
+import marineIIRoseta0455 from "../assets/fichas-tecnicas/marineii/FT_Marine_II_Roseta_04_55mm.pdf";
+import marineIIRoseta0740 from "../assets/fichas-tecnicas/marineii/FT_Marine_II_Roseta_07_40mm.pdf";
+import marineIIRoseta0755 from "../assets/fichas-tecnicas/marineii/FT_Marine_II_Roseta_07_55mm.pdf";
+import marineIIRoseta0955 from "../assets/fichas-tecnicas/marineii/FT_Marine_II_Roseta_09_55mm.pdf";
+
+const FICHAS_MARINEII = {
+  "Roseta 01": { "55": marineIIRoseta0155 },
+  "Roseta 04": { "40": marineIIRoseta0440, "55": marineIIRoseta0455 },
+  "Roseta 07": { "40": marineIIRoseta0740, "55": marineIIRoseta0755 },
+  "Roseta 09": { "55": marineIIRoseta0955 },
+};
+
+import navisIIRoseta0155 from "../assets/fichas-tecnicas/navisii/FT_Navis_II_Roseta_01_55mm.pdf";
+import navisIIRoseta0440 from "../assets/fichas-tecnicas/navisii/FT_Navis_II_Roseta_04_40mm.pdf";
+import navisIIRoseta0455 from "../assets/fichas-tecnicas/navisii/FT_Navis_II_Roseta_04_55mm.pdf";
+import navisIIRoseta0740 from "../assets/fichas-tecnicas/navisii/FT_Navis_II_Roseta_07_40mm.pdf";
+import navisIIRoseta0755 from "../assets/fichas-tecnicas/navisii/FT_Navis_II_Roseta_07_55mm.pdf";
+import navisIIRoseta0955 from "../assets/fichas-tecnicas/navisii/FT_Navis_II_Roseta_09_55mm.pdf";
+
+const FICHAS_NAVISII = {
+  "Roseta 01": { "55": navisIIRoseta0155 },
+  "Roseta 04": { "40": navisIIRoseta0440, "55": navisIIRoseta0455 },
+  "Roseta 07": { "40": navisIIRoseta0740, "55": navisIIRoseta0755 },
+  "Roseta 09": { "55": navisIIRoseta0955 },
+};
+
+import poloMaxRoseta1555 from "../assets/fichas-tecnicas/polomax/FT_Polo_Max_Roseta_15_55mm.pdf";
+import olympiaRoseta0740 from "../assets/fichas-tecnicas/olympia/FT_Olympia_Roseta_07_40mm.pdf";
+import olympiaRoseta0955 from "../assets/fichas-tecnicas/olympia/FT_Olympia_Roseta_09_55mm.pdf";
+
+import starRoseta0740 from "../assets/fichas-tecnicas/star/FT_Star_Roseta_07_40mm.pdf";
+import starRoseta0755 from "../assets/fichas-tecnicas/star/FT_Star_Roseta_07_55mm.pdf";
+import starRoseta0955 from "../assets/fichas-tecnicas/star/FT_Star_Roseta_09_55mm.pdf";
+
+import starMaxRoseta1455 from "../assets/fichas-tecnicas/starmax/FT_Star_Max_Roseta_14_55mm.pdf";
+
+const FICHAS_STARMAX = {
+  "Roseta 14": { "55": starMaxRoseta1455 },
+};
+
+const FICHAS_STAR = {
+  "Roseta 07": { "40": starRoseta0740, "55": starRoseta0755 },
+  "Roseta 09": { "55": starRoseta0955 },
+};
+
+const FICHAS_POLOMAX = {
+  "Roseta 15": { "55": poloMaxRoseta1555 },
+};
+
+const FICHAS_OLYMPIA = {
+  "Roseta 07": { "40": olympiaRoseta0740 },
+  "Roseta 09": { "55": olympiaRoseta0955 },
+};
+
+const FICHAS_MARINE = {
+  "Roseta 01": { "55": marineRoseta0155 },
+  "Roseta 04": { "40": marineRoseta0440, "55": marineRoseta0455 },
+  "Roseta 07": { "40": marineRoseta0740, "55": marineRoseta0755 },
+  "Roseta 09": { "55": marineRoseta0955 },
+};
+
+const FICHAS_LUCK = {
+  "Roseta 01": { "55": luckRoseta0155 },
+  "Roseta 09": { "55": luckRoseta0955 },
+};
 
 const FICHAS_NAVIS = {
   "Roseta 01": {
@@ -192,6 +283,36 @@ const FICHAS_STILLUS = {
   },
 };
 
+const FICHAS_ACQUAMAX = {
+  "Roseta 08": {
+    "55": acquaMaxRoseta0855,
+  },
+};
+
+import championRoseta0740 from "../assets/fichas-tecnicas/champion/FT_Champion_Roseta_07_40mm.pdf";
+import championRoseta0755 from "../assets/fichas-tecnicas/champion/FT_Champion_Roseta_07_55mm.pdf";
+import championRoseta0955 from "../assets/fichas-tecnicas/champion/FT_Champion_Roseta_09_55mm.pdf";
+
+import crispusMaxRoseta1355 from "../assets/fichas-tecnicas/crispusmax/FT_Crispus_Max_Roseta_13_55mm.pdf";
+
+const FICHAS_CRISPUSMAX = {
+  "Roseta 13": { "55": crispusMaxRoseta1355 },
+};
+
+const FICHAS_CHAMPION = {
+  "Roseta 07": { "40": championRoseta0740, "55": championRoseta0755 },
+  "Roseta 09": { "55": championRoseta0955 },
+};
+
+const FICHAS_CECI = {
+  "Roseta 01": {
+    "55": ceciRoseta0155,
+  },
+  "Roseta 10": {
+    "55": ceciRoseta1055,
+  },
+};
+
 // ==========================================
 // PRODUTOS DIGITAIS
 // ==========================================
@@ -243,19 +364,19 @@ const PRODUTOS_MECANICOS = [
     title: "Stillus",
     ficha: "stillus",
   },
-  { image: STARMAX, title: "Star Max" },
-  { image: STAR, title: "Star" },
-  { image: POLOMAX, title: "Polo Max" },
-  { image: OLYMPIA, title: "Olympia" },
-  { image: NAVISII, title: "Navis II" },
+  { image: STARMAX, title: "Star Max", ficha: "starmax" },
+  { image: STAR, title: "Star", ficha: "star" },
+  { image: POLOMAX, title: "Polo Max", ficha: "polomax" },
+  { image: OLYMPIA, title: "Olympia", ficha: "olympia" },
+  { image: NAVISII, title: "Navis II", ficha: "navisii" },
   {
     image: NAVIS,
     title: "Navis",
     ficha: "navis",
   },
-  { image: MARINEII, title: "Marine II" },
-  { image: MARINE, title: "Marine" },
-  { image: LUCK, title: "Luck" },
+  { image: MARINEII, title: "Marine II", ficha: "marineii" },
+  { image: MARINE, title: "Marine", ficha: "marine" },
+  { image: LUCK, title: "Luck", ficha: "luck" },
   {
     image: GOL,
     title: "Gol",
@@ -266,10 +387,10 @@ const PRODUTOS_MECANICOS = [
     title: "Glorian",
     ficha: "glorian",
   },
-  { image: CRISPUSMAX, title: "Crispus Max" },
-  { image: CHAMPION, title: "Champion" },
-  { image: CECI, title: "Ceci" },
-  { image: ACQUAMAX, title: "Acqua Max" },
+  { image: CRISPUSMAX, title: "Crispus Max", ficha: "crispusmax" },
+  { image: CHAMPION, title: "Champion", ficha: "champion" },
+  { image: CECI, title: "Ceci", ficha: "ceci" },
+  { image: ACQUAMAX, title: "Acqua Max", ficha: "acquamax" },
   { image: BARRAAPOIO, title: "Barra de Apoio" },
   {
     image: FECPCORRER,
@@ -1038,6 +1159,24 @@ function FichaTec() {
   ] = useState(null);
 
   const configuracoes = {
+    marineii: { modelo: "Marine II", fichas: FICHAS_MARINEII },
+    starmax: { modelo: "Star Max", fichas: FICHAS_STARMAX },
+    star: { modelo: "Star", fichas: FICHAS_STAR },
+    polomax: { modelo: "Polo Max", fichas: FICHAS_POLOMAX },
+    olympia: { modelo: "Olympia", fichas: FICHAS_OLYMPIA },
+    navisii: { modelo: "Navis II", fichas: FICHAS_NAVISII },
+    marine: { modelo: "Marine", fichas: FICHAS_MARINE },
+    luck: { modelo: "Luck", fichas: FICHAS_LUCK },
+    crispusmax: { modelo: "Crispus Max", fichas: FICHAS_CRISPUSMAX },
+    champion: { modelo: "Champion", fichas: FICHAS_CHAMPION },
+    ceci: {
+      modelo: "Ceci",
+      fichas: FICHAS_CECI,
+    },
+    acquamax: {
+      modelo: "Acqua Max",
+      fichas: FICHAS_ACQUAMAX,
+    },
     navis: {
       modelo: "Navis",
       fichas: FICHAS_NAVIS,
