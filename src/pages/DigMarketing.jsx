@@ -29,6 +29,7 @@ import "../styles/Videos.css";
 import "../styles/DigMarketing.css";
 import "../styles/DigMarketingHero.css";
 import "../styles/DigMarketingMobile.css";
+import "../styles/DigMarketingGaleria.css";
 
 // ==========================================
 // VÍDEOS DE MARKETING
@@ -123,12 +124,40 @@ const videos = [
 // CONSTANTES
 // ==========================================
 
+import imagem0 from "../assets/marketing-digitais/Imagem Eris S2 Face Id App.png";
+import imagem1 from "../assets/marketing-digitais/Imagem Eris S2 Face Id Bateria.png";
+import imagem2 from "../assets/marketing-digitais/Imagem Eris S2 Face Id Carga Bateria.png";
+import imagem3 from "../assets/marketing-digitais/Imagem Eris S2 Face Id Cepo.png";
+import imagem4 from "../assets/marketing-digitais/Imagem Eris S2 Face Id Senha.png";
+import imagem5 from "../assets/marketing-digitais/Imagem Eris S2 Face Id Água.png";
+import imagem6 from "../assets/marketing-digitais/Imagem Eris S2 Face Id.jpg";
+import imagem7 from "../assets/marketing-digitais/Imagem Eris S2 face Id Digital.png";
+import imagem8 from "../assets/marketing-digitais/Imagem Gateway.jpg";
+import imagem9 from "../assets/marketing-digitais/Imagem S2 Face Id Senha com Água.png";
+import imagem10 from "../assets/marketing-digitais/Imagem S2 Pro Neo.jpg";
+import imagem11 from "../assets/marketing-digitais/Imagem S2 Pro.jpg";
+
+const imagens = [
+  { id: 1, titulo: "Eris S2 Face Id App", linha: "Eris", src: imagem0, arquivo: "Imagem Eris S2 Face Id App.png" },
+  { id: 2, titulo: "Eris S2 Face Id Bateria", linha: "Eris", src: imagem1, arquivo: "Imagem Eris S2 Face Id Bateria.png" },
+  { id: 3, titulo: "Eris S2 Face Id Carga Bateria", linha: "Eris", src: imagem2, arquivo: "Imagem Eris S2 Face Id Carga Bateria.png" },
+  { id: 4, titulo: "Eris S2 Face Id Cepo", linha: "Eris", src: imagem3, arquivo: "Imagem Eris S2 Face Id Cepo.png" },
+  { id: 5, titulo: "Eris S2 Face Id Senha", linha: "Eris", src: imagem4, arquivo: "Imagem Eris S2 Face Id Senha.png" },
+  { id: 6, titulo: "Eris S2 Face Id Água", linha: "Eris", src: imagem5, arquivo: "Imagem Eris S2 Face Id Água.png" },
+  { id: 7, titulo: "Eris S2 Face Id", linha: "Eris", src: imagem6, arquivo: "Imagem Eris S2 Face Id.jpg" },
+  { id: 8, titulo: "Eris S2 face Id Digital", linha: "Eris", src: imagem7, arquivo: "Imagem Eris S2 face Id Digital.png" },
+  { id: 9, titulo: "Gateway", linha: "Gateway", src: imagem8, arquivo: "Imagem Gateway.jpg" },
+  { id: 10, titulo: "S2 Face Id Senha com Água", linha: "Eris", src: imagem9, arquivo: "Imagem S2 Face Id Senha com Água.png" },
+  { id: 11, titulo: "Syrius S2 Pro Neo", linha: "Syrius", src: imagem10, arquivo: "Imagem S2 Pro Neo.jpg" },
+  { id: 12, titulo: "Syrius S2 Pro", linha: "Syrius", src: imagem11, arquivo: "Imagem S2 Pro.jpg" },
+];
+
 const LIMITE_MOBILE = 3;
 
 const LINHAS = [
   "Todas",
   ...Array.from(
-    new Set(videos.map((item) => item.linha))
+    new Set([...videos, ...imagens].map((item) => item.linha))
   ).sort((a, b) => a.localeCompare(b, "pt-BR")),
 ];
 
@@ -175,6 +204,7 @@ function IconeSynter() {
 export default function DigMarketing() {
   const [profileOpen, setProfileOpen] =
     useState(false);
+  const [imagemAberta, setImagemAberta] = useState(null);
 
   const [pesquisa, setPesquisa] =
     useState("");
@@ -206,6 +236,11 @@ export default function DigMarketing() {
       return correspondePesquisa && correspondeLinha;
     });
   }, [pesquisa, linha]);
+
+  const imagensFiltradas = imagens.filter((item) =>
+    (linha === "Todas" || item.linha === linha) &&
+    normalizar(`${item.titulo} ${item.linha}`).includes(normalizar(pesquisa))
+  );
 
   const videosMobile = mostrarTodos
     ? videosFiltrados
@@ -278,11 +313,11 @@ export default function DigMarketing() {
           </div>
 
           <h1 className="dig-marketing-title">
-            Vídeos de Fechaduras Digitais
+            Vídeos e Imagens de Fechaduras Digitais
           </h1>
 
           <p className="dig-marketing-description">
-            Acesse vídeos das fechaduras digitais
+            Acesse vídeos e imagens das fechaduras digitais
             Synter para divulgação, campanhas
             e ações de marketing.
           </p>
@@ -311,12 +346,12 @@ export default function DigMarketing() {
         <div className="pesquisa-videos dig-marketing-search">
           <input
             type="search"
-            placeholder="Pesquisar vídeo ou modelo..."
+            placeholder="Pesquisar vídeo, imagem ou modelo..."
             value={pesquisa}
             onChange={(evento) =>
               alterarPesquisa(evento.target.value)
             }
-            aria-label="Pesquisar vídeos de fechaduras digitais"
+            aria-label="Pesquisar materiais de fechaduras digitais"
           />
         </div>
 
@@ -441,6 +476,34 @@ export default function DigMarketing() {
 
         </div>
 
+        <section className="dm-gallery" aria-label="Imagens de produtos">
+          <div className="videos-section-title">
+            <div className="videos-section-bar" />
+            <h4>IMAGENS DE FECHADURAS DIGITAIS E ACESSÓRIOS</h4>
+          </div>
+          {imagensFiltradas.length ? (
+            <div className="dm-gallery-grid">
+              {imagensFiltradas.map((item) => (
+                <article className="dm-gallery-card" key={item.id}>
+                  <button type="button" className="dm-gallery-preview" onClick={() => setImagemAberta(item)} aria-label={`Ampliar ${item.titulo}`}>
+                    <img src={item.src} alt={item.titulo} loading="lazy" />
+                  </button>
+                  <h3>{item.titulo}</h3>
+                  <a href={item.src} download={item.arquivo}>Baixar imagem</a>
+                </article>
+              ))}
+            </div>
+          ) : <p>Nenhuma imagem encontrada.</p>}
+        </section>
+        {imagemAberta && (
+          <div className="dm-gallery-overlay" onClick={() => setImagemAberta(null)} onKeyDown={(e) => { if (e.key === "Escape") setImagemAberta(null); }}>
+            <div className="dm-gallery-modal" role="dialog" aria-modal="true" aria-label={imagemAberta.titulo} onClick={(e) => e.stopPropagation()}>
+              <button autoFocus type="button" onClick={() => setImagemAberta(null)}>Fechar ×</button>
+              <img src={imagemAberta.src} alt={imagemAberta.titulo} />
+              <a href={imagemAberta.src} download={imagemAberta.arquivo}>Baixar imagem</a>
+            </div>
+          </div>
+        )}
       </main>
 
       <Footer />
