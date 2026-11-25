@@ -1,7 +1,14 @@
-import React, { useState } from "react";
+
+import { useState } from "react";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import UserProfileButton from "../components/UserProfileButton";
+import Profile from "../components/Profile";
+
+// ==========================================
+// ESTILOS ORIGINAIS
+// ==========================================
 
 import "../styles/Videos.css";
 import "../styles/DigMarketing.css";
@@ -9,9 +16,9 @@ import "../styles/DigMarketingHero.css";
 import "../styles/DigMarketingMobile.css";
 import "../styles/DigMarketingGaleria.css";
 
-// ======================================================
+// ==========================================
 // CARREGAMENTO AUTOMÁTICO DAS IMAGENS
-// ======================================================
+// ==========================================
 
 const arquivos = import.meta.glob(
   "../assets/marketing-mecanicas/**/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}",
@@ -21,16 +28,17 @@ const arquivos = import.meta.glob(
   }
 );
 
-const normalizar = (texto = "") =>
-  texto
+function normalizar(valor) {
+  return String(valor ?? "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .trim();
+}
 
-// ======================================================
-// LINHAS E MODELOS
-// ======================================================
+// ==========================================
+// MODELOS
+// ==========================================
 
 const MODELOS = [
   "Máquina 40mm",
@@ -52,28 +60,51 @@ const MODELOS = [
   "Stillus",
 ].sort((a, b) => b.length - a.length);
 
-// ======================================================
-// IDENTIFICAÇÃO AUTOMÁTICA DO MODELO
-// ======================================================
+// ==========================================
+// LINHA INOX PRIME
+// ==========================================
+
+const INOX_PRIME = [
+  "Acqua",
+  "Crispus Max",
+  "Luck",
+  "Navis",
+  "Polo Max",
+  "Star",
+  "Star Max",
+];
+
+function identificarCategoria(modelo) {
+  return INOX_PRIME.includes(modelo)
+    ? "INOX PRIME"
+    : "";
+}
+
+// ==========================================
+// IDENTIFICAR MODELO
+// ==========================================
 
 function identificarLinha(nome) {
   const texto = normalizar(nome);
 
-  const modelo = MODELOS.find((item) =>
-    texto.includes(normalizar(item))
+  return (
+    MODELOS.find((item) =>
+      texto.includes(normalizar(item))
+    ) || "Outros"
   );
-
-  return modelo || "Outros";
 }
 
-// ======================================================
-// IDENTIFICAÇÃO DO ACABAMENTO
-// ======================================================
+// ==========================================
+// IDENTIFICAR ACABAMENTO
+// ==========================================
 
 function identificarAcabamento(nome) {
   const texto = normalizar(nome);
 
-  if (texto.includes("preta") || texto.includes("preto")) {
+  if (
+    texto.includes("preta") ||
+    texto.includes("preto")
+  ) {
     return "Preto";
   }
 
@@ -98,9 +129,9 @@ function identificarAcabamento(nome) {
   return "";
 }
 
-// ======================================================
-// IDENTIFICAÇÃO DA APLICAÇÃO
-// ======================================================
+// ==========================================
+// IDENTIFICAR APLICAÇÃO
+// ==========================================
 
 function identificarAplicacao(nome) {
   const texto = normalizar(nome);
@@ -128,22 +159,23 @@ function identificarAplicacao(nome) {
   return "";
 }
 
-// ======================================================
+// ==========================================
 // ORGANIZAÇÃO DAS IMAGENS
-// ======================================================
+// ==========================================
 
 const imagens = Object.entries(arquivos)
-  .map(([caminho, imagem]) => {
+  .map(([caminho, src]) => {
     const arquivo = caminho.split("/").pop();
-
     const titulo = arquivo.replace(/\.[^.]+$/, "");
+    const linha = identificarLinha(titulo);
 
     return {
       id: caminho,
       titulo,
       arquivo,
-      imagem,
-      linha: identificarLinha(titulo),
+      src,
+      linha,
+      categoria: identificarCategoria(linha),
       acabamento: identificarAcabamento(titulo),
       aplicacao: identificarAplicacao(titulo),
     };
@@ -154,13 +186,17 @@ const imagens = Object.entries(arquivos)
     })
   );
 
-// ======================================================
-// FILTROS
-// ======================================================
+// ==========================================
+// CONSTANTES DOS FILTROS
+// ==========================================
+
+const LIMITE_MOBILE = 3;
 
 const LINHAS = [
   "Todas",
-  ...new Set(imagens.map((item) => item.linha)),
+  ...Array.from(
+    new Set(imagens.map((item) => item.linha))
+  ).sort((a, b) => a.localeCompare(b, "pt-BR")),
 ];
 
 const ACABAMENTOS = [
@@ -179,11 +215,55 @@ const APLICACOES = [
   "Maçaneta",
 ];
 
-const LIMITE_MOBILE = 6;
+// ==========================================
+// ÍCONE PADRÃO SYNTER
+// ==========================================
 
-// ======================================================
-// COMPONENTE DO CARD
-// ======================================================
+function IconeSynter() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m12 2 9 5-9 5-9-5 9-5Z" />
+      <path d="M3 7v10l9 5 9-5V7" />
+      <path d="M12 12v10" />
+    </svg>
+  );
+}
+
+// ==========================================
+// ÍCONE DE DOWNLOAD
+// ==========================================
+
+function IconeDownload() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4" />
+    </svg>
+  );
+}
+
+// ==========================================
+// CARD PADRÃO DA GALERIA DIGITAL
+// ==========================================
 
 function ImagemCard({ item, abrirImagem }) {
   return (
@@ -192,35 +272,21 @@ function ImagemCard({ item, abrirImagem }) {
         type="button"
         className="dm-gallery-preview"
         onClick={() => abrirImagem(item)}
-        aria-label={`Visualizar ${item.titulo}`}
-        style={{
-          width: "100%",
-          border: "none",
-          background: "#ffffff",
-          cursor: "pointer",
-          padding: 0,
-        }}
+        aria-label={`Ampliar ${item.titulo}`}
       >
         <img
-          src={item.imagem}
+          src={item.src}
           alt={item.titulo}
           loading="lazy"
-          style={{
-            width: "100%",
-            aspectRatio: "1 / 1",
-            objectFit: "contain",
-            background: "#ffffff",
-            display: "block",
-          }}
         />
       </button>
 
-      <div className="dm-gallery-info">
+      <div className="dm-gallery-body">
         <h3>{item.titulo}</h3>
 
         <p>
           {[
-            item.linha,
+            item.categoria,
             item.acabamento,
             item.aplicacao,
           ]
@@ -229,54 +295,60 @@ function ImagemCard({ item, abrirImagem }) {
         </p>
 
         <a
-          href={item.imagem}
+          className="dm-gallery-download"
+          href={item.src}
           download={item.arquivo}
-          className="dm-gallery-download botao-assistir"
         >
-          ↓ Baixar imagem
+          <IconeDownload />
+          Baixar imagem
         </a>
       </div>
     </article>
   );
 }
 
-// ======================================================
+// ==========================================
 // PÁGINA PRINCIPAL
-// ======================================================
+// ==========================================
 
 export default function MecMarketing() {
-  const [pesquisa, setPesquisa] = useState("");
-  const [linha, setLinha] = useState("Todas");
-  const [acabamento, setAcabamento] = useState("Todos");
-  const [aplicacao, setAplicacao] = useState("Todas");
+  const [profileOpen, setProfileOpen] =
+    useState(false);
 
-  const [imagemAberta, setImagemAberta] = useState(null);
+  const [imagemAberta, setImagemAberta] =
+    useState(null);
 
   const [
     mostrarTodasImagens,
     setMostrarTodasImagens,
   ] = useState(false);
 
-  // ====================================================
+  const [pesquisa, setPesquisa] = useState("");
+  const [linha, setLinha] = useState("Todas");
+  const [acabamento, setAcabamento] = useState("Todos");
+  const [aplicacao, setAplicacao] = useState("Todas");
+
+  // ========================================
   // FILTRAGEM
-  // ====================================================
+  // ========================================
 
   const imagensFiltradas = imagens.filter((item) => {
     const texto = normalizar(
       [
         item.titulo,
         item.linha,
+        item.categoria,
         item.acabamento,
         item.aplicacao,
       ].join(" ")
     );
 
-    const correspondePesquisa = texto.includes(
-      normalizar(pesquisa)
-    );
+    const correspondePesquisa =
+      texto.includes(normalizar(pesquisa));
 
     const correspondeLinha =
-      linha === "Todas" || item.linha === linha;
+      linha === "Todas" ||
+      item.linha === linha;
 
     const correspondeAcabamento =
       acabamento === "Todos" ||
@@ -294,10 +366,6 @@ export default function MecMarketing() {
     );
   });
 
-  const imagensMobile = mostrarTodasImagens
-    ? imagensFiltradas
-    : imagensFiltradas.slice(0, LIMITE_MOBILE);
-
   function limparFiltros() {
     setPesquisa("");
     setLinha("Todas");
@@ -306,361 +374,323 @@ export default function MecMarketing() {
     setMostrarTodasImagens(false);
   }
 
+  function alterarFiltro(setter, valor) {
+    setter(valor);
+    setMostrarTodasImagens(false);
+  }
+
+  // ========================================
+  // INTERFACE
+  // ========================================
+
   return (
-    <>
+    <div className="videos-page dig-marketing-page">
       <Header />
 
-      <main className="videos-page dig-marketing-page">
+      {/* =====================================
+          HERO — PADRÃO ORIGINAL
+      ===================================== */}
 
-        {/* CABEÇALHO */}
+      <section className="dig-marketing-hero">
+        <div className="dig-marketing-hero-container">
 
-        <section className="dig-marketing-hero">
-          <div className="dig-marketing-hero-content">
-            <span className="dig-marketing-tag">
-              UNIVERSIDADE SYNTER
-            </span>
-
-            <h1 className="dig-marketing-title">
-              Marketing de Fechaduras Mecânicas
-            </h1>
-
-            <p className="dig-marketing-description">
-              Acesse imagens oficiais dos produtos Synter
-              para utilizar em apresentações, propostas
-              comerciais, redes sociais e materiais de
-              divulgação.
-            </p>
-          </div>
-        </section>
-
-        <section className="videos-content">
-
-          {/* FILTROS */}
-
-          <div
-            className="mec-marketing-filtros"
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "12px",
-              marginBottom: "24px",
-            }}
-          >
-            <input
-              type="search"
-              placeholder="Pesquisar produto..."
-              aria-label="Pesquisar produto"
-              value={pesquisa}
-              onChange={(e) => {
-                setPesquisa(e.target.value);
-                setMostrarTodasImagens(false);
-              }}
-              style={{
-                flex: "2 1 220px",
-                padding: "12px",
-                border: "1px solid #d4d4d4",
-                borderRadius: "8px",
-              }}
+          <div className="dig-marketing-profile">
+            <UserProfileButton
+              onClick={() => setProfileOpen(true)}
             />
-
-            <select
-              aria-label="Modelo"
-              value={linha}
-              onChange={(e) => {
-                setLinha(e.target.value);
-                setMostrarTodasImagens(false);
-              }}
-              style={{
-                flex: "1 1 140px",
-                padding: "12px",
-                border: "1px solid #d4d4d4",
-                borderRadius: "8px",
-              }}
-            >
-              {LINHAS.map((item) => (
-                <option key={item} value={item}>
-                  {item === "Todas"
-                    ? "Todos os modelos"
-                    : item}
-                </option>
-              ))}
-            </select>
-
-            <select
-              aria-label="Acabamento"
-              value={acabamento}
-              onChange={(e) => {
-                setAcabamento(e.target.value);
-                setMostrarTodasImagens(false);
-              }}
-              style={{
-                flex: "1 1 140px",
-                padding: "12px",
-                border: "1px solid #d4d4d4",
-                borderRadius: "8px",
-              }}
-            >
-              {ACABAMENTOS.map((item) => (
-                <option key={item} value={item}>
-                  {item === "Todos"
-                    ? "Todos os acabamentos"
-                    : item}
-                </option>
-              ))}
-            </select>
-
-            <select
-              aria-label="Aplicação"
-              value={aplicacao}
-              onChange={(e) => {
-                setAplicacao(e.target.value);
-                setMostrarTodasImagens(false);
-              }}
-              style={{
-                flex: "1 1 140px",
-                padding: "12px",
-                border: "1px solid #d4d4d4",
-                borderRadius: "8px",
-              }}
-            >
-              {APLICACOES.map((item) => (
-                <option key={item} value={item}>
-                  {item === "Todas"
-                    ? "Todas as aplicações"
-                    : item}
-                </option>
-              ))}
-            </select>
-
-            <button
-              type="button"
-              onClick={limparFiltros}
-              style={{
-                padding: "12px 18px",
-                border: "1px solid #d4d4d4",
-                borderRadius: "8px",
-                background: "transparent",
-                cursor: "pointer",
-              }}
-            >
-              Limpar filtros
-            </button>
           </div>
 
-          {/* GALERIA */}
+          <div className="dig-marketing-eyebrow">
+            <IconeSynter />
 
-          <section className="dm-gallery">
-            <div className="dm-gallery-header">
-              <h2>Imagens dos produtos</h2>
+            <span>
+              CONTEÚDOS PARA DIVULGAÇÃO
+            </span>
+          </div>
+
+          <h1 className="dig-marketing-title">
+            Vídeos e Imagens de Fechaduras Mecânicas
+          </h1>
+
+          <p className="dig-marketing-description">
+            Acesse vídeos e imagens das fechaduras
+            mecânicas Synter para divulgação, campanhas
+            e ações de marketing.
+          </p>
+
+        </div>
+      </section>
+
+      {/* =====================================
+          CONTEÚDO PRINCIPAL
+      ===================================== */}
+
+      <main className="videos-content">
+
+        <div className="videos-section-title">
+          <div className="videos-section-bar" />
+
+          <h4>
+            IMAGENS DE FECHADURAS MECÂNICAS
+          </h4>
+        </div>
+
+        {/* =====================================
+            PESQUISA — PADRÃO ORIGINAL
+        ===================================== */}
+
+        <div className="pesquisa-videos dig-marketing-search">
+          <input
+            type="search"
+            placeholder="Pesquisar imagem ou modelo..."
+            value={pesquisa}
+            onChange={(evento) =>
+              alterarFiltro(
+                setPesquisa,
+                evento.target.value
+              )
+            }
+            aria-label="Pesquisar materiais de fechaduras mecânicas"
+          />
+        </div>
+
+        {/* =====================================
+            FILTROS
+        ===================================== */}
+
+        <div
+          className="dig-marketing-filter-row"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "12px",
+            marginBottom: "20px",
+            colorScheme: "dark",
+          }}
+        >
+
+          <div className="dig-marketing-filter-field">
+            <label htmlFor="mec-marketing-linha">
+              Modelo
+            </label>
+
+            <select
+              id="mec-marketing-linha"
+              value={linha}
+              onChange={(evento) =>
+                alterarFiltro(
+                  setLinha,
+                  evento.target.value
+                )
+              }
+            >
+              {LINHAS.map((opcao) => (
+                <option key={opcao} value={opcao}>
+                  {opcao === "Todas"
+                    ? "Todos os modelos"
+                    : opcao}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="dig-marketing-filter-field">
+            <label htmlFor="mec-marketing-acabamento">
+              Acabamento
+            </label>
+
+            <select
+              id="mec-marketing-acabamento"
+              value={acabamento}
+              onChange={(evento) =>
+                alterarFiltro(
+                  setAcabamento,
+                  evento.target.value
+                )
+              }
+            >
+              {ACABAMENTOS.map((opcao) => (
+                <option key={opcao} value={opcao}>
+                  {opcao === "Todos"
+                    ? "Todos os acabamentos"
+                    : opcao}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="dig-marketing-filter-field">
+            <label htmlFor="mec-marketing-aplicacao">
+              Aplicação
+            </label>
+
+            <select
+              id="mec-marketing-aplicacao"
+              value={aplicacao}
+              onChange={(evento) =>
+                alterarFiltro(
+                  setAplicacao,
+                  evento.target.value
+                )
+              }
+            >
+              {APLICACOES.map((opcao) => (
+                <option key={opcao} value={opcao}>
+                  {opcao === "Todas"
+                    ? "Todas as aplicações"
+                    : opcao}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <button
+            type="button"
+            className="dig-marketing-clear"
+            onClick={limparFiltros}
+          >
+            Limpar filtros
+          </button>
+
+        </div>
+
+        <div
+          className="dig-marketing-result-count"
+          role="status"
+          aria-live="polite"
+        >
+          {imagensFiltradas.length === 1
+            ? "1 imagem encontrada"
+            : `${imagensFiltradas.length} imagens encontradas`}
+        </div>
+
+        {/* =====================================
+            GALERIA — PADRÃO ORIGINAL
+        ===================================== */}
+
+        <section
+          className="dm-gallery"
+          aria-label="Imagens de produtos"
+        >
+
+          {imagensFiltradas.length > 0 ? (
+            <div
+              className={`videos-grid dm-gallery-grid ${
+                mostrarTodasImagens
+                  ? "dm-gallery-expanded"
+                  : ""
+              }`}
+            >
+              {imagensFiltradas.map((item) => (
+                <ImagemCard
+                  key={item.id}
+                  item={item}
+                  abrirImagem={setImagemAberta}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="dig-marketing-empty">
+              <strong>
+                Nenhuma imagem encontrada
+              </strong>
 
               <p>
-                {imagensFiltradas.length}{" "}
-                {imagensFiltradas.length === 1
-                  ? "imagem disponível"
-                  : "imagens disponíveis"}
+                Tente pesquisar outro modelo
+                ou limpar os filtros.
               </p>
-            </div>
 
-            {imagensFiltradas.length === 0 && (
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: "40px 15px",
-                }}
+              <button
+                type="button"
+                onClick={limparFiltros}
               >
-                <h3>Nenhuma imagem encontrada</h3>
-
-                <p>
-                  Tente alterar a pesquisa ou os filtros.
-                </p>
-              </div>
-            )}
-
-            {/* VERSÃO DESKTOP */}
-
-            <div className="dig-marketing-desktop">
-              <div className="videos-grid dm-gallery-grid">
-                {imagensFiltradas.map((item) => (
-                  <ImagemCard
-                    key={item.id}
-                    item={item}
-                    abrirImagem={setImagemAberta}
-                  />
-                ))}
-              </div>
+                Limpar filtros
+              </button>
             </div>
+          )}
 
-            {/* VERSÃO MOBILE */}
+          {imagensFiltradas.length > LIMITE_MOBILE && (
+            <button
+              type="button"
+              className="dig-marketing-more dm-gallery-more"
+              aria-expanded={mostrarTodasImagens}
+              onClick={() =>
+                setMostrarTodasImagens(
+                  (atual) => !atual
+                )
+              }
+            >
+              {mostrarTodasImagens
+                ? "Mostrar menos imagens"
+                : `Ver mais ${
+                    imagensFiltradas.length -
+                    LIMITE_MOBILE
+                  } imagens`}
+            </button>
+          )}
 
-            <div className="dig-marketing-mobile">
-              <div className="dig-marketing-mobile-list">
-                {imagensMobile.map((item) => (
-                  <article
-                    key={item.id}
-                    className="video-card"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => setImagemAberta(item)}
-                      aria-label={`Visualizar ${item.titulo}`}
-                      style={{
-                        border: "none",
-                        background: "#ffffff",
-                        padding: 0,
-                        cursor: "pointer",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <img
-                        src={item.imagem}
-                        alt={item.titulo}
-                        className="video-preview"
-                        loading="lazy"
-                        style={{
-                          objectFit: "contain",
-                          background: "#ffffff",
-                        }}
-                      />
-                    </button>
-
-                    <div className="video-card-info">
-                      <h3>{item.titulo}</h3>
-
-                      <p>
-                        {[
-                          item.acabamento,
-                          item.aplicacao,
-                        ]
-                          .filter(Boolean)
-                          .join(" • ")}
-                      </p>
-
-                      <div className="video-card-botoes">
-                        <a
-                          href={item.imagem}
-                          download={item.arquivo}
-                          className="botao-assistir"
-                        >
-                          ↓ Baixar imagem
-                        </a>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-
-              {imagensFiltradas.length > LIMITE_MOBILE && (
-                <button
-                  type="button"
-                  className="dig-marketing-more"
-                  onClick={() =>
-                    setMostrarTodasImagens(
-                      !mostrarTodasImagens
-                    )
-                  }
-                >
-                  {mostrarTodasImagens
-                    ? "Mostrar menos"
-                    : `Ver mais ${
-                        imagensFiltradas.length -
-                        LIMITE_MOBILE
-                      } imagens`}
-                </button>
-              )}
-            </div>
-          </section>
         </section>
 
-        {/* VISUALIZAÇÃO AMPLIADA */}
+        {/* =====================================
+            VISUALIZAÇÃO AMPLIADA
+        ===================================== */}
 
         {imagemAberta && (
           <div
+            className="dm-gallery-overlay"
             onClick={() => setImagemAberta(null)}
-            style={{
-              position: "fixed",
-              inset: 0,
-              zIndex: 99999,
-              background: "rgba(0, 0, 0, 0.85)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "20px",
+            onKeyDown={(evento) => {
+              if (evento.key === "Escape") {
+                setImagemAberta(null);
+              }
             }}
           >
             <div
+              className="dm-gallery-modal"
               role="dialog"
               aria-modal="true"
               aria-label={imagemAberta.titulo}
-              onClick={(e) => e.stopPropagation()}
-              onKeyDown={(e) => {
-                if (e.key === "Escape") {
-                  setImagemAberta(null);
-                }
-              }}
-              style={{
-                position: "relative",
-                width: "100%",
-                maxWidth: "700px",
-                maxHeight: "90vh",
-                overflowY: "auto",
-                background: "#ffffff",
-                borderRadius: "16px",
-                padding: "20px",
-                textAlign: "center",
-                color: "#222222",
-              }}
+              onClick={(evento) =>
+                evento.stopPropagation()
+              }
             >
               <button
-                type="button"
                 autoFocus
-                aria-label="Fechar imagem"
+                type="button"
                 onClick={() => setImagemAberta(null)}
-                style={{
-                  position: "absolute",
-                  top: "12px",
-                  right: "12px",
-                  width: "38px",
-                  height: "38px",
-                  border: "none",
-                  borderRadius: "50%",
-                  background: "#222222",
-                  color: "#ffffff",
-                  fontSize: "24px",
-                  cursor: "pointer",
-                }}
               >
-                ×
+                Fechar ×
               </button>
 
               <img
-                src={imagemAberta.imagem}
+                src={imagemAberta.src}
                 alt={imagemAberta.titulo}
-                style={{
-                  width: "100%",
-                  maxHeight: "65vh",
-                  objectFit: "contain",
-                }}
               />
 
-              <h3>{imagemAberta.titulo}</h3>
-
               <a
-                href={imagemAberta.imagem}
+                href={imagemAberta.src}
                 download={imagemAberta.arquivo}
-                className="botao-assistir"
-                style={{
-                  display: "inline-block",
-                  marginTop: "15px",
-                }}
               >
-                ↓ Baixar imagem original
+                Baixar imagem
               </a>
             </div>
           </div>
         )}
+
       </main>
 
       <Footer />
-    </>
+
+      {/* =====================================
+          PERFIL DO USUÁRIO
+      ===================================== */}
+
+      {profileOpen && (
+        <Profile
+          onClose={() => setProfileOpen(false)}
+        />
+      )}
+
+    </div>
   );
 }
