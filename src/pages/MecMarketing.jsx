@@ -73,6 +73,7 @@ const INOX_PRIME = [
 
 const UNIC_INOX = [
   "Champion",
+  "Marine",
 ];
 
 // ==========================================
@@ -91,6 +92,10 @@ function normalizar(valor) {
 
 function identificarModelo(nome) {
   const texto = normalizar(nome);
+
+  if (/\bmarin[ea]\b/.test(texto)) {
+    return "Marine";
+  }
 
   return (
     MODELOS.find((modelo) =>
@@ -163,6 +168,20 @@ function identificarAplicacao(nome) {
   return "";
 }
 
+function identificarRoseta(nome) {
+  const texto = normalizar(nome);
+
+  if (texto.includes("quadrada")) {
+    return "Roseta Quadrada";
+  }
+
+  if (texto.includes("redonda")) {
+    return "Roseta Redonda";
+  }
+
+  return "";
+}
+
 // ==========================================
 // ORGANIZAÇÃO AUTOMÁTICA DAS IMAGENS
 // ==========================================
@@ -173,7 +192,10 @@ const imagens = Object.entries(arquivos)
 
     const titulo = arquivo
       .replace(/\.[^.]+$/, "")
+      .replace(/\(\d+\)\s*$/, "")
       .replace(/[_-]+/g, " ")
+      .replace(/\bMarina\b/gi, "Marine")
+      .replace(/\s+/g, " ")
       .trim();
 
     const modelo = identificarModelo(titulo);
@@ -185,6 +207,7 @@ const imagens = Object.entries(arquivos)
       linha: identificarLinha(modelo),
       acabamento: identificarAcabamento(titulo),
       aplicacao: identificarAplicacao(titulo),
+      roseta: identificarRoseta(titulo),
       src,
       arquivo,
     };
@@ -198,9 +221,13 @@ const imagens = Object.entries(arquivos)
 // ==========================================
 
 function criarOpcoes(campo) {
-  return [...new Set(
-    imagens.map((item) => item[campo]).filter(Boolean)
-  )].sort((a, b) => a.localeCompare(b, "pt-BR"));
+  return [
+    ...new Set(
+      imagens
+        .map((item) => item[campo])
+        .filter(Boolean)
+    ),
+  ].sort((a, b) => a.localeCompare(b, "pt-BR"));
 }
 
 const FILTRO_MODELOS = criarOpcoes("modelo");
@@ -289,6 +316,7 @@ function ImagemCard({ item, abrirImagem }) {
             item.modelo,
             item.acabamento,
             item.aplicacao,
+            item.roseta,
           ].filter(Boolean).join(" • ")}
         </p>
 
@@ -302,6 +330,7 @@ function ImagemCard({ item, abrirImagem }) {
         </a>
 
       </div>
+
     </article>
   );
 }
@@ -346,6 +375,7 @@ function ImagemCardMobile({ item, abrirImagem }) {
         </p>
 
         <div className="video-card-botoes">
+
           <a
             href={item.src}
             download={item.arquivo}
@@ -354,9 +384,11 @@ function ImagemCardMobile({ item, abrirImagem }) {
             <IconeDownload />
             Baixar imagem
           </a>
+
         </div>
 
       </div>
+
     </article>
   );
 }
@@ -367,13 +399,23 @@ function ImagemCardMobile({ item, abrirImagem }) {
 
 export default function MecMarketing() {
 
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [imagemAberta, setImagemAberta] = useState(null);
+  const [profileOpen, setProfileOpen] =
+    useState(false);
 
-  const [pesquisa, setPesquisa] = useState("");
-  const [modelo, setModelo] = useState("Todos");
-  const [acabamento, setAcabamento] = useState("Todos");
-  const [aplicacao, setAplicacao] = useState("Todas");
+  const [imagemAberta, setImagemAberta] =
+    useState(null);
+
+  const [pesquisa, setPesquisa] =
+    useState("");
+
+  const [modelo, setModelo] =
+    useState("Todos");
+
+  const [acabamento, setAcabamento] =
+    useState("Todos");
+
+  const [aplicacao, setAplicacao] =
+    useState("Todas");
 
   const [mostrarTodasImagens, setMostrarTodasImagens] =
     useState(false);
@@ -399,7 +441,7 @@ export default function MecMarketing() {
   }, [imagemAberta]);
 
   // ========================================
-  // PESQUISA
+  // PESQUISA DESKTOP
   // ========================================
 
   const imagensDesktop = imagens.filter((item) => {
@@ -410,6 +452,7 @@ export default function MecMarketing() {
         item.linha,
         item.acabamento,
         item.aplicacao,
+        item.roseta,
       ].join(" ")
     );
 
@@ -423,7 +466,8 @@ export default function MecMarketing() {
   const imagensFiltradas = imagensDesktop.filter((item) => {
 
     const correspondeModelo =
-      modelo === "Todos" || item.modelo === modelo;
+      modelo === "Todos" ||
+      item.modelo === modelo;
 
     const correspondeAcabamento =
       acabamento === "Todos" ||
@@ -473,17 +517,21 @@ export default function MecMarketing() {
         <div className="dig-marketing-hero-container">
 
           <div className="dig-marketing-profile">
+
             <UserProfileButton
               onClick={() => setProfileOpen(true)}
             />
+
           </div>
 
           <div className="dig-marketing-eyebrow">
+
             <IconeSynter />
 
             <span>
               CONTEÚDOS PARA DIVULGAÇÃO
             </span>
+
           </div>
 
           <h1 className="dig-marketing-title">
@@ -536,6 +584,8 @@ export default function MecMarketing() {
 
           <div className="dig-marketing-filter-row">
 
+            {/* MODELO */}
+
             <div className="dig-marketing-filter-field">
 
               <label htmlFor="mec-modelo">
@@ -550,6 +600,7 @@ export default function MecMarketing() {
                   setMostrarTodasImagens(false);
                 }}
               >
+
                 <option value="Todos">
                   Todos os modelos
                 </option>
@@ -559,9 +610,12 @@ export default function MecMarketing() {
                     {item}
                   </option>
                 ))}
+
               </select>
 
             </div>
+
+            {/* ACABAMENTO */}
 
             <div className="dig-marketing-filter-field">
 
@@ -577,6 +631,7 @@ export default function MecMarketing() {
                   setMostrarTodasImagens(false);
                 }}
               >
+
                 <option value="Todos">
                   Todos os acabamentos
                 </option>
@@ -586,9 +641,12 @@ export default function MecMarketing() {
                     {item}
                   </option>
                 ))}
+
               </select>
 
             </div>
+
+            {/* APLICAÇÃO */}
 
             <div className="dig-marketing-filter-field">
 
@@ -604,6 +662,7 @@ export default function MecMarketing() {
                   setMostrarTodasImagens(false);
                 }}
               >
+
                 <option value="Todas">
                   Todas as aplicações
                 </option>
@@ -613,6 +672,7 @@ export default function MecMarketing() {
                     {item}
                   </option>
                 ))}
+
               </select>
 
             </div>
@@ -645,11 +705,13 @@ export default function MecMarketing() {
             <div className="videos-grid dm-gallery-grid">
 
               {imagensDesktop.map((item) => (
+
                 <ImagemCard
                   key={item.id}
                   item={item}
                   abrirImagem={setImagemAberta}
                 />
+
               ))}
 
             </div>
@@ -673,11 +735,13 @@ export default function MecMarketing() {
             <div className="dig-marketing-mobile-list">
 
               {imagensMobile.map((item) => (
+
                 <ImagemCardMobile
                   key={item.id}
                   item={item}
                   abrirImagem={setImagemAberta}
                 />
+
               ))}
 
             </div>
@@ -700,11 +764,13 @@ export default function MecMarketing() {
                 setMostrarTodasImagens((atual) => !atual)
               }
             >
+
               {mostrarTodasImagens
                 ? "Mostrar menos imagens"
                 : `Ver mais ${
                     imagensFiltradas.length - LIMITE_MOBILE
                   } imagens`}
+
             </button>
 
           )}
@@ -762,9 +828,11 @@ export default function MecMarketing() {
       {/* PERFIL DO USUÁRIO */}
 
       {profileOpen && (
+
         <Profile
           onClose={() => setProfileOpen(false)}
         />
+
       )}
 
     </div>
