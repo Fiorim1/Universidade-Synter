@@ -329,7 +329,7 @@ export default function Marketing() {
             descricao="Acesse vídeos, imagens e materiais visuais das fechaduras mecânicas Synter para divulgação e apoio comercial."
             rota="/mecmarketing"
             disponivel={true}
-          />isponivel={false}
+          />
 
           {/* FERRAGENS */}
 
