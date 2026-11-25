@@ -34,15 +34,29 @@ const arquivosImportados = import.meta.glob(
 
 const imagens = Object.entries(arquivosImportados)
   .map(([caminho, src]) => {
+
     const arquivo = caminho.split("/").pop();
 
-    const titulo = arquivo.replace(/\.[^.]+$/, "");
+    const titulo = arquivo
+      .replace(/\.[^.]+$/, "")
+      .replace(/\bAqua Max\b/gi, "Acqua Max")
+      .replace(/\bPolidda\b/gi, "Polida");
 
     const medida = titulo.match(/(\d+)\s*mm/i);
 
-    const linha = medida
-      ? `Máquinas ${medida[1]}mm`
-      : "Outros produtos";
+    let linha = "Outros produtos";
+
+    // MÁQUINAS MECÂNICAS
+
+    if (/^M[aá]quina/i.test(titulo) && medida) {
+      linha = `Máquinas ${medida[1]}mm`;
+    }
+
+    // LINHA ACQUA MAX
+
+    else if (/^Acqua Max/i.test(titulo)) {
+      linha = "Acqua Max";
+    }
 
     return {
       id: caminho,
@@ -51,6 +65,7 @@ const imagens = Object.entries(arquivosImportados)
       src,
       arquivo,
     };
+
   })
   .sort((a, b) =>
     a.titulo.localeCompare(b.titulo, "pt-BR", {
@@ -185,6 +200,10 @@ export default function MecMarketing() {
 
   }, [pesquisa, linha]);
 
+  // ========================================
+  // LIMPAR FILTROS
+  // ========================================
+
   function limparFiltros() {
     setPesquisa("");
     setLinha("Todas");
@@ -206,6 +225,7 @@ export default function MecMarketing() {
   // ========================================
 
   function renderizarImagem(item) {
+
     return (
       <article
         className="dm-gallery-card"
@@ -252,6 +272,7 @@ export default function MecMarketing() {
 
       </article>
     );
+
   }
 
   // ========================================
