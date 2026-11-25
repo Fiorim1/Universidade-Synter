@@ -1,15 +1,91 @@
 
-/* ==========================================
-   MARKETING DE FECHADURAS MECÂNICAS
-========================================== */
+/* =========================================
+   MARKETING MECÂNICO - PADRÃO SYNTER
+========================================= */
 
 .mec-marketing-page {
   width: 100%;
+  min-height: 100vh;
+  background: #080808;
+  color: #ffffff;
 }
 
-/* ==========================================
-   DESKTOP
-========================================== */
+/* =========================================
+   CONTEÚDO PRINCIPAL
+========================================= */
+
+.mec-marketing-page .videos-content {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 36px 24px 70px;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   TÍTULO DA SEÇÃO
+========================================= */
+
+.mec-marketing-page .videos-section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.mec-marketing-page .videos-section-bar {
+  width: 3px;
+  height: 20px;
+  background: #ffffff;
+  border-radius: 3px;
+}
+
+.mec-marketing-page .videos-section-title h4 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+}
+
+/* =========================================
+   CAMPO DE PESQUISA
+========================================= */
+
+.mec-marketing-page .mec-search {
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 28px;
+}
+
+.mec-marketing-page .mec-search input {
+  display: block;
+  width: 100%;
+  height: 46px;
+  padding: 0 16px;
+  box-sizing: border-box;
+  background: #0d0d0d;
+  border: 1px solid #333333;
+  border-radius: 7px;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.mec-marketing-page .mec-search input::placeholder {
+  color: #858585;
+}
+
+.mec-marketing-page .mec-search input:focus {
+  border-color: #777777;
+}
+
+/* =========================================
+   VISIBILIDADE DESKTOP E MOBILE
+========================================= */
 
 .mec-marketing-page .mec-mobile-filters,
 .mec-marketing-page .mec-mobile-gallery {
@@ -20,100 +96,302 @@
   display: block;
 }
 
-.mec-marketing-page .mec-search {
-  margin-bottom: 26px;
+/* =========================================
+   GRID DESKTOP
+========================================= */
+
+.mec-marketing-page .dm-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  align-items: stretch;
 }
 
-.mec-marketing-page .mec-search input {
-  width: 100%;
-  max-width: 400px;
-  padding: 14px 16px;
-  background: #101010;
-  color: #ffffff;
-  border: 1px solid #333333;
-  border-radius: 7px;
-  font-size: 14px;
-  outline: none;
+/* =========================================
+   CARD - MESMO PADRÃO DOS VÍDEOS
+========================================= */
+
+.mec-marketing-page .dm-gallery-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 460px;
+  padding: 0;
+  background: linear-gradient(
+    145deg,
+    #141414,
+    #0c0c0c
+  );
+  border: 1px solid #292929;
+  border-radius: 18px;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
 }
 
-.mec-marketing-page .mec-search input:focus {
-  border-color: #777777;
+.mec-marketing-page .dm-gallery-card:hover {
+  border-color: #505050;
 }
 
-/* ==========================================
-   IMAGENS DOS PRODUTOS
-========================================== */
+/* =========================================
+   IMAGEM DO PRODUTO
+========================================= */
 
 .mec-marketing-page .dm-gallery-preview {
   display: block;
   width: 100%;
+  aspect-ratio: 1.86 / 1;
   padding: 0;
+  margin: 0;
   border: none;
+  border-radius: 0;
   background: #ffffff;
-  cursor: pointer;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .mec-marketing-page .dm-gallery-preview img {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: 100%;
+  padding: 8px;
   object-fit: contain;
   background: #ffffff;
+  box-sizing: border-box;
 }
+
+/* =========================================
+   INFORMAÇÕES DO CARD
+========================================= */
 
 .mec-marketing-page .dm-gallery-body {
-  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-/* ==========================================
+.mec-marketing-page .dm-gallery-body h3 {
+  margin: 0 0 22px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.mec-marketing-page .dm-gallery-body p {
+  margin: 0 0 30px;
+  color: #bcbcbc;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* =========================================
    IDENTIFICAÇÃO DA LINHA
-========================================== */
+   INOX PRIME / UNIC INOX
+========================================= */
 
 .mec-marketing-page .mec-product-line {
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  margin-bottom: 8px;
-  padding: 4px 8px;
-  background: #202020;
+  padding: 5px 9px;
+  margin-bottom: 12px;
+  background: #1b1b1b;
   border: 1px solid #383838;
-  border-radius: 4px;
-  color: #d6d6d6;
+  border-radius: 5px;
+  color: #d4d4d4;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 1px;
   line-height: 1.2;
 }
 
-/* ==========================================
-   MOBILE
-========================================== */
+/* =========================================
+   BOTÃO DE DOWNLOAD
+   MESMO PADRÃO DO BOTÃO ASSISTIR
+========================================= */
+
+.mec-marketing-page .dm-gallery-download {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 46px;
+  margin-top: auto;
+  padding: 12px 16px;
+  background: linear-gradient(
+    110deg,
+    #090909,
+    #151515
+  );
+  border: 1px solid #2e2e2e;
+  border-radius: 12px;
+  box-sizing: border-box;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.mec-marketing-page .dm-gallery-download:hover {
+  background: #222222;
+  border-color: #555555;
+  color: #ffffff;
+}
+
+.mec-marketing-page .dm-gallery-download svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* =========================================
+   NENHUM RESULTADO
+========================================= */
+
+.mec-marketing-page .nenhum-video {
+  padding: 35px 0;
+  color: #aaaaaa;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* =========================================
+   MODAL DE AMPLIAÇÃO
+========================================= */
+
+.mec-marketing-page .dm-gallery-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(6px);
+  box-sizing: border-box;
+}
+
+.mec-marketing-page .dm-gallery-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 750px;
+  max-height: 92vh;
+  padding: 18px;
+  background: #111111;
+  border: 1px solid #333333;
+  border-radius: 16px;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.mec-marketing-page .dm-gallery-modal img {
+  display: block;
+  width: 100%;
+  max-height: 68vh;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+.mec-marketing-page .dm-gallery-modal button,
+.mec-marketing-page .dm-gallery-modal a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px;
+  background: #181818;
+  border: 1px solid #383838;
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (min-width: 751px) and (max-width: 1050px) {
+
+  .mec-marketing-page .dm-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .mec-marketing-page .dm-gallery-card {
+    min-height: 400px;
+  }
+
+}
+
+/* =========================================
+   MOBILE - RESPONSIVO
+========================================= */
 
 @media (max-width: 750px) {
+
+  .mec-marketing-page .videos-content {
+    padding: 24px 16px 40px;
+  }
+
+  .mec-marketing-page .videos-section-title {
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .mec-marketing-page .videos-section-title h4 {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+  }
+
+  .mec-marketing-page .videos-section-bar {
+    height: 16px;
+  }
+
+  .mec-marketing-page .mec-search {
+    max-width: 100%;
+    margin-bottom: 14px;
+  }
+
+  .mec-marketing-page .mec-search input {
+    height: 40px;
+    font-size: 12px;
+  }
+
+  /* Ocultar desktop */
 
   .mec-marketing-page .mec-desktop-gallery {
     display: none;
   }
 
-  .mec-marketing-page .mec-mobile-gallery,
-  .mec-marketing-page .mec-mobile-filters {
+  /* Exibir mobile */
+
+  .mec-marketing-page .mec-mobile-filters,
+  .mec-marketing-page .mec-mobile-gallery {
     display: block;
   }
 
-  .mec-marketing-page .mec-search {
-    margin-bottom: 14px;
-  }
-
-  .mec-marketing-page .mec-search input {
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* FILTROS */
+  /* =======================================
+     FILTROS EXCLUSIVOS DO MOBILE
+  ======================================= */
 
   .mec-marketing-page .mec-mobile-filters {
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
 
   .mec-marketing-page .dig-marketing-filter-row {
@@ -131,9 +409,9 @@
   }
 
   .mec-marketing-page .dig-marketing-filter-field label {
+    color: #bcbcbc;
     font-size: 11px;
     font-weight: 500;
-    color: #bcbcbc;
   }
 
   .mec-marketing-page .dig-marketing-filter-field select {
@@ -141,20 +419,20 @@
     min-width: 0;
     height: 38px;
     padding: 0 8px;
-    box-sizing: border-box;
+    background: #141414;
     border: 1px solid #333333;
     border-radius: 6px;
-    background: #141414;
     color: #ffffff;
     font-size: 11px;
     color-scheme: dark;
+    box-sizing: border-box;
   }
 
   .mec-marketing-page .dig-marketing-clear {
     height: 38px;
     padding: 0 10px;
-    background: transparent;
-    border: 1px solid #444444;
+    background: #111111;
+    border: 1px solid #383838;
     border-radius: 6px;
     color: #ffffff;
     font-size: 11px;
@@ -163,11 +441,13 @@
 
   .mec-marketing-page .dig-marketing-result-count {
     margin-top: 12px;
-    font-size: 11px;
     color: #999999;
+    font-size: 11px;
   }
 
-  /* LISTA MOBILE */
+  /* =======================================
+     CARDS HORIZONTAIS MOBILE
+  ======================================= */
 
   .mec-marketing-page .dig-marketing-mobile-list {
     display: flex;
@@ -180,22 +460,29 @@
     flex-direction: row;
     align-items: center;
     gap: 10px;
-    min-height: 100px;
+    width: 100%;
+    min-height: 88px;
     padding: 8px;
-    border: 1px solid #282828;
+    background: linear-gradient(
+      145deg,
+      #141414,
+      #0c0c0c
+    );
+    border: 1px solid #292929;
     border-radius: 10px;
-    background: #111111;
+    box-sizing: border-box;
     overflow: hidden;
   }
 
   .mec-marketing-page .mec-mobile-preview {
+    display: block;
     flex: 0 0 92px;
     width: 92px;
-    height: 78px;
+    height: 68px;
     padding: 0;
+    background: #ffffff;
     border: none;
     border-radius: 6px;
-    background: #ffffff;
     overflow: hidden;
     cursor: pointer;
   }
@@ -209,35 +496,40 @@
   }
 
   .mec-marketing-page .video-card-info {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     min-width: 0;
     padding: 0;
   }
 
   .mec-marketing-page .video-card-info h3 {
-    margin: 3px 0;
+    margin: 2px 0 4px;
+    color: #ffffff;
     font-size: 11px;
+    font-weight: 600;
     line-height: 1.35;
     overflow-wrap: anywhere;
   }
 
   .mec-marketing-page .video-card-info p {
-    margin: 4px 0 6px;
-    font-size: 10px;
+    margin: 0 0 5px;
     color: #aaaaaa;
+    font-size: 10px;
+    line-height: 1.3;
   }
 
   .mec-marketing-page .mec-product-line {
-    margin-bottom: 2px;
     padding: 3px 5px;
+    margin-bottom: 3px;
     font-size: 8px;
     letter-spacing: 0.5px;
   }
 
   .mec-marketing-page .video-card-botoes {
     display: flex;
-    gap: 5px;
-    margin-top: 5px;
+    gap: 6px;
+    margin-top: 3px;
   }
 
   .mec-marketing-page .botao-assistir {
@@ -245,9 +537,14 @@
     align-items: center;
     justify-content: center;
     gap: 5px;
-    padding: 6px 9px;
-    font-size: 10px;
+    min-height: 25px;
+    padding: 5px 9px;
+    background: #111111;
+    border: 1px solid #333333;
     border-radius: 5px;
+    color: #ffffff;
+    font-size: 10px;
+    text-decoration: none;
   }
 
   .mec-marketing-page .botao-assistir svg {
@@ -255,22 +552,39 @@
     height: 12px;
   }
 
+  /* BOTÃO VER MAIS */
+
   .mec-marketing-page .dig-marketing-more {
+    display: block;
     width: 100%;
+    min-height: 40px;
     margin-top: 16px;
+    padding: 10px;
+    background: #111111;
+    border: 1px solid #333333;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 12px;
+    cursor: pointer;
   }
+
 }
 
-/* ==========================================
+/* =========================================
    CELULARES MENORES
-========================================== */
+========================================= */
 
 @media (max-width: 390px) {
+
+  .mec-marketing-page .videos-content {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
 
   .mec-marketing-page .mec-mobile-preview {
     flex-basis: 82px;
     width: 82px;
-    height: 70px;
+    height: 64px;
   }
 
   .mec-marketing-page .mec-mobile-card {
@@ -285,4 +599,5 @@
   .mec-marketing-page .dig-marketing-filter-field select {
     font-size: 10px;
   }
+
 }
