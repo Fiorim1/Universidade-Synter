@@ -22,12 +22,16 @@ import "../styles/MecMarketing.css";
    IMPORTAÇÃO DAS IMAGENS
 ========================================== */
 
-import maquinaQuadradaInterna from "../assets/marketing-mecanicas/maquina40-quadrada-interna.png";
-import maquinaRedondaInterna from "../assets/marketing-mecanicas/maquina40-redonda-interna.png";
-import maquinaRedondaExterna from "../assets/marketing-mecanicas/maquina40-redonda-externa.png";
-import maquinaQuadradaExterna from "../assets/marketing-mecanicas/maquina40-quadrada-externa.png";
-import maquinaRedondaBanheiro from "../assets/marketing-mecanicas/maquina40-redonda-banheiro.png";
-import maquinaQuadradaBanheiro from "../assets/marketing-mecanicas/maquina40-quadrada-banheiro.png";
+// ==========================================
+// IMAGENS DAS FECHADURAS MECÂNICAS
+// ==========================================
+
+import maquinaQuadradaInterna from "../assets/marketing-mecanicas/Máquina 40mm Quadrada Interna.png";
+import maquinaRedondaInterna from "../assets/marketing-mecanicas/Máquina 40mm Redonda Interna.png";
+import maquinaRedondaExterna from "../assets/marketing-mecanicas/Máquina 40mm Redonda Externa.png";
+import maquinaQuadradaExterna from "../assets/marketing-mecanicas/Máquina 40mm Quadrada Externa.png";
+import maquinaRedondaBanheiro from "../assets/marketing-mecanicas/Máquina 40mm Redonda Banheiro.png";
+import maquinaQuadradaBanheiro from "../assets/marketing-mecanicas/Máquina 40mm Quadrada Banheiro.png";
 
 /* ==========================================
    CATÁLOGO DE IMAGENS
