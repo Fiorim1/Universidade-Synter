@@ -6,28 +6,6 @@ import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 
 // ==========================================
-// IMAGENS — MÁQUINAS 40MM
-// ==========================================
-
-import imagem0 from "../assets/marketing-mecanicas/Máquina 40mm Quadrada Interna.png";
-import imagem1 from "../assets/marketing-mecanicas/Máquina 40mm Redonda Interna.png";
-import imagem2 from "../assets/marketing-mecanicas/Máquina 40mm Quadrada Externa.png";
-import imagem3 from "../assets/marketing-mecanicas/Máquina 40mm Redonda Externa.png";
-import imagem4 from "../assets/marketing-mecanicas/Máquina 40mm Quadrada Banheiro.png";
-import imagem5 from "../assets/marketing-mecanicas/Máquina 40mm Redonda Banheiro.png";
-
-// ==========================================
-// IMAGENS — MÁQUINAS 45MM
-// ==========================================
-
-import imagem6 from "../assets/marketing-mecanicas/Máquina 45mm Quadrada Interna.png";
-import imagem7 from "../assets/marketing-mecanicas/Máquina 45mm Redonda Interna.png";
-import imagem8 from "../assets/marketing-mecanicas/Máquina 45mm Quadrada Externa.png";
-import imagem9 from "../assets/marketing-mecanicas/Máquina 45mm Redonda Externa.png";
-import imagem10 from "../assets/marketing-mecanicas/Máquina 45mm Quadrada Banheiro.png";
-import imagem11 from "../assets/marketing-mecanicas/Máquina 45mm Redonda Banheiro.png";
-
-// ==========================================
 // ESTILOS ORIGINAIS
 // ==========================================
 
@@ -38,105 +16,47 @@ import "../styles/DigMarketingMobile.css";
 import "../styles/DigMarketingGaleria.css";
 
 // ==========================================
-// IMAGENS DE MARKETING
+// IMPORTAÇÃO AUTOMÁTICA DAS IMAGENS
 // ==========================================
 
-const imagens = [
+const arquivosImportados = import.meta.glob(
+  "../assets/marketing-mecanicas/*.{png,jpg,jpeg,webp,PNG,JPG,JPEG,WEBP}",
+  {
+    eager: true,
+    query: "?url",
+    import: "default",
+  }
+);
 
-  // ========================================
-  // MÁQUINAS 40MM
-  // ========================================
+// ==========================================
+// ORGANIZAÇÃO AUTOMÁTICA DOS PRODUTOS
+// ==========================================
 
-  {
-    id: 1,
-    titulo: "Máquina 40mm Quadrada Interna",
-    linha: "Máquinas 40mm",
-    src: imagem0,
-    arquivo: "Máquina 40mm Quadrada Interna.png",
-  },
-  {
-    id: 2,
-    titulo: "Máquina 40mm Redonda Interna",
-    linha: "Máquinas 40mm",
-    src: imagem1,
-    arquivo: "Máquina 40mm Redonda Interna.png",
-  },
-  {
-    id: 3,
-    titulo: "Máquina 40mm Quadrada Externa",
-    linha: "Máquinas 40mm",
-    src: imagem2,
-    arquivo: "Máquina 40mm Quadrada Externa.png",
-  },
-  {
-    id: 4,
-    titulo: "Máquina 40mm Redonda Externa",
-    linha: "Máquinas 40mm",
-    src: imagem3,
-    arquivo: "Máquina 40mm Redonda Externa.png",
-  },
-  {
-    id: 5,
-    titulo: "Máquina 40mm Quadrada Banheiro",
-    linha: "Máquinas 40mm",
-    src: imagem4,
-    arquivo: "Máquina 40mm Quadrada Banheiro.png",
-  },
-  {
-    id: 6,
-    titulo: "Máquina 40mm Redonda Banheiro",
-    linha: "Máquinas 40mm",
-    src: imagem5,
-    arquivo: "Máquina 40mm Redonda Banheiro.png",
-  },
+const imagens = Object.entries(arquivosImportados)
+  .map(([caminho, src]) => {
+    const arquivo = caminho.split("/").pop();
 
-  // ========================================
-  // MÁQUINAS 45MM
-  // ========================================
+    const titulo = arquivo.replace(/\.[^.]+$/, "");
 
-  {
-    id: 7,
-    titulo: "Máquina 45mm Quadrada Interna",
-    linha: "Máquinas 45mm",
-    src: imagem6,
-    arquivo: "Máquina 45mm Quadrada Interna.png",
-  },
-  {
-    id: 8,
-    titulo: "Máquina 45mm Redonda Interna",
-    linha: "Máquinas 45mm",
-    src: imagem7,
-    arquivo: "Máquina 45mm Redonda Interna.png",
-  },
-  {
-    id: 9,
-    titulo: "Máquina 45mm Quadrada Externa",
-    linha: "Máquinas 45mm",
-    src: imagem8,
-    arquivo: "Máquina 45mm Quadrada Externa.png",
-  },
-  {
-    id: 10,
-    titulo: "Máquina 45mm Redonda Externa",
-    linha: "Máquinas 45mm",
-    src: imagem9,
-    arquivo: "Máquina 45mm Redonda Externa.png",
-  },
-  {
-    id: 11,
-    titulo: "Máquina 45mm Quadrada Banheiro",
-    linha: "Máquinas 45mm",
-    src: imagem10,
-    arquivo: "Máquina 45mm Quadrada Banheiro.png",
-  },
-  {
-    id: 12,
-    titulo: "Máquina 45mm Redonda Banheiro",
-    linha: "Máquinas 45mm",
-    src: imagem11,
-    arquivo: "Máquina 45mm Redonda Banheiro.png",
-  },
-];
+    const medida = titulo.match(/(\d+)\s*mm/i);
+
+    const linha = medida
+      ? `Máquinas ${medida[1]}mm`
+      : "Outros produtos";
+
+    return {
+      id: caminho,
+      titulo,
+      linha,
+      src,
+      arquivo,
+    };
+  })
+  .sort((a, b) =>
+    a.titulo.localeCompare(b.titulo, "pt-BR", {
+      numeric: true,
+    })
+  );
 
 // ==========================================
 // CONSTANTES
@@ -148,7 +68,11 @@ const LINHAS = [
   "Todas",
   ...Array.from(
     new Set(imagens.map((item) => item.linha))
-  ).sort((a, b) => a.localeCompare(b, "pt-BR")),
+  ).sort((a, b) =>
+    a.localeCompare(b, "pt-BR", {
+      numeric: true,
+    })
+  ),
 ];
 
 // ==========================================
@@ -294,11 +218,13 @@ export default function MecMarketing() {
           onClick={() => setImagemAberta(item)}
           aria-label={`Ampliar ${item.titulo}`}
         >
+
           <img
             src={item.src}
             alt={item.titulo}
             loading="lazy"
           />
+
         </button>
 
         <div className="dm-gallery-body">
@@ -315,9 +241,11 @@ export default function MecMarketing() {
             href={item.src}
             download={item.arquivo}
           >
+
             <IconeDownload />
 
             Baixar imagem
+
           </a>
 
         </div>
@@ -441,9 +369,11 @@ export default function MecMarketing() {
                     key={opcao}
                     value={opcao}
                   >
+
                     {opcao === "Todas"
                       ? "Todas as linhas"
                       : opcao}
+
                   </option>
 
                 ))}
@@ -467,9 +397,11 @@ export default function MecMarketing() {
             role="status"
             aria-live="polite"
           >
+
             {imagensFiltradas.length === 1
               ? "1 imagem encontrada"
               : `${imagensFiltradas.length} imagens encontradas`}
+
           </div>
 
         </div>
