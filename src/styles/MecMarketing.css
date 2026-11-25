@@ -498,3 +498,162 @@
     transition: none;
   }
 }
+
+/* ==========================================
+   MARKETING DE FECHADURAS MECÂNICAS
+   UNIVERSIDADE SYNTER
+========================================== */
+
+/* ==========================================
+   DESKTOP
+========================================== */
+
+.mec-marketing-page .mec-mobile-filters,
+.mec-marketing-page .mec-mobile-gallery {
+  display: none !important;
+}
+
+.mec-marketing-page .mec-desktop-gallery {
+  display: block;
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 750px) {
+
+  /* Ocultar galeria desktop */
+
+  .mec-marketing-page .mec-desktop-gallery {
+    display: none !important;
+  }
+
+  /* Exibir filtros e galeria mobile */
+
+  .mec-marketing-page .mec-mobile-filters,
+  .mec-marketing-page .mec-mobile-gallery {
+    display: block !important;
+  }
+
+  /* Container dos filtros */
+
+  .mec-marketing-page .mec-mobile-filters {
+    width: 100%;
+    margin-top: 12px;
+    margin-bottom: 20px;
+  }
+
+  .mec-marketing-page .mec-filter-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+  }
+
+  /* Campos */
+
+  .mec-marketing-page .mec-filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .mec-marketing-page .mec-filter-field label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #b5b5b5;
+  }
+
+  .mec-marketing-page .mec-filter-field select {
+    width: 100%;
+    min-width: 0;
+    height: 38px;
+    padding: 0 8px;
+    border: 1px solid #303030;
+    border-radius: 6px;
+    background: #111111;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 11px;
+    outline: none;
+    color-scheme: dark;
+    box-sizing: border-box;
+  }
+
+  .mec-marketing-page .mec-filter-field select:focus {
+    border-color: #777777;
+  }
+
+  .mec-marketing-page .mec-filter-field select option {
+    background: #111111;
+    color: #ffffff;
+  }
+
+  /* Botão limpar filtros */
+
+  .mec-marketing-page .mec-clear-filters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: end;
+    width: 100%;
+    min-height: 38px;
+    padding: 8px;
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid #303030;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background 0.2s ease;
+  }
+
+  .mec-marketing-page .mec-clear-filters:hover {
+    background: #202020;
+  }
+
+  /* Contador de imagens */
+
+  .mec-marketing-page .mec-result-count {
+    margin-top: 14px;
+    font-size: 11px;
+    color: #999999;
+  }
+
+  /* Botão ver mais */
+
+  .mec-marketing-page .mec-mobile-gallery .dm-gallery-more {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 16px;
+  }
+}
+
+/* ==========================================
+   CELULARES MENORES
+========================================== */
+
+@media (max-width: 390px) {
+
+  .mec-marketing-page .mec-filter-row {
+    gap: 8px;
+  }
+
+  .mec-marketing-page .mec-filter-field select {
+    font-size: 10px;
+    padding: 0 6px;
+    height: 36px;
+  }
+
+  .mec-marketing-page .mec-clear-filters {
+    font-size: 10px;
+    min-height: 36px;
+  }
+
+}

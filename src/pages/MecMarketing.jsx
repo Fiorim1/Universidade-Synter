@@ -6,15 +6,12 @@ import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 
-// ==========================================
-// ESTILOS ORIGINAIS
-// ==========================================
-
 import "../styles/Videos.css";
 import "../styles/DigMarketing.css";
 import "../styles/DigMarketingHero.css";
 import "../styles/DigMarketingMobile.css";
 import "../styles/DigMarketingGaleria.css";
+import "../styles/MecMarketing.css";
 
 // ==========================================
 // CARREGAMENTO AUTOMÁTICO DAS IMAGENS
@@ -187,7 +184,7 @@ const imagens = Object.entries(arquivos)
   );
 
 // ==========================================
-// CONSTANTES DOS FILTROS
+// FILTROS
 // ==========================================
 
 const LIMITE_MOBILE = 3;
@@ -216,7 +213,7 @@ const APLICACOES = [
 ];
 
 // ==========================================
-// ÍCONE PADRÃO SYNTER
+// ÍCONE SYNTER
 // ==========================================
 
 function IconeSynter() {
@@ -240,7 +237,7 @@ function IconeSynter() {
 }
 
 // ==========================================
-// ÍCONE DE DOWNLOAD
+// ÍCONE DOWNLOAD
 // ==========================================
 
 function IconeDownload() {
@@ -262,7 +259,7 @@ function IconeDownload() {
 }
 
 // ==========================================
-// CARD PADRÃO DA GALERIA DIGITAL
+// CARD PADRÃO
 // ==========================================
 
 function ImagemCard({ item, abrirImagem }) {
@@ -325,8 +322,10 @@ export default function MecMarketing() {
 
   const [pesquisa, setPesquisa] = useState("");
   const [linha, setLinha] = useState("Todas");
-  const [acabamento, setAcabamento] = useState("Todos");
-  const [aplicacao, setAplicacao] = useState("Todas");
+  const [acabamento, setAcabamento] =
+    useState("Todos");
+  const [aplicacao, setAplicacao] =
+    useState("Todas");
 
   // ========================================
   // FILTRAGEM
@@ -343,27 +342,30 @@ export default function MecMarketing() {
       ].join(" ")
     );
 
-    const correspondePesquisa =
-      texto.includes(normalizar(pesquisa));
-
-    const correspondeLinha =
-      linha === "Todas" ||
-      item.linha === linha;
-
-    const correspondeAcabamento =
-      acabamento === "Todos" ||
-      item.acabamento === acabamento;
-
-    const correspondeAplicacao =
-      aplicacao === "Todas" ||
-      item.aplicacao === aplicacao;
-
     return (
-      correspondePesquisa &&
-      correspondeLinha &&
-      correspondeAcabamento &&
-      correspondeAplicacao
+      texto.includes(normalizar(pesquisa)) &&
+      (linha === "Todas" || item.linha === linha) &&
+      (acabamento === "Todos" ||
+        item.acabamento === acabamento) &&
+      (aplicacao === "Todas" ||
+        item.aplicacao === aplicacao)
     );
+  });
+
+  // Desktop utiliza apenas a pesquisa.
+
+  const imagensDesktop = imagens.filter((item) => {
+    const texto = normalizar(
+      [
+        item.titulo,
+        item.linha,
+        item.categoria,
+        item.acabamento,
+        item.aplicacao,
+      ].join(" ")
+    );
+
+    return texto.includes(normalizar(pesquisa));
   });
 
   function limparFiltros() {
@@ -379,17 +381,20 @@ export default function MecMarketing() {
     setMostrarTodasImagens(false);
   }
 
+  const imagensMobile = mostrarTodasImagens
+    ? imagensFiltradas
+    : imagensFiltradas.slice(0, LIMITE_MOBILE);
+
   // ========================================
   // INTERFACE
   // ========================================
 
   return (
-    <div className="videos-page dig-marketing-page">
+    <div className="videos-page dig-marketing-page mec-marketing-page">
+
       <Header />
 
-      {/* =====================================
-          HERO — PADRÃO ORIGINAL
-      ===================================== */}
+      {/* HERO PADRÃO ORIGINAL */}
 
       <section className="dig-marketing-hero">
         <div className="dig-marketing-hero-container">
@@ -414,16 +419,14 @@ export default function MecMarketing() {
 
           <p className="dig-marketing-description">
             Acesse vídeos e imagens das fechaduras
-            mecânicas Synter para divulgação, campanhas
-            e ações de marketing.
+            mecânicas Synter para divulgação,
+            campanhas e ações de marketing.
           </p>
 
         </div>
       </section>
 
-      {/* =====================================
-          CONTEÚDO PRINCIPAL
-      ===================================== */}
+      {/* CONTEÚDO PRINCIPAL */}
 
       <main className="videos-content">
 
@@ -435,9 +438,7 @@ export default function MecMarketing() {
           </h4>
         </div>
 
-        {/* =====================================
-            PESQUISA — PADRÃO ORIGINAL
-        ===================================== */}
+        {/* PESQUISA DESKTOP E MOBILE */}
 
         <div className="pesquisa-videos dig-marketing-search">
           <input
@@ -450,146 +451,173 @@ export default function MecMarketing() {
                 evento.target.value
               )
             }
-            aria-label="Pesquisar materiais de fechaduras mecânicas"
+            aria-label="Pesquisar imagem ou modelo"
           />
         </div>
 
         {/* =====================================
-            FILTROS
+            FILTROS EXCLUSIVOS DO MOBILE
         ===================================== */}
 
-        <div
-          className="dig-marketing-filter-row"
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "12px",
-            marginBottom: "20px",
-            colorScheme: "dark",
-          }}
-        >
+        <div className="mec-mobile-filters">
 
-          <div className="dig-marketing-filter-field">
-            <label htmlFor="mec-marketing-linha">
-              Modelo
-            </label>
+          <div className="mec-filter-row">
 
-            <select
-              id="mec-marketing-linha"
-              value={linha}
-              onChange={(evento) =>
-                alterarFiltro(
-                  setLinha,
-                  evento.target.value
-                )
-              }
+            <div className="mec-filter-field">
+              <label htmlFor="mec-modelo">
+                Modelo
+              </label>
+
+              <select
+                id="mec-modelo"
+                value={linha}
+                onChange={(evento) =>
+                  alterarFiltro(
+                    setLinha,
+                    evento.target.value
+                  )
+                }
+              >
+                {LINHAS.map((opcao) => (
+                  <option key={opcao} value={opcao}>
+                    {opcao === "Todas"
+                      ? "Todos os modelos"
+                      : opcao}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="mec-filter-field">
+              <label htmlFor="mec-acabamento">
+                Acabamento
+              </label>
+
+              <select
+                id="mec-acabamento"
+                value={acabamento}
+                onChange={(evento) =>
+                  alterarFiltro(
+                    setAcabamento,
+                    evento.target.value
+                  )
+                }
+              >
+                {ACABAMENTOS.map((opcao) => (
+                  <option key={opcao} value={opcao}>
+                    {opcao === "Todos"
+                      ? "Todos os acabamentos"
+                      : opcao}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="mec-filter-field">
+              <label htmlFor="mec-aplicacao">
+                Aplicação
+              </label>
+
+              <select
+                id="mec-aplicacao"
+                value={aplicacao}
+                onChange={(evento) =>
+                  alterarFiltro(
+                    setAplicacao,
+                    evento.target.value
+                  )
+                }
+              >
+                {APLICACOES.map((opcao) => (
+                  <option key={opcao} value={opcao}>
+                    {opcao === "Todas"
+                      ? "Todas as aplicações"
+                      : opcao}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <button
+              type="button"
+              className="mec-clear-filters"
+              onClick={limparFiltros}
             >
-              {LINHAS.map((opcao) => (
-                <option key={opcao} value={opcao}>
-                  {opcao === "Todas"
-                    ? "Todos os modelos"
-                    : opcao}
-                </option>
-              ))}
-            </select>
+              Limpar filtros
+            </button>
+
           </div>
 
-          <div className="dig-marketing-filter-field">
-            <label htmlFor="mec-marketing-acabamento">
-              Acabamento
-            </label>
-
-            <select
-              id="mec-marketing-acabamento"
-              value={acabamento}
-              onChange={(evento) =>
-                alterarFiltro(
-                  setAcabamento,
-                  evento.target.value
-                )
-              }
-            >
-              {ACABAMENTOS.map((opcao) => (
-                <option key={opcao} value={opcao}>
-                  {opcao === "Todos"
-                    ? "Todos os acabamentos"
-                    : opcao}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="dig-marketing-filter-field">
-            <label htmlFor="mec-marketing-aplicacao">
-              Aplicação
-            </label>
-
-            <select
-              id="mec-marketing-aplicacao"
-              value={aplicacao}
-              onChange={(evento) =>
-                alterarFiltro(
-                  setAplicacao,
-                  evento.target.value
-                )
-              }
-            >
-              {APLICACOES.map((opcao) => (
-                <option key={opcao} value={opcao}>
-                  {opcao === "Todas"
-                    ? "Todas as aplicações"
-                    : opcao}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <button
-            type="button"
-            className="dig-marketing-clear"
-            onClick={limparFiltros}
+          <div
+            className="mec-result-count"
+            role="status"
+            aria-live="polite"
           >
-            Limpar filtros
-          </button>
+            {imagensFiltradas.length === 1
+              ? "1 imagem encontrada"
+              : `${imagensFiltradas.length} imagens encontradas`}
+          </div>
 
-        </div>
-
-        <div
-          className="dig-marketing-result-count"
-          role="status"
-          aria-live="polite"
-        >
-          {imagensFiltradas.length === 1
-            ? "1 imagem encontrada"
-            : `${imagensFiltradas.length} imagens encontradas`}
         </div>
 
         {/* =====================================
-            GALERIA — PADRÃO ORIGINAL
+            GALERIA DESKTOP
         ===================================== */}
 
-        <section
-          className="dm-gallery"
-          aria-label="Imagens de produtos"
-        >
+        <section className="dm-gallery mec-desktop-gallery">
 
-          {imagensFiltradas.length > 0 ? (
-            <div
-              className={`videos-grid dm-gallery-grid ${
-                mostrarTodasImagens
-                  ? "dm-gallery-expanded"
-                  : ""
-              }`}
-            >
-              {imagensFiltradas.map((item) => (
+          {imagensDesktop.length > 0 ? (
+
+            <div className="videos-grid dm-gallery-grid">
+
+              {imagensDesktop.map((item) => (
                 <ImagemCard
                   key={item.id}
                   item={item}
                   abrirImagem={setImagemAberta}
                 />
               ))}
+
             </div>
+
           ) : (
+
+            <div className="dig-marketing-empty">
+              <strong>
+                Nenhuma imagem encontrada
+              </strong>
+
+              <p>
+                Tente pesquisar outro modelo.
+              </p>
+            </div>
+
+          )}
+
+        </section>
+
+        {/* =====================================
+            GALERIA MOBILE
+        ===================================== */}
+
+        <section className="dm-gallery mec-mobile-gallery">
+
+          {imagensMobile.length > 0 ? (
+
+            <div className="videos-grid dm-gallery-grid dm-gallery-expanded">
+
+              {imagensMobile.map((item) => (
+                <ImagemCard
+                  key={item.id}
+                  item={item}
+                  abrirImagem={setImagemAberta}
+                />
+              ))}
+
+            </div>
+
+          ) : (
+
             <div className="dig-marketing-empty">
               <strong>
                 Nenhuma imagem encontrada
@@ -602,11 +630,13 @@ export default function MecMarketing() {
 
               <button
                 type="button"
+                className="mec-clear-filters"
                 onClick={limparFiltros}
               >
                 Limpar filtros
               </button>
             </div>
+
           )}
 
           {imagensFiltradas.length > LIMITE_MOBILE && (
@@ -671,6 +701,7 @@ export default function MecMarketing() {
                 href={imagemAberta.src}
                 download={imagemAberta.arquivo}
               >
+                <IconeDownload />
                 Baixar imagem
               </a>
             </div>
@@ -681,9 +712,7 @@ export default function MecMarketing() {
 
       <Footer />
 
-      {/* =====================================
-          PERFIL DO USUÁRIO
-      ===================================== */}
+      {/* PERFIL DO USUÁRIO */}
 
       {profileOpen && (
         <Profile
