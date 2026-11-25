@@ -6,7 +6,7 @@ import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 
 // ==========================================
-// ESTILOS ORIGINAIS
+// ESTILOS
 // ==========================================
 
 import "../styles/Videos.css";
@@ -52,10 +52,28 @@ const imagens = Object.entries(arquivosImportados)
       linha = `Máquinas ${medida[1]}mm`;
     }
 
-    // LINHA ACQUA MAX
+    // ACQUA MAX
 
     else if (/^Acqua Max/i.test(titulo)) {
       linha = "Acqua Max";
+    }
+
+    // NAVIS
+
+    else if (/^Navis/i.test(titulo)) {
+      linha = "Navis";
+    }
+
+    // LUCK
+
+    else if (/^Luck/i.test(titulo)) {
+      linha = "Luck";
+    }
+
+    // CRISPUS MAX
+
+    else if (/Crispus Max/i.test(titulo)) {
+      linha = "Crispus Max";
     }
 
     return {
@@ -91,7 +109,7 @@ const LINHAS = [
 ];
 
 // ==========================================
-// FUNÇÕES AUXILIARES
+// NORMALIZAÇÃO DA PESQUISA
 // ==========================================
 
 function normalizar(valor) {
@@ -103,7 +121,7 @@ function normalizar(valor) {
 }
 
 // ==========================================
-// ÍCONE PADRÃO SYNTER
+// ÍCONE SYNTER
 // ==========================================
 
 function IconeSynter() {
@@ -221,7 +239,7 @@ export default function MecMarketing() {
   }
 
   // ========================================
-  // RENDERIZAR IMAGEM
+  // CARD DA IMAGEM
   // ========================================
 
   function renderizarImagem(item) {
@@ -286,9 +304,7 @@ export default function MecMarketing() {
 
       <Header />
 
-      {/* =====================================
-          HERO
-      ===================================== */}
+      {/* HERO */}
 
       <section className="dig-marketing-hero">
 
@@ -326,9 +342,7 @@ export default function MecMarketing() {
 
       </section>
 
-      {/* =====================================
-          CONTEÚDO PRINCIPAL
-      ===================================== */}
+      {/* CONTEÚDO PRINCIPAL */}
 
       <main className="videos-content">
 
@@ -344,9 +358,7 @@ export default function MecMarketing() {
 
         </div>
 
-        {/* =====================================
-            PESQUISA
-        ===================================== */}
+        {/* PESQUISA */}
 
         <div className="pesquisa-videos dig-marketing-search">
 
@@ -362,9 +374,7 @@ export default function MecMarketing() {
 
         </div>
 
-        {/* =====================================
-            FILTROS MOBILE
-        ===================================== */}
+        {/* FILTROS MOBILE */}
 
         <div className="dig-marketing-mobile-filters">
 
@@ -427,9 +437,7 @@ export default function MecMarketing() {
 
         </div>
 
-        {/* =====================================
-            GALERIA DE IMAGENS
-        ===================================== */}
+        {/* GALERIA DE IMAGENS */}
 
         <section
           className="dm-gallery"
@@ -490,9 +498,7 @@ export default function MecMarketing() {
 
         </section>
 
-        {/* =====================================
-            AMPLIAÇÃO DA IMAGEM
-        ===================================== */}
+        {/* AMPLIAÇÃO DA IMAGEM */}
 
         {imagemAberta && (
 
