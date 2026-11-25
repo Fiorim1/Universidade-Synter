@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -25,13 +25,7 @@ const arquivos = import.meta.glob(
   }
 );
 
-function normalizar(valor) {
-  return String(valor ?? "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .trim();
-}
+const LIMITE_MOBILE = 3;
 
 // ==========================================
 // MODELOS
@@ -55,6 +49,7 @@ const MODELOS = [
   "Star Max",
   "Star",
   "Stillus",
+  "Champion",
 ].sort((a, b) => b.length - a.length);
 
 // ==========================================
@@ -63,6 +58,7 @@ const MODELOS = [
 
 const INOX_PRIME = [
   "Acqua",
+  "Acqua Max",
   "Crispus Max",
   "Luck",
   "Navis",
@@ -71,51 +67,66 @@ const INOX_PRIME = [
   "Star Max",
 ];
 
-function identificarCategoria(modelo) {
-  return INOX_PRIME.includes(modelo)
-    ? "INOX PRIME"
-    : "";
+// ==========================================
+// LINHA UNIC INOX
+// ==========================================
+
+const UNIC_INOX = [
+  "Champion",
+];
+
+// ==========================================
+// FUNÇÕES AUXILIARES
+// ==========================================
+
+function normalizar(valor) {
+  return String(valor ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .toLowerCase()
+    .trim();
 }
 
-// ==========================================
-// IDENTIFICAR MODELO
-// ==========================================
-
-function identificarLinha(nome) {
+function identificarModelo(nome) {
   const texto = normalizar(nome);
 
   return (
-    MODELOS.find((item) =>
-      texto.includes(normalizar(item))
+    MODELOS.find((modelo) =>
+      texto.includes(normalizar(modelo))
     ) || "Outros"
   );
 }
 
-// ==========================================
-// IDENTIFICAR ACABAMENTO
-// ==========================================
+function identificarLinha(modelo) {
+  if (INOX_PRIME.includes(modelo)) {
+    return "INOX PRIME";
+  }
+
+  if (UNIC_INOX.includes(modelo)) {
+    return "UNIC INOX";
+  }
+
+  if (modelo === "Máquina 40mm") {
+    return "MÁQUINAS";
+  }
+
+  return "";
+}
 
 function identificarAcabamento(nome) {
   const texto = normalizar(nome);
 
-  if (
-    texto.includes("preta") ||
-    texto.includes("preto")
-  ) {
+  if (/\bpret[ao]\b/.test(texto)) {
     return "Preto";
   }
 
-  if (
-    texto.includes("escovada") ||
-    texto.includes("escovado")
-  ) {
+  if (/\bescovad[ao]\b/.test(texto)) {
     return "Escovado";
   }
 
-  if (
-    texto.includes("polida") ||
-    texto.includes("polido")
-  ) {
+  if (/\bpolid[ao]\b/.test(texto)) {
     return "Polido";
   }
 
@@ -125,10 +136,6 @@ function identificarAcabamento(nome) {
 
   return "";
 }
-
-// ==========================================
-// IDENTIFICAR APLICAÇÃO
-// ==========================================
 
 function identificarAplicacao(nome) {
   const texto = normalizar(nome);
@@ -157,63 +164,51 @@ function identificarAplicacao(nome) {
 }
 
 // ==========================================
-// ORGANIZAÇÃO DAS IMAGENS
+// ORGANIZAÇÃO AUTOMÁTICA DAS IMAGENS
 // ==========================================
 
 const imagens = Object.entries(arquivos)
   .map(([caminho, src]) => {
     const arquivo = caminho.split("/").pop();
-    const titulo = arquivo.replace(/\.[^.]+$/, "");
-    const linha = identificarLinha(titulo);
+
+    const titulo = arquivo
+      .replace(/\.[^.]+$/, "")
+      .replace(/[_-]+/g, " ")
+      .trim();
+
+    const modelo = identificarModelo(titulo);
 
     return {
       id: caminho,
       titulo,
-      arquivo,
-      src,
-      linha,
-      categoria: identificarCategoria(linha),
+      modelo,
+      linha: identificarLinha(modelo),
       acabamento: identificarAcabamento(titulo),
       aplicacao: identificarAplicacao(titulo),
+      src,
+      arquivo,
     };
   })
   .sort((a, b) =>
-    a.titulo.localeCompare(b.titulo, "pt-BR", {
-      numeric: true,
-    })
+    a.titulo.localeCompare(b.titulo, "pt-BR")
   );
 
 // ==========================================
-// FILTROS
+// OPÇÕES DOS FILTROS
 // ==========================================
 
-const LIMITE_MOBILE = 3;
+function criarOpcoes(campo) {
+  return [...new Set(
+    imagens.map((item) => item[campo]).filter(Boolean)
+  )].sort((a, b) => a.localeCompare(b, "pt-BR"));
+}
 
-const LINHAS = [
-  "Todas",
-  ...Array.from(
-    new Set(imagens.map((item) => item.linha))
-  ).sort((a, b) => a.localeCompare(b, "pt-BR")),
-];
-
-const ACABAMENTOS = [
-  "Todos",
-  "Polido",
-  "Escovado",
-  "Preto",
-];
-
-const APLICACOES = [
-  "Todas",
-  "Interna",
-  "Externa",
-  "Banheiro",
-  "Banheiro - Chave Reta",
-  "Maçaneta",
-];
+const FILTRO_MODELOS = criarOpcoes("modelo");
+const FILTRO_ACABAMENTOS = criarOpcoes("acabamento");
+const FILTRO_APLICACOES = criarOpcoes("aplicacao");
 
 // ==========================================
-// ÍCONE SYNTER
+// ÍCONE PADRÃO SYNTER
 // ==========================================
 
 function IconeSynter() {
@@ -259,12 +254,13 @@ function IconeDownload() {
 }
 
 // ==========================================
-// CARD PADRÃO
+// CARD DESKTOP
 // ==========================================
 
 function ImagemCard({ item, abrirImagem }) {
   return (
     <article className="dm-gallery-card">
+
       <button
         type="button"
         className="dm-gallery-preview"
@@ -279,26 +275,87 @@ function ImagemCard({ item, abrirImagem }) {
       </button>
 
       <div className="dm-gallery-body">
+
+        {item.linha && (
+          <span className="mec-product-line">
+            {item.linha}
+          </span>
+        )}
+
         <h3>{item.titulo}</h3>
 
         <p>
           {[
-            item.categoria,
+            item.modelo,
             item.acabamento,
             item.aplicacao,
-          ]
-            .filter(Boolean)
-            .join(" • ")}
+          ].filter(Boolean).join(" • ")}
         </p>
 
         <a
-          className="dm-gallery-download"
           href={item.src}
           download={item.arquivo}
+          className="dm-gallery-download"
         >
           <IconeDownload />
           Baixar imagem
         </a>
+
+      </div>
+    </article>
+  );
+}
+
+// ==========================================
+// CARD MOBILE
+// ==========================================
+
+function ImagemCardMobile({ item, abrirImagem }) {
+  return (
+    <article className="video-card mec-mobile-card">
+
+      <button
+        type="button"
+        className="mec-mobile-preview"
+        onClick={() => abrirImagem(item)}
+        aria-label={`Ampliar ${item.titulo}`}
+      >
+        <img
+          src={item.src}
+          alt={item.titulo}
+          className="video-preview"
+          loading="lazy"
+        />
+      </button>
+
+      <div className="video-card-info">
+
+        {item.linha && (
+          <span className="mec-product-line">
+            {item.linha}
+          </span>
+        )}
+
+        <h3>{item.titulo}</h3>
+
+        <p>
+          {[
+            item.acabamento,
+            item.aplicacao,
+          ].filter(Boolean).join(" • ")}
+        </p>
+
+        <div className="video-card-botoes">
+          <a
+            href={item.src}
+            download={item.arquivo}
+            className="botao-assistir"
+          >
+            <IconeDownload />
+            Baixar imagem
+          </a>
+        </div>
+
       </div>
     </article>
   );
@@ -309,57 +366,48 @@ function ImagemCard({ item, abrirImagem }) {
 // ==========================================
 
 export default function MecMarketing() {
-  const [profileOpen, setProfileOpen] =
-    useState(false);
 
-  const [imagemAberta, setImagemAberta] =
-    useState(null);
-
-  const [
-    mostrarTodasImagens,
-    setMostrarTodasImagens,
-  ] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [imagemAberta, setImagemAberta] = useState(null);
 
   const [pesquisa, setPesquisa] = useState("");
-  const [linha, setLinha] = useState("Todas");
-  const [acabamento, setAcabamento] =
-    useState("Todos");
-  const [aplicacao, setAplicacao] =
-    useState("Todas");
+  const [modelo, setModelo] = useState("Todos");
+  const [acabamento, setAcabamento] = useState("Todos");
+  const [aplicacao, setAplicacao] = useState("Todas");
+
+  const [mostrarTodasImagens, setMostrarTodasImagens] =
+    useState(false);
 
   // ========================================
-  // FILTRAGEM
+  // FECHAR IMAGEM COM ESC
   // ========================================
 
-  const imagensFiltradas = imagens.filter((item) => {
-    const texto = normalizar(
-      [
-        item.titulo,
-        item.linha,
-        item.categoria,
-        item.acabamento,
-        item.aplicacao,
-      ].join(" ")
-    );
+  useEffect(() => {
+    if (!imagemAberta) return;
 
-    return (
-      texto.includes(normalizar(pesquisa)) &&
-      (linha === "Todas" || item.linha === linha) &&
-      (acabamento === "Todos" ||
-        item.acabamento === acabamento) &&
-      (aplicacao === "Todas" ||
-        item.aplicacao === aplicacao)
-    );
-  });
+    function fechar(evento) {
+      if (evento.key === "Escape") {
+        setImagemAberta(null);
+      }
+    }
 
-  // Desktop utiliza apenas a pesquisa.
+    window.addEventListener("keydown", fechar);
+
+    return () => {
+      window.removeEventListener("keydown", fechar);
+    };
+  }, [imagemAberta]);
+
+  // ========================================
+  // PESQUISA
+  // ========================================
 
   const imagensDesktop = imagens.filter((item) => {
     const texto = normalizar(
       [
         item.titulo,
+        item.modelo,
         item.linha,
-        item.categoria,
         item.acabamento,
         item.aplicacao,
       ].join(" ")
@@ -368,22 +416,46 @@ export default function MecMarketing() {
     return texto.includes(normalizar(pesquisa));
   });
 
+  // ========================================
+  // FILTROS EXCLUSIVOS DO MOBILE
+  // ========================================
+
+  const imagensFiltradas = imagensDesktop.filter((item) => {
+
+    const correspondeModelo =
+      modelo === "Todos" || item.modelo === modelo;
+
+    const correspondeAcabamento =
+      acabamento === "Todos" ||
+      item.acabamento === acabamento;
+
+    const correspondeAplicacao =
+      aplicacao === "Todas" ||
+      item.aplicacao === aplicacao;
+
+    return (
+      correspondeModelo &&
+      correspondeAcabamento &&
+      correspondeAplicacao
+    );
+  });
+
+  const imagensMobile = mostrarTodasImagens
+    ? imagensFiltradas
+    : imagensFiltradas.slice(0, LIMITE_MOBILE);
+
   function limparFiltros() {
     setPesquisa("");
-    setLinha("Todas");
+    setModelo("Todos");
     setAcabamento("Todos");
     setAplicacao("Todas");
     setMostrarTodasImagens(false);
   }
 
-  function alterarFiltro(setter, valor) {
-    setter(valor);
+  function alterarPesquisa(valor) {
+    setPesquisa(valor);
     setMostrarTodasImagens(false);
   }
-
-  const imagensMobile = mostrarTodasImagens
-    ? imagensFiltradas
-    : imagensFiltradas.slice(0, LIMITE_MOBILE);
 
   // ========================================
   // INTERFACE
@@ -394,9 +466,10 @@ export default function MecMarketing() {
 
       <Header />
 
-      {/* HERO PADRÃO ORIGINAL */}
+      {/* HERO PADRÃO */}
 
       <section className="dig-marketing-hero">
+
         <div className="dig-marketing-hero-container">
 
           <div className="dig-marketing-profile">
@@ -418,77 +491,80 @@ export default function MecMarketing() {
           </h1>
 
           <p className="dig-marketing-description">
-            Acesse vídeos e imagens das fechaduras
-            mecânicas Synter para divulgação,
-            campanhas e ações de marketing.
+            Acesse imagens das fechaduras mecânicas
+            Synter para divulgação, campanhas e ações
+            de marketing.
           </p>
 
         </div>
-      </section>
 
-      {/* CONTEÚDO PRINCIPAL */}
+      </section>
 
       <main className="videos-content">
 
+        {/* TÍTULO DA SEÇÃO */}
+
         <div className="videos-section-title">
+
           <div className="videos-section-bar" />
 
           <h4>
             IMAGENS DE FECHADURAS MECÂNICAS
           </h4>
+
         </div>
 
-        {/* PESQUISA DESKTOP E MOBILE */}
+        {/* PESQUISA PADRÃO */}
 
-        <div className="pesquisa-videos dig-marketing-search">
+        <div className="dig-marketing-search mec-search">
+
           <input
             type="search"
             placeholder="Pesquisar imagem ou modelo..."
             value={pesquisa}
             onChange={(evento) =>
-              alterarFiltro(
-                setPesquisa,
-                evento.target.value
-              )
+              alterarPesquisa(evento.target.value)
             }
-            aria-label="Pesquisar imagem ou modelo"
+            aria-label="Pesquisar imagens"
           />
+
         </div>
 
-        {/* =====================================
-            FILTROS EXCLUSIVOS DO MOBILE
-        ===================================== */}
+        {/* FILTROS SOMENTE MOBILE */}
 
         <div className="mec-mobile-filters">
 
-          <div className="mec-filter-row">
+          <div className="dig-marketing-filter-row">
 
-            <div className="mec-filter-field">
+            <div className="dig-marketing-filter-field">
+
               <label htmlFor="mec-modelo">
                 Modelo
               </label>
 
               <select
                 id="mec-modelo"
-                value={linha}
-                onChange={(evento) =>
-                  alterarFiltro(
-                    setLinha,
-                    evento.target.value
-                  )
-                }
+                value={modelo}
+                onChange={(evento) => {
+                  setModelo(evento.target.value);
+                  setMostrarTodasImagens(false);
+                }}
               >
-                {LINHAS.map((opcao) => (
-                  <option key={opcao} value={opcao}>
-                    {opcao === "Todas"
-                      ? "Todos os modelos"
-                      : opcao}
+                <option value="Todos">
+                  Todos os modelos
+                </option>
+
+                {FILTRO_MODELOS.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
                   </option>
                 ))}
               </select>
+
             </div>
 
-            <div className="mec-filter-field">
+            <div className="dig-marketing-filter-field">
+
               <label htmlFor="mec-acabamento">
                 Acabamento
               </label>
@@ -496,24 +572,26 @@ export default function MecMarketing() {
               <select
                 id="mec-acabamento"
                 value={acabamento}
-                onChange={(evento) =>
-                  alterarFiltro(
-                    setAcabamento,
-                    evento.target.value
-                  )
-                }
+                onChange={(evento) => {
+                  setAcabamento(evento.target.value);
+                  setMostrarTodasImagens(false);
+                }}
               >
-                {ACABAMENTOS.map((opcao) => (
-                  <option key={opcao} value={opcao}>
-                    {opcao === "Todos"
-                      ? "Todos os acabamentos"
-                      : opcao}
+                <option value="Todos">
+                  Todos os acabamentos
+                </option>
+
+                {FILTRO_ACABAMENTOS.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
                   </option>
                 ))}
               </select>
+
             </div>
 
-            <div className="mec-filter-field">
+            <div className="dig-marketing-filter-field">
+
               <label htmlFor="mec-aplicacao">
                 Aplicação
               </label>
@@ -521,26 +599,27 @@ export default function MecMarketing() {
               <select
                 id="mec-aplicacao"
                 value={aplicacao}
-                onChange={(evento) =>
-                  alterarFiltro(
-                    setAplicacao,
-                    evento.target.value
-                  )
-                }
+                onChange={(evento) => {
+                  setAplicacao(evento.target.value);
+                  setMostrarTodasImagens(false);
+                }}
               >
-                {APLICACOES.map((opcao) => (
-                  <option key={opcao} value={opcao}>
-                    {opcao === "Todas"
-                      ? "Todas as aplicações"
-                      : opcao}
+                <option value="Todas">
+                  Todas as aplicações
+                </option>
+
+                {FILTRO_APLICACOES.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
                   </option>
                 ))}
               </select>
+
             </div>
 
             <button
               type="button"
-              className="mec-clear-filters"
+              className="dig-marketing-clear"
               onClick={limparFiltros}
             >
               Limpar filtros
@@ -549,22 +628,17 @@ export default function MecMarketing() {
           </div>
 
           <div
-            className="mec-result-count"
+            className="dig-marketing-result-count"
             role="status"
-            aria-live="polite"
           >
-            {imagensFiltradas.length === 1
-              ? "1 imagem encontrada"
-              : `${imagensFiltradas.length} imagens encontradas`}
+            {imagensFiltradas.length} imagens encontradas
           </div>
 
         </div>
 
-        {/* =====================================
-            GALERIA DESKTOP
-        ===================================== */}
+        {/* GALERIA DESKTOP */}
 
-        <section className="dm-gallery mec-desktop-gallery">
+        <section className="mec-desktop-gallery">
 
           {imagensDesktop.length > 0 ? (
 
@@ -582,32 +656,24 @@ export default function MecMarketing() {
 
           ) : (
 
-            <div className="dig-marketing-empty">
-              <strong>
-                Nenhuma imagem encontrada
-              </strong>
-
-              <p>
-                Tente pesquisar outro modelo.
-              </p>
-            </div>
+            <p className="nenhum-video">
+              Nenhuma imagem encontrada.
+            </p>
 
           )}
 
         </section>
 
-        {/* =====================================
-            GALERIA MOBILE
-        ===================================== */}
+        {/* GALERIA MOBILE */}
 
-        <section className="dm-gallery mec-mobile-gallery">
+        <section className="mec-mobile-gallery">
 
           {imagensMobile.length > 0 ? (
 
-            <div className="videos-grid dm-gallery-grid dm-gallery-expanded">
+            <div className="dig-marketing-mobile-list">
 
               {imagensMobile.map((item) => (
-                <ImagemCard
+                <ImagemCardMobile
                   key={item.id}
                   item={item}
                   abrirImagem={setImagemAberta}
@@ -618,97 +684,78 @@ export default function MecMarketing() {
 
           ) : (
 
-            <div className="dig-marketing-empty">
-              <strong>
-                Nenhuma imagem encontrada
-              </strong>
-
-              <p>
-                Tente pesquisar outro modelo
-                ou limpar os filtros.
-              </p>
-
-              <button
-                type="button"
-                className="mec-clear-filters"
-                onClick={limparFiltros}
-              >
-                Limpar filtros
-              </button>
-            </div>
+            <p className="nenhum-video">
+              Nenhuma imagem encontrada.
+            </p>
 
           )}
 
           {imagensFiltradas.length > LIMITE_MOBILE && (
+
             <button
               type="button"
-              className="dig-marketing-more dm-gallery-more"
+              className="dig-marketing-more"
               aria-expanded={mostrarTodasImagens}
               onClick={() =>
-                setMostrarTodasImagens(
-                  (atual) => !atual
-                )
+                setMostrarTodasImagens((atual) => !atual)
               }
             >
               {mostrarTodasImagens
                 ? "Mostrar menos imagens"
                 : `Ver mais ${
-                    imagensFiltradas.length -
-                    LIMITE_MOBILE
+                    imagensFiltradas.length - LIMITE_MOBILE
                   } imagens`}
             </button>
+
           )}
 
         </section>
 
-        {/* =====================================
-            VISUALIZAÇÃO AMPLIADA
-        ===================================== */}
-
-        {imagemAberta && (
-          <div
-            className="dm-gallery-overlay"
-            onClick={() => setImagemAberta(null)}
-            onKeyDown={(evento) => {
-              if (evento.key === "Escape") {
-                setImagemAberta(null);
-              }
-            }}
-          >
-            <div
-              className="dm-gallery-modal"
-              role="dialog"
-              aria-modal="true"
-              aria-label={imagemAberta.titulo}
-              onClick={(evento) =>
-                evento.stopPropagation()
-              }
-            >
-              <button
-                autoFocus
-                type="button"
-                onClick={() => setImagemAberta(null)}
-              >
-                Fechar ×
-              </button>
-
-              <img
-                src={imagemAberta.src}
-                alt={imagemAberta.titulo}
-              />
-
-              <a
-                href={imagemAberta.src}
-                download={imagemAberta.arquivo}
-              >
-                <IconeDownload />
-                Baixar imagem
-              </a>
-            </div>
-          </div>
-        )}
-
       </main>
+
+      {/* AMPLIAÇÃO DA IMAGEM */}
+
+      {imagemAberta && (
+
+        <div
+          className="dm-gallery-overlay"
+          onClick={() => setImagemAberta(null)}
+        >
+
+          <div
+            className="dm-gallery-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={imagemAberta.titulo}
+            onClick={(evento) => evento.stopPropagation()}
+          >
+
+            <button
+              autoFocus
+              type="button"
+              onClick={() => setImagemAberta(null)}
+            >
+              Fechar ×
+            </button>
+
+            <img
+              src={imagemAberta.src}
+              alt={imagemAberta.titulo}
+            />
+
+            <a
+              href={imagemAberta.src}
+              download={imagemAberta.arquivo}
+            >
+              <IconeDownload />
+              Baixar imagem
+            </a>
+
+          </div>
+
+        </div>
+
+      )}
 
       <Footer />
 

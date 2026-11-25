@@ -1,508 +1,11 @@
 
 /* ==========================================
-   UNIVERSIDADE SYNTER
-   MARKETING — FECHADURAS MECÂNICAS
+   MARKETING DE FECHADURAS MECÂNICAS
 ========================================== */
 
 .mec-marketing-page {
-  background: #090909;
-  color: #ffffff;
-}
-
-/* ==========================================
-   BENEFÍCIOS DO HERO
-========================================== */
-
-.mec-marketing-beneficios {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 26px;
-
-  max-width: 780px;
-
-  margin-top: 30px;
-  padding-top: 22px;
-
-  border-top: 1px solid #303034;
-}
-
-.mec-marketing-beneficios > div {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.mec-marketing-beneficios > div > svg {
-  box-sizing: content-box;
-
-  padding: 9px;
-
-  border: 1px solid #414145;
-  border-radius: 50%;
-
-  color: #ffffff;
-}
-
-.mec-marketing-beneficios span {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.mec-marketing-beneficios strong {
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.mec-marketing-beneficios small {
-  color: #a5a5ad;
-  font-size: 11px;
-}
-
-/* ==========================================
-   PESQUISA
-========================================== */
-
-.mec-marketing-page .dig-marketing-search {
-  margin-bottom: 16px;
-}
-
-.mec-marketing-page .dig-marketing-search input {
-  box-sizing: border-box;
-
-  width: 100%;
-  max-width: 480px;
-  height: 46px;
-
-  padding: 0 15px;
-
-  background: #141416;
-  color: #ffffff;
-
-  border: 1px solid #35353a;
-  border-radius: 9px;
-
-  font-family: inherit;
-  font-size: 14px;
-
-  outline: none;
-}
-
-.mec-marketing-page .dig-marketing-search input:focus {
-  border-color: #77777d;
-}
-
-/* ==========================================
-   FILTROS
-========================================== */
-
-.mec-marketing-filtros {
-  margin-bottom: 30px;
-}
-
-.mec-marketing-filtros .dig-marketing-filter-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
-}
-
-.mec-marketing-filtros .dig-marketing-filter-field {
-  display: flex;
-  flex-direction: column;
-
-  width: 180px;
-  min-width: 0;
-
-  gap: 7px;
-}
-
-.mec-marketing-filtros label {
-  color: #aaaab2;
-
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.mec-marketing-filtros select {
-  width: 100%;
-  min-width: 0;
-  height: 42px;
-
-  padding: 0 12px;
-
-  background: #171719;
-  color: #ffffff;
-
-  border: 1px solid #39393e;
-  border-radius: 9px;
-
-  font-family: inherit;
-  font-size: 13px;
-
-  outline: none;
-}
-
-.mec-marketing-filtros .dig-marketing-clear {
-  height: 42px;
-
-  padding: 0 18px;
-
-  background: #1c1c1e;
-  color: #ffffff;
-
-  border: 1px solid #39393e;
-  border-radius: 9px;
-
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-
-  cursor: pointer;
-}
-
-.mec-marketing-filtros .dig-marketing-clear:hover {
-  background: #303034;
-}
-
-.mec-marketing-filtros .dig-marketing-result-count {
-  margin-top: 12px;
-
-  color: #a7a7af;
-  font-size: 12px;
-}
-
-/* ==========================================
-   GALERIA DESKTOP
-========================================== */
-
-.mec-marketing-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
-
-  gap: 20px;
   width: 100%;
 }
-
-.mec-marketing-page .mec-imagem-card {
-  box-sizing: border-box;
-
-  display: flex;
-  flex-direction: column;
-
-  width: 100%;
-  min-width: 0;
-  height: 100%;
-
-  padding: 0;
-  margin: 0;
-
-  background: #111111;
-
-  border: 1px solid #303034;
-  border-radius: 17px;
-
-  overflow: hidden;
-
-  transition: border-color 0.2s ease;
-}
-
-.mec-marketing-page .mec-imagem-card:hover {
-  border-color: #646469;
-}
-
-/* IMAGEM */
-
-.mec-marketing-page .mec-imagem-card .video-preview {
-  display: block;
-
-  width: 100%;
-  height: auto;
-
-  aspect-ratio: 16 / 10;
-
-  margin: 0;
-
-  background: #ffffff;
-
-  object-fit: contain;
-  border-radius: 0;
-}
-
-/* INFORMAÇÕES */
-
-.mec-marketing-page .mec-imagem-card .video-card-info {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-
-  min-width: 0;
-
-  padding: 20px;
-
-  gap: 15px;
-}
-
-.mec-marketing-page .mec-imagem-card h2 {
-  margin: 0;
-
-  color: #ffffff;
-
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.4;
-}
-
-.mec-marketing-page .mec-imagem-card p {
-  margin: 0 0 24px;
-
-  color: #b7b7bf;
-
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-/* BOTÃO DE DOWNLOAD */
-
-.mec-marketing-page .mec-imagem-card .video-card-botoes {
-  width: 100%;
-  margin-top: auto;
-}
-
-.mec-marketing-page .mec-imagem-card .botao-assistir {
-  box-sizing: border-box;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  min-height: 44px;
-
-  padding: 10px 15px;
-
-  gap: 9px;
-
-  background: transparent;
-  color: #ffffff;
-
-  border: 1px solid #35353a;
-  border-radius: 10px;
-
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 700;
-
-  text-decoration: none;
-
-  cursor: pointer;
-
-  transition: background 0.2s ease;
-}
-
-.mec-marketing-page .mec-imagem-card .botao-assistir:hover {
-  background: #262629;
-}
-
-/* ==========================================
-   TABLETS
-========================================== */
-
-@media screen and (max-width: 1050px) {
-  .mec-marketing-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* ==========================================
-   MOBILE — CARDS HORIZONTAIS
-========================================== */
-
-@media screen and (max-width: 750px) {
-
-  .mec-marketing-beneficios {
-    display: none;
-  }
-
-  .mec-marketing-filtros {
-    margin-bottom: 24px;
-  }
-
-  .mec-marketing-filtros .dig-marketing-filter-field {
-    flex: 1;
-    width: auto;
-  }
-
-  .mec-marketing-page
-  .dig-marketing-mobile-list {
-    display: grid;
-
-    grid-template-columns: minmax(0, 1fr);
-
-    gap: 9px;
-  }
-
-  .mec-marketing-page
-  .dig-marketing-mobile-list
-  .mec-imagem-card {
-    display: grid !important;
-
-    grid-template-columns: 92px minmax(0, 1fr);
-    align-items: center;
-
-    width: 100% !important;
-    min-height: 88px !important;
-    height: auto !important;
-
-    padding: 9px !important;
-    margin: 0 !important;
-
-    gap: 11px !important;
-
-    background: #141416 !important;
-
-    border: 1px solid #35353a !important;
-    border-radius: 11px !important;
-
-    box-shadow: none !important;
-    transform: none !important;
-  }
-
-  /* MINIATURA */
-
-  .mec-marketing-page
-  .dig-marketing-mobile-list
-  .mec-imagem-card
-  .video-preview {
-    width: 92px !important;
-    height: 68px !important;
-
-    aspect-ratio: auto !important;
-
-    margin: 0 !important;
-
-    background: #ffffff !important;
-
-    border-radius: 7px !important;
-
-    object-fit: contain !important;
-  }
-
-  /* INFORMAÇÕES */
-
-  .mec-marketing-page
-  .dig-marketing-mobile-list
-  .video-card-info {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-
-    min-width: 0;
-
-    padding: 0 !important;
-    margin: 0 !important;
-
-    gap: 8px !important;
-  }
-
-  .mec-marketing-page
-  .dig-marketing-mobile-list
-  .video-card-info h2 {
-    margin: 0 !important;
-
-    font-size: 11px !important;
-    line-height: 1.35 !important;
-    font-weight: 700;
-
-    overflow-wrap: anywhere;
-  }
-
-  .mec-marketing-page
-  .dig-marketing-mobile-list
-  .video-card-info > p {
-    display: none !important;
-  }
-
-  /* BOTÃO COMPACTO */
-
-  .mec-marketing-page
-  .dig-marketing-mobile-list
-  .video-card-botoes {
-    display: flex !important;
-
-    width: 100% !important;
-    margin: 0 !important;
-  }
-
-  .mec-marketing-page
-  .dig-marketing-mobile-list
-  .botao-assistir {
-    display: inline-flex !important;
-
-    width: auto !important;
-    min-height: 29px !important;
-
-    padding: 5px 11px !important;
-
-    gap: 6px !important;
-
-    font-size: 11px !important;
-
-    border-radius: 7px !important;
-  }
-
-  .mec-marketing-page
-  .dig-marketing-mobile-list
-  .botao-assistir svg {
-    width: 14px !important;
-    height: 14px !important;
-  }
-}
-
-/* ==========================================
-   CELULARES PEQUENOS
-========================================== */
-
-@media screen and (max-width: 390px) {
-
-  .mec-marketing-page
-  .dig-marketing-mobile-list
-  .mec-imagem-card {
-    grid-template-columns: 78px minmax(0, 1fr);
-
-    gap: 9px !important;
-  }
-
-  .mec-marketing-page
-  .dig-marketing-mobile-list
-  .mec-imagem-card
-  .video-preview {
-    width: 78px !important;
-    height: 66px !important;
-  }
-
-  .mec-marketing-page
-  .dig-marketing-mobile-list
-  .video-card-info h2 {
-    font-size: 10.5px !important;
-  }
-}
-
-/* ACESSIBILIDADE */
-
-@media (prefers-reduced-motion: reduce) {
-  .mec-marketing-page .mec-imagem-card,
-  .mec-marketing-page .botao-assistir {
-    transition: none;
-  }
-}
-
-/* ==========================================
-   MARKETING DE FECHADURAS MECÂNICAS
-   UNIVERSIDADE SYNTER
-========================================== */
 
 /* ==========================================
    DESKTOP
@@ -510,11 +13,77 @@
 
 .mec-marketing-page .mec-mobile-filters,
 .mec-marketing-page .mec-mobile-gallery {
-  display: none !important;
+  display: none;
 }
 
 .mec-marketing-page .mec-desktop-gallery {
   display: block;
+}
+
+.mec-marketing-page .mec-search {
+  margin-bottom: 26px;
+}
+
+.mec-marketing-page .mec-search input {
+  width: 100%;
+  max-width: 400px;
+  padding: 14px 16px;
+  background: #101010;
+  color: #ffffff;
+  border: 1px solid #333333;
+  border-radius: 7px;
+  font-size: 14px;
+  outline: none;
+}
+
+.mec-marketing-page .mec-search input:focus {
+  border-color: #777777;
+}
+
+/* ==========================================
+   IMAGENS DOS PRODUTOS
+========================================== */
+
+.mec-marketing-page .dm-gallery-preview {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: #ffffff;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.mec-marketing-page .dm-gallery-preview img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  background: #ffffff;
+}
+
+.mec-marketing-page .dm-gallery-body {
+  padding: 18px;
+}
+
+/* ==========================================
+   IDENTIFICAÇÃO DA LINHA
+========================================== */
+
+.mec-marketing-page .mec-product-line {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  background: #202020;
+  border: 1px solid #383838;
+  border-radius: 4px;
+  color: #d6d6d6;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1.2;
 }
 
 /* ==========================================
@@ -523,113 +92,170 @@
 
 @media (max-width: 750px) {
 
-  /* Ocultar galeria desktop */
-
   .mec-marketing-page .mec-desktop-gallery {
-    display: none !important;
+    display: none;
   }
 
-  /* Exibir filtros e galeria mobile */
-
-  .mec-marketing-page .mec-mobile-filters,
-  .mec-marketing-page .mec-mobile-gallery {
-    display: block !important;
+  .mec-marketing-page .mec-mobile-gallery,
+  .mec-marketing-page .mec-mobile-filters {
+    display: block;
   }
 
-  /* Container dos filtros */
+  .mec-marketing-page .mec-search {
+    margin-bottom: 14px;
+  }
+
+  .mec-marketing-page .mec-search input {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* FILTROS */
 
   .mec-marketing-page .mec-mobile-filters {
-    width: 100%;
-    margin-top: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
 
-  .mec-marketing-page .mec-filter-row {
+  .mec-marketing-page .dig-marketing-filter-row {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
-    width: 100%;
+    align-items: end;
   }
 
-  /* Campos */
-
-  .mec-marketing-page .mec-filter-field {
+  .mec-marketing-page .dig-marketing-filter-field {
     display: flex;
     flex-direction: column;
     gap: 6px;
     min-width: 0;
   }
 
-  .mec-marketing-page .mec-filter-field label {
+  .mec-marketing-page .dig-marketing-filter-field label {
     font-size: 11px;
     font-weight: 500;
-    color: #b5b5b5;
+    color: #bcbcbc;
   }
 
-  .mec-marketing-page .mec-filter-field select {
+  .mec-marketing-page .dig-marketing-filter-field select {
     width: 100%;
     min-width: 0;
     height: 38px;
     padding: 0 8px;
-    border: 1px solid #303030;
-    border-radius: 6px;
-    background: #111111;
-    color: #ffffff;
-    font-family: inherit;
-    font-size: 11px;
-    outline: none;
-    color-scheme: dark;
     box-sizing: border-box;
-  }
-
-  .mec-marketing-page .mec-filter-field select:focus {
-    border-color: #777777;
-  }
-
-  .mec-marketing-page .mec-filter-field select option {
-    background: #111111;
-    color: #ffffff;
-  }
-
-  /* Botão limpar filtros */
-
-  .mec-marketing-page .mec-clear-filters {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: end;
-    width: 100%;
-    min-height: 38px;
-    padding: 8px;
-    background: transparent;
-    color: #ffffff;
-    border: 1px solid #303030;
+    border: 1px solid #333333;
     border-radius: 6px;
-    font-family: inherit;
+    background: #141414;
+    color: #ffffff;
+    font-size: 11px;
+    color-scheme: dark;
+  }
+
+  .mec-marketing-page .dig-marketing-clear {
+    height: 38px;
+    padding: 0 10px;
+    background: transparent;
+    border: 1px solid #444444;
+    border-radius: 6px;
+    color: #ffffff;
     font-size: 11px;
     cursor: pointer;
-    box-sizing: border-box;
-    transition: background 0.2s ease;
   }
 
-  .mec-marketing-page .mec-clear-filters:hover {
-    background: #202020;
-  }
-
-  /* Contador de imagens */
-
-  .mec-marketing-page .mec-result-count {
-    margin-top: 14px;
+  .mec-marketing-page .dig-marketing-result-count {
+    margin-top: 12px;
     font-size: 11px;
     color: #999999;
   }
 
-  /* Botão ver mais */
+  /* LISTA MOBILE */
 
-  .mec-marketing-page .mec-mobile-gallery .dm-gallery-more {
-    display: flex !important;
+  .mec-marketing-page .dig-marketing-mobile-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mec-marketing-page .mec-mobile-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    min-height: 100px;
+    padding: 8px;
+    border: 1px solid #282828;
+    border-radius: 10px;
+    background: #111111;
+    overflow: hidden;
+  }
+
+  .mec-marketing-page .mec-mobile-preview {
+    flex: 0 0 92px;
+    width: 92px;
+    height: 78px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: #ffffff;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .mec-marketing-page .mec-mobile-preview .video-preview {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #ffffff;
+  }
+
+  .mec-marketing-page .video-card-info {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .mec-marketing-page .video-card-info h3 {
+    margin: 3px 0;
+    font-size: 11px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .mec-marketing-page .video-card-info p {
+    margin: 4px 0 6px;
+    font-size: 10px;
+    color: #aaaaaa;
+  }
+
+  .mec-marketing-page .mec-product-line {
+    margin-bottom: 2px;
+    padding: 3px 5px;
+    font-size: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .mec-marketing-page .video-card-botoes {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+  }
+
+  .mec-marketing-page .botao-assistir {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 5px;
+    padding: 6px 9px;
+    font-size: 10px;
+    border-radius: 5px;
+  }
+
+  .mec-marketing-page .botao-assistir svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .mec-marketing-page .dig-marketing-more {
     width: 100%;
     margin-top: 16px;
   }
@@ -641,19 +267,22 @@
 
 @media (max-width: 390px) {
 
-  .mec-marketing-page .mec-filter-row {
+  .mec-marketing-page .mec-mobile-preview {
+    flex-basis: 82px;
+    width: 82px;
+    height: 70px;
+  }
+
+  .mec-marketing-page .mec-mobile-card {
     gap: 8px;
+    padding: 7px;
   }
 
-  .mec-marketing-page .mec-filter-field select {
+  .mec-marketing-page .video-card-info h3 {
     font-size: 10px;
-    padding: 0 6px;
-    height: 36px;
   }
 
-  .mec-marketing-page .mec-clear-filters {
+  .mec-marketing-page .dig-marketing-filter-field select {
     font-size: 10px;
-    min-height: 36px;
   }
-
 }
