@@ -1,5 +1,6 @@
 import { Client } from "@notionhq/client";
 import { exigirAcesso, lerCargosPermitidos } from "../_lib/exigirAcesso.js";
+import { limitarUso } from "../_lib/limitarUso.js";
 
 
 // =====================================================
@@ -265,6 +266,14 @@ export default async function handler(req, res) {
   });
 
   if (!acesso) return;
+
+  // Limite de consultas por usuário (evita varredura de dados de clientes)
+  const dentroDoLimite = await limitarUso(res, {
+    tipo: "busca",
+    identificador: acesso.usuario.id,
+  });
+
+  if (!dentroDoLimite) return;
 
   // Contém dados pessoais de clientes: nunca guardar em cache
   res.setHeader("Cache-Control", "no-store");

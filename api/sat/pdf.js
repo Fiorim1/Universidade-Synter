@@ -1,6 +1,7 @@
 import { Client } from "@notionhq/client";
 import PDFDocument from "pdfkit";
 import { exigirAcesso, lerCargosPermitidos } from "../_lib/exigirAcesso.js";
+import { limitarUso } from "../_lib/limitarUso.js";
 
 
 // =====================================================
@@ -601,6 +602,14 @@ export default async function handler(
   });
 
   if (!acesso) return;
+
+  // Limite de PDFs gerados por usuário
+  const dentroDoLimite = await limitarUso(res, {
+    tipo: "pdf",
+    identificador: acesso.usuario.id,
+  });
+
+  if (!dentroDoLimite) return;
 
   // Contém dados pessoais de clientes: nunca guardar em cache
   res.setHeader("Cache-Control", "no-store");

@@ -9,6 +9,8 @@ import {
     lerCargosPermitidos
 } from "./_lib/exigirAcesso.js"
 
+import { limitarUso } from "./_lib/limitarUso.js"
+
 
 const openai =
     new OpenAI({
@@ -1025,6 +1027,34 @@ export default async function handler(
             )
 
         if (!acesso) {
+
+            return
+
+        }
+
+
+        // ======================================
+        // LIMITE DE USO POR USUÁRIO
+        // ======================================
+        //
+        // Protege a conta da OpenAI contra uso excessivo.
+
+        const dentroDoLimite =
+            await limitarUso(
+                res,
+                {
+                    tipo:
+                        "chat",
+
+                    identificador:
+                        acesso.usuario.id,
+
+                    formatoErro:
+                        "analytics"
+                }
+            )
+
+        if (!dentroDoLimite) {
 
             return
 
