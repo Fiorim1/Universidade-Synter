@@ -17,7 +17,6 @@ import Register from "./components/Register.jsx";
 import ForgotPassword from "./components/ForgotPassword.jsx";
 import UpdatePassword from "./components/UpdatePassword.jsx";
 
-// Aceita tanto export default quanto export nomeado do componente Login.
 const Login = LoginModule.default ?? LoginModule.Login;
 
 // ========================================
@@ -64,6 +63,7 @@ import TreinamentoComercial from "./pages/TreinamentoComercial.jsx";
 import Orcamentos from "./pages/Orcamentos.jsx";
 import Marketing from "./pages/Marketing.jsx";
 import DigMarketing from "./pages/DigMarketing.jsx";
+import MecMarketing from "./pages/MecMarketing.jsx";
 
 // ========================================
 // SELETOR DE FECHADURAS
@@ -162,6 +162,7 @@ export default function App() {
 
       <PasswordRecoveryGuard>
         <Routes>
+
           {/* ====================================
               LOGIN
           ==================================== */}
@@ -467,7 +468,7 @@ export default function App() {
           />
 
           {/* ====================================
-              MARKETING DIGITAL
+              MARKETING — FECHADURAS DIGITAIS
           ==================================== */}
 
           <Route
@@ -475,6 +476,19 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <DigMarketing />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* ====================================
+              MARKETING — FECHADURAS MECÂNICAS
+          ==================================== */}
+
+          <Route
+            path="/mecmarketing"
+            element={
+              <ProtectedRoute>
+                <MecMarketing />
               </ProtectedRoute>
             }
           />
@@ -527,6 +541,7 @@ export default function App() {
             path="*"
             element={<NotFound />}
           />
+
         </Routes>
       </PasswordRecoveryGuard>
 

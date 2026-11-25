@@ -327,8 +327,9 @@ export default function Marketing() {
             imagem={MKT2}
             titulo="Vídeos e Imagens de Fechaduras Mecânicas"
             descricao="Acesse vídeos, imagens e materiais visuais das fechaduras mecânicas Synter para divulgação e apoio comercial."
-            disponivel={false}
-          />
+            rota="/mecmarketing"
+            disponivel={true}
+          />isponivel={false}
 
           {/* FERRAGENS */}
 
