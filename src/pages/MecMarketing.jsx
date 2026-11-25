@@ -6,7 +6,7 @@ import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 
 // ==========================================
-// IMAGENS DE FECHADURAS MECÂNICAS
+// IMAGENS — MÁQUINAS 40MM
 // ==========================================
 
 import imagem0 from "../assets/marketing-mecanicas/Máquina 40mm Quadrada Interna.png";
@@ -15,6 +15,17 @@ import imagem2 from "../assets/marketing-mecanicas/Máquina 40mm Quadrada Extern
 import imagem3 from "../assets/marketing-mecanicas/Máquina 40mm Redonda Externa.png";
 import imagem4 from "../assets/marketing-mecanicas/Máquina 40mm Quadrada Banheiro.png";
 import imagem5 from "../assets/marketing-mecanicas/Máquina 40mm Redonda Banheiro.png";
+
+// ==========================================
+// IMAGENS — MÁQUINAS 45MM
+// ==========================================
+
+import imagem6 from "../assets/marketing-mecanicas/Máquina 45mm Quadrada Interna.png";
+import imagem7 from "../assets/marketing-mecanicas/Máquina 45mm Redonda Interna.png";
+import imagem8 from "../assets/marketing-mecanicas/Máquina 45mm Quadrada Externa.png";
+import imagem9 from "../assets/marketing-mecanicas/Máquina 45mm Redonda Externa.png";
+import imagem10 from "../assets/marketing-mecanicas/Máquina 45mm Quadrada Banheiro.png";
+import imagem11 from "../assets/marketing-mecanicas/Máquina 45mm Redonda Banheiro.png";
 
 // ==========================================
 // ESTILOS ORIGINAIS
@@ -31,6 +42,11 @@ import "../styles/DigMarketingGaleria.css";
 // ==========================================
 
 const imagens = [
+
+  // ========================================
+  // MÁQUINAS 40MM
+  // ========================================
+
   {
     id: 1,
     titulo: "Máquina 40mm Quadrada Interna",
@@ -72,6 +88,53 @@ const imagens = [
     linha: "Máquinas 40mm",
     src: imagem5,
     arquivo: "Máquina 40mm Redonda Banheiro.png",
+  },
+
+  // ========================================
+  // MÁQUINAS 45MM
+  // ========================================
+
+  {
+    id: 7,
+    titulo: "Máquina 45mm Quadrada Interna",
+    linha: "Máquinas 45mm",
+    src: imagem6,
+    arquivo: "Máquina 45mm Quadrada Interna.png",
+  },
+  {
+    id: 8,
+    titulo: "Máquina 45mm Redonda Interna",
+    linha: "Máquinas 45mm",
+    src: imagem7,
+    arquivo: "Máquina 45mm Redonda Interna.png",
+  },
+  {
+    id: 9,
+    titulo: "Máquina 45mm Quadrada Externa",
+    linha: "Máquinas 45mm",
+    src: imagem8,
+    arquivo: "Máquina 45mm Quadrada Externa.png",
+  },
+  {
+    id: 10,
+    titulo: "Máquina 45mm Redonda Externa",
+    linha: "Máquinas 45mm",
+    src: imagem9,
+    arquivo: "Máquina 45mm Redonda Externa.png",
+  },
+  {
+    id: 11,
+    titulo: "Máquina 45mm Quadrada Banheiro",
+    linha: "Máquinas 45mm",
+    src: imagem10,
+    arquivo: "Máquina 45mm Quadrada Banheiro.png",
+  },
+  {
+    id: 12,
+    titulo: "Máquina 45mm Redonda Banheiro",
+    linha: "Máquinas 45mm",
+    src: imagem11,
+    arquivo: "Máquina 45mm Redonda Banheiro.png",
   },
 ];
 
@@ -151,6 +214,7 @@ function IconeDownload() {
 // ==========================================
 
 export default function MecMarketing() {
+
   const [profileOpen, setProfileOpen] =
     useState(false);
 
@@ -173,9 +237,11 @@ export default function MecMarketing() {
   // ========================================
 
   const imagensFiltradas = useMemo(() => {
+
     const termo = normalizar(pesquisa);
 
     return imagens.filter((item) => {
+
       const correspondePesquisa =
         !termo ||
         normalizar(
@@ -190,7 +256,9 @@ export default function MecMarketing() {
         correspondePesquisa &&
         correspondeLinha
       );
+
     });
+
   }, [pesquisa, linha]);
 
   function limparFiltros() {
@@ -219,6 +287,7 @@ export default function MecMarketing() {
         className="dm-gallery-card"
         key={item.id}
       >
+
         <button
           type="button"
           className="dm-gallery-preview"
@@ -233,6 +302,7 @@ export default function MecMarketing() {
         </button>
 
         <div className="dm-gallery-body">
+
           <h3>{item.titulo}</h3>
 
           <p>
@@ -249,7 +319,9 @@ export default function MecMarketing() {
 
             Baixar imagem
           </a>
+
         </div>
+
       </article>
     );
   }
@@ -270,20 +342,25 @@ export default function MecMarketing() {
       ===================================== */}
 
       <section className="dig-marketing-hero">
+
         <div className="dig-marketing-hero-container">
 
           <div className="dig-marketing-profile">
+
             <UserProfileButton
               onClick={() => setProfileOpen(true)}
             />
+
           </div>
 
           <div className="dig-marketing-eyebrow">
+
             <IconeSynter />
 
             <span>
               CONTEÚDOS PARA DIVULGAÇÃO
             </span>
+
           </div>
 
           <h1 className="dig-marketing-title">
@@ -297,6 +374,7 @@ export default function MecMarketing() {
           </p>
 
         </div>
+
       </section>
 
       {/* =====================================
@@ -308,11 +386,13 @@ export default function MecMarketing() {
         {/* TÍTULO DA SEÇÃO */}
 
         <div className="videos-section-title">
+
           <div className="videos-section-bar" />
 
           <h4>
             IMAGENS DE FECHADURAS MECÂNICAS
           </h4>
+
         </div>
 
         {/* =====================================
@@ -354,7 +434,9 @@ export default function MecMarketing() {
                   alterarLinha(evento.target.value)
                 }
               >
+
                 {LINHAS.map((opcao) => (
+
                   <option
                     key={opcao}
                     value={opcao}
@@ -363,7 +445,9 @@ export default function MecMarketing() {
                       ? "Todas as linhas"
                       : opcao}
                   </option>
+
                 ))}
+
               </select>
 
             </div>
@@ -401,6 +485,7 @@ export default function MecMarketing() {
         >
 
           {imagensFiltradas.length > 0 ? (
+
             <div
               className={`videos-grid dm-gallery-grid ${
                 mostrarTodasImagens
@@ -408,20 +493,26 @@ export default function MecMarketing() {
                   : ""
               }`}
             >
+
               {imagensFiltradas.map(renderizarImagem)}
+
             </div>
+
           ) : (
+
             <p
               className="nenhum-video"
               role="status"
             >
               Nenhuma imagem encontrada para sua pesquisa.
             </p>
+
           )}
 
           {/* MOSTRAR MAIS IMAGENS */}
 
           {imagensFiltradas.length > LIMITE_MOBILE && (
+
             <button
               type="button"
               className="dig-marketing-more dm-gallery-more"
@@ -432,13 +523,16 @@ export default function MecMarketing() {
                 )
               }
             >
+
               {mostrarTodasImagens
                 ? "Mostrar menos imagens"
                 : `Ver mais ${
                     imagensFiltradas.length -
                     LIMITE_MOBILE
                   } imagens`}
+
             </button>
+
           )}
 
         </section>
@@ -448,6 +542,7 @@ export default function MecMarketing() {
         ===================================== */}
 
         {imagemAberta && (
+
           <div
             className="dm-gallery-overlay"
             onClick={() => setImagemAberta(null)}
@@ -485,14 +580,17 @@ export default function MecMarketing() {
                 href={imagemAberta.src}
                 download={imagemAberta.arquivo}
               >
+
                 <IconeDownload />
 
                 Baixar imagem
+
               </a>
 
             </div>
 
           </div>
+
         )}
 
       </main>
@@ -504,9 +602,11 @@ export default function MecMarketing() {
       {/* PERFIL */}
 
       {profileOpen && (
+
         <Profile
           onClose={() => setProfileOpen(false)}
         />
+
       )}
 
     </div>
