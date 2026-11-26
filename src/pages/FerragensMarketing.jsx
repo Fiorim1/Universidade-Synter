@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
   Box,
@@ -19,42 +20,101 @@ import "../styles/DigMarketingHero.css";
 import "../styles/DigMarketingMobile.css";
 import "../styles/MecMarketing.css";
 
-// IMAGENS DE FERRAGENS
-import img1 from "../assets/marketing-ferragens/Jade Polida.jpg";
-import img2 from "../assets/marketing-ferragens/Jade Preta.jpg";
-import img3 from "../assets/marketing-ferragens/Jade Max Escovada.jpg";
-import img4 from "../assets/marketing-ferragens/Jade Max Polida.jpg";
-import img5 from "../assets/marketing-ferragens/Jade Max Preta.jpg";
-import img6 from "../assets/marketing-ferragens/Jaspe Escovada.jpg";
-import img7 from "../assets/marketing-ferragens/Jaspe Polida.jpg";
-import img8 from "../assets/marketing-ferragens/Jaspe Preta.jpg";
-import img9 from "../assets/marketing-ferragens/Jaspe Com Furo Escovada.jpg";
-import img10 from "../assets/marketing-ferragens/Jaspe Com Furo Polida.jpg";
-import img11 from "../assets/marketing-ferragens/Jaspe Com Furo Preta.jpg";
-import img12 from "../assets/marketing-ferragens/Opala Escovada.jpg";
-import img13 from "../assets/marketing-ferragens/Opala Preta.jpg";
-import img14 from "../assets/marketing-ferragens/Quartzo Escovada.jpg";
-import img15 from "../assets/marketing-ferragens/Quartzo Polida.jpg";
-import img16 from "../assets/marketing-ferragens/Quartzo Preta.jpg";
+// IMAGENS - FERRAGENS
+import jadeEscovada from "../assets/marketing-ferragens/Jade Escovada.jpg";
+import jadePolida from "../assets/marketing-ferragens/Jade Polida.jpg";
+import jadePreta from "../assets/marketing-ferragens/Jade Preta.jpg";
+import jadeMaxEscovada from "../assets/marketing-ferragens/Jade Max Escovada.jpg";
+import jadeMaxPolida from "../assets/marketing-ferragens/Jade Max Polida.jpg";
+import jadeMaxPreta from "../assets/marketing-ferragens/Jade Max Preta.jpg";
+import jaspeEscovada from "../assets/marketing-ferragens/Jaspe Escovada.jpg";
+import jaspePolida from "../assets/marketing-ferragens/Jaspe Polida.jpg";
+import jaspePreta from "../assets/marketing-ferragens/Jaspe Preta.jpg";
+import jaspeFuroEscovada from "../assets/marketing-ferragens/Jaspe Com Furo Escovada.jpg";
+import jaspeFuroPolida from "../assets/marketing-ferragens/Jaspe Com Furo Polida.jpg";
+import jaspeFuroPreta from "../assets/marketing-ferragens/Jaspe Com Furo Preta.jpg";
+import opalaEscovada from "../assets/marketing-ferragens/Opala Escovada.jpg";
+import opalaPolida from "../assets/marketing-ferragens/Opala Polida.jpg";
+import opalaPreta from "../assets/marketing-ferragens/Opala Preta.jpg";
+import quartzoEscovada from "../assets/marketing-ferragens/Quartzo Escovada.jpg";
+import quartzoPolida from "../assets/marketing-ferragens/Quartzo Polida.jpg";
+import quartzoPreta from "../assets/marketing-ferragens/Quartzo Preta.jpg";
 
-const imagensFerragens = [
-  { id: "jade-polido", titulo: "Puxador Jade - Polido", modelo: "Puxador Jade", categoria: "Puxadores", acabamento: "Polido", imagem: img1, extensao: "jpg" },
-  { id: "jade-preto", titulo: "Puxador Jade - Preto", modelo: "Puxador Jade", categoria: "Puxadores", acabamento: "Preto", imagem: img2, extensao: "jpg" },
-  { id: "jade-max-escovado", titulo: "Puxador Jade Max - Escovado", modelo: "Puxador Jade Max", categoria: "Puxadores", acabamento: "Escovado", imagem: img3, extensao: "jpg" },
-  { id: "jade-max-polido", titulo: "Puxador Jade Max - Polido", modelo: "Puxador Jade Max", categoria: "Puxadores", acabamento: "Polido", imagem: img4, extensao: "jpg" },
-  { id: "jade-max-preto", titulo: "Puxador Jade Max - Preto", modelo: "Puxador Jade Max", categoria: "Puxadores", acabamento: "Preto", imagem: img5, extensao: "jpg" },
-  { id: "jaspe-escovado", titulo: "Puxador Jaspe - Escovado", modelo: "Puxador Jaspe", categoria: "Puxadores", acabamento: "Escovado", imagem: img6, extensao: "jpg" },
-  { id: "jaspe-polido", titulo: "Puxador Jaspe - Polido", modelo: "Puxador Jaspe", categoria: "Puxadores", acabamento: "Polido", imagem: img7, extensao: "jpg" },
-  { id: "jaspe-preto", titulo: "Puxador Jaspe - Preto", modelo: "Puxador Jaspe", categoria: "Puxadores", acabamento: "Preto", imagem: img8, extensao: "jpg" },
-  { id: "jaspe-com-furo-escovado", titulo: "Puxador Jaspe Com Furo - Escovado", modelo: "Puxador Jaspe Com Furo", categoria: "Puxadores", acabamento: "Escovado", imagem: img9, extensao: "jpg" },
-  { id: "jaspe-com-furo-polido", titulo: "Puxador Jaspe Com Furo - Polido", modelo: "Puxador Jaspe Com Furo", categoria: "Puxadores", acabamento: "Polido", imagem: img10, extensao: "jpg" },
-  { id: "jaspe-com-furo-preto", titulo: "Puxador Jaspe Com Furo - Preto", modelo: "Puxador Jaspe Com Furo", categoria: "Puxadores", acabamento: "Preto", imagem: img11, extensao: "jpg" },
-  { id: "opala-escovado", titulo: "Puxador Opala - Escovado", modelo: "Puxador Opala", categoria: "Puxadores", acabamento: "Escovado", imagem: img12, extensao: "jpg" },
-  { id: "opala-preto", titulo: "Puxador Opala - Preto", modelo: "Puxador Opala", categoria: "Puxadores", acabamento: "Preto", imagem: img13, extensao: "jpg" },
-  { id: "quartzo-escovado", titulo: "Puxador Quartzo - Escovado", modelo: "Puxador Quartzo", categoria: "Puxadores", acabamento: "Escovado", imagem: img14, extensao: "jpg" },
-  { id: "quartzo-polido", titulo: "Puxador Quartzo - Polido", modelo: "Puxador Quartzo", categoria: "Puxadores", acabamento: "Polido", imagem: img15, extensao: "jpg" },
-  { id: "quartzo-preto", titulo: "Puxador Quartzo - Preto", modelo: "Puxador Quartzo", categoria: "Puxadores", acabamento: "Preto", imagem: img16, extensao: "jpg" },
+// CATÁLOGO - PUXADORES
+const modelos = [
+  {
+    id: "jade",
+    titulo: "Puxador Jade",
+    categoria: "Puxadores",
+    imagens: [
+      ["Escovado", jadeEscovada],
+      ["Polido", jadePolida],
+      ["Preto", jadePreta],
+    ],
+  },
+  {
+    id: "jade-max",
+    titulo: "Puxador Jade Max",
+    categoria: "Puxadores",
+    imagens: [
+      ["Escovado", jadeMaxEscovada],
+      ["Polido", jadeMaxPolida],
+      ["Preto", jadeMaxPreta],
+    ],
+  },
+  {
+    id: "jaspe",
+    titulo: "Puxador Jaspe",
+    categoria: "Puxadores",
+    imagens: [
+      ["Escovado", jaspeEscovada],
+      ["Polido", jaspePolida],
+      ["Preto", jaspePreta],
+    ],
+  },
+  {
+    id: "jaspe-com-furo",
+    titulo: "Puxador Jaspe com Furo",
+    categoria: "Puxadores",
+    imagens: [
+      ["Escovado", jaspeFuroEscovada],
+      ["Polido", jaspeFuroPolida],
+      ["Preto", jaspeFuroPreta],
+    ],
+  },
+  {
+    id: "opala",
+    titulo: "Puxador Opala",
+    categoria: "Puxadores",
+    imagens: [
+      ["Escovado", opalaEscovada],
+      ["Polido", opalaPolida],
+      ["Preto", opalaPreta],
+    ],
+  },
+  {
+    id: "quartzo",
+    titulo: "Puxador Quartzo",
+    categoria: "Puxadores",
+    imagens: [
+      ["Escovado", quartzoEscovada],
+      ["Polido", quartzoPolida],
+      ["Preto", quartzoPreta],
+    ],
+  },
 ];
+
+const imagensFerragens = modelos.flatMap((modelo) =>
+  modelo.imagens.map(([acabamento, imagem]) => ({
+    id: `${modelo.id}-${acabamento.toLowerCase()}`,
+    titulo: `${modelo.titulo} - ${acabamento}`,
+    categoria: modelo.categoria,
+    modelo: modelo.id,
+    acabamento,
+    imagem,
+    extensao: "jpg",
+  }))
+);
 
 // ==========================================
 // NORMALIZAÇÃO DA PESQUISA
@@ -214,7 +274,7 @@ export default function FerragensMarketing() {
         <section className="mec-catalogo">
           <div className="mec-catalogo-cabecalho">
             <div>
-              <h2>Imagens de Ferragens</h2>
+              <h2>Imagens de produtos</h2>
               <p>
                 Encontre e baixe imagens das ferragens Synter.
               </p>
@@ -247,14 +307,32 @@ export default function FerragensMarketing() {
             </div>
 
             <div className="mec-filtros-selects">
-              <select aria-label="Categoria" value={categoria} onChange={(e) => alterarFiltro(setCategoria, e.target.value)}>
-                <option value="Todos">Todas as categorias</option>
+              <select
+                aria-label="Categoria"
+                value={categoria}
+                onChange={(e) =>
+                  alterarFiltro(
+                    setCategoria,
+                    e.target.value
+                  )
+                }
+              >
+                <option value="Todos">
+                  Todas as categorias
+                </option>
                 <option value="Puxadores">Puxadores</option>
               </select>
-              <select aria-label="Modelo" value={modelo} onChange={(e) => alterarFiltro(setModelo, e.target.value)}>
+
+              <select
+                aria-label="Modelo"
+                value={modelo}
+                onChange={(e) => alterarFiltro(setModelo, e.target.value)}
+              >
                 <option value="Todos">Todos os modelos</option>
-                {[...new Set(imagensFerragens.map(item => item.modelo))].map(nome => (
-                  <option key={nome} value={nome}>{nome}</option>
+                {modelos.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.titulo}
+                  </option>
                 ))}
               </select>
 
