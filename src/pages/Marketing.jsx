@@ -333,12 +333,15 @@ export default function Marketing() {
 
           {/* FERRAGENS */}
 
-          <CartaoMarketing
-            imagem={MKT3}
-            titulo="Vídeos e Imagens de Ferragens"
-            descricao="Acesse vídeos, imagens e materiais visuais das ferragens Synter para divulgação e apoio comercial."
-            disponivel={false}
-          />
+          {/* FERRAGENS */}
+
+<CartaoMarketing
+  imagem={MKT3}
+  titulo="Vídeos e Imagens de Ferragens"
+  descricao="Acesse vídeos, imagens e materiais visuais das ferragens Synter para divulgação e apoio comercial."
+  rota="/ferragensmarketing"
+  disponivel={true}
+/>
 
         </div>
 
