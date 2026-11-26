@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 
 import {
@@ -15,7 +16,7 @@ import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
 
 // ==========================================
-// ESTILOS ORIGINAIS
+// ESTILOS
 // ==========================================
 
 import "../styles/Videos.css";
@@ -25,7 +26,7 @@ import "../styles/DigMarketingMobile.css";
 import "../styles/MecMarketing.css";
 
 // ==========================================
-// PUXADOR JADE
+// IMAGENS - JADE
 // ==========================================
 
 import jadeEscovada from "../assets/marketing-ferragens/jade-escovada.jpg";
@@ -33,7 +34,7 @@ import jadePolida from "../assets/marketing-ferragens/jade-polida.jpg";
 import jadePreta from "../assets/marketing-ferragens/jade-preta.jpg";
 
 // ==========================================
-// PUXADOR JADE MAX
+// IMAGENS - JADE MAX
 // ==========================================
 
 import jadeMaxEscovada from "../assets/marketing-ferragens/jade-max-escovada.jpg";
@@ -41,7 +42,7 @@ import jadeMaxPolida from "../assets/marketing-ferragens/jade-max-polida.jpg";
 import jadeMaxPreta from "../assets/marketing-ferragens/jade-max-preta.jpg";
 
 // ==========================================
-// PUXADOR JASPE
+// IMAGENS - JASPE
 // ==========================================
 
 import jaspeEscovada from "../assets/marketing-ferragens/jaspe-escovada.jpg";
@@ -49,7 +50,7 @@ import jaspePolida from "../assets/marketing-ferragens/jaspe-polida.jpg";
 import jaspePreta from "../assets/marketing-ferragens/jaspe-preta.jpg";
 
 // ==========================================
-// PUXADOR JASPE COM FURO
+// IMAGENS - JASPE COM FURO
 // ==========================================
 
 import jaspeFuroEscovada from "../assets/marketing-ferragens/jaspe-com-furo-escovada.jpg";
@@ -57,7 +58,7 @@ import jaspeFuroPolida from "../assets/marketing-ferragens/jaspe-com-furo-polida
 import jaspeFuroPreta from "../assets/marketing-ferragens/jaspe-com-furo-preta.jpg";
 
 // ==========================================
-// PUXADOR OPALA
+// IMAGENS - OPALA
 // ==========================================
 
 import opalaEscovada from "../assets/marketing-ferragens/opala-escovada.jpg";
@@ -65,7 +66,7 @@ import opalaPolida from "../assets/marketing-ferragens/opala-polida.jpg";
 import opalaPreta from "../assets/marketing-ferragens/opala-preta.jpg";
 
 // ==========================================
-// PUXADOR QUARTZO
+// IMAGENS - QUARTZO
 // ==========================================
 
 import quartzoEscovada from "../assets/marketing-ferragens/quartzo-escovada.jpg";
@@ -73,14 +74,13 @@ import quartzoPolida from "../assets/marketing-ferragens/quartzo-polida.jpg";
 import quartzoPreta from "../assets/marketing-ferragens/quartzo-preta.jpg";
 
 // ==========================================
-// CATÁLOGO DE FERRAGENS
+// CATÁLOGO DE PRODUTOS
 // ==========================================
 
 const modelos = [
   {
     id: "jade",
     titulo: "Puxador Jade",
-    categoria: "Puxadores",
     imagens: [
       ["Escovado", jadeEscovada],
       ["Polido", jadePolida],
@@ -90,7 +90,6 @@ const modelos = [
   {
     id: "jade-max",
     titulo: "Puxador Jade Max",
-    categoria: "Puxadores",
     imagens: [
       ["Escovado", jadeMaxEscovada],
       ["Polido", jadeMaxPolida],
@@ -100,7 +99,6 @@ const modelos = [
   {
     id: "jaspe",
     titulo: "Puxador Jaspe",
-    categoria: "Puxadores",
     imagens: [
       ["Escovado", jaspeEscovada],
       ["Polido", jaspePolida],
@@ -110,7 +108,6 @@ const modelos = [
   {
     id: "jaspe-com-furo",
     titulo: "Puxador Jaspe com Furo",
-    categoria: "Puxadores",
     imagens: [
       ["Escovado", jaspeFuroEscovada],
       ["Polido", jaspeFuroPolida],
@@ -120,7 +117,6 @@ const modelos = [
   {
     id: "opala",
     titulo: "Puxador Opala",
-    categoria: "Puxadores",
     imagens: [
       ["Escovado", opalaEscovada],
       ["Polido", opalaPolida],
@@ -130,7 +126,6 @@ const modelos = [
   {
     id: "quartzo",
     titulo: "Puxador Quartzo",
-    categoria: "Puxadores",
     imagens: [
       ["Escovado", quartzoEscovada],
       ["Polido", quartzoPolida],
@@ -140,15 +135,15 @@ const modelos = [
 ];
 
 // ==========================================
-// ORGANIZAÇÃO DAS IMAGENS
+// ORGANIZAÇÃO DO CATÁLOGO
 // ==========================================
 
 const imagensFerragens = modelos.flatMap((modelo) =>
   modelo.imagens.map(([acabamento, imagem]) => ({
     id: `${modelo.id}-${acabamento.toLowerCase()}`,
     titulo: `${modelo.titulo} - ${acabamento}`,
+    categoria: "Puxadores",
     modelo: modelo.titulo,
-    categoria: modelo.categoria,
     acabamento,
     imagem,
     extensao: "jpg",
@@ -168,7 +163,7 @@ function normalizar(texto = "") {
 }
 
 // ==========================================
-// CARD — MESMO PADRÃO DAS MECÂNICAS
+// CARD DE IMAGEM
 // ==========================================
 
 function ImagemCard({ item }) {
@@ -190,17 +185,14 @@ function ImagemCard({ item }) {
           {item.categoria} • Synter
         </p>
 
-        {item.acabamento && (
-          <span
-            className={`mec-acabamento ${normalizar(
-              item.acabamento
-            )}`}
-          >
-            <span className="mec-acabamento-cor" />
-
-            {item.acabamento}
-          </span>
-        )}
+        <span
+          className={`mec-acabamento ${normalizar(
+            item.acabamento
+          )}`}
+        >
+          <span className="mec-acabamento-cor" />
+          {item.acabamento}
+        </span>
 
         <div className="video-card-botoes mec-card-botoes">
 
@@ -210,7 +202,6 @@ function ImagemCard({ item }) {
             className="botao-assistir mec-botao-download"
           >
             <Download size={16} />
-
             Baixar imagem
           </a>
 
@@ -229,7 +220,6 @@ function ImagemCard({ item }) {
 export default function FerragensMarketing() {
 
   const [pesquisa, setPesquisa] = useState("");
-  const [categoria, setCategoria] = useState("Todos");
   const [modelo, setModelo] = useState("Todos");
   const [acabamento, setAcabamento] = useState("Todos");
   const [limiteMobile, setLimiteMobile] = useState(3);
@@ -250,13 +240,8 @@ export default function FerragensMarketing() {
 
     return (
       correspondePesquisa &&
-
-      (categoria === "Todos" ||
-        item.categoria === categoria) &&
-
       (modelo === "Todos" ||
         item.modelo === modelo) &&
-
       (acabamento === "Todos" ||
         item.acabamento === acabamento)
     );
@@ -269,7 +254,6 @@ export default function FerragensMarketing() {
 
   function limparFiltros() {
     setPesquisa("");
-    setCategoria("Todos");
     setModelo("Todos");
     setAcabamento("Todos");
     setLimiteMobile(3);
@@ -296,11 +280,8 @@ export default function FerragensMarketing() {
           <div className="mec-hero-topo">
 
             <div className="mec-hero-identificacao">
-
               <Megaphone size={18} />
-
               <span>MARKETING SYNTER</span>
-
             </div>
 
             <UserProfileButton />
@@ -358,17 +339,14 @@ export default function FerragensMarketing() {
             </div>
 
             <span className="mec-total-imagens">
-
               <ImageIcon size={17} />
-
               {imagensFerragens.length} imagens
-
             </span>
 
           </div>
 
           {/* ==================================
-              PESQUISA
+              PESQUISA E FILTROS
           ================================== */}
 
           <div className="mec-filtros">
@@ -380,7 +358,7 @@ export default function FerragensMarketing() {
               <input
                 type="search"
                 aria-label="Pesquisar produto"
-                placeholder="Pesquisar imagem ou modelo..."
+                placeholder="Pesquisar produto..."
                 value={pesquisa}
                 onChange={(e) =>
                   alterarFiltro(
@@ -393,31 +371,6 @@ export default function FerragensMarketing() {
             </div>
 
             <div className="mec-filtros-selects">
-
-              {/* CATEGORIA */}
-
-              <select
-                aria-label="Categoria"
-                value={categoria}
-                onChange={(e) =>
-                  alterarFiltro(
-                    setCategoria,
-                    e.target.value
-                  )
-                }
-              >
-
-                <option value="Todos">
-                  Todas as categorias
-                </option>
-
-                <option value="Puxadores">
-                  Puxadores
-                </option>
-
-              </select>
-
-              {/* MODELO */}
 
               <select
                 aria-label="Modelo"
@@ -435,19 +388,15 @@ export default function FerragensMarketing() {
                 </option>
 
                 {modelos.map((item) => (
-
                   <option
                     key={item.id}
                     value={item.titulo}
                   >
                     {item.titulo}
                   </option>
-
                 ))}
 
               </select>
-
-              {/* ACABAMENTO */}
 
               <select
                 aria-label="Acabamento"
@@ -478,18 +427,13 @@ export default function FerragensMarketing() {
 
               </select>
 
-              {/* LIMPAR FILTROS */}
-
               <button
                 type="button"
                 className="mec-limpar-filtros"
                 onClick={limparFiltros}
               >
-
                 <X size={15} />
-
                 Limpar filtros
-
               </button>
 
             </div>
@@ -520,9 +464,7 @@ export default function FerragensMarketing() {
 
               <Search size={32} />
 
-              <h3>
-                Nenhuma imagem encontrada
-              </h3>
+              <h3>Nenhuma imagem encontrada</h3>
 
               <p>
                 Tente pesquisar outro produto ou
@@ -549,12 +491,10 @@ export default function FerragensMarketing() {
             <div className="mec-imagens-grid">
 
               {imagensFiltradas.map((item) => (
-
                 <ImagemCard
                   key={item.id}
                   item={item}
                 />
-
               ))}
 
             </div>
@@ -572,17 +512,13 @@ export default function FerragensMarketing() {
               {imagensFiltradas
                 .slice(0, limiteMobile)
                 .map((item) => (
-
                   <ImagemCard
                     key={item.id}
                     item={item}
                   />
-
                 ))}
 
             </div>
-
-            {/* VER MAIS */}
 
             {restantes > 0 && (
 
@@ -606,8 +542,6 @@ export default function FerragensMarketing() {
 
             )}
 
-            {/* VER MENOS */}
-
             {restantes === 0 &&
               limiteMobile > 3 &&
               imagensFiltradas.length > 3 && (
@@ -617,9 +551,7 @@ export default function FerragensMarketing() {
                   className="dig-marketing-more mec-ver-mais"
                   onClick={() => setLimiteMobile(3)}
                 >
-
                   Ver menos imagens
-
                 </button>
 
               )}
