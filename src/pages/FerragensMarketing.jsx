@@ -56,6 +56,21 @@ import ferragem7Preta from "../assets/marketing-ferragens/Fecho Pina Bola Preta.
 import ferragem8Polida from "../assets/marketing-ferragens/Fecho Para Janela De Correr Polida.jpg";
 import ferragem8Preta from "../assets/marketing-ferragens/Fecho Para Janela De Correr Preta.jpg";
 
+import novaFerragem0_0 from "../assets/marketing-ferragens/Vara Para Cremona Polida.jpg";
+import novaFerragem0_1 from "../assets/marketing-ferragens/Vara Para Cremona Preta.jpg";
+import novaFerragem1_0 from "../assets/marketing-ferragens/Dobradiça Leme Polida.jpg";
+import novaFerragem1_1 from "../assets/marketing-ferragens/Dobradiça Leme Preta.jpg";
+import novaFerragem2_0 from "../assets/marketing-ferragens/Alça Polida.jpg";
+import novaFerragem2_1 from "../assets/marketing-ferragens/Alça Preta.jpg";
+import novaFerragem3_0 from "../assets/marketing-ferragens/Fecho Fio Redondo Polida.jpg";
+import novaFerragem4_0 from "../assets/marketing-ferragens/Targeta Polida.jpg";
+import novaFerragem5_0 from "../assets/marketing-ferragens/Porta Cadeado Polida.jpg";
+import novaFerragem6_0 from "../assets/marketing-ferragens/Gancho De Rede Polida.jpg";
+import novaFerragem7_0 from "../assets/marketing-ferragens/Fecho Fio Chato Polida.jpg";
+import novaFerragem8_0 from "../assets/marketing-ferragens/Fecho Porta Cadeado Polida.jpg";
+import novaFerragem9_0 from "../assets/marketing-ferragens/Dobradiça Basculante (Gonzo) Polida Furo Único.jpg";
+import novaFerragem10_0 from "../assets/marketing-ferragens/Dobradiça Basculante (Gonzo) Polida.jpg";
+
 // CATÁLOGO - FERRAGENS
 const modelos = [
   {
@@ -196,6 +211,97 @@ const modelos = [
     imagens: [
       ["Polida", ferragem8Polida],
       ["Preta", ferragem8Preta],
+    ],
+  },
+  {
+    id: "nova-ferragem-0",
+    titulo: "Vara para Cremona",
+    categoria: "Cremonas",
+    imagens: [
+      ["Polida", novaFerragem0_0],
+      ["Preta", novaFerragem0_1],
+    ],
+  },
+  {
+    id: "nova-ferragem-1",
+    titulo: "Dobradiça Leme",
+    categoria: "Dobradiças",
+    imagens: [
+      ["Polida", novaFerragem1_0],
+      ["Preta", novaFerragem1_1],
+    ],
+  },
+  {
+    id: "nova-ferragem-2",
+    titulo: "Alça",
+    categoria: "Alças",
+    imagens: [
+      ["Polida", novaFerragem2_0],
+      ["Preta", novaFerragem2_1],
+    ],
+  },
+  {
+    id: "nova-ferragem-3",
+    titulo: "Fecho Fio Redondo",
+    categoria: "Fechos",
+    imagens: [
+      ["Polida", novaFerragem3_0],
+    ],
+  },
+  {
+    id: "nova-ferragem-4",
+    titulo: "Targeta",
+    categoria: "Fechos",
+    imagens: [
+      ["Polida", novaFerragem4_0],
+    ],
+  },
+  {
+    id: "nova-ferragem-5",
+    titulo: "Porta Cadeado",
+    categoria: "Fechos",
+    imagens: [
+      ["Polida", novaFerragem5_0],
+    ],
+  },
+  {
+    id: "nova-ferragem-6",
+    titulo: "Gancho de Rede",
+    categoria: "Ganchos",
+    imagens: [
+      ["Polida", novaFerragem6_0],
+    ],
+  },
+  {
+    id: "nova-ferragem-7",
+    titulo: "Fecho Fio Chato",
+    categoria: "Fechos",
+    imagens: [
+      ["Polida", novaFerragem7_0],
+    ],
+  },
+  {
+    id: "nova-ferragem-8",
+    titulo: "Fecho Porta Cadeado",
+    categoria: "Fechos",
+    imagens: [
+      ["Polida", novaFerragem8_0],
+    ],
+  },
+  {
+    id: "nova-ferragem-9",
+    titulo: "Dobradiça Basculante (Gonzo) Furo Único",
+    categoria: "Dobradiças",
+    imagens: [
+      ["Polida", novaFerragem9_0],
+    ],
+  },
+  {
+    id: "nova-ferragem-10",
+    titulo: "Dobradiça Basculante (Gonzo)",
+    categoria: "Dobradiças",
+    imagens: [
+      ["Polida", novaFerragem10_0],
     ],
   },
 ];
