@@ -1,88 +1,166 @@
-import { useState } from "react";
+import React, { useState } from "react";
+
+import {
+  Box,
+  Image as ImageIcon,
+  Megaphone,
+  Zap,
+  Download,
+  Search,
+  X,
+} from "lucide-react";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
-import Profile from "../components/Profile";
 
 // ==========================================
-// ESTILOS
+// ESTILOS ORIGINAIS
 // ==========================================
 
 import "../styles/Videos.css";
 import "../styles/DigMarketing.css";
 import "../styles/DigMarketingHero.css";
 import "../styles/DigMarketingMobile.css";
-import "../styles/FerragensMarketing.css";
+import "../styles/MecMarketing.css";
 
 // ==========================================
-// IMPORTAÇÃO AUTOMÁTICA DAS IMAGENS
+// PUXADOR JADE
 // ==========================================
 
-const arquivos = import.meta.glob(
-  "../assets/marketing-ferragens/*",
+import jadeEscovada from "../assets/marketing-ferragens/jade-escovada.jpg";
+import jadePolida from "../assets/marketing-ferragens/jade-polida.jpg";
+import jadePreta from "../assets/marketing-ferragens/jade-preta.jpg";
+
+// ==========================================
+// PUXADOR JADE MAX
+// ==========================================
+
+import jadeMaxEscovada from "../assets/marketing-ferragens/jade-max-escovada.jpg";
+import jadeMaxPolida from "../assets/marketing-ferragens/jade-max-polida.jpg";
+import jadeMaxPreta from "../assets/marketing-ferragens/jade-max-preta.jpg";
+
+// ==========================================
+// PUXADOR JASPE
+// ==========================================
+
+import jaspeEscovada from "../assets/marketing-ferragens/jaspe-escovada.jpg";
+import jaspePolida from "../assets/marketing-ferragens/jaspe-polida.jpg";
+import jaspePreta from "../assets/marketing-ferragens/jaspe-preta.jpg";
+
+// ==========================================
+// PUXADOR JASPE COM FURO
+// ==========================================
+
+import jaspeFuroEscovada from "../assets/marketing-ferragens/jaspe-com-furo-escovada.jpg";
+import jaspeFuroPolida from "../assets/marketing-ferragens/jaspe-com-furo-polida.jpg";
+import jaspeFuroPreta from "../assets/marketing-ferragens/jaspe-com-furo-preta.jpg";
+
+// ==========================================
+// PUXADOR OPALA
+// ==========================================
+
+import opalaEscovada from "../assets/marketing-ferragens/opala-escovada.jpg";
+import opalaPolida from "../assets/marketing-ferragens/opala-polida.jpg";
+import opalaPreta from "../assets/marketing-ferragens/opala-preta.jpg";
+
+// ==========================================
+// PUXADOR QUARTZO
+// ==========================================
+
+import quartzoEscovada from "../assets/marketing-ferragens/quartzo-escovada.jpg";
+import quartzoPolida from "../assets/marketing-ferragens/quartzo-polida.jpg";
+import quartzoPreta from "../assets/marketing-ferragens/quartzo-preta.jpg";
+
+// ==========================================
+// CATÁLOGO DE FERRAGENS
+// ==========================================
+
+const modelos = [
   {
-    eager: true,
-    query: "?url",
-    import: "default",
-  }
-);
+    id: "jade",
+    titulo: "Puxador Jade",
+    categoria: "Puxadores",
+    imagens: [
+      ["Escovado", jadeEscovada],
+      ["Polido", jadePolida],
+      ["Preto", jadePreta],
+    ],
+  },
+  {
+    id: "jade-max",
+    titulo: "Puxador Jade Max",
+    categoria: "Puxadores",
+    imagens: [
+      ["Escovado", jadeMaxEscovada],
+      ["Polido", jadeMaxPolida],
+      ["Preto", jadeMaxPreta],
+    ],
+  },
+  {
+    id: "jaspe",
+    titulo: "Puxador Jaspe",
+    categoria: "Puxadores",
+    imagens: [
+      ["Escovado", jaspeEscovada],
+      ["Polido", jaspePolida],
+      ["Preto", jaspePreta],
+    ],
+  },
+  {
+    id: "jaspe-com-furo",
+    titulo: "Puxador Jaspe com Furo",
+    categoria: "Puxadores",
+    imagens: [
+      ["Escovado", jaspeFuroEscovada],
+      ["Polido", jaspeFuroPolida],
+      ["Preto", jaspeFuroPreta],
+    ],
+  },
+  {
+    id: "opala",
+    titulo: "Puxador Opala",
+    categoria: "Puxadores",
+    imagens: [
+      ["Escovado", opalaEscovada],
+      ["Polido", opalaPolida],
+      ["Preto", opalaPreta],
+    ],
+  },
+  {
+    id: "quartzo",
+    titulo: "Puxador Quartzo",
+    categoria: "Puxadores",
+    imagens: [
+      ["Escovado", quartzoEscovada],
+      ["Polido", quartzoPolida],
+      ["Preto", quartzoPreta],
+    ],
+  },
+];
 
 // ==========================================
-// CADASTRO AUTOMÁTICO DOS PRODUTOS
+// ORGANIZAÇÃO DAS IMAGENS
 // ==========================================
 
-const imagens = Object.entries(arquivos)
-  .filter(([caminho]) =>
-    /\.(jpg|jpeg|png|webp|avif|gif|svg)$/i.test(caminho)
-  )
-  .map(([caminho, src]) => {
-    const arquivo = caminho.split("/").pop();
-
-    const nome = arquivo
-      .replace(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/gi, "")
-      .replace(/[-_]+/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-
-    const titulo = nome
-      .split(" ")
-      .map(
-        (palavra) =>
-          palavra.charAt(0).toUpperCase() +
-          palavra.slice(1).toLowerCase()
-      )
-      .join(" ");
-
-    return {
-      id: caminho,
-      titulo,
-      src,
-      arquivo,
-    };
-  })
-  .sort((a, b) =>
-    a.titulo.localeCompare(b.titulo, "pt-BR")
-  );
-
-console.log(
-  "[Ferragens] Imagens carregadas:",
-  imagens.length
+const imagensFerragens = modelos.flatMap((modelo) =>
+  modelo.imagens.map(([acabamento, imagem]) => ({
+    id: `${modelo.id}-${acabamento.toLowerCase()}`,
+    titulo: `${modelo.titulo} - ${acabamento}`,
+    modelo: modelo.titulo,
+    categoria: modelo.categoria,
+    acabamento,
+    imagem,
+    extensao: "jpg",
+  }))
 );
-
-console.log(
-  "[Ferragens] Arquivos encontrados:",
-  Object.keys(arquivos)
-);
-
-const LIMITE_MOBILE = 3;
 
 // ==========================================
 // NORMALIZAÇÃO DA PESQUISA
 // ==========================================
 
-function normalizar(valor) {
-  return String(valor ?? "")
+function normalizar(texto = "") {
+  return texto
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
@@ -90,91 +168,49 @@ function normalizar(valor) {
 }
 
 // ==========================================
-// ÍCONE PADRÃO SYNTER
+// CARD — MESMO PADRÃO DAS MECÂNICAS
 // ==========================================
 
-function IconeSynter() {
+function ImagemCard({ item }) {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="m12 2 9 5-9 5-9-5 9-5Z" />
-      <path d="M3 7v10l9 5 9-5V7" />
-      <path d="M12 12v10" />
-    </svg>
-  );
-}
+    <article className="video-card mec-imagem-card">
 
-// ==========================================
-// ÍCONE DE DOWNLOAD
-// ==========================================
+      <img
+        className="video-preview mec-imagem-preview"
+        src={item.imagem}
+        alt={item.titulo}
+        loading="lazy"
+      />
 
-function IconeDownload() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M12 3v12" />
-      <path d="m7 10 5 5 5-5" />
-      <path d="M4 16v4h16v-4" />
-    </svg>
-  );
-}
+      <div className="video-card-info mec-card-info">
 
-// ==========================================
-// CARTÃO DE IMAGEM
-// ==========================================
+        <h2>{item.titulo}</h2>
 
-function FerragemCard({ item, onAbrir }) {
-  return (
-    <article className="ferragens-card">
-
-      <button
-        type="button"
-        className="ferragens-card-preview"
-        onClick={() => onAbrir(item)}
-        aria-label={`Ampliar ${item.titulo}`}
-      >
-        <img
-          src={item.src}
-          alt={item.titulo}
-          loading="lazy"
-        />
-      </button>
-
-      <div className="ferragens-card-info">
-
-        <h3>{item.titulo}</h3>
-
-        <p>
-          Conteúdo para apoiar ações comerciais
-          e de marketing.
+        <p className="mec-card-descricao">
+          {item.categoria} • Synter
         </p>
 
-        <div className="ferragens-card-botoes">
+        {item.acabamento && (
+          <span
+            className={`mec-acabamento ${normalizar(
+              item.acabamento
+            )}`}
+          >
+            <span className="mec-acabamento-cor" />
+
+            {item.acabamento}
+          </span>
+        )}
+
+        <div className="video-card-botoes mec-card-botoes">
 
           <a
-            className="botao-assistir ferragens-download"
-            href={item.src}
-            download={item.arquivo}
+            href={item.imagem}
+            download={`${item.id}.${item.extensao}`}
+            className="botao-assistir mec-botao-download"
           >
-            <IconeDownload />
+            <Download size={16} />
+
             Baixar imagem
           </a>
 
@@ -192,319 +228,410 @@ function FerragemCard({ item, onAbrir }) {
 
 export default function FerragensMarketing() {
 
-  const [profileOpen, setProfileOpen] =
-    useState(false);
-
-  const [pesquisa, setPesquisa] =
-    useState("");
-
-  const [mostrarTodos, setMostrarTodos] =
-    useState(false);
-
-  const [imagemAberta, setImagemAberta] =
-    useState(null);
+  const [pesquisa, setPesquisa] = useState("");
+  const [categoria, setCategoria] = useState("Todos");
+  const [modelo, setModelo] = useState("Todos");
+  const [acabamento, setAcabamento] = useState("Todos");
+  const [limiteMobile, setLimiteMobile] = useState(3);
 
   // ========================================
-  // PESQUISA
+  // FILTROS
   // ========================================
 
-  const imagensFiltradas = imagens.filter(
-    (item) =>
-      normalizar(
-        `${item.titulo} ${item.arquivo}`
-      ).includes(normalizar(pesquisa))
-  );
+  const imagensFiltradas = imagensFerragens.filter((item) => {
 
-  const imagensMobile = mostrarTodos
-    ? imagensFiltradas
-    : imagensFiltradas.slice(0, LIMITE_MOBILE);
+    const texto = normalizar(
+      `${item.titulo} ${item.categoria} ${item.modelo} ${item.acabamento}`
+    );
+
+    const correspondePesquisa = normalizar(pesquisa)
+      .split(/\s+/)
+      .every((termo) => texto.includes(termo));
+
+    return (
+      correspondePesquisa &&
+
+      (categoria === "Todos" ||
+        item.categoria === categoria) &&
+
+      (modelo === "Todos" ||
+        item.modelo === modelo) &&
+
+      (acabamento === "Todos" ||
+        item.acabamento === acabamento)
+    );
+  });
+
+  function alterarFiltro(setter, valor) {
+    setter(valor);
+    setLimiteMobile(3);
+  }
+
+  function limparFiltros() {
+    setPesquisa("");
+    setCategoria("Todos");
+    setModelo("Todos");
+    setAcabamento("Todos");
+    setLimiteMobile(3);
+  }
 
   const restantes = Math.max(
     0,
-    imagensFiltradas.length - LIMITE_MOBILE
+    imagensFiltradas.length - limiteMobile
   );
 
-  function alterarPesquisa(valor) {
-    setPesquisa(valor);
-    setMostrarTodos(false);
-  }
-
-  function limparPesquisa() {
-    setPesquisa("");
-    setMostrarTodos(false);
-  }
-
-  const mensagemVazia =
-    imagens.length === 0
-      ? "Nenhuma imagem de ferragens foi carregada."
-      : "Nenhuma imagem encontrada para esta pesquisa.";
-
-  // ========================================
-  // INTERFACE
-  // ========================================
-
   return (
-    <div className="videos-page dig-marketing-page ferragens-marketing-page">
+    <>
 
       <Header />
 
-      {/* =====================================
-          HERO — PADRÃO MECÂNICAS E DIGITAIS
-      ===================================== */}
+      <main className="videos-page dig-marketing-page mec-marketing-page ferragens-marketing-page">
 
-      <section className="dig-marketing-hero">
+        {/* ==================================
+            HERO
+        ================================== */}
 
-        <div className="dig-marketing-hero-container">
+        <section className="mec-marketing-hero">
 
-          <div className="dig-marketing-profile">
+          <div className="mec-hero-topo">
 
-            <UserProfileButton
-              onClick={() => setProfileOpen(true)}
-            />
+            <div className="mec-hero-identificacao">
+
+              <Megaphone size={18} />
+
+              <span>MARKETING SYNTER</span>
+
+            </div>
+
+            <UserProfileButton />
 
           </div>
 
-          <div className="dig-marketing-eyebrow">
+          <h1>
+            Vídeos e Imagens de Ferragens
+          </h1>
 
-            <IconeSynter />
+          <p>
+            Acesse materiais oficiais da Synter para
+            divulgação, apresentação comercial e
+            comunicação com seus clientes.
+          </p>
+
+          <div className="mec-hero-beneficios">
 
             <span>
-              CONTEÚDOS PARA DIVULGAÇÃO
+              <ImageIcon size={17} />
+              Imagens oficiais
+            </span>
+
+            <span>
+              <Box size={17} />
+              Produtos Synter
+            </span>
+
+            <span>
+              <Zap size={17} />
+              Download rápido
             </span>
 
           </div>
 
-          <h1 className="dig-marketing-title">
-            Vídeos e Imagens de Ferragens
-          </h1>
+        </section>
 
-          <p className="dig-marketing-description">
-            Acesse imagens das ferragens Synter
-            para divulgação, campanhas e ações
-            de marketing.
+        {/* ==================================
+            CATÁLOGO
+        ================================== */}
+
+        <section className="mec-catalogo">
+
+          <div className="mec-catalogo-cabecalho">
+
+            <div>
+
+              <h2>Imagens de Ferragens</h2>
+
+              <p>
+                Encontre e baixe imagens das ferragens
+                Synter.
+              </p>
+
+            </div>
+
+            <span className="mec-total-imagens">
+
+              <ImageIcon size={17} />
+
+              {imagensFerragens.length} imagens
+
+            </span>
+
+          </div>
+
+          {/* ==================================
+              PESQUISA
+          ================================== */}
+
+          <div className="mec-filtros">
+
+            <div className="mec-pesquisa">
+
+              <Search size={19} />
+
+              <input
+                type="search"
+                aria-label="Pesquisar produto"
+                placeholder="Pesquisar imagem ou modelo..."
+                value={pesquisa}
+                onChange={(e) =>
+                  alterarFiltro(
+                    setPesquisa,
+                    e.target.value
+                  )
+                }
+              />
+
+            </div>
+
+            <div className="mec-filtros-selects">
+
+              {/* CATEGORIA */}
+
+              <select
+                aria-label="Categoria"
+                value={categoria}
+                onChange={(e) =>
+                  alterarFiltro(
+                    setCategoria,
+                    e.target.value
+                  )
+                }
+              >
+
+                <option value="Todos">
+                  Todas as categorias
+                </option>
+
+                <option value="Puxadores">
+                  Puxadores
+                </option>
+
+              </select>
+
+              {/* MODELO */}
+
+              <select
+                aria-label="Modelo"
+                value={modelo}
+                onChange={(e) =>
+                  alterarFiltro(
+                    setModelo,
+                    e.target.value
+                  )
+                }
+              >
+
+                <option value="Todos">
+                  Todos os modelos
+                </option>
+
+                {modelos.map((item) => (
+
+                  <option
+                    key={item.id}
+                    value={item.titulo}
+                  >
+                    {item.titulo}
+                  </option>
+
+                ))}
+
+              </select>
+
+              {/* ACABAMENTO */}
+
+              <select
+                aria-label="Acabamento"
+                value={acabamento}
+                onChange={(e) =>
+                  alterarFiltro(
+                    setAcabamento,
+                    e.target.value
+                  )
+                }
+              >
+
+                <option value="Todos">
+                  Todos os acabamentos
+                </option>
+
+                <option value="Escovado">
+                  Escovado
+                </option>
+
+                <option value="Polido">
+                  Polido
+                </option>
+
+                <option value="Preto">
+                  Preto
+                </option>
+
+              </select>
+
+              {/* LIMPAR FILTROS */}
+
+              <button
+                type="button"
+                className="mec-limpar-filtros"
+                onClick={limparFiltros}
+              >
+
+                <X size={15} />
+
+                Limpar filtros
+
+              </button>
+
+            </div>
+
+          </div>
+
+          {/* ==================================
+              CONTADOR
+          ================================== */}
+
+          <p className="mec-resultados">
+
+            {imagensFiltradas.length}{" "}
+
+            {imagensFiltradas.length === 1
+              ? "imagem encontrada"
+              : "imagens encontradas"}
+
           </p>
 
-        </div>
+          {/* ==================================
+              SEM RESULTADOS
+          ================================== */}
 
-      </section>
+          {imagensFiltradas.length === 0 && (
 
-      {/* =====================================
-          CONTEÚDO PRINCIPAL
-      ===================================== */}
+            <div className="mec-sem-resultados">
 
-      <main className="videos-content">
+              <Search size={32} />
 
-        <div className="videos-section-title">
+              <h3>
+                Nenhuma imagem encontrada
+              </h3>
 
-          <div className="videos-section-bar" />
+              <p>
+                Tente pesquisar outro produto ou
+                alterar os filtros.
+              </p>
 
-          <h4>
-            IMAGENS DE FERRAGENS
-          </h4>
+              <button
+                type="button"
+                onClick={limparFiltros}
+              >
+                Limpar filtros
+              </button>
 
-        </div>
+            </div>
 
-        {/* PESQUISA */}
+          )}
 
-        <div className="pesquisa-videos dig-marketing-search">
+          {/* ==================================
+              DESKTOP
+          ================================== */}
 
-          <input
-            type="search"
-            placeholder="Pesquisar imagem ou modelo..."
-            value={pesquisa}
-            onChange={(evento) =>
-              alterarPesquisa(evento.target.value)
-            }
-            aria-label="Pesquisar imagens de ferragens"
-          />
+          <div className="dig-marketing-desktop">
 
-        </div>
-
-        {/* =====================================
-            DESKTOP
-        ===================================== */}
-
-        <div className="dig-marketing-desktop">
-
-          {imagensFiltradas.length > 0 ? (
-
-            <div className="videos-grid ferragens-grid">
+            <div className="mec-imagens-grid">
 
               {imagensFiltradas.map((item) => (
 
-                <FerragemCard
+                <ImagemCard
                   key={item.id}
                   item={item}
-                  onAbrir={setImagemAberta}
                 />
 
               ))}
 
             </div>
 
-          ) : (
+          </div>
 
-            <p
-              className="nenhum-video"
-              role="status"
-            >
-              {mensagemVazia}
-            </p>
+          {/* ==================================
+              MOBILE
+          ================================== */}
 
-          )}
+          <div className="dig-marketing-mobile">
 
-        </div>
+            <div className="dig-marketing-mobile-list mec-imagens-mobile">
 
-        {/* =====================================
-            MOBILE
-        ===================================== */}
+              {imagensFiltradas
+                .slice(0, limiteMobile)
+                .map((item) => (
 
-        <div className="dig-marketing-mobile">
-
-          {imagensMobile.length > 0 ? (
-
-            <>
-
-              <div className="dig-marketing-mobile-list">
-
-                {imagensMobile.map((item) => (
-
-                  <FerragemCard
+                  <ImagemCard
                     key={item.id}
                     item={item}
-                    onAbrir={setImagemAberta}
                   />
 
                 ))}
 
-              </div>
+            </div>
 
-              {imagensFiltradas.length >
-                LIMITE_MOBILE && (
+            {/* VER MAIS */}
+
+            {restantes > 0 && (
+
+              <button
+                type="button"
+                className="dig-marketing-more mec-ver-mais"
+                onClick={() =>
+                  setLimiteMobile(
+                    (anterior) => anterior + 3
+                  )
+                }
+              >
+
+                Ver mais {Math.min(3, restantes)}{" "}
+
+                {restantes === 1
+                  ? "imagem"
+                  : "imagens"}
+
+              </button>
+
+            )}
+
+            {/* VER MENOS */}
+
+            {restantes === 0 &&
+              limiteMobile > 3 &&
+              imagensFiltradas.length > 3 && (
 
                 <button
                   type="button"
-                  className="dig-marketing-more"
-                  onClick={() =>
-                    setMostrarTodos(
-                      (atual) => !atual
-                    )
-                  }
-                  aria-expanded={mostrarTodos}
+                  className="dig-marketing-more mec-ver-mais"
+                  onClick={() => setLimiteMobile(3)}
                 >
 
-                  {mostrarTodos
-                    ? "Mostrar menos imagens"
-                    : `Ver mais ${restantes} imagens`}
+                  Ver menos imagens
 
                 </button>
 
               )}
 
-            </>
-
-          ) : (
-
-            <div className="dig-marketing-empty">
-
-              <strong>
-                {mensagemVazia}
-              </strong>
-
-              {imagens.length > 0 && (
-
-                <>
-
-                  <p>
-                    Tente pesquisar outro modelo.
-                  </p>
-
-                  <button
-                    type="button"
-                    onClick={limparPesquisa}
-                  >
-                    Limpar pesquisa
-                  </button>
-
-                </>
-
-              )}
-
-            </div>
-
-          )}
-
-        </div>
-
-        {/* =====================================
-            AMPLIAÇÃO DA IMAGEM
-        ===================================== */}
-
-        {imagemAberta && (
-
-          <div
-            className="ferragens-overlay"
-            onClick={() => setImagemAberta(null)}
-            onKeyDown={(evento) => {
-              if (evento.key === "Escape") {
-                setImagemAberta(null);
-              }
-            }}
-          >
-
-            <div
-              className="ferragens-modal"
-              role="dialog"
-              aria-modal="true"
-              aria-label={imagemAberta.titulo}
-              onClick={(evento) =>
-                evento.stopPropagation()
-              }
-            >
-
-              <button
-                autoFocus
-                type="button"
-                className="ferragens-modal-fechar"
-                onClick={() => setImagemAberta(null)}
-              >
-                Fechar ×
-              </button>
-
-              <img
-                src={imagemAberta.src}
-                alt={imagemAberta.titulo}
-              />
-
-              <a
-                className="botao-assistir"
-                href={imagemAberta.src}
-                download={imagemAberta.arquivo}
-              >
-                <IconeDownload />
-                Baixar imagem
-              </a>
-
-            </div>
-
           </div>
 
-        )}
+        </section>
 
       </main>
 
       <Footer />
 
-      {/* PERFIL */}
-
-      {profileOpen && (
-
-        <Profile
-          onClose={() => setProfileOpen(false)}
-        />
-
-      )}
-
-    </div>
+    </>
   );
 }
