@@ -1,30 +1,22 @@
 import { useState } from "react";
 
-import {
-  Box,
-  Image,
-  Megaphone,
-  Zap,
-  Download,
-  Search,
-  ArrowLeft,
-  ChevronDown,
-} from "lucide-react";
-
-import { Link } from "react-router-dom";
-
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
+import Profile from "../components/Profile";
 
+import "../styles/Videos.css";
+import "../styles/DigMarketing.css";
+import "../styles/DigMarketingHero.css";
+import "../styles/DigMarketingMobile.css";
 import "../styles/FerragensMarketing.css";
 
 // ==========================================
 // IMPORTAÇÃO AUTOMÁTICA DAS IMAGENS
 // ==========================================
 
-const imagensPuxadores = import.meta.glob(
-  "../assets/marketing-ferragens/puxadores/*.jpg",
+const arquivos = import.meta.glob(
+  "../assets/marketing-ferragens/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",
   {
     eager: true,
     query: "?url",
@@ -33,63 +25,41 @@ const imagensPuxadores = import.meta.glob(
 );
 
 // ==========================================
-// MODELOS
+// CADASTRO AUTOMÁTICO DOS PRODUTOS
 // ==========================================
 
-const modelosPuxadores = [
-  { nome: "Quartzo", arquivo: "quartzo" },
-  { nome: "Opala", arquivo: "opala" },
-  { nome: "Jaspe", arquivo: "jaspe" },
-  { nome: "Jaspe com Furo", arquivo: "jaspe-com-furo" },
-  { nome: "Jade", arquivo: "jade" },
-  { nome: "Jade Max", arquivo: "jade-max" },
-];
+const imagens = Object.entries(arquivos)
+  .map(([caminho, src]) => {
+    const arquivo = caminho.split("/").pop();
 
-// ==========================================
-// ACABAMENTOS
-// ==========================================
+    const titulo = arquivo
+      .replace(/\.[^.]+$/, "")
+      .replace(/[-_]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .replace(/\b\p{L}/gu, (letra) =>
+        letra.toUpperCase()
+      );
 
-const acabamentosPuxadores = [
-  { nome: "Preto", arquivo: "preta" },
-  { nome: "Escovado", arquivo: "escovada" },
-  { nome: "Polido", arquivo: "polida" },
-];
+    return {
+      id: caminho,
+      titulo,
+      src,
+      arquivo,
+    };
+  })
+  .sort((a, b) =>
+    a.titulo.localeCompare(b.titulo, "pt-BR")
+  );
 
-// ==========================================
-// CADASTRO DOS PRODUTOS
-// ==========================================
-
-const puxadores = modelosPuxadores
-  .flatMap((modelo) =>
-    acabamentosPuxadores.map((acabamento) => {
-      const arquivo =
-        `${modelo.arquivo}-${acabamento.arquivo}.jpg`;
-
-      return {
-        id: `puxador-${modelo.arquivo}-${acabamento.arquivo}`,
-        titulo: `Puxador ${modelo.nome} ${acabamento.nome}`,
-        categoria: "Puxadores",
-        modelo: modelo.nome,
-        acabamento: acabamento.nome,
-        tipo: "imagem",
-        imagem:
-          imagensPuxadores[
-            `../assets/marketing-ferragens/puxadores/${arquivo}`
-          ],
-        arquivo,
-      };
-    })
-  )
-  .filter((produto) => produto.imagem);
-
-const materiais = [...puxadores];
+const LIMITE_MOBILE = 3;
 
 // ==========================================
 // NORMALIZAÇÃO DA PESQUISA
 // ==========================================
 
-function normalizar(texto) {
-  return String(texto)
+function normalizar(valor) {
+  return String(valor ?? "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
@@ -97,47 +67,91 @@ function normalizar(texto) {
 }
 
 // ==========================================
-// CARD DO PRODUTO
+// ÍCONE PADRÃO SYNTER
 // ==========================================
 
-function FerragemCard({ produto }) {
+function IconeSynter() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m12 2 9 5-9 5-9-5 9-5Z" />
+      <path d="M3 7v10l9 5 9-5V7" />
+      <path d="M12 12v10" />
+    </svg>
+  );
+}
+
+// ==========================================
+// ÍCONE DE DOWNLOAD
+// ==========================================
+
+function IconeDownload() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 3v12" />
+      <path d="m7 10 5 5 5-5" />
+      <path d="M4 16v4h16v-4" />
+    </svg>
+  );
+}
+
+// ==========================================
+// CARTÃO DE IMAGEM
+// ==========================================
+
+function FerragemCard({ item, onAbrir }) {
   return (
     <article className="ferragens-card">
 
-      <div className="ferragens-card-preview">
+      <button
+        type="button"
+        className="ferragens-card-preview"
+        onClick={() => onAbrir(item)}
+        aria-label={`Ampliar ${item.titulo}`}
+      >
         <img
-          src={produto.imagem}
-          alt={produto.titulo}
+          src={item.src}
+          alt={item.titulo}
           loading="lazy"
         />
-      </div>
+      </button>
 
       <div className="ferragens-card-info">
 
-        <span className="ferragens-card-categoria">
-          {produto.categoria} Synter
-        </span>
+        <h3>{item.titulo}</h3>
 
-        <h3>{produto.titulo}</h3>
-
-        <span
-          className={`ferragens-acabamento ${normalizar(
-            produto.acabamento
-          )}`}
-        >
-          <span className="ferragens-acabamento-cor" />
-
-          {produto.acabamento}
-        </span>
+        <p>
+          Conteúdo para apoiar ações comerciais
+          e de marketing.
+        </p>
 
         <div className="ferragens-card-botoes">
 
           <a
-            className="ferragens-download"
-            href={produto.imagem}
-            download={produto.arquivo}
+            className="botao-assistir ferragens-download"
+            href={item.src}
+            download={item.arquivo}
           >
-            <Download size={15} />
+            <IconeDownload />
             Baixar imagem
           </a>
 
@@ -155,362 +169,301 @@ function FerragemCard({ produto }) {
 
 export default function FerragensMarketing() {
 
-  const [busca, setBusca] = useState("");
-  const [categoria, setCategoria] = useState("Todos");
-  const [modelo, setModelo] = useState("Todos");
-  const [acabamento, setAcabamento] = useState("Todos");
-  const [limiteMobile, setLimiteMobile] = useState(3);
+  const [profileOpen, setProfileOpen] =
+    useState(false);
 
-  const categorias = [
-    ...new Set(materiais.map((item) => item.categoria)),
-  ];
+  const [pesquisa, setPesquisa] =
+    useState("");
 
-  const modelos = [
-    ...new Set(materiais.map((item) => item.modelo)),
-  ];
+  const [mostrarTodos, setMostrarTodos] =
+    useState(false);
 
-  const acabamentos = [
-    ...new Set(materiais.map((item) => item.acabamento)),
-  ];
+  const [imagemAberta, setImagemAberta] =
+    useState(null);
 
   // ========================================
-  // FILTRAGEM
+  // PESQUISA
   // ========================================
 
-  const materiaisFiltrados = materiais.filter((item) => {
+  const imagensFiltradas = imagens.filter(
+    (item) =>
+      normalizar(item.titulo).includes(
+        normalizar(pesquisa)
+      )
+  );
 
-    const textoPesquisa = normalizar(
-      `${item.titulo} ${item.categoria} ${item.modelo} ${item.acabamento}`
-    );
+  const imagensMobile = mostrarTodos
+    ? imagensFiltradas
+    : imagensFiltradas.slice(0, LIMITE_MOBILE);
 
-    return (
-      textoPesquisa.includes(normalizar(busca)) &&
-      (categoria === "Todos" ||
-        item.categoria === categoria) &&
-      (modelo === "Todos" ||
-        item.modelo === modelo) &&
-      (acabamento === "Todos" ||
-        item.acabamento === acabamento)
-    );
-  });
+  const restantes = Math.max(
+    0,
+    imagensFiltradas.length - LIMITE_MOBILE
+  );
 
-  function limparFiltros() {
-    setBusca("");
-    setCategoria("Todos");
-    setModelo("Todos");
-    setAcabamento("Todos");
-    setLimiteMobile(3);
+  function alterarPesquisa(valor) {
+    setPesquisa(valor);
+    setMostrarTodos(false);
   }
 
+  function limparPesquisa() {
+    setPesquisa("");
+    setMostrarTodos(false);
+  }
+
+  // ========================================
+  // INTERFACE
+  // ========================================
+
   return (
-    <>
+    <div className="videos-page dig-marketing-page ferragens-marketing-page">
+
       <Header />
 
-      <main className="ferragens-marketing-page">
+      {/* =====================================
+          HERO — PADRÃO MECÂNICAS E DIGITAIS
+      ===================================== */}
 
-        {/* HERO */}
+      <section className="dig-marketing-hero">
 
-        <section className="ferragens-hero">
+        <div className="dig-marketing-hero-container">
 
-          <div className="ferragens-container">
+          <div className="dig-marketing-profile">
 
-            <div className="ferragens-hero-topo">
-
-              <Link
-                to="/marketing"
-                className="ferragens-voltar"
-              >
-                <ArrowLeft size={16} />
-                Voltar para Marketing
-              </Link>
-
-              <UserProfileButton />
-
-            </div>
-
-            <div className="ferragens-eyebrow">
-              <Box size={20} />
-              <span>CONTEÚDOS PARA DIVULGAÇÃO</span>
-            </div>
-
-            <h1>Marketing de Ferragens</h1>
-
-            <p className="ferragens-hero-descricao">
-              Encontre imagens, vídeos e materiais de apoio
-              para divulgar as ferragens Synter e fortalecer
-              suas ações comerciais e de marketing.
-            </p>
-
-            <div className="ferragens-beneficios">
-
-              <div className="ferragens-beneficio">
-
-                <div className="ferragens-beneficio-icon">
-                  <Image size={18} />
-                </div>
-
-                <div>
-                  <strong>Materiais Visuais</strong>
-                  <small>Conteúdos para divulgação</small>
-                </div>
-
-              </div>
-
-              <div className="ferragens-beneficio">
-
-                <div className="ferragens-beneficio-icon">
-                  <Megaphone size={18} />
-                </div>
-
-                <div>
-                  <strong>Marketing</strong>
-                  <small>Apoio às ações comerciais</small>
-                </div>
-
-              </div>
-
-              <div className="ferragens-beneficio">
-
-                <div className="ferragens-beneficio-icon">
-                  <Zap size={18} />
-                </div>
-
-                <div>
-                  <strong>Acesso Rápido</strong>
-                  <small>Materiais em um só lugar</small>
-                </div>
-
-              </div>
-
-            </div>
+            <UserProfileButton
+              onClick={() => setProfileOpen(true)}
+            />
 
           </div>
 
-        </section>
+          <div className="dig-marketing-eyebrow">
 
-        {/* CATÁLOGO */}
+            <IconeSynter />
 
-        <section className="ferragens-catalogo">
+            <span>
+              CONTEÚDOS PARA DIVULGAÇÃO
+            </span>
 
-          <div className="ferragens-container">
+          </div>
 
-            <div className="ferragens-section-label">
-              MATERIAIS DE MARKETING
-            </div>
+          <h1 className="dig-marketing-title">
+            Vídeos e Imagens de Ferragens
+          </h1>
 
-            <div className="ferragens-catalogo-topo">
+          <p className="dig-marketing-description">
+            Acesse imagens das ferragens Synter
+            para divulgação, campanhas e ações
+            de marketing.
+          </p>
 
-              <div>
-                <h2>Imagens de Ferragens</h2>
-                <p>
-                  Encontre e baixe as imagens dos produtos Synter.
-                </p>
-              </div>
+        </div>
 
-              <div className="ferragens-contadores">
-                <span>
-                  <Image size={15} />
-                  {materiais.length} imagens disponíveis
-                </span>
-              </div>
+      </section>
 
-            </div>
+      {/* =====================================
+          CONTEÚDO PRINCIPAL
+      ===================================== */}
 
-            {/* PESQUISA E FILTROS */}
+      <main className="videos-content">
 
-            <div className="ferragens-filtros">
+        <div className="videos-section-title">
 
-              <div className="ferragens-pesquisa">
+          <div className="videos-section-bar" />
 
-                <Search size={18} />
+          <h4>
+            IMAGENS DE FERRAGENS
+          </h4>
 
-                <input
-                  type="search"
-                  aria-label="Buscar ferragens"
-                  placeholder="Pesquisar imagem ou modelo..."
-                  value={busca}
-                  onChange={(e) => {
-                    setBusca(e.target.value);
-                    setLimiteMobile(3);
-                  }}
+        </div>
+
+        {/* PESQUISA */}
+
+        <div className="pesquisa-videos dig-marketing-search">
+
+          <input
+            type="search"
+            placeholder="Pesquisar imagem ou modelo..."
+            value={pesquisa}
+            onChange={(evento) =>
+              alterarPesquisa(evento.target.value)
+            }
+            aria-label="Pesquisar imagens de ferragens"
+          />
+
+        </div>
+
+        {/* =====================================
+            DESKTOP
+        ===================================== */}
+
+        <div className="dig-marketing-desktop">
+
+          {imagensFiltradas.length > 0 ? (
+
+            <div className="videos-grid ferragens-grid">
+
+              {imagensFiltradas.map((item) => (
+
+                <FerragemCard
+                  key={item.id}
+                  item={item}
+                  onAbrir={setImagemAberta}
                 />
 
-              </div>
-
-              <div className="ferragens-selects">
-
-                <select
-                  aria-label="Categoria"
-                  value={categoria}
-                  onChange={(e) => {
-                    setCategoria(e.target.value);
-                    setLimiteMobile(3);
-                  }}
-                >
-                  <option value="Todos">
-                    Todas as categorias
-                  </option>
-
-                  {categorias.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-
-                </select>
-
-                <select
-                  aria-label="Modelo"
-                  value={modelo}
-                  onChange={(e) => {
-                    setModelo(e.target.value);
-                    setLimiteMobile(3);
-                  }}
-                >
-                  <option value="Todos">
-                    Todos os modelos
-                  </option>
-
-                  {modelos.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-
-                </select>
-
-                <select
-                  aria-label="Acabamento"
-                  value={acabamento}
-                  onChange={(e) => {
-                    setAcabamento(e.target.value);
-                    setLimiteMobile(3);
-                  }}
-                >
-                  <option value="Todos">
-                    Todos os acabamentos
-                  </option>
-
-                  {acabamentos.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-
-                </select>
-
-                <button
-                  type="button"
-                  className="ferragens-limpar"
-                  onClick={limparFiltros}
-                >
-                  Limpar filtros
-                </button>
-
-              </div>
+              ))}
 
             </div>
 
-            {/* CONTADOR */}
+          ) : (
 
-            <div className="ferragens-resultados">
-              {materiaisFiltrados.length}{" "}
-              {materiaisFiltrados.length === 1
-                ? "imagem encontrada"
-                : "imagens encontradas"}
-            </div>
+            <p className="nenhum-video" role="status">
+              Nenhuma imagem encontrada.
+            </p>
 
-            {/* NENHUM RESULTADO */}
+          )}
 
-            {materiaisFiltrados.length === 0 && (
+        </div>
 
-              <div className="ferragens-vazio">
+        {/* =====================================
+            MOBILE
+        ===================================== */}
 
-                <Search size={32} />
+        <div className="dig-marketing-mobile">
 
-                <h3>Nenhum material encontrado</h3>
+          {imagensMobile.length > 0 ? (
 
-                <p>
-                  Tente pesquisar outro produto ou alterar os filtros.
-                </p>
+            <>
 
-                <button
-                  type="button"
-                  onClick={limparFiltros}
-                >
-                  Limpar filtros
-                </button>
+              <div className="dig-marketing-mobile-list">
 
-              </div>
+                {imagensMobile.map((item) => (
 
-            )}
-
-            {/* DESKTOP */}
-
-            <div className="ferragens-desktop">
-
-              <div className="ferragens-grid">
-
-                {materiaisFiltrados.map((produto) => (
                   <FerragemCard
-                    key={produto.id}
-                    produto={produto}
+                    key={item.id}
+                    item={item}
+                    onAbrir={setImagemAberta}
                   />
+
                 ))}
 
               </div>
 
-            </div>
-
-            {/* MOBILE */}
-
-            <div className="ferragens-mobile">
-
-              <div className="ferragens-mobile-lista">
-
-                {materiaisFiltrados
-                  .slice(0, limiteMobile)
-                  .map((produto) => (
-                    <FerragemCard
-                      key={produto.id}
-                      produto={produto}
-                    />
-                  ))}
-
-              </div>
-
-              {limiteMobile < materiaisFiltrados.length && (
+              {imagensFiltradas.length >
+                LIMITE_MOBILE && (
 
                 <button
                   type="button"
-                  className="ferragens-ver-mais"
+                  className="dig-marketing-more"
                   onClick={() =>
-                    setLimiteMobile((anterior) => anterior + 3)
+                    setMostrarTodos((atual) => !atual)
                   }
+                  aria-expanded={mostrarTodos}
                 >
-                  Ver mais{" "}
-                  {Math.min(
-                    3,
-                    materiaisFiltrados.length - limiteMobile
-                  )}{" "}
-                  imagens
 
-                  <ChevronDown size={16} />
+                  {mostrarTodos
+                    ? "Mostrar menos imagens"
+                    : `Ver mais ${restantes} imagens`}
 
                 </button>
 
               )}
 
+            </>
+
+          ) : (
+
+            <div className="dig-marketing-empty">
+
+              <strong>
+                Nenhuma imagem encontrada
+              </strong>
+
+              <p>
+                Tente pesquisar outro modelo.
+              </p>
+
+              <button
+                type="button"
+                onClick={limparPesquisa}
+              >
+                Limpar pesquisa
+              </button>
+
+            </div>
+
+          )}
+
+        </div>
+
+        {/* =====================================
+            AMPLIAÇÃO DA IMAGEM
+        ===================================== */}
+
+        {imagemAberta && (
+
+          <div
+            className="ferragens-overlay"
+            onClick={() => setImagemAberta(null)}
+            onKeyDown={(evento) => {
+              if (evento.key === "Escape") {
+                setImagemAberta(null);
+              }
+            }}
+          >
+
+            <div
+              className="ferragens-modal"
+              role="dialog"
+              aria-modal="true"
+              aria-label={imagemAberta.titulo}
+              onClick={(evento) =>
+                evento.stopPropagation()
+              }
+            >
+
+              <button
+                autoFocus
+                type="button"
+                className="ferragens-modal-fechar"
+                onClick={() => setImagemAberta(null)}
+              >
+                Fechar ×
+              </button>
+
+              <img
+                src={imagemAberta.src}
+                alt={imagemAberta.titulo}
+              />
+
+              <a
+                className="botao-assistir"
+                href={imagemAberta.src}
+                download={imagemAberta.arquivo}
+              >
+                <IconeDownload />
+                Baixar imagem
+              </a>
+
             </div>
 
           </div>
 
-        </section>
+        )}
 
       </main>
 
       <Footer />
 
-    </>
+      {/* PERFIL */}
+
+      {profileOpen && (
+
+        <Profile
+          onClose={() => setProfileOpen(false)}
+        />
+
+      )}
+
+    </div>
   );
 }
