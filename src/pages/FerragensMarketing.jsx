@@ -5,6 +5,10 @@ import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
 import Profile from "../components/Profile";
 
+// ==========================================
+// ESTILOS
+// ==========================================
+
 import "../styles/Videos.css";
 import "../styles/DigMarketing.css";
 import "../styles/DigMarketingHero.css";
@@ -16,7 +20,7 @@ import "../styles/FerragensMarketing.css";
 // ==========================================
 
 const arquivos = import.meta.glob(
-  "../assets/marketing-ferragens/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}",
+  "../assets/marketing-ferragens/*",
   {
     eager: true,
     query: "?url",
@@ -29,17 +33,26 @@ const arquivos = import.meta.glob(
 // ==========================================
 
 const imagens = Object.entries(arquivos)
+  .filter(([caminho]) =>
+    /\.(jpg|jpeg|png|webp|avif|gif|svg)$/i.test(caminho)
+  )
   .map(([caminho, src]) => {
     const arquivo = caminho.split("/").pop();
 
-    const titulo = arquivo
-      .replace(/\.[^.]+$/, "")
+    const nome = arquivo
+      .replace(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/gi, "")
       .replace(/[-_]+/g, " ")
       .replace(/\s+/g, " ")
-      .trim()
-      .replace(/\b\p{L}/gu, (letra) =>
-        letra.toUpperCase()
-      );
+      .trim();
+
+    const titulo = nome
+      .split(" ")
+      .map(
+        (palavra) =>
+          palavra.charAt(0).toUpperCase() +
+          palavra.slice(1).toLowerCase()
+      )
+      .join(" ");
 
     return {
       id: caminho,
@@ -51,6 +64,16 @@ const imagens = Object.entries(arquivos)
   .sort((a, b) =>
     a.titulo.localeCompare(b.titulo, "pt-BR")
   );
+
+console.log(
+  "[Ferragens] Imagens carregadas:",
+  imagens.length
+);
+
+console.log(
+  "[Ferragens] Arquivos encontrados:",
+  Object.keys(arquivos)
+);
 
 const LIMITE_MOBILE = 3;
 
@@ -187,9 +210,9 @@ export default function FerragensMarketing() {
 
   const imagensFiltradas = imagens.filter(
     (item) =>
-      normalizar(item.titulo).includes(
-        normalizar(pesquisa)
-      )
+      normalizar(
+        `${item.titulo} ${item.arquivo}`
+      ).includes(normalizar(pesquisa))
   );
 
   const imagensMobile = mostrarTodos
@@ -210,6 +233,11 @@ export default function FerragensMarketing() {
     setPesquisa("");
     setMostrarTodos(false);
   }
+
+  const mensagemVazia =
+    imagens.length === 0
+      ? "Nenhuma imagem de ferragens foi carregada."
+      : "Nenhuma imagem encontrada para esta pesquisa.";
 
   // ========================================
   // INTERFACE
@@ -316,8 +344,11 @@ export default function FerragensMarketing() {
 
           ) : (
 
-            <p className="nenhum-video" role="status">
-              Nenhuma imagem encontrada.
+            <p
+              className="nenhum-video"
+              role="status"
+            >
+              {mensagemVazia}
             </p>
 
           )}
@@ -355,7 +386,9 @@ export default function FerragensMarketing() {
                   type="button"
                   className="dig-marketing-more"
                   onClick={() =>
-                    setMostrarTodos((atual) => !atual)
+                    setMostrarTodos(
+                      (atual) => !atual
+                    )
                   }
                   aria-expanded={mostrarTodos}
                 >
@@ -375,19 +408,27 @@ export default function FerragensMarketing() {
             <div className="dig-marketing-empty">
 
               <strong>
-                Nenhuma imagem encontrada
+                {mensagemVazia}
               </strong>
 
-              <p>
-                Tente pesquisar outro modelo.
-              </p>
+              {imagens.length > 0 && (
 
-              <button
-                type="button"
-                onClick={limparPesquisa}
-              >
-                Limpar pesquisa
-              </button>
+                <>
+
+                  <p>
+                    Tente pesquisar outro modelo.
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={limparPesquisa}
+                  >
+                    Limpar pesquisa
+                  </button>
+
+                </>
+
+              )}
 
             </div>
 
