@@ -64,6 +64,7 @@ import Orcamentos from "./pages/Orcamentos.jsx";
 import Marketing from "./pages/Marketing.jsx";
 import DigMarketing from "./pages/DigMarketing.jsx";
 import MecMarketing from "./pages/MecMarketing.jsx";
+import FerragensMarketing from "./pages/FerragensMarketing.jsx";
 
 // ========================================
 // SELETOR DE FECHADURAS
@@ -489,6 +490,19 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <MecMarketing />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* ====================================
+              MARKETING — FERRAGENS
+          ==================================== */}
+
+          <Route
+            path="/ferragensmarketing"
+            element={
+              <ProtectedRoute>
+                <FerragensMarketing />
               </ProtectedRoute>
             }
           />
