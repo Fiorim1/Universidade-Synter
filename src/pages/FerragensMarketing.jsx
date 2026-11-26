@@ -38,7 +38,25 @@ import quartzoEscovada from "../assets/marketing-ferragens/Quartzo Escovada.jpg"
 import quartzoPolida from "../assets/marketing-ferragens/Quartzo Polida.jpg";
 import quartzoPreta from "../assets/marketing-ferragens/Quartzo Preta.jpg";
 
-// CATÁLOGO - PUXADORES
+import ferragem0Polida from "../assets/marketing-ferragens/Fecho Concha Trava Polida.jpg";
+import ferragem0Preta from "../assets/marketing-ferragens/Fecho Concha Trava Preta.jpg";
+import ferragem1Polida from "../assets/marketing-ferragens/Concha Stand Com Furo Polida.jpg";
+import ferragem1Preta from "../assets/marketing-ferragens/Concha Stand Com Furo Preta.jpg";
+import ferragem2Polida from "../assets/marketing-ferragens/Concha Stand Polida.jpg";
+import ferragem2Preta from "../assets/marketing-ferragens/Concha Stand Preta.jpg";
+import ferragem3Polida from "../assets/marketing-ferragens/Prendedor Para Veneziana Polida.jpg";
+import ferragem4Polida from "../assets/marketing-ferragens/Levantador De Guilhotina Polida.jpg";
+import ferragem4Preta from "../assets/marketing-ferragens/Levantador De Guilhotina Preta.jpg";
+import ferragem5Polida from "../assets/marketing-ferragens/Borboleta Para Guilhotina Polida.jpg";
+import ferragem5Preta from "../assets/marketing-ferragens/Borboleta Para Guilhotina Preta.jpg";
+import ferragem6Polida from "../assets/marketing-ferragens/Cremona Polida.jpg";
+import ferragem6Preta from "../assets/marketing-ferragens/Cremona Preta.jpg";
+import ferragem7Polida from "../assets/marketing-ferragens/Fecho Pina Bola Polida.jpg";
+import ferragem7Preta from "../assets/marketing-ferragens/Fecho Pina Bola Preta.jpg";
+import ferragem8Polida from "../assets/marketing-ferragens/Fecho Para Janela De Correr Polida.jpg";
+import ferragem8Preta from "../assets/marketing-ferragens/Fecho Para Janela De Correr Preta.jpg";
+
+// CATÁLOGO - FERRAGENS
 const modelos = [
   {
     id: "jade",
@@ -98,6 +116,86 @@ const modelos = [
       ["Escovado", quartzoEscovada],
       ["Polido", quartzoPolida],
       ["Preto", quartzoPreta],
+    ],
+  },
+  {
+    id: "fecho-concha-trava",
+    titulo: "Fecho Concha Trava",
+    categoria: "Fechos",
+    imagens: [
+      ["Polida", ferragem0Polida],
+      ["Preta", ferragem0Preta],
+    ],
+  },
+  {
+    id: "concha-stand-com-furo",
+    titulo: "Concha Stand Com Furo",
+    categoria: "Conchas",
+    imagens: [
+      ["Polida", ferragem1Polida],
+      ["Preta", ferragem1Preta],
+    ],
+  },
+  {
+    id: "concha-stand",
+    titulo: "Concha Stand",
+    categoria: "Conchas",
+    imagens: [
+      ["Polida", ferragem2Polida],
+      ["Preta", ferragem2Preta],
+    ],
+  },
+  {
+    id: "prendedor-para-veneziana",
+    titulo: "Prendedor Para Veneziana",
+    categoria: "Prendedores",
+    imagens: [
+      ["Polida", ferragem3Polida],
+    ],
+  },
+  {
+    id: "levantador-de-guilhotina",
+    titulo: "Levantador De Guilhotina",
+    categoria: "Acessórios para guilhotina",
+    imagens: [
+      ["Polida", ferragem4Polida],
+      ["Preta", ferragem4Preta],
+    ],
+  },
+  {
+    id: "borboleta-para-guilhotina",
+    titulo: "Borboleta Para Guilhotina",
+    categoria: "Acessórios para guilhotina",
+    imagens: [
+      ["Polida", ferragem5Polida],
+      ["Preta", ferragem5Preta],
+    ],
+  },
+  {
+    id: "cremona",
+    titulo: "Cremona",
+    categoria: "Cremonas",
+    imagens: [
+      ["Polida", ferragem6Polida],
+      ["Preta", ferragem6Preta],
+    ],
+  },
+  {
+    id: "fecho-pina-bola",
+    titulo: "Fecho Pina Bola",
+    categoria: "Fechos",
+    imagens: [
+      ["Polida", ferragem7Polida],
+      ["Preta", ferragem7Preta],
+    ],
+  },
+  {
+    id: "fecho-para-janela-de-correr",
+    titulo: "Fecho Para Janela De Correr",
+    categoria: "Fechos",
+    imagens: [
+      ["Polida", ferragem8Polida],
+      ["Preta", ferragem8Preta],
     ],
   },
 ];
