@@ -71,6 +71,10 @@ import novaFerragem8_0 from "../assets/marketing-ferragens/Fecho Porta Cadeado P
 import novaFerragem9_0 from "../assets/marketing-ferragens/Dobradiça Basculante (Gonzo) Polida Furo Único.jpg";
 import novaFerragem10_0 from "../assets/marketing-ferragens/Dobradiça Basculante (Gonzo) Polida.jpg";
 
+import numerosPreta from "../assets/marketing-ferragens/Números Dupla Face Preta.jpg";
+import numerosPolida from "../assets/marketing-ferragens/Números Dupla Face Polida.jpg";
+import amortecedorPolida from "../assets/marketing-ferragens/Amortecedor De Porta Polida.jpg";
+
 // CATÁLOGO - FERRAGENS
 const modelos = [
   {
@@ -303,6 +307,18 @@ const modelos = [
     imagens: [
       ["Polida", novaFerragem10_0],
     ],
+  },
+  {
+    id: "numeros-dupla-face",
+    titulo: "Números Dupla Face",
+    categoria: "Acessórios",
+    imagens: [["Preta", numerosPreta], ["Polida", numerosPolida]],
+  },
+  {
+    id: "amortecedor-de-porta",
+    titulo: "Amortecedor de Porta",
+    categoria: "Acessórios",
+    imagens: [["Polida", amortecedorPolida]],
   },
 ];
 

@@ -576,6 +576,25 @@ export default function MecMarketing() {
           {/* MOBILE */}
 
           <div className="dig-marketing-mobile">
+            <style>{`
+              .mec-marketing-page button.mec-ver-mais,
+              .mec-marketing-page button.mec-ver-mais:hover,
+              .mec-marketing-page button.mec-ver-mais:active,
+              .mec-marketing-page button.mec-ver-mais:focus {
+                background: #fff !important;
+                color: #111 !important;
+                opacity: 1 !important;
+                filter: none !important;
+                -webkit-tap-highlight-color: transparent;
+              }
+              .mec-marketing-page button.mec-ver-mais:focus-visible {
+                outline: 2px solid #999;
+                outline-offset: 3px;
+              }
+            `}</style>
+            <p role="status" style={{ color: "#aaa", fontSize: 12, margin: "0 12px 12px" }}>
+              Exibindo {Math.min(limiteMobile, imagensFiltradas.length)} de {imagensFiltradas.length} imagens
+            </p>
             <div className="dig-marketing-mobile-list mec-imagens-mobile">
               {imagensFiltradas
                 .slice(0, limiteMobile)
@@ -597,8 +616,7 @@ export default function MecMarketing() {
                   )
                 }
               >
-                Ver mais {Math.min(3, restantes)}{" "}
-                {restantes === 1 ? "imagem" : "imagens"}
+                Ver mais imagens ({restantes} restantes)
               </button>
             )}
 
