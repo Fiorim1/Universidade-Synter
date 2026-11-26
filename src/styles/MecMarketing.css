@@ -747,3 +747,94 @@
   background: #ffffff;
   color: #111111;
 }
+/* ==========================================
+   BOTÃO DOWNLOAD — PADRÃO DIGITAL SYNTER
+========================================== */
+
+.mec-marketing-page .mec-botao-download,
+.mec-marketing-page .mec-imagem-card .botao-assistir {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 16px;
+
+  background: linear-gradient(
+    135deg,
+    #111111,
+    #191919
+  );
+
+  border: 1px solid #454545;
+  border-radius: 12px;
+
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+/* EFEITO AO PASSAR O MOUSE */
+
+.mec-marketing-page .mec-botao-download:hover,
+.mec-marketing-page .mec-imagem-card .botao-assistir:hover {
+  background: linear-gradient(
+    135deg,
+    #252525,
+    #353535
+  );
+
+  border-color: #777777;
+  color: #ffffff;
+
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+/* EFEITO AO CLICAR */
+
+.mec-marketing-page .mec-botao-download:active,
+.mec-marketing-page .mec-imagem-card .botao-assistir:active {
+  transform: scale(0.98);
+}
+
+/* ÍCONE */
+
+.mec-marketing-page .mec-botao-download svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 750px) {
+
+  .mec-marketing-page .mec-botao-download,
+  .mec-marketing-page .mec-imagem-card .botao-assistir {
+    width: auto;
+    min-height: 25px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    gap: 5px;
+  }
+
+  .mec-marketing-page .mec-botao-download svg {
+    width: 12px;
+    height: 12px;
+  }
+
+}
