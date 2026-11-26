@@ -1,10 +1,7 @@
 
 import React, { useState } from "react";
 import {
-  Box,
   Image as ImageIcon,
-  Megaphone,
-  Zap,
   Download,
   Search,
   X,
@@ -13,6 +10,7 @@ import {
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserProfileButton from "../components/UserProfileButton";
+import Profile from "../components/Profile";
 
 import "../styles/Videos.css";
 import "../styles/DigMarketing.css";
@@ -179,7 +177,28 @@ function ImagemCard({ item }) {
 // PÁGINA PRINCIPAL
 // ==========================================
 
+function IconeSynter() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m12 2 9 5-9 5-9-5 9-5Z" />
+      <path d="M3 7v10l9 5 9-5V7" />
+      <path d="M12 12v10" />
+    </svg>
+  );
+}
+
 export default function FerragensMarketing() {
+  const [profileOpen, setProfileOpen] = useState(false);
   const [pesquisa, setPesquisa] = useState("");
   const [categoria, setCategoria] = useState("Todos");
   const [modelo, setModelo] = useState("Todos");
@@ -224,57 +243,51 @@ export default function FerragensMarketing() {
   );
 
   return (
-    <>
+    <div className="videos-page dig-marketing-page mec-marketing-page">
       <Header />
-
-      <main className="videos-page dig-marketing-page mec-marketing-page">
 
         {/* HERO */}
 
-        <section className="mec-marketing-hero">
-          <div className="mec-hero-topo">
-            <div className="mec-hero-identificacao">
-              <Megaphone size={18} />
-              <span>MARKETING SYNTER</span>
-            </div>
+        <section className="dig-marketing-hero">
+        <div className="dig-marketing-hero-container">
 
-            <UserProfileButton />
+          <div className="dig-marketing-profile">
+            <UserProfileButton
+              onClick={() => setProfileOpen(true)}
+            />
           </div>
 
-          <h1>
+          <div className="dig-marketing-eyebrow">
+            <IconeSynter />
+
+            <span>
+              CONTEÚDOS PARA DIVULGAÇÃO
+            </span>
+          </div>
+
+          <h1 className="dig-marketing-title">
             Vídeos e Imagens de Ferragens
           </h1>
 
-          <p>
-            Acesse materiais oficiais da Synter para
-            divulgação, apresentação comercial e
-            comunicação com seus clientes.
+          <p className="dig-marketing-description">
+            Acesse vídeos e imagens das ferragens
+            Synter para divulgação, campanhas
+            e ações de marketing.
           </p>
 
-          <div className="mec-hero-beneficios">
-            <span>
-              <ImageIcon size={17} />
-              Imagens oficiais
-            </span>
-
-            <span>
-              <Box size={17} />
-              Produtos Synter
-            </span>
-
-            <span>
-              <Zap size={17} />
-              Download rápido
-            </span>
-          </div>
-        </section>
+        </div>
+      </section>
 
         {/* CATÁLOGO */}
 
+      <main className="videos-content">
         <section className="mec-catalogo">
           <div className="mec-catalogo-cabecalho">
             <div>
-              <h2>Imagens de produtos</h2>
+              <div className="videos-section-title">
+                <div className="videos-section-bar" />
+                <h4>IMAGENS DE FERRAGENS</h4>
+              </div>
               <p>
                 Encontre e baixe imagens das ferragens Synter.
               </p>
@@ -289,13 +302,12 @@ export default function FerragensMarketing() {
           {/* PESQUISA */}
 
           <div className="mec-filtros">
-            <div className="mec-pesquisa">
-              <Search size={19} />
+            <div className="pesquisa-videos dig-marketing-search">
 
               <input
                 type="search"
                 aria-label="Pesquisar produto"
-                placeholder="Pesquisar produto..."
+                placeholder="Pesquisar imagem ou modelo..."
                 value={pesquisa}
                 onChange={(e) =>
                   alterarFiltro(
@@ -454,6 +466,7 @@ export default function FerragensMarketing() {
       </main>
 
       <Footer />
-    </>
+      {profileOpen && <Profile onClose={() => setProfileOpen(false)} />}
+    </div>
   );
 }
