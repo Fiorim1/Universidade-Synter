@@ -693,3 +693,57 @@
     padding: 5px 6px;
   }
 }
+/* ==========================================
+   CORREÇÃO VISUAL DOS CARDS DE MECÂNICAS
+========================================== */
+
+.mec-marketing-page .mec-imagem-card {
+  background: linear-gradient(
+    145deg,
+    #171717,
+    #111111
+  );
+
+  border: 1px solid #303030;
+  box-shadow: none;
+}
+
+.mec-marketing-page .mec-imagem-preview {
+  background: #ffffff;
+  border-bottom: none;
+}
+
+.mec-marketing-page .mec-card-info,
+.mec-marketing-page .video-card-info {
+  background: transparent;
+  color: #ffffff;
+}
+
+.mec-marketing-page .mec-imagem-card h2,
+.mec-marketing-page .mec-imagem-card h3 {
+  color: #ffffff;
+}
+
+.mec-marketing-page .mec-card-descricao,
+.mec-marketing-page .mec-imagem-card p {
+  color: #a1a1aa;
+}
+
+.mec-marketing-page .mec-acabamento {
+  background: #202020;
+  border-color: #3a3a3a;
+  color: #d4d4d8;
+}
+
+.mec-marketing-page .mec-botao-download,
+.mec-marketing-page .mec-imagem-card .botao-assistir {
+  background: #242424;
+  border: 1px solid #414141;
+  color: #ffffff;
+}
+
+.mec-marketing-page .mec-botao-download:hover,
+.mec-marketing-page .mec-imagem-card .botao-assistir:hover {
+  background: #ffffff;
+  color: #111111;
+}
