@@ -189,7 +189,11 @@ function IconeSynter() {
 export default function FerragensMarketing() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [limiteMobile, setLimiteMobile] = useState(3);
-  const imagensFiltradas = imagensFerragens;
+  const [pesquisa, setPesquisa] = useState("");
+  const imagensFiltradas = imagensFerragens.filter((item) =>
+    normalizar(`${item.titulo} ${item.categoria} ${item.modelo} ${item.acabamento}`)
+      .includes(normalizar(pesquisa))
+  );
 
   const restantes = Math.max(
     0,
@@ -235,6 +239,25 @@ export default function FerragensMarketing() {
         {/* CATÁLOGO */}
 
       <main className="videos-content">
+        <div className="videos-section-title">
+          <div className="videos-section-bar" />
+          <h4>IMAGENS DE FERRAGENS</h4>
+        </div>
+        <div className="pesquisa-videos dig-marketing-search">
+          <input
+            type="search"
+            placeholder="Pesquisar imagem ou modelo..."
+            value={pesquisa}
+            onChange={(evento) => {
+              setPesquisa(evento.target.value);
+              setLimiteMobile(3);
+            }}
+            aria-label="Pesquisar imagens de ferragens"
+          />
+        </div>
+        {imagensFiltradas.length === 0 && (
+          <p className="nenhum-video" role="status">Nenhuma imagem encontrada.</p>
+        )}
         <section className="mec-catalogo">
           {/* DESKTOP */}
 
