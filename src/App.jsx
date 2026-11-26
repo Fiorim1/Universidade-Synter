@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-
 import {
   Routes,
   Route,
@@ -8,7 +7,6 @@ import {
 } from "react-router-dom";
 
 // ========================================
-// UNIVERSIDADE SYNTER
 // AUTENTICAÇÃO
 // ========================================
 
@@ -17,10 +15,8 @@ import Register from "./components/Register.jsx";
 import ForgotPassword from "./components/ForgotPassword.jsx";
 import UpdatePassword from "./components/UpdatePassword.jsx";
 
-const Login = LoginModule.default ?? LoginModule.Login;
-
 // ========================================
-// CONTROLE DE ACESSO E RECUPERAÇÃO
+// CONTROLE DE ACESSO
 // ========================================
 
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -61,16 +57,16 @@ import TreinamentoComercial from "./pages/TreinamentoComercial.jsx";
 // ========================================
 
 import Orcamentos from "./pages/Orcamentos.jsx";
+import SeletorFechaduras from "./pages/SeletorFechaduras.jsx";
+
+// ========================================
+// MARKETING
+// ========================================
+
 import Marketing from "./pages/Marketing.jsx";
 import DigMarketing from "./pages/DigMarketing.jsx";
 import MecMarketing from "./pages/MecMarketing.jsx";
 import FerragensMarketing from "./pages/FerragensMarketing.jsx";
-
-// ========================================
-// SELETOR DE FECHADURAS
-// ========================================
-
-import SeletorFechaduras from "./pages/SeletorFechaduras.jsx";
 
 // ========================================
 // REDE DE CREDENCIADOS
@@ -105,6 +101,8 @@ import SynterAssistant from "./components/SynterAssistant.jsx";
 
 import NotFound from "./pages/NotFound.jsx";
 
+const Login = LoginModule.default ?? LoginModule.Login;
+
 // ========================================
 // ROTAS SEM ASSISTENTE
 // ========================================
@@ -124,9 +122,7 @@ const ROTAS_SEM_ASSISTENTE = [
 export default function App() {
   const location = useLocation();
 
-  // ========================================
-  // ROLAGEM AO TROCAR DE ROTA
-  // ========================================
+  // ROLAGEM AO TROCAR DE PÁGINA
 
   useEffect(() => {
     window.scrollTo({
@@ -139,9 +135,7 @@ export default function App() {
     document.body.scrollTop = 0;
   }, [location.pathname]);
 
-  // ========================================
-  // EXIBIÇÃO DO ASSISTENTE SYNTER
-  // ========================================
+  // CONTROLE DO ASSISTENTE SYNTER
 
   const mostrarAssistente =
     !ROTAS_SEM_ASSISTENTE.includes(
@@ -150,17 +144,6 @@ export default function App() {
 
   return (
     <>
-      {/* ====================================
-          PROTEÇÃO DA RECUPERAÇÃO DE SENHA
-
-          Enquanto existir uma recuperação
-          ativa, o sistema não deve liberar
-          a navegação para outras páginas.
-
-          A validação da alteração continua
-          sendo responsabilidade do Supabase.
-      ==================================== */}
-
       <PasswordRecoveryGuard>
         <Routes>
 
@@ -200,7 +183,7 @@ export default function App() {
           />
 
           {/* ====================================
-              ESQUECI MINHA SENHA
+              RECUPERAÇÃO DE SENHA
           ==================================== */}
 
           <Route
@@ -211,16 +194,6 @@ export default function App() {
               </PublicRoute>
             }
           />
-
-          {/* ====================================
-              REDEFINIÇÃO DE SENHA
-
-              Não utilizar PublicRoute ou
-              ProtectedRoute nesta rota.
-
-              O UpdatePassword valida a
-              sessão de recuperação.
-          ==================================== */}
 
           <Route
             path="/update-password"
@@ -242,7 +215,6 @@ export default function App() {
 
           {/* ====================================
               DASHBOARD SAC
-              ACESSO ADMINISTRATIVO
           ==================================== */}
 
           <Route
@@ -415,7 +387,6 @@ export default function App() {
 
           {/* ====================================
               ASSISTÊNCIA TÉCNICA
-              ACESSO ADMINISTRATIVO
           ==================================== */}
 
           <Route
@@ -429,7 +400,6 @@ export default function App() {
 
           {/* ====================================
               VISITAS TÉCNICAS
-              ACESSO ADMINISTRATIVO
           ==================================== */}
 
           <Route
@@ -443,7 +413,6 @@ export default function App() {
 
           {/* ====================================
               SYNTER ANALYTICS
-              ACESSO ADMINISTRATIVO
           ==================================== */}
 
           <Route
@@ -456,7 +425,7 @@ export default function App() {
           />
 
           {/* ====================================
-              MARKETING
+              MARKETING — PÁGINA PRINCIPAL
           ==================================== */}
 
           <Route
@@ -521,10 +490,7 @@ export default function App() {
           />
 
           {/* ====================================
-              ROTAS ANTIGAS DE MFA
-
-              Redirecionamentos de
-              compatibilidade.
+              COMPATIBILIDADE MFA
           ==================================== */}
 
           <Route
