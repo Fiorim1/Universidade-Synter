@@ -437,17 +437,6 @@ function ImagemCard({ item }) {
           {item.categoria}{item.aplicacao ? ` • ${item.aplicacao}` : ""}
         </p>
 
-        {item.acabamento && (
-          <span
-            className={`mec-acabamento ${normalizar(
-              item.acabamento
-            )}`}
-          >
-            <span className="mec-acabamento-cor" />
-            {item.acabamento}
-          </span>
-        )}
-
         <div className="video-card-botoes mec-card-botoes">
           <a
             href={item.imagem}
