@@ -299,7 +299,11 @@ function IconeSynter() {
 export default function MecMarketing() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [limiteMobile, setLimiteMobile] = useState(3);
-  const imagensFiltradas = imagensMecanicas;
+  const [pesquisa, setPesquisa] = useState("");
+  const imagensFiltradas = imagensMecanicas.filter((item) =>
+    normalizar(`${item.titulo} ${item.categoria} ${item.aplicacao} ${item.testa} ${item.acabamento}`)
+      .includes(normalizar(pesquisa))
+  );
 
   const restantes = Math.max(
     0,
@@ -345,6 +349,25 @@ export default function MecMarketing() {
         {/* CATÁLOGO */}
 
       <main className="videos-content">
+        <div className="videos-section-title">
+          <div className="videos-section-bar" />
+          <h4>IMAGENS DE FECHADURAS MECÂNICAS</h4>
+        </div>
+        <div className="pesquisa-videos dig-marketing-search">
+          <input
+            type="search"
+            placeholder="Pesquisar imagem ou modelo..."
+            value={pesquisa}
+            onChange={(evento) => {
+              setPesquisa(evento.target.value);
+              setLimiteMobile(3);
+            }}
+            aria-label="Pesquisar imagens de fechaduras mecânicas"
+          />
+        </div>
+        {imagensFiltradas.length === 0 && (
+          <p className="nenhum-video" role="status">Nenhuma imagem encontrada.</p>
+        )}
         <section className="mec-catalogo">
           {/* DESKTOP */}
 
