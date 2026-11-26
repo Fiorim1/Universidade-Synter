@@ -20,205 +20,101 @@ import "../styles/DigMarketingHero.css";
 import "../styles/DigMarketingMobile.css";
 import "../styles/MecMarketing.css";
 
-// ==========================================
-// IMAGENS - MÁQUINAS 40 MM
-// ==========================================
+// IMAGENS - FERRAGENS
+import jadeEscovada from "../assets/marketing-ferragens/Jade Escovada.jpg";
+import jadePolida from "../assets/marketing-ferragens/Jade Polida.jpg";
+import jadePreta from "../assets/marketing-ferragens/Jade Preta.jpg";
+import jadeMaxEscovada from "../assets/marketing-ferragens/Jade Max Escovada.jpg";
+import jadeMaxPolida from "../assets/marketing-ferragens/Jade Max Polida.jpg";
+import jadeMaxPreta from "../assets/marketing-ferragens/Jade Max Preta.jpg";
+import jaspeEscovada from "../assets/marketing-ferragens/Jaspe Escovada.jpg";
+import jaspePolida from "../assets/marketing-ferragens/Jaspe Polida.jpg";
+import jaspePreta from "../assets/marketing-ferragens/Jaspe Preta.jpg";
+import jaspeFuroEscovada from "../assets/marketing-ferragens/Jaspe Com Furo Escovada.jpg";
+import jaspeFuroPolida from "../assets/marketing-ferragens/Jaspe Com Furo Polida.jpg";
+import jaspeFuroPreta from "../assets/marketing-ferragens/Jaspe Com Furo Preta.jpg";
+import opalaEscovada from "../assets/marketing-ferragens/Opala Escovada.jpg";
+import opalaPolida from "../assets/marketing-ferragens/Opala Polida.jpg";
+import opalaPreta from "../assets/marketing-ferragens/Opala Preta.jpg";
+import quartzoEscovada from "../assets/marketing-ferragens/Quartzo Escovada.jpg";
+import quartzoPolida from "../assets/marketing-ferragens/Quartzo Polida.jpg";
+import quartzoPreta from "../assets/marketing-ferragens/Quartzo Preta.jpg";
 
-import maquinaQuadradaInterna from "../assets/marketing-mecanicas/maquina40-quadrada-interna.png";
-import maquinaRedondaInterna from "../assets/marketing-mecanicas/maquina40-redonda-interna.png";
-import maquinaRedondaExterna from "../assets/marketing-mecanicas/maquina40-redonda-externa.png";
-import maquinaQuadradaExterna from "../assets/marketing-mecanicas/maquina40-quadrada-externa.png";
-import maquinaRedondaBanheiro from "../assets/marketing-mecanicas/maquina40-redonda-banheiro.png";
-import maquinaQuadradaBanheiro from "../assets/marketing-mecanicas/maquina40-quadrada-banheiro.png";
-
-// ==========================================
-// IMAGENS - CILINDRO EUROPEU REDONDA
-// ==========================================
-
-import cilindroRedondaEscovada from "../assets/marketing-mecanicas/Externa Com Cilindro Europeu Escovada.jpg";
-import cilindroRedondaPolida from "../assets/marketing-mecanicas/Externa Com Cilindro Europeu Polida.jpg";
-import cilindroRedondaPreta from "../assets/marketing-mecanicas/Externa Com Cilindro Europeu Preta.jpg";
-
-// ==========================================
-// IMAGENS - CILINDRO EUROPEU QUADRADA
-// ==========================================
-
-import cilindroQuadradaEscovada from "../assets/marketing-mecanicas/Externa Com Cilindro Europeu Quadrada Escovada.jpg";
-import cilindroQuadradaPolida from "../assets/marketing-mecanicas/Externa Com Cilindro Europeu Quadrada Polida.jpg";
-import cilindroQuadradaPreta from "../assets/marketing-mecanicas/Externa Com Cilindro Europeu Quadrada Preta.jpg";
-
-// ==========================================
-// IMAGENS - CONCHA STAND
-// ==========================================
-
-import conchaEscovada from "../assets/marketing-mecanicas/Interna Com Chave Dobrável E COncha Stand Escovada.jpg";
-import conchaPolida from "../assets/marketing-mecanicas/Interna Com Chave Dobrável E COncha Stand Polida.jpg";
-import conchaPreta from "../assets/marketing-mecanicas/Interna Com Chave Dobrável E COncha Stand Preta.jpg";
-
-// ==========================================
-// IMAGENS - ROLETE REDONDA
-// ==========================================
-
-import roleteRedondaEscovada from "../assets/marketing-mecanicas/Externa Rolete Roseta Redonda Escovada.jpg";
-import roleteRedondaPolida from "../assets/marketing-mecanicas/Externa Rolete Roseta Redonda Polida.jpg";
-import roleteRedondaPreta from "../assets/marketing-mecanicas/Externa Rolete Roseta Redonda Preta.jpg";
-
-// ==========================================
-// IMAGENS - ROLETE QUADRADA
-// ==========================================
-
-import roleteQuadradaEscovada from "../assets/marketing-mecanicas/Externa Rolete Roseta Quadrada Escovada.jpg";
-import roleteQuadradaPolida from "../assets/marketing-mecanicas/Externa Rolete Roseta Quadrada Polida.jpg";
-import roleteQuadradaPreta from "../assets/marketing-mecanicas/Externa Rolete Roseta Quadrada Preta.jpg";
-
-// ==========================================
-// CATÁLOGO - MÁQUINAS 40 MM
-// ==========================================
-
-const maquinas = [
-  {
-    id: "maquina40-quadrada-interna",
-    titulo: "Máquina 40 mm Quadrada Interna",
-    categoria: "Máquinas",
-    aplicacao: "Interna",
-    testa: "Quadrada",
-    acabamento: "",
-    imagem: maquinaQuadradaInterna,
-    extensao: "png",
-  },
-  {
-    id: "maquina40-redonda-interna",
-    titulo: "Máquina 40 mm Redonda Interna",
-    categoria: "Máquinas",
-    aplicacao: "Interna",
-    testa: "Redonda",
-    acabamento: "",
-    imagem: maquinaRedondaInterna,
-    extensao: "png",
-  },
-  {
-    id: "maquina40-redonda-externa",
-    titulo: "Máquina 40 mm Redonda Externa",
-    categoria: "Máquinas",
-    aplicacao: "Externa",
-    testa: "Redonda",
-    acabamento: "",
-    imagem: maquinaRedondaExterna,
-    extensao: "png",
-  },
-  {
-    id: "maquina40-quadrada-externa",
-    titulo: "Máquina 40 mm Quadrada Externa",
-    categoria: "Máquinas",
-    aplicacao: "Externa",
-    testa: "Quadrada",
-    acabamento: "",
-    imagem: maquinaQuadradaExterna,
-    extensao: "png",
-  },
-  {
-    id: "maquina40-redonda-banheiro",
-    titulo: "Máquina 40 mm Redonda Banheiro",
-    categoria: "Máquinas",
-    aplicacao: "Banheiro",
-    testa: "Redonda",
-    acabamento: "",
-    imagem: maquinaRedondaBanheiro,
-    extensao: "png",
-  },
-  {
-    id: "maquina40-quadrada-banheiro",
-    titulo: "Máquina 40 mm Quadrada Banheiro",
-    categoria: "Máquinas",
-    aplicacao: "Banheiro",
-    testa: "Quadrada",
-    acabamento: "",
-    imagem: maquinaQuadradaBanheiro,
-    extensao: "png",
-  },
-];
-
-// ==========================================
-// CATÁLOGO - FECHADURAS MECÂNICAS
-// ==========================================
-
+// CATÁLOGO - PUXADORES
 const modelos = [
   {
-    id: "cilindro-europeu-redonda",
-    titulo: "Externa com Cilindro Europeu Redonda",
-    categoria: "Fechaduras",
-    aplicacao: "Externa",
-    testa: "Redonda",
+    id: "jade",
+    titulo: "Puxador Jade",
+    categoria: "Puxadores",
     imagens: [
-      ["Escovado", cilindroRedondaEscovada],
-      ["Polido", cilindroRedondaPolida],
-      ["Preto", cilindroRedondaPreta],
+      ["Escovado", jadeEscovada],
+      ["Polido", jadePolida],
+      ["Preto", jadePreta],
     ],
   },
   {
-    id: "cilindro-europeu-quadrada",
-    titulo: "Externa com Cilindro Europeu Quadrada",
-    categoria: "Fechaduras",
-    aplicacao: "Externa",
-    testa: "Redonda",
+    id: "jade-max",
+    titulo: "Puxador Jade Max",
+    categoria: "Puxadores",
     imagens: [
-      ["Escovado", cilindroQuadradaEscovada],
-      ["Polido", cilindroQuadradaPolida],
-      ["Preto", cilindroQuadradaPreta],
+      ["Escovado", jadeMaxEscovada],
+      ["Polido", jadeMaxPolida],
+      ["Preto", jadeMaxPreta],
     ],
   },
   {
-    id: "concha-stand",
-    titulo: "Interna com Chave Dobrável e Concha Stand",
-    categoria: "Fechaduras",
-    aplicacao: "Interna",
-    testa: "Redonda",
+    id: "jaspe",
+    titulo: "Puxador Jaspe",
+    categoria: "Puxadores",
     imagens: [
-      ["Escovado", conchaEscovada],
-      ["Polido", conchaPolida],
-      ["Preto", conchaPreta],
+      ["Escovado", jaspeEscovada],
+      ["Polido", jaspePolida],
+      ["Preto", jaspePreta],
     ],
   },
   {
-    id: "rolete-redonda",
-    titulo: "Externa Rolete Roseta Redonda",
-    categoria: "Fechaduras",
-    aplicacao: "Externa",
-    testa: "Redonda",
+    id: "jaspe-com-furo",
+    titulo: "Puxador Jaspe com Furo",
+    categoria: "Puxadores",
     imagens: [
-      ["Escovado", roleteRedondaEscovada],
-      ["Polido", roleteRedondaPolida],
-      ["Preto", roleteRedondaPreta],
+      ["Escovado", jaspeFuroEscovada],
+      ["Polido", jaspeFuroPolida],
+      ["Preto", jaspeFuroPreta],
     ],
   },
   {
-    id: "rolete-quadrada",
-    titulo: "Externa Rolete Roseta Quadrada",
-    categoria: "Fechaduras",
-    aplicacao: "Externa",
-    testa: "Redonda",
+    id: "opala",
+    titulo: "Puxador Opala",
+    categoria: "Puxadores",
     imagens: [
-      ["Escovado", roleteQuadradaEscovada],
-      ["Polido", roleteQuadradaPolida],
-      ["Preto", roleteQuadradaPreta],
+      ["Escovado", opalaEscovada],
+      ["Polido", opalaPolida],
+      ["Preto", opalaPreta],
+    ],
+  },
+  {
+    id: "quartzo",
+    titulo: "Puxador Quartzo",
+    categoria: "Puxadores",
+    imagens: [
+      ["Escovado", quartzoEscovada],
+      ["Polido", quartzoPolida],
+      ["Preto", quartzoPreta],
     ],
   },
 ];
 
-const fechaduras = modelos.flatMap((modelo) =>
+const imagensFerragens = modelos.flatMap((modelo) =>
   modelo.imagens.map(([acabamento, imagem]) => ({
     id: `${modelo.id}-${acabamento.toLowerCase()}`,
     titulo: `${modelo.titulo} - ${acabamento}`,
     categoria: modelo.categoria,
-    aplicacao: modelo.aplicacao,
-    testa: modelo.testa,
+    modelo: modelo.id,
     acabamento,
     imagem,
     extensao: "jpg",
   }))
 );
-
-const imagensMecanicas = [...maquinas, ...fechaduras];
 
 // ==========================================
 // NORMALIZAÇÃO DA PESQUISA
@@ -250,7 +146,7 @@ function ImagemCard({ item }) {
         <h2>{item.titulo}</h2>
 
         <p className="mec-card-descricao">
-          {item.categoria} • {item.aplicacao}
+          {item.categoria} • Synter
         </p>
 
         {item.acabamento && (
@@ -283,17 +179,16 @@ function ImagemCard({ item }) {
 // PÁGINA PRINCIPAL
 // ==========================================
 
-export default function MecMarketing() {
+export default function FerragensMarketing() {
   const [pesquisa, setPesquisa] = useState("");
   const [categoria, setCategoria] = useState("Todos");
-  const [aplicacao, setAplicacao] = useState("Todos");
-  const [testa, setTesta] = useState("Todos");
+  const [modelo, setModelo] = useState("Todos");
   const [acabamento, setAcabamento] = useState("Todos");
   const [limiteMobile, setLimiteMobile] = useState(3);
 
-  const imagensFiltradas = imagensMecanicas.filter((item) => {
+  const imagensFiltradas = imagensFerragens.filter((item) => {
     const texto = normalizar(
-      `${item.titulo} ${item.categoria} ${item.aplicacao} ${item.testa} ${item.acabamento}`
+      `${item.titulo} ${item.categoria} ${item.modelo} ${item.acabamento}`
     );
 
     const correspondePesquisa = normalizar(pesquisa)
@@ -304,10 +199,7 @@ export default function MecMarketing() {
       correspondePesquisa &&
       (categoria === "Todos" ||
         item.categoria === categoria) &&
-      (aplicacao === "Todos" ||
-        item.aplicacao === aplicacao) &&
-      (testa === "Todos" ||
-        item.testa === testa) &&
+      (modelo === "Todos" || item.modelo === modelo) &&
       (acabamento === "Todos" ||
         item.acabamento === acabamento)
     );
@@ -321,8 +213,7 @@ export default function MecMarketing() {
   function limparFiltros() {
     setPesquisa("");
     setCategoria("Todos");
-    setAplicacao("Todos");
-    setTesta("Todos");
+    setModelo("Todos");
     setAcabamento("Todos");
     setLimiteMobile(3);
   }
@@ -351,7 +242,7 @@ export default function MecMarketing() {
           </div>
 
           <h1>
-            Vídeos e Imagens de Fechaduras Mecânicas
+            Vídeos e Imagens de Ferragens
           </h1>
 
           <p>
@@ -385,14 +276,13 @@ export default function MecMarketing() {
             <div>
               <h2>Imagens de produtos</h2>
               <p>
-                Encontre e baixe imagens das fechaduras
-                mecânicas Synter.
+                Encontre e baixe imagens das ferragens Synter.
               </p>
             </div>
 
             <span className="mec-total-imagens">
               <ImageIcon size={17} />
-              {imagensMecanicas.length} imagens
+              {imagensFerragens.length} imagens
             </span>
           </div>
 
@@ -430,48 +320,20 @@ export default function MecMarketing() {
                 <option value="Todos">
                   Todas as categorias
                 </option>
-                <option value="Máquinas">
-                  Máquinas
-                </option>
-                <option value="Fechaduras">
-                  Fechaduras
-                </option>
+                <option value="Puxadores">Puxadores</option>
               </select>
 
               <select
-                aria-label="Aplicação"
-                value={aplicacao}
-                onChange={(e) =>
-                  alterarFiltro(
-                    setAplicacao,
-                    e.target.value
-                  )
-                }
+                aria-label="Modelo"
+                value={modelo}
+                onChange={(e) => alterarFiltro(setModelo, e.target.value)}
               >
-                <option value="Todos">
-                  Todas as aplicações
-                </option>
-                <option value="Externa">Externa</option>
-                <option value="Interna">Interna</option>
-                <option value="Banheiro">Banheiro</option>
-              </select>
-
-              <select
-                aria-label="Formato da testa"
-                value={testa}
-                onChange={(e) =>
-                  alterarFiltro(setTesta, e.target.value)
-                }
-              >
-                <option value="Todos">
-                  Todas as testas
-                </option>
-                <option value="Redonda">
-                  Testa redonda
-                </option>
-                <option value="Quadrada">
-                  Testa quadrada
-                </option>
+                <option value="Todos">Todos os modelos</option>
+                {modelos.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.titulo}
+                  </option>
+                ))}
               </select>
 
               <select
