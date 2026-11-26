@@ -1,11 +1,6 @@
 
 import React, { useState } from "react";
-import {
-  Image as ImageIcon,
-  Download,
-  Search,
-  X,
-} from "lucide-react";
+import { Download } from "lucide-react";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -303,48 +298,8 @@ function IconeSynter() {
 
 export default function MecMarketing() {
   const [profileOpen, setProfileOpen] = useState(false);
-  const [pesquisa, setPesquisa] = useState("");
-  const [categoria, setCategoria] = useState("Todos");
-  const [aplicacao, setAplicacao] = useState("Todos");
-  const [testa, setTesta] = useState("Todos");
-  const [acabamento, setAcabamento] = useState("Todos");
   const [limiteMobile, setLimiteMobile] = useState(3);
-
-  const imagensFiltradas = imagensMecanicas.filter((item) => {
-    const texto = normalizar(
-      `${item.titulo} ${item.categoria} ${item.aplicacao} ${item.testa} ${item.acabamento}`
-    );
-
-    const correspondePesquisa = normalizar(pesquisa)
-      .split(/\s+/)
-      .every((termo) => texto.includes(termo));
-
-    return (
-      correspondePesquisa &&
-      (categoria === "Todos" ||
-        item.categoria === categoria) &&
-      (aplicacao === "Todos" ||
-        item.aplicacao === aplicacao) &&
-      (testa === "Todos" ||
-        item.testa === testa) &&
-      (acabamento === "Todos" ||
-        item.acabamento === acabamento)
-    );
-  });
-
-  function alterarFiltro(setter, valor) {
-    setter(valor);
-    setLimiteMobile(3);
-  }
-
-  function limparFiltros() {
-    setPesquisa("");
-    setCategoria("Todos");
-    setAplicacao("Todos");
-    setTesta("Todos");
-    setAcabamento("Todos");
-    setLimiteMobile(3);
-  }
+  const imagensFiltradas = imagensMecanicas;
 
   const restantes = Math.max(
     0,
@@ -391,161 +346,6 @@ export default function MecMarketing() {
 
       <main className="videos-content">
         <section className="mec-catalogo">
-          <div className="mec-catalogo-cabecalho">
-            <div>
-              <div className="videos-section-title">
-                <div className="videos-section-bar" />
-                <h4>IMAGENS DE FECHADURAS MECÂNICAS</h4>
-              </div>
-              <p>
-                Encontre e baixe imagens das fechaduras
-                mecânicas Synter.
-              </p>
-            </div>
-
-            <span className="mec-total-imagens">
-              <ImageIcon size={17} />
-              {imagensMecanicas.length} imagens
-            </span>
-          </div>
-
-          {/* PESQUISA */}
-
-          <div className="mec-filtros">
-            <div className="pesquisa-videos dig-marketing-search">
-
-              <input
-                type="search"
-                aria-label="Pesquisar produto"
-                placeholder="Pesquisar imagem ou modelo..."
-                value={pesquisa}
-                onChange={(e) =>
-                  alterarFiltro(
-                    setPesquisa,
-                    e.target.value
-                  )
-                }
-              />
-            </div>
-
-            <div className="mec-filtros-selects">
-              <select
-                aria-label="Categoria"
-                value={categoria}
-                onChange={(e) =>
-                  alterarFiltro(
-                    setCategoria,
-                    e.target.value
-                  )
-                }
-              >
-                <option value="Todos">
-                  Todas as categorias
-                </option>
-                <option value="Máquinas">
-                  Máquinas
-                </option>
-                <option value="Fechaduras">
-                  Fechaduras
-                </option>
-              </select>
-
-              <select
-                aria-label="Aplicação"
-                value={aplicacao}
-                onChange={(e) =>
-                  alterarFiltro(
-                    setAplicacao,
-                    e.target.value
-                  )
-                }
-              >
-                <option value="Todos">
-                  Todas as aplicações
-                </option>
-                <option value="Externa">Externa</option>
-                <option value="Interna">Interna</option>
-                <option value="Banheiro">Banheiro</option>
-              </select>
-
-              <select
-                aria-label="Formato da testa"
-                value={testa}
-                onChange={(e) =>
-                  alterarFiltro(setTesta, e.target.value)
-                }
-              >
-                <option value="Todos">
-                  Todas as testas
-                </option>
-                <option value="Redonda">
-                  Testa redonda
-                </option>
-                <option value="Quadrada">
-                  Testa quadrada
-                </option>
-              </select>
-
-              <select
-                aria-label="Acabamento"
-                value={acabamento}
-                onChange={(e) =>
-                  alterarFiltro(
-                    setAcabamento,
-                    e.target.value
-                  )
-                }
-              >
-                <option value="Todos">
-                  Todos os acabamentos
-                </option>
-                <option value="Escovado">Escovado</option>
-                <option value="Polido">Polido</option>
-                <option value="Preto">Preto</option>
-              </select>
-
-              <button
-                type="button"
-                className="mec-limpar-filtros"
-                onClick={limparFiltros}
-              >
-                <X size={15} />
-                Limpar filtros
-              </button>
-            </div>
-          </div>
-
-          {/* CONTADOR */}
-
-          <p className="mec-resultados">
-            {imagensFiltradas.length}{" "}
-            {imagensFiltradas.length === 1
-              ? "imagem encontrada"
-              : "imagens encontradas"}
-          </p>
-
-          {/* SEM RESULTADOS */}
-
-          {imagensFiltradas.length === 0 && (
-            <div className="mec-sem-resultados">
-              <Search size={32} />
-
-              <h3>Nenhuma imagem encontrada</h3>
-
-              <p>
-                Tente pesquisar outro produto ou
-                alterar os filtros.
-              </p>
-
-              <button
-                type="button"
-                onClick={limparFiltros}
-              >
-                Limpar filtros
-              </button>
-            </div>
-          )}
-
           {/* DESKTOP */}
 
           <div className="dig-marketing-desktop">
