@@ -280,8 +280,17 @@ export default async function handler(req, res) {
 
   try {
 
+    // Aceita somente um texto simples. Se vier repetido na URL
+    // (?q=a&q=b) ele chega como lista e é tratado como inválido.
+    const pesquisaBruta = req.query.q;
+
     const pesquisa =
-      req.query.q?.trim();
+      typeof pesquisaBruta === "string"
+        ? pesquisaBruta
+            .replace(/[\u0000-\u001f\u007f]/g, " ")
+            .replace(/\s+/g, " ")
+            .trim()
+        : "";
 
 
     // =================================================
@@ -296,6 +305,19 @@ export default async function handler(req, res) {
 
         mensagem:
           "Informe CPF, CNPJ ou nome completo.",
+
+      });
+
+    }
+
+    if (pesquisa.length < 3 || pesquisa.length > 120) {
+
+      return res.status(400).json({
+
+        sucesso: false,
+
+        mensagem:
+          "A pesquisa deve ter entre 3 e 120 caracteres.",
 
       });
 

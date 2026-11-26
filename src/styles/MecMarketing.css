@@ -1,603 +1,695 @@
 
-/* =========================================
-   MARKETING MECÂNICO - PADRÃO SYNTER
-========================================= */
+/* ==========================================
+   PÁGINA MARKETING MECÂNICAS
+========================================== */
 
 .mec-marketing-page {
+  --mec-primary: #252525;
+  --mec-secondary: #666666;
+  --mec-border: #e3e3e3;
+  --mec-background: #f7f7f7;
+
   width: 100%;
-  min-height: 100vh;
-  background: #080808;
-  color: #ffffff;
+  min-height: 70vh;
+  padding-bottom: 50px;
 }
 
-/* =========================================
-   CONTEÚDO PRINCIPAL
-========================================= */
-
-.mec-marketing-page .videos-content {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 36px 24px 70px;
+.mec-marketing-page * {
   box-sizing: border-box;
 }
 
-/* =========================================
-   TÍTULO DA SEÇÃO
-========================================= */
+/* ==========================================
+   HERO
+========================================== */
 
-.mec-marketing-page .videos-section-title {
+.mec-marketing-hero {
+  position: relative;
+  max-width: 1250px;
+  margin: 25px auto;
+  padding: 32px;
+  border-radius: 18px;
+  background: linear-gradient(
+    125deg,
+    #181818 0%,
+    #303030 65%,
+    #4a4a4a 100%
+  );
+  color: #ffffff;
+}
+
+.mec-hero-topo {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 26px;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
-.mec-marketing-page .videos-section-bar {
-  width: 3px;
-  height: 20px;
-  background: #ffffff;
-  border-radius: 3px;
+.mec-hero-identificacao {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #d7d7d7;
 }
 
-.mec-marketing-page .videos-section-title h4 {
+.mec-marketing-hero h1 {
+  max-width: 850px;
+  margin: 0 0 12px;
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.mec-marketing-hero p {
+  max-width: 750px;
   margin: 0;
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
+  color: #d4d4d4;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
-/* =========================================
-   CAMPO DE PESQUISA
-========================================= */
-
-.mec-marketing-page .mec-search {
-  width: 100%;
-  max-width: 420px;
-  margin-bottom: 28px;
+.mec-hero-beneficios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
 }
 
-.mec-marketing-page .mec-search input {
-  display: block;
-  width: 100%;
-  height: 46px;
-  padding: 0 16px;
-  box-sizing: border-box;
-  background: #0d0d0d;
-  border: 1px solid #333333;
-  border-radius: 7px;
-  color: #ffffff;
-  font-family: inherit;
+.mec-hero-beneficios span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #eeeeee;
+  font-size: 12px;
+}
+
+/* ==========================================
+   CATÁLOGO
+========================================== */
+
+.mec-catalogo {
+  max-width: 1250px;
+  margin: 30px auto 0;
+}
+
+.mec-catalogo-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.mec-catalogo-cabecalho h2 {
+  margin: 0 0 6px;
+  color: var(--mec-primary);
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.mec-catalogo-cabecalho p {
+  margin: 0;
+  color: var(--mec-secondary);
   font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s ease;
 }
 
-.mec-marketing-page .mec-search input::placeholder {
-  color: #858585;
+.mec-total-imagens {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border: 1px solid var(--mec-border);
+  border-radius: 8px;
+  background: var(--mec-background);
+  color: var(--mec-primary);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.mec-marketing-page .mec-search input:focus {
+/* ==========================================
+   PESQUISA E FILTROS
+========================================== */
+
+.mec-filtros {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--mec-border);
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.mec-pesquisa {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 13px;
+  min-height: 44px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #777777;
+}
+
+.mec-pesquisa:focus-within {
   border-color: #777777;
 }
 
-/* =========================================
-   VISIBILIDADE DESKTOP E MOBILE
-========================================= */
-
-.mec-marketing-page .mec-mobile-filters,
-.mec-marketing-page .mec-mobile-gallery {
-  display: none;
-}
-
-.mec-marketing-page .mec-desktop-gallery {
-  display: block;
-}
-
-/* =========================================
-   GRID DESKTOP
-========================================= */
-
-.mec-marketing-page .dm-gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
-  align-items: stretch;
-}
-
-/* =========================================
-   CARD - MESMO PADRÃO DOS VÍDEOS
-========================================= */
-
-.mec-marketing-page .dm-gallery-card {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  min-height: 460px;
-  padding: 0;
-  background: linear-gradient(
-    145deg,
-    #141414,
-    #0c0c0c
-  );
-  border: 1px solid #292929;
-  border-radius: 18px;
-  overflow: hidden;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease;
-}
-
-.mec-marketing-page .dm-gallery-card:hover {
-  border-color: #505050;
-}
-
-/* =========================================
-   IMAGEM DO PRODUTO
-========================================= */
-
-.mec-marketing-page .dm-gallery-preview {
-  display: block;
+.mec-pesquisa input {
   width: 100%;
-  aspect-ratio: 1.86 / 1;
-  padding: 0;
-  margin: 0;
+  min-width: 0;
+  height: 42px;
   border: none;
-  border-radius: 0;
+  outline: none;
+  background: transparent;
+  color: #252525;
+  font-size: 14px;
+}
+
+.mec-filtros-selects {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+  gap: 10px;
+}
+
+.mec-filtros-selects select {
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 7px;
   background: #ffffff;
-  overflow: hidden;
+  color: #333333;
+  font-size: 12px;
   cursor: pointer;
 }
 
-.mec-marketing-page .dm-gallery-preview img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  padding: 8px;
-  object-fit: contain;
-  background: #ffffff;
-  box-sizing: border-box;
+.mec-limpar-filtros {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid #dcdcdc;
+  border-radius: 7px;
+  background: #f3f3f3;
+  color: #555555;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease;
 }
 
-/* =========================================
-   INFORMAÇÕES DO CARD
-========================================= */
+.mec-limpar-filtros:hover {
+  background: #e5e5e5;
+}
 
-.mec-marketing-page .dm-gallery-body {
+.mec-resultados {
+  margin: 18px 0;
+  color: #777777;
+  font-size: 13px;
+}
+
+/* ==========================================
+   GRID DESKTOP
+========================================== */
+
+.mec-marketing-page .dig-marketing-desktop {
+  display: block;
+}
+
+.mec-marketing-page .dig-marketing-mobile {
+  display: none;
+}
+
+.mec-imagens-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+/* ==========================================
+   CARD DE IMAGEM
+========================================== */
+
+.mec-marketing-page .mec-imagem-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--mec-border);
+  border-radius: 13px;
+  background: #ffffff;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.mec-marketing-page .mec-imagem-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.mec-marketing-page .mec-imagem-preview {
+  display: block;
+  width: 100%;
+  height: 260px;
+  padding: 12px;
+  object-fit: contain;
+  object-position: center;
+  background: #ffffff;
+  border-bottom: 1px solid #eeeeee;
+  border-radius: 0;
+}
+
+.mec-marketing-page .mec-card-info {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   flex: 1;
-  width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
+  gap: 8px;
+  padding: 16px;
+  min-width: 0;
 }
 
-.mec-marketing-page .dm-gallery-body h3 {
-  margin: 0 0 22px;
-  color: #ffffff;
-  font-size: 18px;
+.mec-marketing-page .mec-card-info h2 {
+  margin: 0;
+  font-size: 16px;
   font-weight: 700;
   line-height: 1.4;
+  color: #252525;
 }
 
-.mec-marketing-page .dm-gallery-body p {
-  margin: 0 0 30px;
-  color: #bcbcbc;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.6;
+.mec-card-descricao {
+  margin: 0;
+  color: #777777;
+  font-size: 12px;
 }
 
-/* =========================================
-   IDENTIFICAÇÃO DA LINHA
-   INOX PRIME / UNIC INOX
-========================================= */
+/* ==========================================
+   ACABAMENTOS
+========================================== */
 
-.mec-marketing-page .mec-product-line {
+.mec-acabamento {
   display: inline-flex;
   align-items: center;
+  gap: 6px;
   width: fit-content;
-  padding: 5px 9px;
-  margin-bottom: 12px;
-  background: #1b1b1b;
-  border: 1px solid #383838;
-  border-radius: 5px;
-  color: #d4d4d4;
-  font-size: 10px;
+  padding: 4px 10px;
+  border: 1px solid #dedede;
+  border-radius: 20px;
+  background: #f5f5f5;
+  color: #333333;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 1px;
-  line-height: 1.2;
 }
 
-/* =========================================
-   BOTÃO DE DOWNLOAD
-   MESMO PADRÃO DO BOTÃO ASSISTIR
-========================================= */
-
-.mec-marketing-page .dm-gallery-download {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  min-height: 46px;
-  margin-top: auto;
-  padding: 12px 16px;
-  background: linear-gradient(
-    110deg,
-    #090909,
-    #151515
-  );
-  border: 1px solid #2e2e2e;
-  border-radius: 12px;
-  box-sizing: border-box;
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.mec-marketing-page .dm-gallery-download:hover {
-  background: #222222;
-  border-color: #555555;
-  color: #ffffff;
-}
-
-.mec-marketing-page .dm-gallery-download svg {
-  width: 16px;
-  height: 16px;
+.mec-acabamento-cor {
+  display: inline-block;
   flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #aaaaaa;
+  border-radius: 50%;
 }
 
-/* =========================================
-   NENHUM RESULTADO
-========================================= */
-
-.mec-marketing-page .nenhum-video {
-  padding: 35px 0;
-  color: #aaaaaa;
-  font-size: 14px;
-  text-align: center;
+.mec-acabamento.escovado .mec-acabamento-cor {
+  background: repeating-linear-gradient(
+    0deg,
+    #aaaaaa,
+    #dddddd 2px,
+    #aaaaaa 4px
+  );
 }
 
-/* =========================================
-   MODAL DE AMPLIAÇÃO
-========================================= */
+.mec-acabamento.polido .mec-acabamento-cor {
+  background: linear-gradient(
+    135deg,
+    #888888,
+    #ffffff,
+    #aaaaaa
+  );
+}
 
-.mec-marketing-page .dm-gallery-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
+.mec-acabamento.preto .mec-acabamento-cor {
+  background: #151515;
+  border-color: #151515;
+}
+
+/* ==========================================
+   BOTÃO DOWNLOAD
+========================================== */
+
+.mec-marketing-page .mec-card-botoes {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.88);
-  backdrop-filter: blur(6px);
-  box-sizing: border-box;
-}
-
-.mec-marketing-page .dm-gallery-modal {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
   width: 100%;
-  max-width: 750px;
-  max-height: 92vh;
-  padding: 18px;
-  background: #111111;
-  border: 1px solid #333333;
-  border-radius: 16px;
-  box-sizing: border-box;
-  overflow: auto;
+  margin-top: auto;
+  padding-top: 8px;
 }
 
-.mec-marketing-page .dm-gallery-modal img {
-  display: block;
-  width: 100%;
-  max-height: 68vh;
-  object-fit: contain;
-  background: #ffffff;
-  border-radius: 8px;
-}
-
-.mec-marketing-page .dm-gallery-modal button,
-.mec-marketing-page .dm-gallery-modal a {
-  display: flex;
+.mec-marketing-page .mec-botao-download {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 42px;
-  padding: 10px;
-  background: #181818;
-  border: 1px solid #383838;
-  border-radius: 8px;
+  width: 100%;
+  min-height: 38px;
+  padding: 9px 15px;
+  border: none;
+  border-radius: 7px;
+  background: #252525;
   color: #ffffff;
-  font-family: inherit;
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 600;
   text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.mec-marketing-page .mec-botao-download:hover {
+  background: #444444;
+  color: #ffffff;
+}
+
+/* ==========================================
+   SEM RESULTADOS
+========================================== */
+
+.mec-sem-resultados {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 230px;
+  padding: 30px;
+  border: 1px dashed #cccccc;
+  border-radius: 12px;
+  color: #777777;
+  text-align: center;
+}
+
+.mec-sem-resultados h3 {
+  margin: 0;
+  color: #333333;
+  font-size: 18px;
+}
+
+.mec-sem-resultados p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.mec-sem-resultados button {
+  padding: 9px 18px;
+  border: none;
+  border-radius: 7px;
+  background: #252525;
+  color: #ffffff;
   cursor: pointer;
 }
 
-/* =========================================
+/* ==========================================
    TABLET
-========================================= */
+========================================== */
 
-@media (min-width: 751px) and (max-width: 1050px) {
-
-  .mec-marketing-page .dm-gallery-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
+@media (max-width: 1300px) {
+  .mec-marketing-hero,
+  .mec-catalogo {
+    margin-left: 20px;
+    margin-right: 20px;
   }
-
-  .mec-marketing-page .dm-gallery-card {
-    min-height: 400px;
-  }
-
 }
 
-/* =========================================
-   MOBILE - RESPONSIVO
-========================================= */
+@media (max-width: 1050px) {
+  .mec-imagens-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mec-filtros-selects {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mec-limpar-filtros {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
 
 @media (max-width: 750px) {
-
-  .mec-marketing-page .videos-content {
-    padding: 24px 16px 40px;
+  .mec-marketing-page {
+    padding-bottom: 25px;
   }
 
-  .mec-marketing-page .videos-section-title {
-    gap: 8px;
-    margin-bottom: 18px;
+  .mec-marketing-hero {
+    margin: 12px;
+    padding: 20px 16px;
+    border-radius: 12px;
   }
 
-  .mec-marketing-page .videos-section-title h4 {
-    font-size: 10px;
-    letter-spacing: 1.5px;
-  }
-
-  .mec-marketing-page .videos-section-bar {
-    height: 16px;
-  }
-
-  .mec-marketing-page .mec-search {
-    max-width: 100%;
+  .mec-hero-topo {
     margin-bottom: 14px;
   }
 
-  .mec-marketing-page .mec-search input {
-    height: 40px;
+  .mec-hero-identificacao {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  .mec-marketing-hero h1 {
+    font-size: 23px;
+    line-height: 1.25;
+  }
+
+  .mec-marketing-hero p {
     font-size: 12px;
+    line-height: 1.5;
   }
 
-  /* Ocultar desktop */
-
-  .mec-marketing-page .mec-desktop-gallery {
-    display: none;
-  }
-
-  /* Exibir mobile */
-
-  .mec-marketing-page .mec-mobile-filters,
-  .mec-marketing-page .mec-mobile-gallery {
-    display: block;
-  }
-
-  /* =======================================
-     FILTROS EXCLUSIVOS DO MOBILE
-  ======================================= */
-
-  .mec-marketing-page .mec-mobile-filters {
-    margin-bottom: 20px;
-  }
-
-  .mec-marketing-page .dig-marketing-filter-row {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-    align-items: end;
-  }
-
-  .mec-marketing-page .dig-marketing-filter-field {
-    display: flex;
-    flex-direction: column;
+  .mec-hero-beneficios {
     gap: 6px;
-    min-width: 0;
+    margin-top: 15px;
   }
 
-  .mec-marketing-page .dig-marketing-filter-field label {
-    color: #bcbcbc;
-    font-size: 11px;
-    font-weight: 500;
-  }
-
-  .mec-marketing-page .dig-marketing-filter-field select {
-    width: 100%;
-    min-width: 0;
-    height: 38px;
-    padding: 0 8px;
-    background: #141414;
-    border: 1px solid #333333;
-    border-radius: 6px;
-    color: #ffffff;
-    font-size: 11px;
-    color-scheme: dark;
-    box-sizing: border-box;
-  }
-
-  .mec-marketing-page .dig-marketing-clear {
-    height: 38px;
-    padding: 0 10px;
-    background: #111111;
-    border: 1px solid #383838;
-    border-radius: 6px;
-    color: #ffffff;
-    font-size: 11px;
-    cursor: pointer;
-  }
-
-  .mec-marketing-page .dig-marketing-result-count {
-    margin-top: 12px;
-    color: #999999;
-    font-size: 11px;
-  }
-
-  /* =======================================
-     CARDS HORIZONTAIS MOBILE
-  ======================================= */
-
-  .mec-marketing-page .dig-marketing-mobile-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .mec-marketing-page .mec-mobile-card {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    min-height: 88px;
-    padding: 8px;
-    background: linear-gradient(
-      145deg,
-      #141414,
-      #0c0c0c
-    );
-    border: 1px solid #292929;
-    border-radius: 10px;
-    box-sizing: border-box;
-    overflow: hidden;
-  }
-
-  .mec-marketing-page .mec-mobile-preview {
-    display: block;
-    flex: 0 0 92px;
-    width: 92px;
-    height: 68px;
-    padding: 0;
-    background: #ffffff;
-    border: none;
-    border-radius: 6px;
-    overflow: hidden;
-    cursor: pointer;
-  }
-
-  .mec-marketing-page .mec-mobile-preview .video-preview {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background: #ffffff;
-  }
-
-  .mec-marketing-page .video-card-info {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-width: 0;
-    padding: 0;
-  }
-
-  .mec-marketing-page .video-card-info h3 {
-    margin: 2px 0 4px;
-    color: #ffffff;
-    font-size: 11px;
-    font-weight: 600;
-    line-height: 1.35;
-    overflow-wrap: anywhere;
-  }
-
-  .mec-marketing-page .video-card-info p {
-    margin: 0 0 5px;
-    color: #aaaaaa;
-    font-size: 10px;
-    line-height: 1.3;
-  }
-
-  .mec-marketing-page .mec-product-line {
-    padding: 3px 5px;
-    margin-bottom: 3px;
-    font-size: 8px;
-    letter-spacing: 0.5px;
-  }
-
-  .mec-marketing-page .video-card-botoes {
-    display: flex;
-    gap: 6px;
-    margin-top: 3px;
-  }
-
-  .mec-marketing-page .botao-assistir {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  .mec-hero-beneficios span {
     gap: 5px;
-    min-height: 25px;
-    padding: 5px 9px;
-    background: #111111;
-    border: 1px solid #333333;
-    border-radius: 5px;
-    color: #ffffff;
-    font-size: 10px;
-    text-decoration: none;
+    padding: 6px 8px;
+    font-size: 9px;
   }
 
-  .mec-marketing-page .botao-assistir svg {
+  .mec-hero-beneficios svg {
     width: 12px;
     height: 12px;
   }
 
-  /* BOTÃO VER MAIS */
+  .mec-catalogo {
+    margin: 20px 12px 0;
+  }
 
-  .mec-marketing-page .dig-marketing-more {
+  .mec-catalogo-cabecalho {
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .mec-catalogo-cabecalho h2 {
+    font-size: 19px;
+  }
+
+  .mec-catalogo-cabecalho p {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .mec-total-imagens {
+    gap: 5px;
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+
+  .mec-total-imagens svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .mec-filtros {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .mec-pesquisa {
+    min-height: 36px;
+    padding: 0 9px;
+  }
+
+  .mec-pesquisa input {
+    height: 36px;
+    font-size: 13px;
+  }
+
+  .mec-filtros-selects {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .mec-filtros-selects select {
+    height: 35px;
+    padding: 0 5px;
+    font-size: 10px;
+  }
+
+  .mec-limpar-filtros {
+    grid-column: 1 / -1;
+    min-height: 32px;
+    font-size: 11px;
+  }
+
+  .mec-resultados {
+    margin: 12px 0;
+    font-size: 11px;
+  }
+
+  .mec-marketing-page .dig-marketing-desktop {
+    display: none;
+  }
+
+  .mec-marketing-page .dig-marketing-mobile {
+    display: block;
+  }
+
+  .mec-imagens-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* CARD HORIZONTAL */
+
+  .mec-marketing-page .mec-imagem-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    min-height: 88px;
+    padding: 8px;
+    border-radius: 9px;
+  }
+
+  .mec-marketing-page .mec-imagem-card:hover {
+    transform: none;
+  }
+
+  .mec-marketing-page .mec-imagem-preview {
+    flex: 0 0 92px;
+    width: 92px;
+    height: 68px;
+    padding: 0;
+    border: none;
+    border-radius: 5px;
+    object-fit: contain;
+  }
+
+  .mec-marketing-page .mec-card-info {
+    flex: 1;
+    gap: 4px;
+    padding: 0;
+    min-width: 0;
+  }
+
+  .mec-marketing-page .mec-card-info h2 {
+    font-size: 11px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  .mec-card-descricao {
+    font-size: 9px;
+  }
+
+  .mec-acabamento {
+    gap: 4px;
+    padding: 2px 6px;
+    font-size: 9px;
+  }
+
+  .mec-acabamento-cor {
+    width: 9px;
+    height: 9px;
+  }
+
+  .mec-marketing-page .mec-card-botoes {
+    width: 100%;
+    padding-top: 3px;
+  }
+
+  .mec-marketing-page .mec-botao-download {
+    width: auto;
+    min-height: 25px;
+    gap: 5px;
+    padding: 5px 9px;
+    border-radius: 5px;
+    font-size: 10px;
+  }
+
+  .mec-botao-download svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .mec-marketing-page .mec-ver-mais {
     display: block;
     width: 100%;
-    min-height: 40px;
-    margin-top: 16px;
-    padding: 10px;
-    background: #111111;
-    border: 1px solid #333333;
-    border-radius: 8px;
-    color: #ffffff;
+    min-height: 37px;
+    margin-top: 12px;
+    padding: 9px;
+    border: 1px solid #dcdcdc;
+    border-radius: 7px;
+    background: #f5f5f5;
+    color: #333333;
     font-size: 12px;
+    font-weight: 600;
     cursor: pointer;
   }
-
 }
 
-/* =========================================
-   CELULARES MENORES
-========================================= */
+/* ==========================================
+   CELULARES PEQUENOS
+========================================== */
 
 @media (max-width: 390px) {
-
-  .mec-marketing-page .videos-content {
-    padding-right: 12px;
-    padding-left: 12px;
+  .mec-marketing-hero h1 {
+    font-size: 21px;
   }
 
-  .mec-marketing-page .mec-mobile-preview {
-    flex-basis: 82px;
-    width: 82px;
-    height: 64px;
+  .mec-marketing-page .mec-imagem-preview {
+    flex-basis: 80px;
+    width: 80px;
+    height: 65px;
   }
 
-  .mec-marketing-page .mec-mobile-card {
-    gap: 8px;
-    padding: 7px;
-  }
-
-  .mec-marketing-page .video-card-info h3 {
+  .mec-marketing-page .mec-card-info h2 {
     font-size: 10px;
   }
 
-  .mec-marketing-page .dig-marketing-filter-field select {
-    font-size: 10px;
+  .mec-hero-beneficios span {
+    font-size: 8px;
+    padding: 5px 6px;
   }
-
 }
