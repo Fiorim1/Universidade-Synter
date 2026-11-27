@@ -413,6 +413,7 @@ function normalizar(texto = "") {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
+    .replace(/\bstillus\b/g, "stilus")
     .trim();
 }
 
@@ -480,10 +481,11 @@ export default function MecMarketing() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [limiteMobile, setLimiteMobile] = useState(3);
   const [pesquisa, setPesquisa] = useState("");
-  const imagensFiltradas = imagensMecanicas.filter((item) =>
-    normalizar(`${item.titulo} ${item.arquivo} ${item.categoria} ${item.aplicacao} ${item.testa} ${item.acabamento}`)
-      .includes(normalizar(pesquisa))
-  );
+  const termosPesquisa = normalizar(pesquisa).split(/\s+/).filter(Boolean);
+  const imagensFiltradas = imagensMecanicas.filter((item) => {
+    const texto = normalizar(`${item.titulo} ${item.arquivo} ${item.categoria} ${item.aplicacao} ${item.testa} ${item.acabamento}`);
+    return termosPesquisa.every((termo) => texto.includes(termo));
+  });
 
   const restantes = Math.max(
     0,
