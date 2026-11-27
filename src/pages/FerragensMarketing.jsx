@@ -97,6 +97,15 @@ import maxima1_1 from "../assets/marketing-ferragens/Dobradiça Com Rolamento Ra
 import maxima2_0 from "../assets/marketing-ferragens/Dobradiça Com Rolamento Canto Reto 3x2 1-2, 3 1-2x3 (Polegada) Máxima Inox Polida.jpg";
 import maxima2_1 from "../assets/marketing-ferragens/Dobradiça Com Rolamento Canto Reto 3x2 1-2, 3 1-2x3 (Polegada) Máxima Inox Escovada.jpg";
 
+import basic0 from "../assets/marketing-ferragens/Dobradiça Com Anéis Canto Reto 3x2 1-2 (Polegada) Aço Basic Cromada.jpg";
+import basic1 from "../assets/marketing-ferragens/Dobradiça Com Anéis Raio 16 3x2 1-2 (Polegada) Aço Basic Cromada.jpg";
+import basic2 from "../assets/marketing-ferragens/Dobradiça Linha Pesada 2mm Raio 16 3x2 1-2 (Polegada) Aço Basic Zincada.jpg";
+import basic3 from "../assets/marketing-ferragens/Dobradiça Pino Luxo Canto Reto 3x2 1-2 (Polegada) Aço Basic Cromada.jpg";
+import basic4 from "../assets/marketing-ferragens/Dobradiça Pino Luxo Raio 16 3x2 1-2 (Polegada) Aço Basic Cromada.jpg";
+import basic5 from "../assets/marketing-ferragens/Dobradiça Pino Simples Canto Reto 3, 3x2 1-2, 3 1-2 (Polegada) Aço Basic Zincada.jpg";
+import basic6 from "../assets/marketing-ferragens/Dobradiça Pino Simples Raio 16 3x2 1-2 (Polegada) Aço Basic Zincada.jpg";
+import basic7 from "../assets/marketing-ferragens/Dobradiça Sobrepor Canto Reto 4x3 (Polegada) Aço Basic Cromada.jpg";
+
 // CATÁLOGO - FERRAGENS
 const modelos = [
   {
@@ -413,6 +422,54 @@ const modelos = [
     titulo: "Dobradiça Máxima Inox 201 Com Rolamento Canto Reto 3x2 1/2, 3 1/2x3",
     categoria: "Dobradiças",
     imagens: [["Polida", maxima2_0], ["Escovada", maxima2_1]],
+  },
+  {
+    id: "dobradica-aco-basic-0",
+    titulo: "Dobradiça Com Anéis Canto Reto 3x2 1/2 Aço Basic",
+    categoria: "Dobradiças",
+    imagens: [["Cromada", basic0]],
+  },
+  {
+    id: "dobradica-aco-basic-1",
+    titulo: "Dobradiça Com Anéis Raio 16 3x2 1/2 Aço Basic",
+    categoria: "Dobradiças",
+    imagens: [["Cromada", basic1]],
+  },
+  {
+    id: "dobradica-aco-basic-2",
+    titulo: "Dobradiça Linha Pesada 2mm Raio 16 3x2 1/2 Aço Basic",
+    categoria: "Dobradiças",
+    imagens: [["Zincada", basic2]],
+  },
+  {
+    id: "dobradica-aco-basic-3",
+    titulo: "Dobradiça Pino Luxo Canto Reto 3x2 1/2 Aço Basic",
+    categoria: "Dobradiças",
+    imagens: [["Cromada", basic3]],
+  },
+  {
+    id: "dobradica-aco-basic-4",
+    titulo: "Dobradiça Pino Luxo Raio 16 3x2 1/2 Aço Basic",
+    categoria: "Dobradiças",
+    imagens: [["Cromada", basic4]],
+  },
+  {
+    id: "dobradica-aco-basic-5",
+    titulo: "Dobradiça Pino Simples Canto Reto 3, 3x2 1/2, 3 1/2 Aço Basic",
+    categoria: "Dobradiças",
+    imagens: [["Zincada", basic5]],
+  },
+  {
+    id: "dobradica-aco-basic-6",
+    titulo: "Dobradiça Pino Simples Raio 16 3x2 1/2 Aço Basic",
+    categoria: "Dobradiças",
+    imagens: [["Zincada", basic6]],
+  },
+  {
+    id: "dobradica-aco-basic-7",
+    titulo: "Dobradiça Sobrepor Canto Reto 4x3 Aço Basic",
+    categoria: "Dobradiças",
+    imagens: [["Cromada", basic7]],
   },
 ];
 
