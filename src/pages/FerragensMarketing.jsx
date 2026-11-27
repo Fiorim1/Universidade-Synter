@@ -89,6 +89,14 @@ import dobradicaPremium9 from "../assets/marketing-ferragens/Dobradiça Pino Sim
 import dobradicaPremium10 from "../assets/marketing-ferragens/Dobradiça Pino Simples 2 1-2 , 3, 3 1-2, 3x2 1-2, 3x3 (Polegada) Inox 304 Premium Polida.jpg";
 import dobradicaPremium11 from "../assets/marketing-ferragens/Dobradiça Pino Simples 2 1-2 , 3, 3 1-2, 3x2 1-2, 3x3 (Polegada) Inox 304 Premium Preta.jpg";
 
+// DOBRADIÇAS MÁXIMA INOX
+import maxima0_0 from "../assets/marketing-ferragens/Dobradiça Sobrepor Canto Reto 4x3 (Polegada) Máxima Inox Polida.jpg";
+import maxima0_1 from "../assets/marketing-ferragens/Dobradiça Sobrepor Canto Reto 4x3 (Polegada) Máxima Inox Escovada.jpg";
+import maxima1_0 from "../assets/marketing-ferragens/Dobradiça Com Rolamento Raio 16 3x2 1-2, 3 1-2x3 (Polegada) Máxima Inox Polida.jpg";
+import maxima1_1 from "../assets/marketing-ferragens/Dobradiça Com Rolamento Raio 16 3x2 1-2, 3 1-2x3 (Polegada) Máxima Inox Escovada.jpg";
+import maxima2_0 from "../assets/marketing-ferragens/Dobradiça Com Rolamento Canto Reto 3x2 1-2, 3 1-2x3 (Polegada) Máxima Inox Polida.jpg";
+import maxima2_1 from "../assets/marketing-ferragens/Dobradiça Com Rolamento Canto Reto 3x2 1-2, 3 1-2x3 (Polegada) Máxima Inox Escovada.jpg";
+
 // CATÁLOGO - FERRAGENS
 const modelos = [
   {
@@ -387,6 +395,24 @@ const modelos = [
       ["Polida", dobradicaPremium10],
       ["Preta", dobradicaPremium11],
     ],
+  },
+  {
+    id: "dobradica-maxima-sobrepor-4x3",
+    titulo: "Dobradiça Máxima Inox Sobrepor Canto Reto 4x3",
+    categoria: "Dobradiças",
+    imagens: [["Polida", maxima0_0], ["Escovada", maxima0_1]],
+  },
+  {
+    id: "dobradica-maxima-rolamento-raio-16",
+    titulo: "Dobradiça Máxima Inox 201 Com Rolamento Raio 16 3x2 1/2, 3 1/2x3",
+    categoria: "Dobradiças",
+    imagens: [["Polida", maxima1_0], ["Escovada", maxima1_1]],
+  },
+  {
+    id: "dobradica-maxima-rolamento-canto-reto",
+    titulo: "Dobradiça Máxima Inox 201 Com Rolamento Canto Reto 3x2 1/2, 3 1/2x3",
+    categoria: "Dobradiças",
+    imagens: [["Polida", maxima2_0], ["Escovada", maxima2_1]],
   },
 ];
 
