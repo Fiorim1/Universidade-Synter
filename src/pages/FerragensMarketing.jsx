@@ -75,6 +75,20 @@ import numerosPreta from "../assets/marketing-ferragens/Números Dupla Face Pret
 import numerosPolida from "../assets/marketing-ferragens/Números Dupla Face Polida.jpg";
 import amortecedorPolida from "../assets/marketing-ferragens/Amortecedor De Porta Polida.jpg";
 
+// DOBRADIÇAS INOX 304 PREMIUM
+import dobradicaPremium0 from "../assets/marketing-ferragens/Dobradiça Com Rolamento Canto Reto 3 1-2x3, 3x2 1-2 (Polegada) Inox 304 Premium Escovada.jpg";
+import dobradicaPremium1 from "../assets/marketing-ferragens/Dobradiça Com Rolamento Canto Reto 3 1-2x3, 3x2 1-2 (Polegada) Inox 304 Premium Polida.jpg";
+import dobradicaPremium2 from "../assets/marketing-ferragens/Dobradiça Com Rolamento Canto Reto 3 1-2x3, 3x2 1-2 (Polegada) Inox 304 Premium Preta.jpg";
+import dobradicaPremium3 from "../assets/marketing-ferragens/Dobradiça Com Rolamento Canto Reto 4x3 (Polegada) Inox 304 Premium Polida.jpg";
+import dobradicaPremium4 from "../assets/marketing-ferragens/Dobradiça Com Rolamento Raio 16 3 1-2x3, 3x2 1-2 (Polegada) Inox 304 Premium Escovada.jpg";
+import dobradicaPremium5 from "../assets/marketing-ferragens/Dobradiça Com Rolamento Raio 16 3 1-2x3, 3x2 1-2 (Polegada) Inox 304 Premium Polida.jpg";
+import dobradicaPremium6 from "../assets/marketing-ferragens/Dobradiça Pino Pivoltante 150-300 Inox 304 Premium Escovada.jpg";
+import dobradicaPremium7 from "../assets/marketing-ferragens/Dobradiça Pino Pivoltante 150-300 Inox 304 Premium Preta.jpg";
+import dobradicaPremium8 from "../assets/marketing-ferragens/Dobradiça Pino Simples 1-2 e 2(Polegada) Inox 304 Premium Polida.jpg";
+import dobradicaPremium9 from "../assets/marketing-ferragens/Dobradiça Pino Simples 1-2 e 2(Polegada) Inox 304 Premium Preta.jpg";
+import dobradicaPremium10 from "../assets/marketing-ferragens/Dobradiça Pino Simples 2 1-2 , 3, 3 1-2, 3x2 1-2, 3x3 (Polegada) Inox 304 Premium Polida.jpg";
+import dobradicaPremium11 from "../assets/marketing-ferragens/Dobradiça Pino Simples 2 1-2 , 3, 3 1-2, 3x2 1-2, 3x3 (Polegada) Inox 304 Premium Preta.jpg";
+
 // CATÁLOGO - FERRAGENS
 const modelos = [
   {
@@ -319,6 +333,60 @@ const modelos = [
     titulo: "Amortecedor de Porta",
     categoria: "Acessórios",
     imagens: [["Polida", amortecedorPolida]],
+  },
+  {
+    id: "dobradica-inox-304-rolamento-canto-reto-35x3-3x25",
+    titulo: "Dobradiça Com Rolamento Canto Reto 3 1/2x3, 3x2 1/2 Inox 304 Premium",
+    categoria: "Dobradiças",
+    imagens: [
+      ["Escovada", dobradicaPremium0],
+      ["Polida", dobradicaPremium1],
+      ["Preta", dobradicaPremium2],
+    ],
+  },
+  {
+    id: "dobradica-inox-304-rolamento-canto-reto-4x3",
+    titulo: "Dobradiça Com Rolamento Canto Reto 4x3 Inox 304 Premium",
+    categoria: "Dobradiças",
+    imagens: [
+      ["Polida", dobradicaPremium3],
+    ],
+  },
+  {
+    id: "dobradica-inox-304-rolamento-raio-16",
+    titulo: "Dobradiça Com Rolamento Raio 16 3 1/2x3, 3x2 1/2 Inox 304 Premium",
+    categoria: "Dobradiças",
+    imagens: [
+      ["Escovada", dobradicaPremium4],
+      ["Polida", dobradicaPremium5],
+    ],
+  },
+  {
+    id: "dobradica-inox-304-pino-pivotante-150-300",
+    titulo: "Dobradiça Pino Pivotante 150-300 Inox 304 Premium",
+    categoria: "Dobradiças",
+    imagens: [
+      ["Escovada", dobradicaPremium6],
+      ["Preta", dobradicaPremium7],
+    ],
+  },
+  {
+    id: "dobradica-inox-304-pino-simples-05-2",
+    titulo: "Dobradiça Pino Simples 1/2 e 2 Inox 304 Premium",
+    categoria: "Dobradiças",
+    imagens: [
+      ["Polida", dobradicaPremium8],
+      ["Preta", dobradicaPremium9],
+    ],
+  },
+  {
+    id: "dobradica-inox-304-pino-simples-25-3-35-3x25-3x3",
+    titulo: "Dobradiça Pino Simples 2 1/2, 3, 3 1/2, 3x2 1/2, 3x3 Inox 304 Premium",
+    categoria: "Dobradiças",
+    imagens: [
+      ["Polida", dobradicaPremium10],
+      ["Preta", dobradicaPremium11],
+    ],
   },
 ];
 
